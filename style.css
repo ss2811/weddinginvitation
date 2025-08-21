@@ -1107,11 +1107,12 @@ body {
 
 .preview-couple {
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* PERBAIKAN: Mengubah dari column ke row */
   align-items: center;
-  gap: 0.3rem;
+  justify-content: center; /* Menengahkan item secara horizontal */
+  gap: 0.5rem; /* Sedikit menambah jarak */
   font-family: 'Playfair Display', serif;
-  font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+  font-size: clamp(1rem, 2.5vw, 1.2rem); /* Sedikit memperbesar font */
   font-weight: 600;
   color: white;
 }
@@ -1124,7 +1125,7 @@ body {
 .heart-symbol {
   font-size: clamp(1.2rem, 3vw, 1.8rem);
   color: var(--wedding-gold);
-  margin: 0.2rem 0;
+  margin: 0; /* Menghapus margin vertikal */
   animation: heartbeat 2s infinite;
 }
 
