@@ -3,42 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Invitation - Suriansyah & Sonia</title>
+    <title>Wedding Invitation - Suriansyah & Sonia Agustina</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:wght@400&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Falling Daisies Animation -->
-    <div class="falling-daisies" id="fallingDaisies"></div>
-    
-    <!-- Background Music Player -->
-    <div class="music-player" id="musicPlayer">
-        <audio id="backgroundMusic" loop>
-            <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/backgroundmusic.mp3" type="audio/mpeg">
-            <!-- Replace with your music file -->
-        </audio>
-        <button id="musicToggle" class="music-btn">
-            <span class="music-icon">🎵</span>
-        </button>
+    <!-- Falling Daisies Container -->
+    <div id="fallingDaisies" class="falling-daisies"></div>
+
+    <!-- Music Player -->
+    <div class="music-player">
+        <button id="musicToggle" class="music-btn">🎵</button>
         <div class="volume-control">
             <input type="range" id="volumeSlider" min="0" max="100" value="50">
         </div>
+        <button id="unmuteButton" class="unmute-btn" style="display: none;">🔊</button>
+        <audio id="backgroundMusic" loop preload="auto">
+            <source src="background-music.mp3" type="audio/mpeg">
+            <!-- Fallback jika tidak ada file musik -->
+        </audio>
     </div>
 
     <!-- Navigation -->
-    <nav class="sticky-nav" id="stickyNav">
+    <nav class="sticky-nav">
         <div class="nav-container">
-            <div class="nav-brand">S & S</div>
-            <div class="nav-menu" id="navMenu">
-                <a href="#intro" class="nav-link active">Intro</a>
-                <a href="#invitation" class="nav-link">Undangan</a>
-                <a href="#countdown" class="nav-link">Countdown</a>
-                <a href="#couple" class="nav-link">Mempelai</a>
-                <a href="#schedule" class="nav-link">Acara</a>
-                <a href="#rsvp" class="nav-link">RSVP</a>
-                <a href="#gift" class="nav-link">Hadiah</a>
-                <a href="#wishes" class="nav-link">Ucapan</a>
-            </div>
+            <div class="nav-brand">Wedding</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#intro" class="nav-link">Home</a></li>
+                <li><a href="#invitation" class="nav-link">Undangan</a></li>
+                <li><a href="#countdown" class="nav-link">Countdown</a></li>
+                <li><a href="#couple" class="nav-link">Couple</a></li>
+                <li><a href="#schedule" class="nav-link">Acara</a></li>
+                <li><a href="#rsvp" class="nav-link">RSVP</a></li>
+                <li><a href="#gift" class="nav-link">Gift</a></li>
+                <li><a href="#wishes" class="nav-link">Ucapan</a></li>
+            </ul>
             <button class="nav-toggle" id="navToggle">
                 <span></span>
                 <span></span>
@@ -47,340 +46,320 @@
         </div>
     </nav>
 
-    <!-- Session 0: Cinematic Intro -->
+    <!-- Intro Section -->
     <section id="intro" class="session intro-session">
         <div class="video-container">
-            <!-- Video placeholder with background -->
             <div class="video-placeholder">
-                <video id="introVideo" muted autoplay style="display: none;">
-                    <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/intro.mp4" type="video/mp4">
-                    <!-- Replace with your video file -->
-                </video>
-                <!-- Placeholder content when video is not available -->
                 <div class="intro-placeholder">
-                    <h1 class="gradient-text glow">Welcome</h1>
-                    <p class="intro-subtitle">Wedding Invitation</p>
-                    <div class="intro-couple">
-                        <span class="gradient-text">Suriansyah & Sonia</span>
-                    </div>
+                    <h1 class="gradient-text glow">The Wedding of</h1>
+                    <p class="intro-subtitle">Kita Menikah</p>
+                    <h2 class="intro-couple">Suriansyah & Sonia Agustina</h2>
                 </div>
             </div>
             <div class="video-overlay">
-                <button id="skipButton" class="skip-btn">Skip</button>
-                <button id="unmuteButton" class="unmute-btn">🔊 Unmute</button>
+                <button id="skipButton" class="skip-btn">Skip Intro</button>
+                <button id="unmuteButton" class="unmute-btn" style="display: none;">Unmute</button>
             </div>
         </div>
     </section>
 
-    <!-- Session 1: Envelope Animation - FIXED -->
+    <!-- Envelope Section -->
     <section id="invitation" class="session envelope-session">
-        <div class="container">
-            <div class="envelope-container">
-                <div class="envelope" id="envelope">
-                    <div class="envelope-front">
-                        <div class="envelope-content">
-                            <div class="envelope-seal">💌</div>
-                            <div class="envelope-preview">
-                                <h3 class="preview-title">Wedding Invitation</h3>
-                                <div class="preview-couple">
-                                    <span>Suriansyah</span>
-                                    <span class="heart-symbol">💖</span>
-                                    <span>Sonia</span>
-                                </div>
-                                <p class="preview-date">24 September 2025</p>
+        <div class="envelope-container">
+            <div id="envelope" class="envelope">
+                <!-- Envelope Front -->
+                <div class="envelope-front">
+                    <div class="envelope-content">
+                        <div class="envelope-seal">💌</div>
+                        <div class="envelope-preview">
+                            <h2 class="preview-title">You're Invited</h2>
+                            <div class="preview-couple">
+                                <span class="groom-name">Suriansyah, S. Kep., Ners</span>
+                                <span class="heart-symbol">💝</span>
+                                <span class="bride-name">Sonia Agustina Oemar, S. Farm</span>
                             </div>
-                            <p class="click-instruction">Klik untuk membuka</p>
+                            <p class="preview-date">24 September 2025</p>
                         </div>
+                        <p class="click-instruction">Klik untuk membuka</p>
                     </div>
-                    <div class="envelope-back">
-                        <div class="invitation-text">
-                            <h1 class="gradient-text glow">Wedding Invitation of</h1>
-                            <div class="couple-names-wrapper">
-                                <h2 class="couple-names">
-                                    <span class="gradient-text groom-name">Suriansyah, S. Kep., Ners</span>
-                                    <span class="ampersand">💖</span>
-                                    <span class="gradient-text bride-name">Sonia Agustina Oemar, S. Farm</span>
-                                </h2>
+                </div>
+                
+                <!-- Envelope Back -->
+                <div class="envelope-back">
+                    <div class="invitation-text">
+                        <h1 class="gradient-text">Wedding Invitation</h1>
+                        <div class="couple-names-wrapper">
+                            <div class="couple-names">
+                                <span class="groom-name">Suriansyah, S. Kep., Ners</span>
+                                <span class="ampersand">💝</span>
+                                <span class="bride-name">Sonia Agustina Oemar, S. Farm</span>
                             </div>
-                            <p class="wedding-date gradient-text glow">24 September 2025</p>
-                            <button id="openInvitation" class="btn btn--primary glow-btn">
-                                Buka Undangan
-                            </button>
                         </div>
+                        <div class="wedding-date">24 September 2025</div>
+                        <button id="openInvitation" class="btn btn--primary glow-btn">
+                            Buka Undangan
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Session 2: Countdown & Share -->
-    <section id="countdown" class="session countdown-section">
-        <div class="container">
-            <h2 class="section-title gradient-text glow">Menuju Hari Bahagia</h2>
-            <div class="countdown-container">
-                <div class="countdown-item">
-                    <span class="countdown-number" id="days">00</span>
-                    <span class="countdown-label">Hari</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="hours">00</span>
-                    <span class="countdown-label">Jam</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="minutes">00</span>
-                    <span class="countdown-label">Menit</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="seconds">00</span>
-                    <span class="countdown-label">Detik</span>
-                </div>
-            </div>
-            
-            <div class="calendar-buttons">
-                <button class="btn btn--secondary" id="googleCalendar">
-                    📅 Google Calendar
-                </button>
-                <button class="btn btn--secondary" id="appleCalendar">
-                    📅 Apple Calendar
-                </button>
-            </div>
-
-            <div class="share-buttons">
-                <h3 class="gradient-text">Bagikan Undangan</h3>
-                <div class="share-grid">
-                    <button class="share-btn whatsapp" id="shareWhatsApp">
-                        💬 WhatsApp
-                    </button>
-                    <button class="share-btn copy" id="copyLink">
-                        🔗 Copy Link
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Session 3: Bismillah & Quranic Verse -->
+    <!-- Bismillah Section -->
     <section id="bismillah" class="session bismillah-section">
         <div class="container">
             <div class="arabic-text">
-                <h2 class="bismillah gradient-text glow">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</h2>
+                <h2 class="bismillah gradient-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</h2>
             </div>
             <div class="quranic-verse">
-                <p class="verse-text gradient-text">
+                <p class="verse-text">
                     "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."
                 </p>
-                <p class="verse-reference gradient-text glow">- QS. Ar-Rum: 21 -</p>
+                <p class="verse-reference">- QS. Ar-Rum: 21 -</p>
             </div>
         </div>
     </section>
 
-    <!-- Session 4: Guest Greeting & Couple Profiles - FIXED -->
+    <!-- Countdown Section -->
+    <section id="countdown" class="session countdown-section">
+        <div class="container">
+            <h2 class="section-title gradient-text">Countdown</h2>
+            <div class="countdown-container">
+                <div class="countdown-item">
+                    <span id="days" class="countdown-number">00</span>
+                    <span class="countdown-label">Hari</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="hours" class="countdown-number">00</span>
+                    <span class="countdown-label">Jam</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="minutes" class="countdown-number">00</span>
+                    <span class="countdown-label">Menit</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="seconds" class="countdown-number">00</span>
+                    <span class="countdown-label">Detik</span>
+                </div>
+            </div>
+
+            <div class="calendar-buttons">
+                <button id="googleCalendar" class="btn btn--outline">📅 Google Calendar</button>
+                <button id="appleCalendar" class="btn btn--outline">📱 Apple Calendar</button>
+            </div>
+
+            <div class="share-buttons">
+                <h3>Bagikan Undangan</h3>
+                <div class="share-grid">
+                    <button id="shareWhatsApp" class="share-btn">📱 WhatsApp</button>
+                    <button id="shareInstagram" class="share-btn">📷 Instagram</button>
+                    <button id="shareFacebook" class="share-btn">📘 Facebook</button>
+                    <button id="copyLink" class="share-btn">🔗 Copy Link</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Couple Section -->
     <section id="couple" class="session couple-section">
         <div class="container">
             <div class="greeting">
-                <p class="greeting-text gradient-text">
-                    Yth. <span class="guest-name">[Guest Name]</span>,<br>
+                <p class="greeting-text">
+                    Assalamu'alaikum Warahmatullahi Wabarakatuh<br><br>
+                    Yth. <span class="guest-name">[Guest Name]</span>,<br><br>
                     Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Anda untuk hadir dalam acara pernikahan kami.
                 </p>
             </div>
-            
+
             <div class="couple-profiles">
-                <div class="profile groom-profile">
+                <div class="profile">
                     <div class="photo-container">
-                        <div class="photo-placeholder groom-placeholder">
+                        <div class="photo-placeholder">
                             <span>👤</span>
                             <p>Groom Photo</p>
                         </div>
-                        <!-- Replace with actual groom photo -->
-                        <!-- <img src="https://github.com/ss2811/weddinginvitation/raw/main/groom.jpeg" alt="Suriansyah" class="profile-photo" id="groomPhoto"> -->
                     </div>
-                    <h3 class="profile-name gradient-text glow">Suriansyah, S. Kep., Ners</h3>
+                    <h3 class="profile-name">Suriansyah, S. Kep., Ners</h3>
                     <p class="profile-title">Mempelai Pria</p>
                 </div>
-                
-                                
-                <div class="profile bride-profile">
+
+                <div class="heart-divider">
+                    <span class="heart">💖</span>
+                </div>
+
+                <div class="profile">
                     <div class="photo-container">
-                        <div class="photo-placeholder bride-placeholder">
+                        <div class="photo-placeholder">
                             <span>👤</span>
                             <p>Bride Photo</p>
                         </div>
-                        <!-- Replace with actual bride photo -->
-                        <!-- <img src="https://github.com/ss2811/weddinginvitation/raw/main/bride.jpeg" alt="Sonia" class="profile-photo" id="bridePhoto"> -->
                     </div>
-                    <h3 class="profile-name gradient-text glow">Sonia Agustina Oemar, S. Farm</h3>
+                    <h3 class="profile-name">Sonia Agustina Oemar, S. Farm</h3>
                     <p class="profile-title">Mempelai Wanita</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Session 5: Event Schedule & Location - FIXED -->
+    <!-- Schedule Section -->
     <section id="schedule" class="session schedule-section">
         <div class="container">
-            <h2 class="section-title gradient-text glow">Jadwal Acara</h2>
+            <h2 class="section-title gradient-text">Acara Pernikahan</h2>
             
             <div class="events-grid">
                 <div class="event-card">
                     <div class="event-icon">
-                        <img src="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/c8d683c1-e362-4148-80a4-0f39fd03ff6d.png" alt="Mosque" class="event-image">
+                        <img src="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/c8d683c1-e362-4148-80a4-0f39fd03ff6d.png" alt="Akad Nikah" class="event-image">
                     </div>
-                    <h3 class="event-name gradient-text">Akad Nikah</h3>
+                    <h3 class="event-name">Akad Nikah</h3>
                     <p class="event-time">07:00 - 08:00 WITA</p>
                 </div>
-                
+
                 <div class="event-card">
                     <div class="event-icon">
-                        <img src="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/105a0f8d-15c7-40a2-adb2-d6791d237c6d.png" alt="Muslim Wedding Couple" class="event-image">
+                        <img src="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/105a0f8d-15c7-40a2-adb2-d6791d237c6d.png" alt="Resepsi" class="event-image">
                     </div>
-                    <h3 class="event-name gradient-text">Resepsi</h3>
+                    <h3 class="event-name">Resepsi</h3>
                     <p class="event-time">08:00 - selesai</p>
                 </div>
             </div>
-            
+
             <div class="venue-info">
-                <h3 class="venue-title gradient-text glow">Tempat Acara</h3>
-                <p class="venue-name">Rumah Mempelai Wanita</p>
+                <h3 class="venue-title">Lokasi Acara</h3>
+                <h4 class="venue-name">Rumah Mempelai Wanita</h4>
                 
                 <div class="map-container">
-                    <div class="<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d268.1862442549927!2d116.21058253114926!3d-3.266759375811424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2spl!4v1755752577057!5m2!1sen!2spl" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>">
-                        <!-- Google Maps will be embedded here -->
-                        <p>📍 Peta Lokasi</p>
+                    <div class="map-placeholder">
+                        📍 Peta Lokasi
                     </div>
-                    <button class="btn btn--primary" id="openMaps">
-                        🗺️ Buka di Google Maps
-                    </button>
+                    <button id="openMaps" class="btn btn--primary">📍 Peta Lokasi</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Session 6: RSVP & Wedding Wishes -->
+    <!-- RSVP Section -->
     <section id="rsvp" class="session rsvp-section">
         <div class="container">
-            <h2 class="section-title gradient-text glow">RSVP & Ucapan</h2>
+            <h2 class="section-title gradient-text">RSVP & Ucapan</h2>
             
             <div class="forms-grid">
                 <div class="rsvp-form-container">
-                    <h3 class="form-title gradient-text">Konfirmasi Kehadiran</h3>
-                    <form id="rsvpForm" class="rsvp-form">
+                    <h3 class="form-title">Konfirmasi Kehadiran</h3>
+                    <form id="rsvpForm">
                         <div class="form-group">
-                            <label class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="rsvpName" required>
+                            <label class="form-label" for="rsvpName">Nama Lengkap *</label>
+                            <input type="text" id="rsvpName" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Kehadiran</label>
-                            <select class="form-control" id="rsvpAttendance" required>
+                            <label class="form-label" for="rsvpAttendance">Kehadiran *</label>
+                            <select id="rsvpAttendance" class="form-control" required>
                                 <option value="">Pilih kehadiran</option>
-                                <option value="hadir">Akan Hadir</option>
-                                <option value="tidak-hadir">Tidak Dapat Hadir</option>
+                                <option value="hadir">Hadir</option>
+                                <option value="tidak-hadir">Tidak Hadir</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Jumlah Tamu</label>
-                            <input type="number" class="form-control" id="rsvpGuests" min="1" max="5" value="1">
+                            <label class="form-label" for="rsvpGuests">Jumlah Tamu</label>
+                            <input type="number" id="rsvpGuests" class="form-control" min="1" max="5" value="1">
                         </div>
-                        <button type="submit" class="btn btn--primary btn--full-width">
-                            Kirim Konfirmasi
-                        </button>
+                        <button type="submit" class="btn btn--primary btn--full-width">Kirim Konfirmasi</button>
                     </form>
                 </div>
-                
+
                 <div class="wishes-form-container">
-                    <h3 class="form-title gradient-text">Ucapan & Doa</h3>
-                    <form id="wishesForm" class="wishes-form">
+                    <h3 class="form-title">Ucapan & Doa</h3>
+                    <form id="wishesForm">
                         <div class="form-group">
-                            <label class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="wishesName" required>
+                            <label class="form-label" for="wishesName">Nama *</label>
+                            <input type="text" id="wishesName" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Ucapan & Doa</label>
-                            <textarea class="form-control" id="wishesMessage" rows="4" required></textarea>
+                            <label class="form-label" for="wishesMessage">Ucapan & Doa *</label>
+                            <textarea id="wishesMessage" class="form-control" rows="4" required placeholder="Tuliskan ucapan dan doa terbaik Anda..."></textarea>
                         </div>
                         <div class="form-group">
                             <label class="form-label">
-                                <input type="checkbox" id="wishesPublic"> 
-                                Tampilkan di dinding ucapan
+                                <input type="checkbox" id="wishesPublic" checked> 
+                                Tampilkan ucapan di dinding ucapan
                             </label>
                         </div>
-                        <button type="submit" class="btn btn--primary btn--full-width">
-                            Kirim Ucapan
-                        </button>
+                        <button type="submit" class="btn btn--primary btn--full-width">Kirim Ucapan</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Session 8: Digital Envelope (Gift) -->
+    <!-- Gift Section -->
     <section id="gift" class="session gift-section">
         <div class="container">
-            <h2 class="section-title gradient-text glow">Amplop Digital</h2>
+            <h2 class="section-title gradient-text">Wedding Gift</h2>
+            
             <p class="gift-description">
                 Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Namun jika memberi adalah ungkapan tanda kasih Anda, Anda dapat memberi kado secara cashless.
             </p>
-            
+
             <div class="bank-accounts">
                 <div class="bank-card">
-                    <h3 class="bank-name gradient-text">Bank ABC</h3>
+                    <h3 class="bank-name">Bank BCA</h3>
                     <div class="account-info">
-                        <span class="account-number" id="account1">1234567890</span>
-                        <button class="copy-btn" data-account="1234567890">
-                            📋 Copy
-                        </button>
+                        <span class="account-number">1234567890</span>
+                        <button class="copy-btn" data-account="1234567890">Salin</button>
                     </div>
                     <p class="account-name">Suriansyah</p>
                 </div>
-                
+
                 <div class="bank-card">
-                    <h3 class="bank-name gradient-text">Bank XYZ</h3>
+                    <h3 class="bank-name">Bank Mandiri</h3>
                     <div class="account-info">
-                        <span class="account-number" id="account2">0987654321</span>
-                        <button class="copy-btn" data-account="0987654321">
-                            📋 Copy
-                        </button>
+                        <span class="account-number">0987654321</span>
+                        <button class="copy-btn" data-account="0987654321">Salin</button>
                     </div>
                     <p class="account-name">Sonia Agustina Oemar</p>
                 </div>
             </div>
-            
-            <p class="thank-you-message gradient-text">
-                Terima kasih atas perhatian dan doa restu Anda.
+
+            <p class="thank-you-message">
+                Terima kasih atas perhatian dan kehadirannya. Jazakumullahu khairan.
             </p>
         </div>
     </section>
 
-    <!-- Session 9: Wedding Wishes Wall -->
+    <!-- Wishes Section -->
     <section id="wishes" class="session wishes-section">
         <div class="container">
-            <h2 class="section-title gradient-text glow">Dinding Ucapan</h2>
+            <h2 class="section-title gradient-text">Dinding Ucapan</h2>
             <div id="wishesWall" class="wishes-wall">
-                <!-- Wishes will be loaded here -->
-                <div class="wishes-loading">
-                    <p>Memuat ucapan...</p>
-                </div>
+                <p class="wishes-loading">Memuat ucapan...</p>
             </div>
         </div>
     </section>
 
-    <!-- Session 10: Closing Message -->
+    <!-- Closing Section -->
     <section id="closing" class="session closing-section">
         <div class="container">
-            <div class="closing-content">
-                <h2 class="closing-title gradient-text glow">Terima Kasih</h2>
-                <p class="closing-message" id="closingMessage">
-                    Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan do'a restu kepada kedua mempelai.
-                </p>
-                <div class="couple-signature">
-                    <p class="couple-names gradient-text glow">
-                        Suriansyah & Sonia
-                    </p>
-                </div>
+            <h2 class="closing-title gradient-text">Terima Kasih</h2>
+            <p class="closing-message">
+                Merupakan suatu kehormatan dan kebahagiaan bagi kami, apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Atas kehadiran dan doa restunya, kami mengucapkan terima kasih.
+            </p>
+            <div class="couple-signature">
+                <p class="signature">Wassalamu'alaikum Warahmatullahi Wabarakatuh</p>
+                <h3 class="couple-names gradient-text">Suriansyah & Sonia</h3>
             </div>
         </div>
     </section>
 
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- JavaScript -->
     <script src="app.js"></script>
+    <script>
+        // Initialize the wedding invitation
+        document.addEventListener('DOMContentLoaded', function() {
+            new WeddingInvitation();
+        });
+    </script>
 </body>
 </html>
-
