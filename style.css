@@ -860,7 +860,8 @@ body {
 
 /* Section 1: Simple Opening (NO Envelope Animation) */
 .opening-section {
-  background: linear-gradient(135deg, var(--color-bg-1), var(--color-bg-2));
+  background: linear-gradient(135deg, var(--color-bg-1), var(--color-bg-2)),
+  url('https://github.com/ss2811/weddinginvitation/blob/main/backgroundbiru.jpeg?raw=true') center/cover no-repeat fixed;
   position: relative;
   overflow: hidden;
 }
@@ -989,8 +990,8 @@ body {
 
 /* Section 2: Video Section */
 .video-section {
-  background: var(--color-bg-8);
-  position: relative;
+  background: url('https://github.com/ss2811/weddinginvitation/blob/main/backgroundhitam.jpeg?raw=true') center/cover no-repeat fixed;
+  color: var(--color-text);
 }
 
 .video-container {
