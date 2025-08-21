@@ -122,12 +122,7 @@ class WeddingInvitation {
             console.log('Section 2 shown');
         }
         
-        // Auto skip video after 3 seconds
-        setTimeout(() => {
-            this.skipVideo();
-        }, 3000);
-    }
-
+        
     skipVideo() {
         console.log('Skipping video'); // Debug log
         const section2 = document.getElementById('section2');
