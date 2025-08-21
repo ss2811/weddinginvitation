@@ -1,1903 +1,733 @@
-:root {
-  /* Primitive Color Tokens */
-  --color-white: rgba(255, 255, 255, 1);
-  --color-black: rgba(0, 0, 0, 1);
-  --color-cream-50: rgba(252, 252, 249, 1);
-  --color-cream-100: rgba(255, 255, 253, 1);
-  --color-gray-200: rgba(245, 245, 245, 1);
-  --color-gray-300: rgba(167, 169, 169, 1);
-  --color-gray-400: rgba(119, 124, 124, 1);
-  --color-slate-500: rgba(98, 108, 113, 1);
-  --color-brown-600: rgba(94, 82, 64, 1);
-  --color-charcoal-700: rgba(31, 33, 33, 1);
-  --color-charcoal-800: rgba(38, 40, 40, 1);
-  --color-slate-900: rgba(19, 52, 59, 1);
-  --color-teal-300: rgba(50, 184, 198, 1);
-  --color-teal-400: rgba(45, 166, 178, 1);
-  --color-teal-500: rgba(33, 128, 141, 1);
-  --color-teal-600: rgba(29, 116, 128, 1);
-  --color-teal-700: rgba(26, 104, 115, 1);
-  --color-teal-800: rgba(41, 150, 161, 1);
-  --color-red-400: rgba(255, 84, 89, 1);
-  --color-red-500: rgba(192, 21, 47, 1);
-  --color-orange-400: rgba(230, 129, 97, 1);
-  --color-orange-500: rgba(168, 75, 47, 1);
+// Wedding Invitation JavaScript
+class WeddingInvitation {
+    constructor() {
+        this.init();
+    }
 
-  /* RGB versions for opacity control */
-  --color-brown-600-rgb: 94, 82, 64;
-  --color-teal-500-rgb: 33, 128, 141;
-  --color-slate-900-rgb: 19, 52, 59;
-  --color-slate-500-rgb: 98, 108, 113;
-  --color-red-500-rgb: 192, 21, 47;
-  --color-red-400-rgb: 255, 84, 89;
-  --color-orange-500-rgb: 168, 75, 47;
-  --color-orange-400-rgb: 230, 129, 97;
+    init() {
+        this.setupFirebase();
+        this.setupEventListeners();
+        this.setupCountdown();
+        this.setupMusic();
+        this.setupNavigation();
+        this.setupGuestName();
+        this.setupAnimations();
+        this.createFallingPetals();
+    }
 
-  /* Background color tokens (Light Mode) */
-  --color-bg-1: rgba(59, 130, 246, 0.08); /* Light blue */
-  --color-bg-2: rgba(245, 158, 11, 0.08); /* Light yellow */
-  --color-bg-3: rgba(34, 197, 94, 0.08); /* Light green */
-  --color-bg-4: rgba(239, 68, 68, 0.08); /* Light red */
-  --color-bg-5: rgba(147, 51, 234, 0.08); /* Light purple */
-  --color-bg-6: rgba(249, 115, 22, 0.08); /* Light orange */
-  --color-bg-7: rgba(236, 72, 153, 0.08); /* Light pink */
-  --color-bg-8: rgba(6, 182, 212, 0.08); /* Light cyan */
+    // Firebase Configuration
+    setupFirebase() {
+        // Mock database for demo purposes
+        this.mockDatabase = {
+            rsvp: [],
+            wishes: [
+                {
+                    name: "Contoh Tamu",
+                    message: "Selamat menempuh hidup baru! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Barakallahu lakuma wa baraka alaikuma wa jama'a bainakuma fi khair.",
+                    timestamp: new Date(),
+                    display: true
+                }
+            ]
+        };
+        
+        this.loadWishes();
+    }
 
-  /* Semantic Color Tokens (Light Mode) */
-  --color-background: var(--color-cream-50);
-  --color-surface: var(--color-cream-100);
-  --color-text: var(--color-slate-900);
-  --color-text-secondary: var(--color-slate-500);
-  --color-primary: var(--color-teal-500);
-  --color-primary-hover: var(--color-teal-600);
-  --color-primary-active: var(--color-teal-700);
-  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
-  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-error: var(--color-red-500);
-  --color-success: var(--color-teal-500);
-  --color-warning: var(--color-orange-500);
-  --color-info: var(--color-slate-500);
-  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
-  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+    // Event Listeners Setup
+    setupEventListeners() {
+        // Simple opening - no envelope animation - FIX: Make sure button works
+        const openBtn = document.getElementById('openInvitation');
+        if (openBtn) {
+            openBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Buka Undangan clicked'); // Debug log
+                this.startInvitation();
+            });
+        }
 
-  /* Common style patterns */
-  --focus-ring: 0 0 0 3px var(--color-focus-ring);
-  --focus-outline: 2px solid var(--color-primary);
-  --status-bg-opacity: 0.15;
-  --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        // Video section
+        const skipVideo = document.getElementById('skipVideo');
+        if (skipVideo) {
+            skipVideo.addEventListener('click', () => this.skipVideo());
+        }
 
-  /* RGB versions for opacity control */
-  --color-success-rgb: 33, 128, 141;
-  --color-error-rgb: 192, 21, 47;
-  --color-warning-rgb: 168, 75, 47;
-  --color-info-rgb: 98, 108, 113;
+        // Calendar buttons - Only Google Calendar
+        const googleCalBtn = document.getElementById('addToGoogleCal');
+        if (googleCalBtn) {
+            googleCalBtn.addEventListener('click', () => this.addToGoogleCalendar());
+        }
 
-  /* Typography */
-  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
-    Monaco, Consolas, monospace;
-  --font-size-xs: 11px;
-  --font-size-sm: 12px;
-  --font-size-base: 14px;
-  --font-size-md: 14px;
-  --font-size-lg: 16px;
-  --font-size-xl: 18px;
-  --font-size-2xl: 20px;
-  --font-size-3xl: 24px;
-  --font-size-4xl: 30px;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 550;
-  --font-weight-bold: 600;
-  --line-height-tight: 1.2;
-  --line-height-normal: 1.5;
-  --letter-spacing-tight: -0.01em;
+        // Social share buttons
+        const whatsappBtn = document.getElementById('shareWhatsapp');
+        if (whatsappBtn) {
+            whatsappBtn.addEventListener('click', () => this.shareWhatsApp());
+        }
 
-  /* Spacing */
-  --space-0: 0;
-  --space-1: 1px;
-  --space-2: 2px;
-  --space-4: 4px;
-  --space-6: 6px;
-  --space-8: 8px;
-  --space-10: 10px;
-  --space-12: 12px;
-  --space-16: 16px;
-  --space-20: 20px;
-  --space-24: 24px;
-  --space-32: 32px;
+        const facebookBtn = document.getElementById('shareFacebook');
+        if (facebookBtn) {
+            facebookBtn.addEventListener('click', () => this.shareFacebook());
+        }
 
-  /* Border Radius */
-  --radius-sm: 6px;
-  --radius-base: 8px;
-  --radius-md: 10px;
-  --radius-lg: 12px;
-  --radius-full: 9999px;
+        const twitterBtn = document.getElementById('shareTwitter');
+        if (twitterBtn) {
+            twitterBtn.addEventListener('click', () => this.shareTwitter());
+        }
 
-  /* Shadows */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
-    0 2px 4px -1px rgba(0, 0, 0, 0.02);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
-    0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+        const copyLinkBtn = document.getElementById('copyLink');
+        if (copyLinkBtn) {
+            copyLinkBtn.addEventListener('click', () => this.copyInvitationLink());
+        }
 
-  /* Animation */
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+        // Music control
+        const musicToggle = document.getElementById('musicToggle');
+        if (musicToggle) {
+            musicToggle.addEventListener('click', () => this.toggleMusic());
+        }
 
-  /* Layout */
-  --container-sm: 640px;
-  --container-md: 768px;
-  --container-lg: 1024px;
-  --container-xl: 1280px;
+        // Forms
+        const rsvpForm = document.getElementById('rsvpForm');
+        const wishesForm = document.getElementById('wishesForm');
+        
+        if (rsvpForm) {
+            rsvpForm.addEventListener('submit', (e) => this.handleRSVP(e));
+        }
+        
+        if (wishesForm) {
+            wishesForm.addEventListener('submit', (e) => this.handleWishes(e));
+        }
+
+        // Copy buttons
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => this.copyToClipboard(e));
+        });
+
+        // Scroll event for navigation
+        window.addEventListener('scroll', () => this.updateNavigation());
+    }
+
+    // FIX: Simple start invitation (no envelope animation)
+    startInvitation() {
+        console.log('Starting invitation flow'); // Debug log
+        // Hide section 1 and show section 2
+        const section1 = document.getElementById('section1');
+        const section2 = document.getElementById('section2');
+        
+        if (section1) {
+            section1.style.display = 'none';
+            console.log('Section 1 hidden');
+        }
+        if (section2) {
+            section2.classList.remove('hidden');
+            section2.style.display = 'flex';
+            console.log('Section 2 shown');
+        }
+        
+        // Auto skip video after 3 seconds
+        setTimeout(() => {
+            this.skipVideo();
+        }, 3000);
+    }
+
+    skipVideo() {
+        console.log('Skipping video'); // Debug log
+        const section2 = document.getElementById('section2');
+        if (section2) {
+            section2.style.display = 'none';
+        }
+        
+        this.scrollToSection('section3');
+        this.startMusic();
+    }
+
+    // FIX: Countdown Timer - Fixed to September 24, 2025
+    setupCountdown() {
+        // Create the wedding date in WITA timezone (UTC+8)
+        const weddingDate = new Date('2025-09-24T07:00:00+08:00');
+        console.log('Wedding date set to:', weddingDate); // Debug log
+        
+        const updateCountdown = () => {
+            const now = new Date();
+            const diff = weddingDate - now;
+            
+            console.log('Time difference:', diff); // Debug log
+            
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                const daysEl = document.getElementById('days');
+                const hoursEl = document.getElementById('hours');
+                const minutesEl = document.getElementById('minutes');
+                const secondsEl = document.getElementById('seconds');
+                
+                if (daysEl) daysEl.textContent = days.toString().padStart(2, '0');
+                if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
+                if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, '0');
+                if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, '0');
+                
+                console.log(`Countdown: ${days}d ${hours}h ${minutes}m ${seconds}s`); // Debug log
+            } else {
+                // Wedding day has passed or is today
+                const daysEl = document.getElementById('days');
+                const hoursEl = document.getElementById('hours');
+                const minutesEl = document.getElementById('minutes');
+                const secondsEl = document.getElementById('seconds');
+                
+                if (daysEl) daysEl.textContent = '00';
+                if (hoursEl) hoursEl.textContent = '00';
+                if (minutesEl) minutesEl.textContent = '00';
+                if (secondsEl) secondsEl.textContent = '00';
+            }
+        };
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    // Calendar Integration - Only Google Calendar
+    addToGoogleCalendar() {
+        const title = 'Pernikahan Suriansyah & Sonia';
+        const details = 'Akad Nikah dan Resepsi Pernikahan\n\nAkad Nikah: 07:00-08:00 WITA\nResepsi: 08:00 WITA - Selesai\n\nLokasi: Rumah Mempelai Wanita, samping masjid Jabal Rahmah Mandin, pulau laut utara, Kotabaru';
+        const location = 'Rumah Mempelai Wanita, samping masjid Jabal Rahmah Mandin, pulau laut utara, Kotabaru';
+        const startDate = '20250924T070000';
+        const endDate = '20250924T120000';
+        
+        const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
+        window.open(url, '_blank');
+    }
+
+    // Social Media Sharing
+    shareWhatsApp() {
+        const text = `Assalamu'alaikum! Kami mengundang Anda untuk hadir di pernikahan kami:\n\n*Suriansyah & Sonia*\n📅 24 September 2025\n⏰ 07:00 WITA\n📍 Rumah Mempelai Wanita\nsamping masjid Jabal Rahmah Mandin, pulau laut utara, Kotabaru\n\nLihat undangan lengkap: ${window.location.href}`;
+        const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+    }
+
+    shareFacebook() {
+        const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+        window.open(url, '_blank');
+    }
+
+    shareTwitter() {
+        const text = 'Kami mengundang Anda di pernikahan Suriansyah & Sonia - 24 September 2025';
+        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`;
+        window.open(url, '_blank');
+    }
+
+    // Copy Link Functionality
+    async copyInvitationLink() {
+        const button = document.getElementById('copyLink');
+        const textToCopy = window.location.href;
+        
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            
+            if (button) {
+                const originalContent = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> Link Tersalin';
+                button.style.background = 'var(--color-success)';
+                button.style.borderColor = 'var(--color-success)';
+                button.style.color = 'white';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalContent;
+                    button.style.background = '';
+                    button.style.borderColor = '';
+                    button.style.color = '';
+                }, 2000);
+            }
+        } catch (error) {
+            console.error('Failed to copy link:', error);
+            // Fallback - show user the link was copied
+            if (button) {
+                const originalContent = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> Link Tersalin';
+                setTimeout(() => {
+                    button.innerHTML = originalContent;
+                }, 2000);
+            }
+        }
+    }
+
+    // Music Controls
+    setupMusic() {
+        this.music = document.getElementById('backgroundMusic');
+        this.musicButton = document.getElementById('musicToggle');
+        this.isPlaying = false;
+    }
+
+    startMusic() {
+        if (this.musicButton && !this.isPlaying) {
+            // Simulate music playing
+            this.isPlaying = true;
+            this.musicButton.classList.remove('muted');
+        }
+    }
+
+    toggleMusic() {
+        if (this.musicButton) {
+            if (this.isPlaying) {
+                this.musicButton.classList.add('muted');
+                this.isPlaying = false;
+            } else {
+                this.musicButton.classList.remove('muted');
+                this.isPlaying = true;
+            }
+        }
+    }
+
+    // Navigation
+    setupNavigation() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href')?.substring(1);
+                if (targetId) {
+                    this.scrollToSection(targetId);
+                }
+            });
+        });
+    }
+
+    scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            // Remove hidden class if present
+            section.classList.remove('hidden');
+            section.style.display = 'flex'; // Ensure it's visible
+            
+            // Calculate offset for fixed navbar
+            const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 60;
+            const elementPosition = section.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    updateNavigation() {
+        const sections = document.querySelectorAll('.section:not(.hidden)');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        let currentSection = '';
+        const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 60;
+        
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            
+            if (rect.top <= navbarHeight + 100 && rect.bottom > navbarHeight + 100) {
+                currentSection = section.id;
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href');
+            if (href === `#${currentSection}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    // Guest Name from URL
+    setupGuestName() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('to') || urlParams.get('guest') || 'Tamu Terhormat';
+        
+        const guestNameElement = document.getElementById('guestName');
+        if (guestNameElement) {
+            guestNameElement.textContent = guestName;
+        }
+    }
+
+    // FIX: Form Handlers
+    async handleRSVP(e) {
+        e.preventDefault();
+        
+        const rsvpName = document.getElementById('rsvpName')?.value;
+        const attendance = document.getElementById('attendance')?.value;
+        
+        if (!rsvpName || !attendance) {
+            alert('Silakan lengkapi semua field yang diperlukan.');
+            return;
+        }
+        
+        const rsvpData = {
+            name: rsvpName,
+            attendance: attendance,
+            timestamp: new Date()
+        };
+        
+        try {
+            // In real app: await this.db.collection('rsvp').add(rsvpData);
+            this.mockDatabase.rsvp.push(rsvpData);
+            
+            // FIX: Show confetti without persistent overlay
+            this.showConfetti();
+            
+            // Show success message
+            this.showSuccessMessage('Terima kasih! Konfirmasi kehadiran Anda telah diterima.');
+            
+            // Reset form
+            e.target.reset();
+        } catch (error) {
+            console.error('Error submitting RSVP:', error);
+            alert('Maaf, terjadi kesalahan. Silakan coba lagi.');
+        }
+    }
+
+    async handleWishes(e) {
+        e.preventDefault();
+        
+        const wishName = document.getElementById('wishName')?.value;
+        const wishMessage = document.getElementById('wishMessage')?.value;
+        const wishOption = document.querySelector('input[name="wishOption"]:checked')?.value;
+        
+        if (!wishName || !wishMessage) {
+            alert('Silakan lengkapi nama dan ucapan.');
+            return;
+        }
+        
+        const wishData = {
+            name: wishName,
+            message: wishMessage,
+            option: wishOption || 'display',
+            timestamp: new Date(),
+            display: (wishOption || 'display') === 'display'
+        };
+        
+        try {
+            if (wishData.option === 'whatsapp') {
+                this.sendWishViaWhatsApp(wishData);
+            } else {
+                // In real app: await this.db.collection('wishes').add(wishData);
+                this.mockDatabase.wishes.push(wishData);
+                this.displayNewWish(wishData);
+            }
+            
+            this.showConfetti();
+            this.showSuccessMessage('Terima kasih atas ucapan dan doa Anda!');
+            e.target.reset();
+        } catch (error) {
+            console.error('Error submitting wish:', error);
+            alert('Maaf, terjadi kesalahan. Silakan coba lagi.');
+        }
+    }
+
+    // FIX: Add success message function instead of persistent overlay
+    showSuccessMessage(message) {
+        // Create temporary success message
+        const successDiv = document.createElement('div');
+        successDiv.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--color-success);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            z-index: 10000;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        `;
+        successDiv.textContent = message;
+        document.body.appendChild(successDiv);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            successDiv.remove();
+        }, 3000);
+    }
+
+    sendWishViaWhatsApp(wishData) {
+        const message = `Ucapan Pernikahan dari ${wishData.name}:\n\n${wishData.message}`;
+        const phoneNumber = '085251815099';
+        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+    }
+
+    // Wishes Display
+    async loadWishes() {
+        try {
+            const wishes = this.mockDatabase.wishes.filter(w => w.display);
+            this.displayWishes(wishes);
+        } catch (error) {
+            console.error('Error loading wishes:', error);
+        }
+    }
+
+    displayWishes(wishes) {
+        const container = document.getElementById('wishesContainer');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        wishes.forEach(wish => {
+            this.displayNewWish(wish);
+        });
+        
+        if (wishes.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: var(--color-text-secondary);">Belum ada ucapan yang ditampilkan.</p>';
+        }
+    }
+
+    displayNewWish(wish) {
+        const container = document.getElementById('wishesContainer');
+        if (!container) return;
+        
+        const wishElement = document.createElement('div');
+        wishElement.className = 'wish-item';
+        wishElement.innerHTML = `
+            <div class="wish-header">
+                <h4>${this.escapeHtml(wish.name)}</h4>
+                <span class="wish-time">${this.formatTime(wish.timestamp)}</span>
+            </div>
+            <p class="wish-text">${this.escapeHtml(wish.message)}</p>
+        `;
+        
+        container.insertBefore(wishElement, container.firstChild);
+    }
+
+    formatTime(timestamp) {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diff = now - date;
+        
+        if (diff < 60000) return 'Baru saja';
+        if (diff < 3600000) return `${Math.floor(diff / 60000)} menit yang lalu`;
+        if (diff < 86400000) return `${Math.floor(diff / 3600000)} jam yang lalu`;
+        return `${Math.floor(diff / 86400000)} hari yang lalu`;
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Copy to Clipboard
+    async copyToClipboard(e) {
+        const button = e.target.closest('.copy-btn');
+        const textToCopy = button?.dataset.copy;
+        
+        if (!textToCopy) return;
+        
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Tersalin';
+            button.classList.add('copied');
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('copied');
+            }, 2000);
+        } catch (error) {
+            console.error('Failed to copy:', error);
+            
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> Tersalin';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                alert('Gagal menyalin. Silakan salin secara manual: ' + textToCopy);
+            }
+            document.body.removeChild(textArea);
+        }
+    }
+
+    // Animations
+    setupAnimations() {
+        this.setupTypingAnimation();
+        this.observeAnimations();
+    }
+
+    setupTypingAnimation() {
+        const thankYouText = document.getElementById('thankYouText');
+        if (thankYouText) {
+            const text = 'Terima Kasih';
+            thankYouText.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < text.length) {
+                    thankYouText.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 200);
+                }
+            };
+            
+            // Start typing animation when section is visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(typeWriter, 500);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            
+            const section = thankYouText.closest('.section');
+            if (section) {
+                observer.observe(section);
+            }
+        }
+    }
+
+    observeAnimations() {
+        const animatedElements = document.querySelectorAll('.wish-item, .schedule-item, .photo-container');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = '0s';
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        animatedElements.forEach(el => observer.observe(el));
+    }
+
+    // White Daisy Falling Particles
+    createFallingPetals() {
+        setInterval(() => {
+            if (window.scrollY > window.innerHeight * 2) { // Only after section 2
+                this.createWhiteDaisy();
+            }
+        }, 3000);
+    }
+
+    createWhiteDaisy() {
+        const daisy = document.createElement('div');
+        daisy.style.cssText = `
+            position: fixed;
+            top: -50px;
+            left: ${Math.random() * 100}vw;
+            width: ${Math.random() * 15 + 10}px;
+            height: ${Math.random() * 15 + 10}px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+            box-shadow: 
+                -4px 0 0 white,
+                4px 0 0 white,
+                0 -4px 0 white,
+                0 4px 0 white,
+                -3px -3px 0 white,
+                3px -3px 0 white,
+                -3px 3px 0 white,
+                3px 3px 0 white;
+            animation: fall ${Math.random() * 3 + 5}s linear forwards;
+        `;
+        
+        document.body.appendChild(daisy);
+        
+        setTimeout(() => {
+            daisy.remove();
+        }, 8000);
+    }
+
+    // FIX: Confetti Animation - Non-blocking
+    showConfetti() {
+        const overlay = document.getElementById('confettiOverlay');
+        if (!overlay) return;
+        
+        overlay.classList.add('active');
+        
+        const colors = ['#1FB8CD', '#FFC185', '#B4413C', '#ECEBD5', '#5D878F'];
+        
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                this.createConfettiParticle(overlay, colors);
+            }, i * 50);
+        }
+        
+        // FIX: Automatically hide confetti after animation
+        setTimeout(() => {
+            overlay.classList.remove('active');
+            overlay.innerHTML = '';
+        }, 3000);
+    }
+
+    createConfettiParticle(container, colors) {
+        const particle = document.createElement('div');
+        particle.className = 'confetti-particle';
+        particle.style.cssText = `
+            left: ${Math.random() * 100}vw;
+            background-color: ${colors[Math.floor(Math.random() * colors.length)]};
+            animation-delay: 0s;
+            animation-duration: ${Math.random() * 2 + 2}s;
+        `;
+        
+        container.appendChild(particle);
+        
+        setTimeout(() => {
+            particle.remove();
+        }, 4000);
+    }
 }
 
-/* Dark mode colors */
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* RGB versions for opacity control (Dark Mode) */
-    --color-gray-400-rgb: 119, 124, 124;
-    --color-teal-300-rgb: 50, 184, 198;
-    --color-gray-300-rgb: 167, 169, 169;
-    --color-gray-200-rgb: 245, 245, 245;
+// Initialize the application when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new WeddingInvitation();
+});
 
-    /* Background color tokens (Dark Mode) */
-    --color-bg-1: rgba(29, 78, 216, 0.15); /* Dark blue */
-    --color-bg-2: rgba(180, 83, 9, 0.15); /* Dark yellow */
-    --color-bg-3: rgba(21, 128, 61, 0.15); /* Dark green */
-    --color-bg-4: rgba(185, 28, 28, 0.15); /* Dark red */
-    --color-bg-5: rgba(107, 33, 168, 0.15); /* Dark purple */
-    --color-bg-6: rgba(194, 65, 12, 0.15); /* Dark orange */
-    --color-bg-7: rgba(190, 24, 93, 0.15); /* Dark pink */
-    --color-bg-8: rgba(8, 145, 178, 0.15); /* Dark cyan */
+// Additional smooth scroll behavior for older browsers
+if (!CSS.supports('scroll-behavior', 'smooth')) {
+    const links = document.querySelectorAll('a[href^="#"]');
     
-    /* Semantic Color Tokens (Dark Mode) */
-    --color-background: var(--color-charcoal-700);
-    --color-surface: var(--color-charcoal-800);
-    --color-text: var(--color-gray-200);
-    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
-    --color-primary: var(--color-teal-300);
-    --color-primary-hover: var(--color-teal-400);
-    --color-primary-active: var(--color-teal-800);
-    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
-    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
-    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
-    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
-    --color-error: var(--color-red-400);
-    --color-success: var(--color-teal-300);
-    --color-warning: var(--color-orange-400);
-    --color-info: var(--color-gray-300);
-    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
-    --color-btn-primary-text: var(--color-slate-900);
-    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
-    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
-    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-    --button-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
-    --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
-    --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
-
-    /* Common style patterns - updated for dark mode */
-    --focus-ring: 0 0 0 3px var(--color-focus-ring);
-    --focus-outline: 2px solid var(--color-primary);
-    --status-bg-opacity: 0.15;
-    --status-border-opacity: 0.25;
-    --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
-    /* RGB versions for dark mode */
-    --color-success-rgb: var(--color-teal-300-rgb);
-    --color-error-rgb: var(--color-red-400-rgb);
-    --color-warning-rgb: var(--color-orange-400-rgb);
-    --color-info-rgb: var(--color-gray-300-rgb);
-  }
-}
-
-/* Data attribute for manual theme switching */
-[data-color-scheme="dark"] {
-  /* RGB versions for opacity control (dark mode) */
-  --color-gray-400-rgb: 119, 124, 124;
-  --color-teal-300-rgb: 50, 184, 198;
-  --color-gray-300-rgb: 167, 169, 169;
-  --color-gray-200-rgb: 245, 245, 245;
-
-  /* Colorful background palette - Dark Mode */
-  --color-bg-1: rgba(29, 78, 216, 0.15); /* Dark blue */
-  --color-bg-2: rgba(180, 83, 9, 0.15); /* Dark yellow */
-  --color-bg-3: rgba(21, 128, 61, 0.15); /* Dark green */
-  --color-bg-4: rgba(185, 28, 28, 0.15); /* Dark red */
-  --color-bg-5: rgba(107, 33, 168, 0.15); /* Dark purple */
-  --color-bg-6: rgba(194, 65, 12, 0.15); /* Dark orange */
-  --color-bg-7: rgba(190, 24, 93, 0.15); /* Dark pink */
-  --color-bg-8: rgba(8, 145, 178, 0.15); /* Dark cyan */
-  
-  /* Semantic Color Tokens (Dark Mode) */
-  --color-background: var(--color-charcoal-700);
-  --color-surface: var(--color-charcoal-800);
-  --color-text: var(--color-gray-200);
-  --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
-  --color-primary: var(--color-teal-300);
-  --color-primary-hover: var(--color-teal-400);
-  --color-primary-active: var(--color-teal-800);
-  --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
-  --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
-  --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
-  --color-border: rgba(var(--color-gray-400-rgb), 0.3);
-  --color-error: var(--color-red-400);
-  --color-success: var(--color-teal-300);
-  --color-warning: var(--color-orange-400);
-  --color-info: var(--color-gray-300);
-  --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
-  --color-btn-primary-text: var(--color-slate-900);
-  --color-card-border: rgba(var(--color-gray-400-rgb), 0.15);
-  --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
-  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
-  --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
-
-  /* Common style patterns - updated for dark mode */
-  --focus-ring: 0 0 0 3px var(--color-focus-ring);
-  --focus-outline: 2px solid var(--color-primary);
-  --status-bg-opacity: 0.15;
-  --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
-  /* RGB versions for dark mode */
-  --color-success-rgb: var(--color-teal-300-rgb);
-  --color-error-rgb: var(--color-red-400-rgb);
-  --color-warning-rgb: var(--color-orange-400-rgb);
-  --color-info-rgb: var(--color-gray-300-rgb);
-}
-
-[data-color-scheme="light"] {
-  /* RGB versions for opacity control (light mode) */
-  --color-brown-600-rgb: 94, 82, 64;
-  --color-teal-500-rgb: 33, 128, 141;
-  --color-slate-900-rgb: 19, 52, 59;
-  
-  /* Semantic Color Tokens (Light Mode) */
-  --color-background: var(--color-cream-50);
-  --color-surface: var(--color-cream-100);
-  --color-text: var(--color-slate-900);
-  --color-text-secondary: var(--color-slate-500);
-  --color-primary: var(--color-teal-500);
-  --color-primary-hover: var(--color-teal-600);
-  --color-primary-active: var(--color-teal-700);
-  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
-  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-error: var(--color-red-500);
-  --color-success: var(--color-teal-500);
-  --color-warning: var(--color-orange-500);
-  --color-info: var(--color-slate-500);
-  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
-
-  /* RGB versions for light mode */
-  --color-success-rgb: var(--color-teal-500-rgb);
-  --color-error-rgb: var(--color-red-500-rgb);
-  --color-warning-rgb: var(--color-orange-500-rgb);
-  --color-info-rgb: var(--color-slate-500-rgb);
-}
-
-/* Base styles */
-html {
-  font-size: var(--font-size-base);
-  font-family: var(--font-family-base);
-  line-height: var(--line-height-normal);
-  color: var(--color-text);
-  background-color: var(--color-background);
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
-
-/* Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-tight);
-  color: var(--color-text);
-  letter-spacing: var(--letter-spacing-tight);
-}
-
-h1 {
-  font-size: var(--font-size-4xl);
-}
-h2 {
-  font-size: var(--font-size-3xl);
-}
-h3 {
-  font-size: var(--font-size-2xl);
-}
-h4 {
-  font-size: var(--font-size-xl);
-}
-h5 {
-  font-size: var(--font-size-lg);
-}
-h6 {
-  font-size: var(--font-size-md);
-}
-
-p {
-  margin: 0 0 var(--space-16) 0;
-}
-
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: color var(--duration-fast) var(--ease-standard);
-}
-
-a:hover {
-  color: var(--color-primary-hover);
-}
-
-code,
-pre {
-  font-family: var(--font-family-mono);
-  font-size: calc(var(--font-size-base) * 0.95);
-  background-color: var(--color-secondary);
-  border-radius: var(--radius-sm);
-}
-
-code {
-  padding: var(--space-1) var(--space-4);
-}
-
-pre {
-  padding: var(--space-16);
-  margin: var(--space-16) 0;
-  overflow: auto;
-  border: 1px solid var(--color-border);
-}
-
-pre code {
-  background: none;
-  padding: 0;
-}
-
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-base);
-  font-size: var(--font-size-base);
-  font-weight: 500;
-  line-height: 1.5;
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-standard);
-  border: none;
-  text-decoration: none;
-  position: relative;
-}
-
-.btn:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-
-.btn--primary {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-}
-
-.btn--primary:hover {
-  background: var(--color-primary-hover);
-}
-
-.btn--primary:active {
-  background: var(--color-primary-active);
-}
-
-.btn--secondary {
-  background: var(--color-secondary);
-  color: var(--color-text);
-}
-
-.btn--secondary:hover {
-  background: var(--color-secondary-hover);
-}
-
-.btn--secondary:active {
-  background: var(--color-secondary-active);
-}
-
-.btn--outline {
-  background: transparent;
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-}
-
-.btn--outline:hover {
-  background: var(--color-secondary);
-}
-
-.btn--sm {
-  padding: var(--space-4) var(--space-12);
-  font-size: var(--font-size-sm);
-  border-radius: var(--radius-sm);
-}
-
-.btn--lg {
-  padding: var(--space-10) var(--space-20);
-  font-size: var(--font-size-lg);
-  border-radius: var(--radius-md);
-}
-
-.btn--full-width {
-  width: 100%;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Form elements */
-.form-control {
-  display: block;
-  width: 100%;
-  padding: var(--space-8) var(--space-12);
-  font-size: var(--font-size-md);
-  line-height: 1.5;
-  color: var(--color-text);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-base);
-  transition: border-color var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard);
-}
-
-textarea.form-control {
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-base);
-}
-
-select.form-control {
-  padding: var(--space-8) var(--space-12);
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: var(--select-caret-light);
-  background-repeat: no-repeat;
-  background-position: right var(--space-12) center;
-  background-size: 16px;
-  padding-right: var(--space-32);
-}
-
-/* Add a dark mode specific caret */
-@media (prefers-color-scheme: dark) {
-  select.form-control {
-    background-image: var(--select-caret-dark);
-  }
-}
-
-/* Also handle data-color-scheme */
-[data-color-scheme="dark"] select.form-control {
-  background-image: var(--select-caret-dark);
-}
-
-[data-color-scheme="light"] select.form-control {
-  background-image: var(--select-caret-light);
-}
-
-.form-control:focus {
-  border-color: var(--color-primary);
-  outline: var(--focus-outline);
-}
-
-.form-label {
-  display: block;
-  margin-bottom: var(--space-8);
-  font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-sm);
-}
-
-.form-group {
-  margin-bottom: var(--space-16);
-}
-
-/* Card component */
-.card {
-  background-color: var(--color-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-card-border);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  transition: box-shadow var(--duration-normal) var(--ease-standard);
-}
-
-.card:hover {
-  box-shadow: var(--shadow-md);
-}
-
-.card__body {
-  padding: var(--space-16);
-}
-
-.card__header,
-.card__footer {
-  padding: var(--space-16);
-  border-bottom: 1px solid var(--color-card-border-inner);
-}
-
-/* Status indicators - simplified with CSS variables */
-.status {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--space-6) var(--space-12);
-  border-radius: var(--radius-full);
-  font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-sm);
-}
-
-.status--success {
-  background-color: rgba(
-    var(--color-success-rgb, 33, 128, 141),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-success);
-  border: 1px solid
-    rgba(var(--color-success-rgb, 33, 128, 141), var(--status-border-opacity));
-}
-
-.status--error {
-  background-color: rgba(
-    var(--color-error-rgb, 192, 21, 47),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-error);
-  border: 1px solid
-    rgba(var(--color-error-rgb, 192, 21, 47), var(--status-border-opacity));
-}
-
-.status--warning {
-  background-color: rgba(
-    var(--color-warning-rgb, 168, 75, 47),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-warning);
-  border: 1px solid
-    rgba(var(--color-warning-rgb, 168, 75, 47), var(--status-border-opacity));
-}
-
-.status--info {
-  background-color: rgba(
-    var(--color-info-rgb, 98, 108, 113),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-info);
-  border: 1px solid
-    rgba(var(--color-info-rgb, 98, 108, 113), var(--status-border-opacity));
-}
-
-/* Container layout */
-.container {
-  width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: var(--space-16);
-  padding-left: var(--space-16);
-}
-
-@media (min-width: 640px) {
-  .container {
-    max-width: var(--container-sm);
-  }
-}
-@media (min-width: 768px) {
-  .container {
-    max-width: var(--container-md);
-  }
-}
-@media (min-width: 1024px) {
-  .container {
-    max-width: var(--container-lg);
-  }
-}
-@media (min-width: 1280px) {
-  .container {
-    max-width: var(--container-xl);
-  }
-}
-
-/* Utility classes */
-.flex {
-  display: flex;
-}
-.flex-col {
-  flex-direction: column;
-}
-.items-center {
-  align-items: center;
-}
-.justify-center {
-  justify-content: center;
-}
-.justify-between {
-  justify-content: space-between;
-}
-.gap-4 {
-  gap: var(--space-4);
-}
-.gap-8 {
-  gap: var(--space-8);
-}
-.gap-16 {
-  gap: var(--space-16);
-}
-
-.m-0 {
-  margin: 0;
-}
-.mt-8 {
-  margin-top: var(--space-8);
-}
-.mb-8 {
-  margin-bottom: var(--space-8);
-}
-.mx-8 {
-  margin-left: var(--space-8);
-  margin-right: var(--space-8);
-}
-.my-8 {
-  margin-top: var(--space-8);
-  margin-bottom: var(--space-8);
-}
-
-.p-0 {
-  padding: 0;
-}
-.py-8 {
-  padding-top: var(--space-8);
-  padding-bottom: var(--space-8);
-}
-.px-8 {
-  padding-left: var(--space-8);
-  padding-right: var(--space-8);
-}
-.py-16 {
-  padding-top: var(--space-16);
-  padding-bottom: var(--space-16);
-}
-.px-16 {
-  padding-left: var(--space-16);
-  padding-right: var(--space-16);
-}
-
-.block {
-  display: block;
-}
-.hidden {
-  display: none;
-}
-
-/* Accessibility */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-:focus-visible {
-  outline: var(--focus-outline);
-  outline-offset: 2px;
-}
-
-/* Dark mode specifics */
-[data-color-scheme="dark"] .btn--outline {
-  border: 1px solid var(--color-border-secondary);
-}
-
-@font-face {
-  font-family: 'FKGroteskNeue';
-  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
-    format('woff2');
-}
-
-/* END PERPLEXITY DESIGN SYSTEM */
-/* Custom styles for wedding invitation */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Open Sans', var(--font-family-base);
-  overflow-x: hidden;
-  background: var(--color-background);
-  color: var(--color-text);
-}
-
-/* Fixed Navigation */
-.navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(10px);
-  z-index: 1000;
-  transition: all var(--duration-normal) var(--ease-standard);
-}
-
-.nav-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-12) var(--space-20);
-  max-width: var(--container-xl);
-  margin: 0 auto;
-}
-
-.nav-brand {
-  font-family: 'Great Vibes', cursive;
-  font-size: var(--font-size-3xl);
-  color: var(--color-primary);
-  font-weight: 400;
-}
-
-.nav-menu {
-  display: flex;
-  list-style: none;
-  gap: var(--space-24);
-}
-
-.nav-link {
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  font-weight: var(--font-weight-medium);
-  transition: color var(--duration-fast) var(--ease-standard);
-  position: relative;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  color: var(--color-primary);
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--color-primary);
-  transition: width var(--duration-normal) var(--ease-standard);
-}
-
-.nav-link.active::after {
-  width: 100%;
-}
-
-.music-controls {
-  display: flex;
-  align-items: center;
-}
-
-.music-btn {
-  background: var(--color-primary);
-  border: none;
-  color: var(--color-btn-primary-text);
-  padding: var(--space-8);
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-standard);
-}
-
-.music-btn:hover {
-  background: var(--color-primary-hover);
-  transform: scale(1.1);
-}
-
-.music-btn.muted {
-  background: var(--color-secondary);
-  color: var(--color-text);
-}
-
-/* Section Base Styles */
-.section {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-32) var(--space-16);
-  position: relative;
-}
-
-.section.hidden {
-  display: none;
-}
-
-.container {
-  max-width: var(--container-lg);
-  margin: 0 auto;
-  width: 100%;
-}
-
-/* Section 1: Simple Opening (NO Envelope Animation) */
-.opening-section {
-  background: linear-gradient(135deg, var(--color-bg-1), var(--color-bg-2)),
-  url('https://github.com/ss2811/weddinginvitation/blob/main/backgroundbiru.jpeg?raw=true') no-repeat;
-  background-position: center 40%; /* geser vertikal 40% */
-  background-size: cover;
-  background-attachment: fixed;
-  position: relative;
-  overflow: hidden;
-}
-
-.opening-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.opening-content {
-  background: var(--color-surface);
-  border: 2px solid gold;
-  border-radius: var(--radius-lg);
-  padding: var(--space-32);
-  text-align: center;
-  position: relative;
-  box-shadow: var(--shadow-lg);
-}
-
-.floral-decoration {
-  position: absolute;
-  top: var(--space-16);
-  left: var(--space-16);
-  right: var(--space-16);
-  bottom: var(--space-16);
-  pointer-events: none;
-}
-
-.floral-svg {
-  width: 40px;
-  height: 40px;
-  position: absolute;
-}
-
-.floral-svg:nth-child(1) { top: 0; left: 0; }
-.floral-svg:nth-child(2) { top: 0; right: 0; transform: rotate(90deg); }
-.floral-svg:nth-child(3) { bottom: 0; right: 0; transform: rotate(180deg); }
-.floral-svg:nth-child(4) { bottom: 0; left: 0; transform: rotate(270deg); }
-
-.couple-names {
-  font-family: 'Great Vibes', cursive;
-  font-size: var(--font-size-2xl);
-  color: var(--color-primary);
-  margin-bottom: var(--space-16);
-  line-height: 1.2;
-  z-index: 1;
-  position: relative;
-}
-
-.groom-name,
-.bride-name {
-  display: block;
-}
-
-.ampersand {
-  display: block;
-  font-size: var(--font-size-4xl);
-  margin: var(--space-8) 0;
-  color: gold;
-}
-
-.wedding-date {
-  font-family: 'Playfair Display', serif;
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
-  margin-bottom: var(--space-24);
-  z-index: 1;
-  position: relative;
-}
-
-.open-invitation {
-  margin-top: var(--space-16);
-  font-weight: var(--font-weight-semibold);
-  animation: pulse 2s infinite;
-  z-index: 1;
-  position: relative;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.floating-flowers {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-}
-
-.flower {
-  position: absolute;
-  font-size: var(--font-size-3xl);
-  animation: float 6s ease-in-out infinite;
-}
-
-.flower-1 {
-  top: 20%;
-  left: 10%;
-  animation-delay: 0s;
-}
-
-.flower-2 {
-  top: 60%;
-  right: 15%;
-  animation-delay: 2s;
-}
-
-.flower-3 {
-  bottom: 20%;
-  left: 20%;
-  animation-delay: 4s;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(180deg); }
-}
-
-/* Section 2: Video Section */
-.video-section {
-  background: url('https://github.com/ss2811/weddinginvitation/blob/main/backgroundhitam.jpeg?raw=true') center/cover no-repeat fixed;
-  color: var(--color-text);
-}
-
-.video-container {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  height: 450px;
-  margin: 0 auto;
-}
-
-.video-placeholder {
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: var(--radius-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-standard);
-}
-
-.video-placeholder:hover {
-  transform: scale(1.02);
-}
-
-.play-icon {
-  font-size: 4rem;
-  color: var(--color-primary);
-  margin-bottom: var(--space-16);
-}
-
-.video-text {
-  font-size: var(--font-size-xl);
-  color: var(--color-text);
-  font-weight: var(--font-weight-semibold);
-}
-
-.skip-button {
-  position: absolute;
-  top: var(--space-16);
-  right: var(--space-16);
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-base);
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-standard);
-}
-
-.skip-button:hover {
-  background: rgba(0, 0, 0, 0.9);
-}
-
-.particle-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at center, 
-    transparent 0%, 
-    rgba(var(--color-teal-500-rgb), 0.1) 50%, 
-    transparent 100%);
-  animation: shimmer 4s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.7; }
-}
-
-/* Dark Background Sections */
-.countdown-section,
-.bismillah-section,
-.couple-section,
-.schedule-section,
-.rsvp-section,
-.envelope-gift-section,
-.wishes-display-section,
-.thankyou-section {
-  background: var(--color-charcoal-800);
-  color: var(--color-text);
-}
-
-/* Section 3: Countdown */
-.section-header {
-  text-align: center;
-  margin-bottom: var(--space-32);
-}
-
-.section-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: var(--font-size-4xl);
-  color: var(--color-primary);
-  margin-bottom: var(--space-16);
-}
-
-.countdown-timer {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-24);
-  margin-bottom: var(--space-32);
-}
-
-.countdown-item {
-  text-align: center;
-  background: var(--color-bg-1);
-  padding: var(--space-20);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-primary);
-  min-width: 100px;
-}
-
-.countdown-number {
-  display: block;
-  font-size: var(--font-size-4xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
-  font-family: 'Playfair Display', serif;
-}
-
-.countdown-label {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.action-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-24);
-  align-items: center;
-}
-
-.calendar-buttons,
-.social-share {
-  display: flex;
-  gap: var(--space-12);
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.falling-petals {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-/* White Daisy Particles Only */
-.falling-petals::before,
-.falling-petals::after {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 
-    -6px 0 0 white,
-    6px 0 0 white,
-    0 -6px 0 white,
-    0 6px 0 white,
-    -4px -4px 0 white,
-    4px -4px 0 white,
-    -4px 4px 0 white,
-    4px 4px 0 white;
-  animation: fall 8s linear infinite;
-}
-
-.falling-petals::before {
-  left: 20%;
-  animation-delay: 0s;
-}
-
-.falling-petals::after {
-  right: 20%;
-  animation-delay: 4s;
-}
-
-@keyframes fall {
-  0% {
-    transform: translateY(-100px) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(calc(100vh + 100px)) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-/* Section 4: Bismillah - WHITE TEXT ONLY */
-.bismillah-container {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.arabic-text {
-  font-family: 'Playfair Display', serif;
-  font-size: 3rem;
-  color: white;
-  margin-bottom: var(--space-32);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.latin-text {
-  font-family: 'Playfair Display', serif;
-  font-size: var(--font-size-xl);
-  line-height: 1.6;
-  color: white;
-  margin-bottom: var(--space-16);
-  font-style: italic;
-}
-
-.verse-reference {
-  font-size: var(--font-size-base);
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: var(--font-weight-semibold);
-}
-
-/* Section 5: Couple Photos */
-.guest-greeting {
-  text-align: center;
-  margin-bottom: var(--space-32);
-}
-
-.guest-greeting h2 {
-  font-family: 'Playfair Display', serif;
-  color: var(--color-primary);
-  margin-bottom: var(--space-16);
-}
-
-.guest-greeting p {
-  font-size: var(--font-size-lg);
-  line-height: 1.6;
-  color: var(--color-text);
-}
-
-.guest-name {
-  color: var(--color-primary);
-  font-weight: var(--font-weight-semibold);
-  background: linear-gradient(45deg, var(--color-primary), gold, var(--color-primary));
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientShift 3s ease-in-out infinite;
-}
-
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-.couple-photos {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--space-32);
-  margin-bottom: var(--space-32);
-}
-
-.photo-container {
-  text-align: center;
-  transition: all var(--duration-normal) var(--ease-standard);
-}
-
-.photo-container:hover {
-  transform: translateY(-10px);
-}
-
-.photo-frame {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 4px solid var(--color-primary);
-  margin: 0 auto var(--space-16);
-  overflow: hidden;
-  position: relative;
-  transition: all var(--duration-normal) var(--ease-standard);
-}
-
-.photo-frame:hover {
-  box-shadow: 0 0 30px rgba(var(--color-teal-500-rgb), 0.5);
-  transform: rotateY(10deg);
-}
-
-.photo-placeholder {
-  width: 100%;
-  height: 100%;
-  background: var(--color-bg-2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  color: var(--color-text-secondary);
-}
-
-.photo-container h3 {
-  font-family: 'Playfair Display', serif;
-  color: var(--color-primary);
-  margin-bottom: var(--space-8);
-}
-
-.photo-container p {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
-}
-
-.couple-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.heart-icon {
-  font-size: var(--font-size-4xl);
-  animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
-
-.decorative-elements {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-}
-
-.deco-svg {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  opacity: 0.3;
-}
-
-.deco-svg.left {
-  top: 20%;
-  left: 5%;
-  animation: rotate 20s linear infinite;
-}
-
-.deco-svg.right {
-  bottom: 20%;
-  right: 5%;
-  animation: rotate 20s linear infinite reverse;
-}
-
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Section 6: Schedule - WHITE TEXT */
-.schedule-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-24);
-  margin-bottom: var(--space-32);
-}
-
-.schedule-item {
-  background: var(--color-bg-3);
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  text-align: center;
-  border: 1px solid var(--color-primary);
-  transition: all var(--duration-normal) var(--ease-standard);
-}
-
-.schedule-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.schedule-icon {
-  font-size: var(--font-size-4xl);
-  color: var(--color-primary);
-  margin-bottom: var(--space-16);
-}
-
-.schedule-item h3 {
-  font-family: 'Playfair Display', serif;
-  color: white;
-  margin-bottom: var(--space-12);
-}
-
-.time {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: white;
-  margin-bottom: var(--space-8);
-}
-
-.date {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.venue-info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-32);
-  align-items: center;
-}
-
-.venue-details {
-  text-align: center;
-}
-
-.venue-details h3 {
-  font-family: 'Playfair Display', serif;
-  color: white;
-  margin-bottom: var(--space-16);
-}
-
-.address {
-  font-size: var(--font-size-lg);
-  color: white;
-  margin-bottom: var(--space-24);
-  line-height: 1.5;
-}
-
-.map-container {
-  position: relative;
-  height: 250px;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-}
-
-.map-placeholder {
-  width: 100%;
-  height: 100%;
-  background: var(--color-bg-4);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-standard);
-  position: relative;
-}
-
-.map-placeholder:hover {
-  background: var(--color-bg-5);
-}
-
-.map-placeholder i {
-  font-size: var(--font-size-4xl);
-  color: var(--color-primary);
-  margin-bottom: var(--space-8);
-}
-
-.map-placeholder p {
-  color: white;
-}
-
-.map-tooltip {
-  position: absolute;
-  bottom: var(--space-16);
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: var(--space-8) var(--space-12);
-  border-radius: var(--radius-base);
-  font-size: var(--font-size-sm);
-  opacity: 0;
-  transition: opacity var(--duration-fast) var(--ease-standard);
-}
-
-.map-placeholder:hover .map-tooltip {
-  opacity: 1;
-}
-
-/* Section 7: RSVP */
-.forms-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: var(--space-32);
-}
-
-.rsvp-form-container,
-.wishes-form-container {
-  background: var(--color-bg-6);
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-primary);
-}
-
-.rsvp-form-container h3,
-.wishes-form-container h3 {
-  font-family: 'Playfair Display', serif;
-  color: var(--color-primary);
-  text-align: center;
-  margin-bottom: var(--space-20);
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
-}
-
-.form-group {
-  margin-bottom: var(--space-16);
-}
-
-.form-label {
-  display: block;
-  margin-bottom: var(--space-8);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text);
-}
-
-.form-control {
-  width: 100%;
-  padding: var(--space-12);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-base);
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-size: var(--font-size-base);
-  transition: all var(--duration-fast) var(--ease-standard);
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(var(--color-teal-500-rgb), 0.1);
-}
-
-textarea.form-control {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.wish-options {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: var(--space-8);
-  cursor: pointer;
-  color: var(--color-text);
-}
-
-.checkbox-label input[type="radio"] {
-  margin: 0;
-}
-
-/* Section 8: Digital Envelope */
-.bank-accounts {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-24);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.bank-account {
-  background: var(--color-bg-7);
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  border: 2px solid gold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.bank-account::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent);
-  transition: left 0.6s ease;
-}
-
-.bank-account:hover::before {
-  left: 100%;
-}
-
-.bank-info h3 {
-  font-family: 'Playfair Display', serif;
-  color: var(--color-primary);
-  margin-bottom: var(--space-8);
-}
-
-.account-number {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text);
-  margin-bottom: var(--space-4);
-}
-
-.account-name {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
-}
-
-.copy-btn {
-  background: transparent;
-  border: 1px solid var(--color-primary);
-  color: var(--color-primary);
-  padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-base);
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-standard);
-}
-
-.copy-btn:hover {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-}
-
-.copy-btn.copied {
-  background: var(--color-success);
-  border-color: var(--color-success);
-  color: white;
-}
-
-/* Section 9: Wishes Display */
-.wishes-container {
-  max-width: 800px;
-  margin: 0 auto;
-  max-height: 400px;
-  overflow-y: auto;
-  padding-right: var(--space-16);
-}
-
-.wish-item {
-  background: var(--color-bg-8);
-  padding: var(--space-20);
-  border-radius: var(--radius-lg);
-  margin-bottom: var(--space-16);
-  border-left: 4px solid var(--color-primary);
-  animation: fadeInUp 0.5s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.wish-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-12);
-}
-
-.wish-header h4 {
-  color: var(--color-primary);
-  font-family: 'Playfair Display', serif;
-}
-
-.wish-time {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
-.wish-text {
-  color: var(--color-text);
-  line-height: 1.6;
-  margin: 0;
-}
-
-.wishes-loading {
-  text-align: center;
-  padding: var(--space-24);
-  color: var(--color-text-secondary);
-}
-
-.wishes-loading i {
-  font-size: var(--font-size-2xl);
-  margin-bottom: var(--space-8);
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Section 10: Thank You */
-.thankyou-content {
-  text-align: center;
-  position: relative;
-}
-
-.typing-text {
-  font-family: 'Great Vibes', cursive;
-  font-size: 4rem;
-  background: linear-gradient(45deg, var(--color-primary), gold, var(--color-primary));
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientShift 3s ease-in-out infinite;
-  margin-bottom: var(--space-24);
-}
-
-.couple-signature {
-  margin-bottom: var(--space-32);
-}
-
-.signature-text {
-  font-size: var(--font-size-lg);
-  color: var(--color-text);
-  margin-bottom: var(--space-20);
-  line-height: 1.6;
-}
-
-.signature-names {
-  font-family: 'Great Vibes', cursive;
-  font-size: var(--font-size-3xl);
-  color: var(--color-primary);
-}
-
-.signature-divider {
-  margin: 0 var(--space-16);
-  color: gold;
-}
-
-.sparkle-effects {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-}
-
-.sparkle {
-  position: absolute;
-  font-size: var(--font-size-2xl);
-  animation: sparkle 2s ease-in-out infinite;
-}
-
-.sparkle-1 { top: 20%; left: 20%; animation-delay: 0s; }
-.sparkle-2 { top: 30%; right: 20%; animation-delay: 0.5s; }
-.sparkle-3 { bottom: 30%; left: 15%; animation-delay: 1s; }
-.sparkle-4 { bottom: 20%; right: 25%; animation-delay: 1.5s; }
-
-@keyframes sparkle {
-  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
-  50% { transform: scale(1.5) rotate(180deg); opacity: 1; }
-}
-
-.final-florals {
-  text-align: center;
-  margin-top: var(--space-32);
-}
-
-.final-floral {
-  width: 300px;
-  height: 100px;
-  animation: float 4s ease-in-out infinite;
-}
-
-/* Confetti Animation */
-.confetti-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.confetti-overlay.active {
-  opacity: 1;
-}
-
-.confetti-particle {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  animation: confettiFall 3s linear forwards;
-}
-
-@keyframes confettiFall {
-  0% {
-    transform: translateY(-100vh) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh) rotate(720deg);
-    opacity: 0;
-  }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .nav-menu {
-    display: none;
-  }
-  
-  .couple-photos {
-    flex-direction: column;
-    gap: var(--space-20);
-  }
-  
-  .countdown-timer {
-    flex-wrap: wrap;
-    gap: var(--space-12);
-  }
-  
-  .countdown-item {
-    min-width: 80px;
-    padding: var(--space-12);
-  }
-  
-  .countdown-number {
-    font-size: var(--font-size-3xl);
-  }
-  
-  .forms-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .venue-info {
-    grid-template-columns: 1fr;
-    gap: var(--space-20);
-  }
-  
-  .calendar-buttons,
-  .social-share {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .opening-content {
-    padding: var(--space-20);
-    margin: var(--space-16);
-  }
-  
-  .arabic-text {
-    font-size: 2rem;
-  }
-  
-  .typing-text {
-    font-size: 3rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .section {
-    padding: var(--space-16) var(--space-8);
-  }
-  
-  .nav-container {
-    padding: var(--space-8) var(--space-12);
-  }
-  
-  .photo-frame {
-    width: 150px;
-    height: 150px;
-  }
-  
-  .opening-content {
-    padding: var(--space-16);
-    margin: var(--space-8);
-  }
-  
-  .couple-names {
-    font-size: var(--font-size-xl);
-  }
-  
-  .typing-text {
-    font-size: 2.5rem;
-  }
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const target = document.querySelector(targetId);
+            
+            if (target) {
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+                const startPosition = window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                const duration = 1000;
+                let start = null;
+                
+                function animation(currentTime) {
+                    if (start === null) start = currentTime;
+                    const timeElapsed = currentTime - start;
+                    const run = ease(timeElapsed, startPosition, distance, duration);
+                    window.scrollTo(0, run);
+                    if (timeElapsed < duration) requestAnimationFrame(animation);
+                }
+                
+                function ease(t, b, c, d) {
+                    t /= d / 2;
+                    if (t < 1) return c / 2 * t * t + b;
+                    t--;
+                    return -c / 2 * (t * (t - 2) - 1) + b;
+                }
+                
+                requestAnimationFrame(animation);
+            }
+        });
+    });
 }
