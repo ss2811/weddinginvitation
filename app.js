@@ -14,7 +14,6 @@ class WeddingInvitation {
     this.createFallingPetals();
   }
 
-  // Firebase Configuration
   setupFirebase() {
     this.mockDatabase = {
       rsvp: [],
@@ -28,81 +27,67 @@ class WeddingInvitation {
         },
       ],
     };
-
     this.loadWishes();
   }
 
   setupEventListeners() {
-    // Tombol buka undangan di sesi 1
     const openBtn = document.getElementById("openInvitation");
     if (openBtn) {
       openBtn.addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("Buka Undangan clicked"); // Debug log
         this.startInvitation();
       });
     }
 
-    // Tombol lewati video di sesi 2
     const skipVideo = document.getElementById("skipVideo");
     if (skipVideo) {
       skipVideo.addEventListener("click", () => this.skipVideo());
     }
 
-    // Tombol tambah ke Google Calendar
     const googleCalBtn = document.getElementById("addToGoogleCal");
     if (googleCalBtn) {
       googleCalBtn.addEventListener("click", () => this.addToGoogleCalendar());
     }
 
-    // Tombol social share WhatsApp
     const whatsappBtn = document.getElementById("shareWhatsapp");
     if (whatsappBtn) {
       whatsappBtn.addEventListener("click", () => this.shareWhatsApp());
     }
 
-    // Tombol social share Facebook
     const facebookBtn = document.getElementById("shareFacebook");
     if (facebookBtn) {
       facebookBtn.addEventListener("click", () => this.shareFacebook());
     }
 
-    // Tombol social share Twitter
     const twitterBtn = document.getElementById("shareTwitter");
     if (twitterBtn) {
       twitterBtn.addEventListener("click", () => this.shareTwitter());
     }
 
-    // Tombol copy link
     const copyLinkBtn = document.getElementById("copyLink");
     if (copyLinkBtn) {
       copyLinkBtn.addEventListener("click", () => this.copyInvitationLink());
     }
 
-    // Tombol kontrol musik
     const musicToggle = document.getElementById("musicToggle");
     if (musicToggle) {
       musicToggle.addEventListener("click", () => this.toggleMusic());
     }
 
-    // Form RSVP
     const rsvpForm = document.getElementById("rsvpForm");
     if (rsvpForm) {
       rsvpForm.addEventListener("submit", (e) => this.handleRSVP(e));
     }
 
-    // Form Wishes
     const wishesForm = document.getElementById("wishesForm");
     if (wishesForm) {
       wishesForm.addEventListener("submit", (e) => this.handleWishes(e));
     }
 
-    // Tombol copy nomor rekening
     document.querySelectorAll(".copy-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => this.copyToClipboard(e));
     });
 
-    // Scroll event untuk update navigasi dan cek pause video
     window.addEventListener("scroll", () => {
       this.updateNavigation();
       this.checkVideoPause();
@@ -110,7 +95,6 @@ class WeddingInvitation {
   }
 
   startInvitation() {
-    console.log("Starting invitation flow");
     const section1 = document.getElementById("section1");
     const section2 = document.getElementById("section2");
     if (section1) section1.style.display = "none";
@@ -121,7 +105,6 @@ class WeddingInvitation {
   }
 
   skipVideo() {
-    console.log("Skipping video");
     const section2 = document.getElementById("section2");
     if (section2) section2.style.display = "none";
     this.pauseVideo();
