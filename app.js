@@ -33,7 +33,6 @@ class WeddingInvitation {
         this.loadWishes();
     }
 
-    // Event Listeners Setup
    setupEventListeners() {
     // Tombol buka undangan di sesi 1
     const openBtn = document.getElementById('openInvitation');
@@ -59,7 +58,7 @@ class WeddingInvitation {
 
     // Siapkan listener lain sesuai kode Anda (calendar, social, music, forms, dll)
     // ...
-}
+} // <-- Tutup kurung kurawal fungsi setupEventListeners DI SINI
 
 // Fungsi mulai undangan, tampilkan sesi video
 startInvitation() {
@@ -108,6 +107,7 @@ checkVideoPause() {
         this.pauseVideo();
     }
 }
+
 
 
         // Calendar buttons - Only Google Calendar
