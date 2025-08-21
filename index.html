@@ -57,18 +57,23 @@
     </section>
 
     <!-- Section 2: Cinematic Video -->
-    <section id="section2" class="section video-section hidden">
-        <div class="video-container">
-            <div class="video-placeholder">
-                <div class="play-icon">
-                    <i class="fas fa-play"></i>
-                </div>
-                <div class="video-text">Video Pembuka</div>
+  <section id="section2" class="section video-section hidden">
+    <div class="video-container">
+        <video id="cinematicVideo" muted autoplay loop controls>
+            <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/intro.mp4" type="video/mp4">
+            Browser Anda tidak mendukung video.
+        </video>
+        <div class="video-placeholder" style="display:none;">
+            <div class="play-icon">
+                <i class="fas fa-play"></i>
             </div>
-            <button class="skip-button" id="skipVideo">Lewati Video</button>
+            <div class="video-text">Video Pembuka</div>
         </div>
-        <div class="particle-background"></div>
-    </section>
+        <button class="skip-button" id="skipVideo">Lewati Video</button>
+    </div>
+    <div class="particle-background"></div>
+</section>
+
 
     <!-- Section 3: Countdown & Social -->
     <section id="section3" class="section countdown-section">
