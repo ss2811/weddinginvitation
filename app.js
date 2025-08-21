@@ -50,57 +50,70 @@ class WeddingInvitation {
       skipVideo.addEventListener("click", () => this.skipVideo());
     }
 
-    // Calendar buttons
-    const googleCalBtn = document.getElementById("addToGoogleCal");
-    if (googleCalBtn) {
-      googleCalBtn.addEventListener("click", () => this.addToGoogleCalendar());
-    }
-
-    // Social share buttons
-    const whatsappBtn = document.getElementById("shareWhatsapp");
-    if (whatsappBtn) {
-      whatsappBtn.addEventListener("click", () => this.shareWhatsapp());
-    }
-    const facebookBtn = document.getElementById("shareFacebook");
-    if (facebookBtn) {
-      facebookBtn.addEventListener("click", () => this.shareFacebook());
-    }
-    const twitterBtn = document.getElementById("shareTwitter");
-    if (twitterBtn) {
-      twitterBtn.addEventListener("click", () => this.shareTwitter());
-    }
-    const copyLinkBtn = document.getElementById("copyLink");
-    if (copyLinkBtn) {
-      copyLinkBtn.addEventListener("click", () => this.copyInvitationLink());
-    }
-
-    // Music control
-    const musicToggle = document.getElementById("musicToggle");
-    if (musicToggle) {
-      musicToggle.addEventListener("click", () => this.toggleMusic());
-    }
-
-    // Forms
-    const rsvpForm = document.getElementById("rsvpForm");
-    if (rsvpForm) {
-      rsvpForm.addEventListener("submit", (e) => this.handleRSVP(e));
-    }
-    const wishesForm = document.getElementById("wishesForm");
-    if (wishesForm) {
-      wishesForm.addEventListener("submit", (e) => this.handleWishes(e));
-    }
-
-    // Copy buttons
-    document.querySelectorAll(".copy-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => this.copyToClipboard(e));
+    setupEventListeners() {
+  const openBtn = document.getElementById('openInvitation');
+  if (openBtn) {
+    openBtn.addEventListener('click', e => {
+      e.preventDefault();
+      this.startInvitation();
     });
+  }
 
-    // Scroll event
-    window.addEventListener("scroll", () => {
-      this.updateNavigation();
-      this.checkVideoPause();
-    });
-  } // end setupEventListeners
+  const skipVideo = document.getElementById('skipVideo');
+  if (skipVideo) {
+    skipVideo.addEventListener('click', () => this.skipVideo());
+  }
+
+  const googleCalBtn = document.getElementById('addGoogleCal');
+  if (googleCalBtn) {
+    googleCalBtn.addEventListener('click', () => this.addGoogleCalendar());
+  }
+
+  const whatsappBtn = document.getElementById('shareWhatsapp');
+  if (whatsappBtn) {
+    whatsappBtn.addEventListener('click', () => this.shareWhatsapp());
+  }
+
+  const facebookBtn = document.getElementById('shareFacebook');
+  if (facebookBtn) {
+    facebookBtn.addEventListener('click', () => this.shareFacebook());
+  }
+
+  const twitterBtn = document.getElementById('shareTwitter');
+  if (twitterBtn) {
+    twitterBtn.addEventListener('click', () => this.shareTwitter());
+  }
+
+  const copyBtn = document.getElementById('copyLink');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => this.copyInvitationLink());
+  }
+
+  const musicToggle = document.getElementById('musicToggle');
+  if (musicToggle) {
+    musicToggle.addEventListener('click', () => this.toggleMusic());
+  }
+
+  const rsvpForm = document.getElementById('rsvpForm');
+  if (rsvpForm) {
+    rsvpForm.addEventListener('submit', e => this.handleRSVP(e));
+  }
+
+  const wishesForm = document.getElementById('wishesForm');
+  if (wishesForm) {
+    wishesForm.addEventListener('submit', e => this.handleWishes(e));
+  }
+
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', e => this.copyToClipboard(e));
+  });
+
+  window.addEventListener('scroll', () => {
+    this.updateNavigation();
+    this.checkVideoPause();
+  });
+} // tutup fungsi
+
 
   startInvitation() {
     console.log("Starting invitation flow"); // Debug log
