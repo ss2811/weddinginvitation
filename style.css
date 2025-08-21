@@ -860,14 +860,18 @@ body {
 
 /* Section 1: Simple Opening (NO Envelope Animation) */
 .opening-section {
-  background: linear-gradient(135deg, var(--color-bg-1), var(--color-bg-2)),
-  url('https://github.com/ss2811/weddinginvitation/blob/main/backgroundbiru.jpeg?raw=true') no-repeat;
-  background-position: left 70%; /* geser vertikal 40% */
+  background: url('https://github.com/ss2811/weddinginvitation/blob/main/backgroundbiru.jpeg?raw=true') no-repeat;
+  background-position: right 70%; 
   background-size: cover;
   background-attachment: fixed;
   position: relative;
   overflow: hidden;
 }
+.opening-section .couple-names {
+  background-color: rgba(0, 0, 0, 0.7); /* hitam semi transparan */
+  padding: 10px 20px;                   /* ruang dalam box */
+  border-radius: 8px;                   /* sudut membulat */
+  display: inline-block;                /* supaya box hanya selebar teks */
 
 .opening-container {
   display: flex;
