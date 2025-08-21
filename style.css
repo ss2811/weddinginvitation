@@ -862,7 +862,7 @@ body {
 .opening-section {
   background: linear-gradient(135deg, var(--color-bg-1), var(--color-bg-2)),
   url('https://github.com/ss2811/weddinginvitation/blob/main/backgroundbiru.jpeg?raw=true') no-repeat;
-  background-position: center 70%; /* geser vertikal 40% */
+  background-position: left 70%; /* geser vertikal 40% */
   background-size: cover;
   background-attachment: fixed;
   position: relative;
