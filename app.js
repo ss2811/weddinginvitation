@@ -34,22 +34,81 @@ class WeddingInvitation {
     }
 
     // Event Listeners Setup
-    setupEventListeners() {
-        // Simple opening - no envelope animation - FIX: Make sure button works
-        const openBtn = document.getElementById('openInvitation');
-        if (openBtn) {
-            openBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log('Buka Undangan clicked'); // Debug log
-                this.startInvitation();
-            });
-        }
+   setupEventListeners() {
+    // Tombol buka undangan di sesi 1
+    const openBtn = document.getElementById('openInvitation');
+    if (openBtn) {
+        openBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Buka Undangan clicked'); // Debug log
+            this.startInvitation();
+        });
+    }
 
-        // Video section
-        const skipVideo = document.getElementById('skipVideo');
-        if (skipVideo) {
-            skipVideo.addEventListener('click', () => this.skipVideo());
-        }
+    // Tombol lewati video di sesi 2
+    const skipVideo = document.getElementById('skipVideo');
+    if (skipVideo) {
+        skipVideo.addEventListener('click', () => this.skipVideo());
+    }
+
+    // Tangani scroll/window event untuk pause video saat sesi 2 disembunyikan
+    window.addEventListener('scroll', () => {
+        this.updateNavigation();
+        this.checkVideoPause();
+    });
+
+    // Siapkan listener lain sesuai kode Anda (calendar, social, music, forms, dll)
+    // ...
+}
+
+// Fungsi mulai undangan, tampilkan sesi video
+startInvitation() {
+    console.log('Starting invitation flow'); // Debug log
+    const section1 = document.getElementById('section1');
+    const section2 = document.getElementById('section2');
+
+    if (section1) {
+        section1.style.display = 'none';
+        console.log('Section 1 hidden');
+    }
+    if (section2) {
+        section2.classList.remove('hidden');
+        section2.style.display = 'flex';
+        console.log('Section 2 shown');
+    }
+}
+
+// Fungsi lewati video, sembunyikan video dan pindah sesi
+skipVideo() {
+    console.log('Skipping video'); // Debug log
+    const section2 = document.getElementById('section2');
+    if (section2) {
+        section2.style.display = 'none';
+    }
+    this.pauseVideo();    // pause video saat skip
+    this.scrollToSection('section3');
+    this.startMusic();
+}
+
+// Fungsi pause video dan musik latar
+pauseVideo() {
+    if (this.music) {
+        this.music.pause();
+    }
+    const video = document.getElementById('cinematicVideo');
+    if (video) {
+        video.pause();
+    }
+}
+
+// Cek sesi aktif, jika sesi 2 tidak tampil, video dipause
+checkVideoPause() {
+    const section2 = document.getElementById('section2');
+    if (section2 && section2.style.display === 'none') {
+        this.pauseVideo();
+    }
+}
+
 
         // Calendar buttons - Only Google Calendar
         const googleCalBtn = document.getElementById('addToGoogleCal');
