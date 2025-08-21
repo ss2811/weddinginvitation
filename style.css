@@ -867,11 +867,6 @@ body {
   position: relative;
   overflow: hidden;
 }
-.opening-section .couple-names {
-  background-color: rgba(0, 0, 0, 0.7); /* hitam semi transparan */
-  padding: 10px 20px;                   /* ruang dalam box */
-  border-radius: 8px;                   /* sudut membulat */
-  display: inline-block;                /* supaya box hanya selebar teks */
 
 .opening-container {
   display: flex;
