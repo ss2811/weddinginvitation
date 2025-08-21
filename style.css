@@ -55,7 +55,6 @@
   --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
   --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
   --color-border: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-btn-primary-text: var(--color-cream-50);
   --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
   --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
   --color-error: var(--color-red-500);
@@ -406,8 +405,8 @@ html, body {
   margin-bottom: 1rem;
 }
 
-/* New Styles for couple names in the envelope */
-.envelope-names-container {
+/* Perbaikan CSS untuk nama mempelai dan ikon love */
+.couple-names-fix {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -415,46 +414,29 @@ html, body {
   margin-top: 1rem;
 }
 
-.envelope-names-container .couple-name {
+.couple-names-fix .couple-name {
   font-family: 'Dancing Script', cursive;
   font-size: clamp(1.5rem, 5vw, 3rem);
   font-weight: 700;
   line-height: 1.2;
 }
 
-.envelope-names-container .love-icon {
+.couple-names-fix .love-icon {
   font-size: clamp(1.2rem, 4vw, 2.5rem);
-  color: #ff4b4b; /* Gold/red color for the heart */
+  color: #ff4b4b; /* Warna emas/merah untuk hati */
   margin: 0 0.5rem;
 }
 
-/* Fix for the love icon position */
-@media (max-width: 768px) {
-  .envelope-names-container {
+/* Menggunakan media query untuk mengatur tata letak horizontal di perangkat seluler */
+@media (max-width: 480px) {
+  .couple-names-fix {
     flex-direction: row;
-    flex-wrap: wrap; /* Added for better wrapping on small screens */
+    flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
-  }
-  
-  .envelope-names-container .couple-name {
-    display: inline-block;
-    vertical-align: middle;
-  }
-
-  .envelope-names-container .love-icon {
-    order: 1; /* Puts the love icon in the middle */
-  }
-
-  .envelope-names-container .couple-name:first-child {
-    order: 0;
-  }
-
-  .envelope-names-container .couple-name:last-child {
-    order: 2;
+    gap: 0.25rem;
   }
 }
-/* This media query ensures that the names and the love icon stay on the same line and centered on mobile devices. */
 
 /* Invitation Session */
 .invitation-session {
@@ -1040,4 +1022,3 @@ html, body {
   font-size: 0.8rem;
   margin-top: 0.5rem;
 }
-
