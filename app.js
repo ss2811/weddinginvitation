@@ -461,7 +461,16 @@ class WeddingInvitation {
                 video.setAttribute('webkit-playsinline', 'true');
                 video.setAttribute('x5-playsinline', 'true');
             }
-            
+            // Request fullscreen when video plays
+            video.addEventListener('play', () => {
+                if (video.requestFullscreen) {
+                  video.requestFullscreen();
+                } else if (video.webkitRequestFullscreen) {
+                  video.webkitRequestFullscreen();
+                } else if (video.msRequestFullscreen) {
+                  video.msRequestFullscreen();
+                }
+            });
             // Start countdown immediately if video exists
             setTimeout(() => {
                 this.startSkipCountdown();
