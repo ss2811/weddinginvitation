@@ -2399,11 +2399,11 @@ input[type="checkbox"]:checked + .checkmark::after {
   }
   
   .tutorial-content {
-    padding: 1rem;
+    padding: 0.75rem;
   }
   
   .tutorial-title {
-    font-size: 1rem;
+    font-size: 0.75rem;
   }
   
   /* Extra mobile form spacing */
