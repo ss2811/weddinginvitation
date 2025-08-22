@@ -514,7 +514,32 @@ class WeddingInvitation {
     }
     
     setupTouchGestures() {
-    }
+        let startY = 0;
+        let startX = 0;
+        let startTime = 0;
+        let isScrolling = false;
+        let touchStartElement = null;
+        
+        const handleTouchStart = (e) => {
+            // Only handle single touch
+            if (e.touches.length !== 1) return;
+            
+            const touch = e.touches[0];
+            startY = touch.clientY;
+            startX = touch.clientX;
+            startTime = Date.now();
+            isScrolling = false;
+            touchStartElement = e.target;
+            
+            this.swipeStartY = startY;
+            this.swipeStartTime = startTime;
+            
+            // Check if touch started in a swipe-disabled zone
+            if (this.isInSwipeDisabledZone(touch.clientX, touch.clientY)) {
+                console.log('Touch started in swipe-disabled zone');
+                return;
+            }
+        };
         
         const handleTouchMove = (e) => {
             if (e.touches.length !== 1) return;
