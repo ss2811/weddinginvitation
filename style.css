@@ -900,7 +900,7 @@ body {
   z-index: 9999;
   opacity: 1;
   transition: all 0.5s ease;
-  padding: 0.9rem;
+  padding: 0.75rem;
 }
 
 .tutorial-overlay.hidden {
@@ -911,7 +911,7 @@ body {
 .tutorial-content {
   max-width: 500px;
   width: 100%;
-  padding: 0.9rem;
+  padding: 0.75rem;
   position: relative;
   animation: tutorialSlideIn 0.5s ease-out;
 }
@@ -936,7 +936,7 @@ body {
 
 .tutorial-title {
   font-family: 'Playfair Display', serif;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   margin: 0;
 }
 
@@ -969,7 +969,7 @@ body {
 }
 
 .tutorial-icon {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   margin-bottom: 1rem;
 }
 
