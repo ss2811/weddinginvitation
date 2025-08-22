@@ -11,6 +11,64 @@
     <meta name="description" content="Undangan Pernikahan Suriansyah & Sonia Agustina - 24 September 2025">
 </head>
 <body>
+    <!-- Transparent Navigation Arrows -->
+    <div class="arrow-nav" id="arrowNavUp">
+        <button class="arrow-btn arrow-up" id="arrowUpBtn" title="Sesi Sebelumnya">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+        </button>
+    </div>
+    
+    <div class="arrow-nav" id="arrowNavDown">
+        <button class="arrow-btn arrow-down" id="arrowDownBtn" title="Sesi Selanjutnya">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Tutorial Overlay -->
+    <div class="tutorial-overlay hidden" id="tutorialOverlay">
+        <div class="tutorial-content glassmorphism">
+            <div class="tutorial-header">
+                <h3 class="tutorial-title gradient-text">Panduan Navigasi</h3>
+                <button class="tutorial-close" id="tutorialClose">×</button>
+            </div>
+            <div class="tutorial-body">
+                <div class="tutorial-section">
+                    <div class="tutorial-icon">👆</div>
+                    <p>Gunakan navigasi bulat di sisi kanan untuk berpindah antar sesi</p>
+                    <div class="navigation-demo">
+                        <div class="demo-dots">
+                            <span class="demo-dot active"></span>
+                            <span class="demo-dot"></span>
+                            <span class="demo-dot"></span>
+                        </div>
+                        <div class="demo-arrow">←</div>
+                    </div>
+                </div>
+                <div class="tutorial-section">
+                    <div class="tutorial-icon">📱</div>
+                    <p>Geser ke atas untuk sesi sebelumnya, geser ke bawah untuk sesi selanjutnya</p>
+                    <div class="swipe-demo">
+                        <div class="swipe-indicator up">↑</div>
+                        <div class="swipe-text">Sesi Sebelumnya</div>
+                        <div class="swipe-indicator down">↓</div>
+                        <div class="swipe-text">Sesi Selanjutnya</div>
+                    </div>
+                </div>
+                <div class="tutorial-section">
+                    <div class="tutorial-icon">⬆️</div>
+                    <p>Panah transparan di tengah layar akan muncul saat disentuh</p>
+                </div>
+            </div>
+            <button class="btn btn--primary tutorial-understand" id="tutorialUnderstand">
+                Mengerti
+            </button>
+        </div>
+    </div>
+
     <!-- Falling Daisy Petals Animation -->
     <div class="petals-container" id="petalsContainer"></div>
     
@@ -20,8 +78,15 @@
             <span class="music-icon">🎵</span>
         </button>
         <audio id="backgroundMusic" loop>
-            <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/backgroundmusic.mp3" type="audio/mpeg">
+            <source src="PLACEHOLDER_BACKGROUND_MUSIC" type="audio/mpeg">
         </audio>
+    </div>
+
+    <!-- Help Button -->
+    <div class="help-button" id="helpButton">
+        <button class="help-btn glassmorphism" title="Bantuan Navigasi">
+            <span class="help-icon">?</span>
+        </button>
     </div>
 
     <!-- Progress Indicator -->
@@ -32,51 +97,19 @@
     <!-- Navigation Menu -->
     <nav class="nav-menu" id="navMenu">
         <div class="nav-dots">
-            <span class="nav-dot active" data-section="0"></span>
-            <span class="nav-dot" data-section="1"></span>
-            <span class="nav-dot" data-section="2"></span>
-            <span class="nav-dot" data-section="3"></span>
-            <span class="nav-dot" data-section="4"></span>
-            <span class="nav-dot" data-section="5"></span>
-            <span class="nav-dot" data-section="6"></span>
-            <span class="nav-dot" data-section="7"></span>
-            <span class="nav-dot" data-section="8"></span>
-            <span class="nav-dot" data-section="9"></span>
+            <span class="nav-dot active" data-section="0" title="Pembuka"></span>
+            <span class="nav-dot" data-section="1" title="Video"></span>
+            <span class="nav-dot" data-section="2" title="Countdown"></span>
+            <span class="nav-dot" data-section="3" title="Bismillah"></span>
+            <span class="nav-dot" data-section="4" title="Undangan"></span>
+            <span class="nav-dot" data-section="5" title="Acara"></span>
+            <span class="nav-dot" data-section="6" title="RSVP"></span>
+            <span class="nav-dot" data-section="7" title="Amplop"></span>
+            <span class="nav-dot" data-section="8" title="Ucapan"></span>
+            <span class="nav-dot" data-section="9" title="Penutup"></span>
         </div>
+        <div class="nav-pulse-guide" id="navPulseGuide"></div>
     </nav>
-
-    <!-- Navigation Arrows -->
-    <div class="navigation-arrows">
-        <button class="nav-arrow nav-arrow--up" id="navArrowUp" aria-label="Section sebelumnya">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="18 15 12 9 6 15"></polyline>
-            </svg>
-        </button>
-        <button class="nav-arrow nav-arrow--down" id="navArrowDown" aria-label="Section selanjutnya">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-        </button>
-    </div>
-
-    <!-- Tutorial Modal -->
-    <div class="tutorial-overlay hidden" id="tutorialOverlay">
-        <div class="tutorial-content glassmorphism">
-            <h3 class="tutorial-title gradient-text">Panduan Navigasi</h3>
-            <p class="tutorial-description">Gunakan navigasi bulat di sisi kanan, panah transparan di tengah, atau geser layar untuk berpindah antar sesi</p>
-            <div class="tutorial-instructions">
-                <div class="instruction-item">
-                    <span class="instruction-icon">👆</span>
-                    <span>Geser ke atas untuk sesi sebelumnya, geser ke bawah untuk sesi selanjutnya</span>
-                </div>
-                <div class="instruction-item">
-                    <span class="instruction-icon">↕️</span>
-                    <span>Panah transparan di tengah layar akan muncul saat disentuh</span>
-                </div>
-            </div>
-            <button class="btn btn--primary" id="closeTutorial">Mengerti</button>
-        </div>
-    </div>
 
     <!-- Section 0: Welcome Page -->
     <section class="section welcome-section" id="section0" data-section="0">
@@ -101,17 +134,15 @@
     <section class="section video-section hidden" id="section1" data-section="1">
         <div class="video-container">
             <video id="cinematicVideo" class="cinematic-video" autoplay muted loop>
-                <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/intro.mp4" type="video/mp4">
+                <source src="PLACEHOLDER_CINEMATIC_VIDEO" type="video/mp4">
                 <p>Browser Anda tidak mendukung video HTML5.</p>
             </video>
             <div class="video-overlay">
                 <button class="skip-btn glassmorphism" id="skipVideoBtn">
                     <span>Skip</span>
-                    <span class="countdown" id="skipCountdown">5</span>
                 </button>
                 <div class="video-controls">
                     <button class="volume-btn" id="volumeBtn">🔊</button>
-                    <button class="fullscreen-btn" id="fullscreenBtn">⛶</button>
                 </div>
             </div>
         </div>
@@ -196,7 +227,7 @@
             <div class="couple-profiles">
                 <div class="profile-card glassmorphism">
                     <div class="profile-image">
-                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/groom.jpeg" alt="Suriansyah" class="couple-photo" loading="lazy">
+                        <img src="groom.jpg" alt="Suriansyah" class="couple-photo" loading="lazy">
                     </div>
                     <h3 class="profile-name gradient-text">Suriansyah, S. Kep., Ners</h3>
                     <div class="profile-role">Mempelai Pria</div>
@@ -204,7 +235,7 @@
                 <div class="heart-connector">💕</div>
                 <div class="profile-card glassmorphism">
                     <div class="profile-image">
-                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/bride.jpeg" alt="Sonia Agustina" class="couple-photo" loading="lazy">
+                        <img src="bride.jpg" alt="Sonia Agustina" class="couple-photo" loading="lazy">
                     </div>
                     <h3 class="profile-name gradient-text">Sonia Agustina Oemar, S. Farm</h3>
                     <div class="profile-role">Mempelai Wanita</div>
@@ -229,14 +260,12 @@
                     <div class="event-location">Rumah Mempelai Wanita<br>(Samping Masjid Jabal Rahmah Mandin)</div>
                 </div>
             </div>
-            <div class="map-container">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.123456789!2d116.123456789!3d-2.123456789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sMandin%2C%20Kotabaru!5e0!3m2!1sen!2sid!4v1234567890123!5m2!1sen!2sid"
-                    class="map-iframe"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+            <div class="location-info">
+                <div class="location-text">
+                    <h4>Lokasi Acara</h4>
+                    <p>Masjid Jabal Rahmah Mandin, Kotabaru</p>
+                    <p>Rumah Mempelai Wanita (Samping Masjid)</p>
+                </div>
                 <a href="https://maps.app.goo.gl/TvD12aGBA8WGaKQX8" target="_blank" class="btn btn--primary direction-btn">
                     🗺️ Petunjuk Arah
                 </a>
@@ -248,7 +277,7 @@
     <section class="section rsvp-section hidden" id="section6" data-section="6">
         <div class="rsvp-content">
             <h2 class="section-title gradient-text">RSVP & Ucapan</h2>
-            <div class="rsvp-form glassmorphism">
+            <div class="rsvp-form glassmorphism form-safe-zone" data-no-swipe>
                 <form id="rsvpForm">
                     <div class="form-group">
                         <label class="form-label">Nama Anda</label>
@@ -265,19 +294,12 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Kehadiran</label>
+                        <label class="form-label">Konfirmasi Kehadiran</label>
                         <div class="attendance-toggle">
                             <input type="radio" id="attending" name="attendance" value="yes" required>
                             <label for="attending">Hadir</label>
                             <input type="radio" id="notAttending" name="attendance" value="no" required>
                             <label for="notAttending">Tidak Hadir</label>
-                        </div>
-                    </div>
-                    <div class="form-group" id="eventSelection">
-                        <label class="form-label">Acara yang Dihadiri</label>
-                        <div class="event-checkboxes">
-                            <label><input type="checkbox" value="akad"> Akad Nikah</label>
-                            <label><input type="checkbox" value="resepsi"> Resepsi</label>
                         </div>
                     </div>
                     <div class="form-group">
@@ -377,6 +399,15 @@
         <div class="loading-content">
             <div class="loading-heart">💕</div>
             <div class="loading-text">Memuat undangan...</div>
+        </div>
+    </div>
+
+    <!-- Swipe Indicator -->
+    <div class="swipe-indicator-overlay" id="swipeIndicator">
+        <div class="swipe-hint">
+            <div class="swipe-arrow up">↑</div>
+            <div class="swipe-text">Geser untuk navigasi</div>
+            <div class="swipe-arrow down">↓</div>
         </div>
     </div>
 
