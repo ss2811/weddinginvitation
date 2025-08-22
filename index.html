@@ -50,13 +50,7 @@
                 </div>
                 <div class="tutorial-section">
                     <div class="tutorial-icon">📱</div>
-                    <p>Geser ke atas untuk sesi sebelumnya, geser ke bawah untuk sesi selanjutnya</p>
-                    <div class="swipe-demo">
-                        <div class="swipe-indicator up">↑</div>
-                        <div class="swipe-text">Sesi Sebelumnya</div>
-                        <div class="swipe-indicator down">↓</div>
-                        <div class="swipe-text">Sesi Selanjutnya</div>
-                    </div>
+                    <p>Gunakan panah navigasi atau tekan titik navigasi untuk berpindah sesi</p>
                 </div>
             </div>
             <button class="btn btn--primary tutorial-understand" id="tutorialUnderstand">
@@ -126,19 +120,26 @@
         </div>
     </section>
 
-    <!-- Section 1: Cinematic Video -->
+    <!-- Section 1: Cinematic Video with Wedding Invitation Text -->
     <section class="section video-section hidden" id="section1" data-section="1">
-        <div class="video-container">
-            <video id="cinematicVideo" class="cinematic-video" autoplay muted loop>
-                <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/intro.mp4" type="video/mp4">
-                <p>Browser Anda tidak mendukung video HTML5.</p>
-            </video>
-            <div class="video-overlay">
-                <button class="skip-btn glassmorphism" id="skipVideoBtn">
-                    <span>Skip</span>
-                </button>
-                <div class="video-controls">
-                    <button class="volume-btn" id="volumeBtn">🔊</button>
+        <div class="video-content">
+            <div class="invitation-header">
+                <h2 class="gradient-text invitation-title">Wedding Invitation of</h2>
+                <h3 class="couple-names">Suriansyah & Sonia Agustina</h3>
+                <p class="wedding-date-text">24 September 2025</p>
+            </div>
+            <div class="video-container">
+                <video id="cinematicVideo" class="cinematic-video" muted loop playsinline preload="metadata">
+                    <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/intro.mp4" type="video/mp4">
+                    <p>Browser Anda tidak mendukung video HTML5.</p>
+                </video>
+                <div class="video-overlay">
+                    <button class="skip-btn glassmorphism" id="skipVideoBtn">
+                        <span>Skip</span>
+                    </button>
+                    <div class="video-controls">
+                        <button class="volume-btn" id="volumeBtn">🔊</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -395,15 +396,6 @@
         <div class="loading-content">
             <div class="loading-heart">💕</div>
             <div class="loading-text">Memuat undangan...</div>
-        </div>
-    </div>
-
-    <!-- Swipe Indicator -->
-    <div class="swipe-indicator-overlay" id="swipeIndicator">
-        <div class="swipe-hint">
-            <div class="swipe-arrow up">↑</div>
-            <div class="swipe-text">Geser untuk navigasi</div>
-            <div class="swipe-arrow down">↓</div>
         </div>
     </div>
 
