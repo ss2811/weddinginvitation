@@ -643,20 +643,6 @@ class WeddingInvitation {
     }
     
     showSwipeIndicator(direction) {
-        const indicator = document.getElementById('swipeIndicator');
-        if (!indicator) return;
-        
-        indicator.classList.add('show');
-        
-        // Update text based on direction
-        const textElement = indicator.querySelector('.swipe-text');
-        if (textElement) {
-            textElement.textContent = direction === 'next' ? 'Sesi Selanjutnya' : 'Sesi Sebelumnya';
-        }
-        
-        setTimeout(() => {
-            indicator.classList.remove('show');
-        }, 1000);
     }
     
     triggerHapticFeedback() {
