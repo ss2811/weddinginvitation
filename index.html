@@ -129,10 +129,12 @@
                 <p class="wedding-date-text">24 September 2025</p>
             </div>
             <div class="video-container">
-                <video id="cinematicVideo" class="cinematic-video" muted loop playsinline preload="metadata">
-                    <source src="https://drive.google.com/uc?export=download&id=15aCJ-o872mVM2MifjZTe5FekkP2k2H_h" type="video/mp4">
-                    <p>Browser Anda tidak mendukung video HTML5.</p>
-                </video>
+                <div class="video-container">
+                    <iframe id="cinematicVideo" class="cinematic-video"
+                    src="https://www.youtube.com/embed/xXRjeURBYAE?si=IV5Yy3werIDXE-VK?autoplay=1&mute=1&controls=1&playsinline=1"
+                    title="YouTube video player" frameborder="0"
+                    allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen>
+                </iframe>
                 <div class="video-overlay">
                     <button class="skip-btn glassmorphism" id="skipVideoBtn">
                         <span>Skip</span>
