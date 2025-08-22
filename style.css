@@ -900,7 +900,7 @@ body {
   z-index: 9999;
   opacity: 1;
   transition: all 0.5s ease;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .tutorial-overlay.hidden {
@@ -911,7 +911,7 @@ body {
 .tutorial-content {
   max-width: 500px;
   width: 100%;
-  padding: 2rem;
+  padding: 1rem;
   position: relative;
   animation: tutorialSlideIn 0.5s ease-out;
 }
@@ -931,12 +931,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .tutorial-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1.8rem;
+  font-size: 1rem;
   margin: 0;
 }
 
@@ -944,7 +944,7 @@ body {
   background: none;
   border: none;
   color: var(--wedding-white);
-  font-size: 2rem;
+  font-size: 1rem;
   cursor: pointer;
   width: 40px;
   height: 40px;
@@ -960,7 +960,7 @@ body {
 }
 
 .tutorial-section {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
@@ -969,7 +969,7 @@ body {
 }
 
 .tutorial-icon {
-  font-size: 3rem;
+  font-size: 1rem;
   margin-bottom: 1rem;
 }
 
@@ -1142,16 +1142,16 @@ body {
 }
 
 .nav-dot {
-  width: 3px;
-  height: 3px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   cursor: pointer;
   transition: var(--wedding-transition);
   position: relative;
-  border: 1px solid transparent;
-  min-height: 11px; /* iOS touch target */
-  min-width: 11px; /* iOS touch target */
+  border: 5px solid transparent;
+  min-height: 22px; /* iOS touch target */
+  min-width: 22px; /* iOS touch target */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1159,8 +1159,8 @@ body {
 
 .nav-dot::after {
   content: '';
-  width: 3px;
-  height: 3px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: currentColor;
   transition: var(--wedding-transition);
@@ -2390,8 +2390,8 @@ input[type="checkbox"]:checked + .checkmark::after {
   }
   
   .nav-dot {
-    width: 44px;
-    height: 44px;
+    width: 10px;
+    height: 10px;
   }
   
   .nav-dot::before {
