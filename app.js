@@ -514,7 +514,7 @@ class WeddingInvitation {
     }
     
     setupTouchGestures() {
-        };
+    }
         
         const handleTouchMove = (e) => {
             if (e.touches.length !== 1) return;
