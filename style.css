@@ -1786,26 +1786,20 @@ body {
 .video-container {
   position: relative;
   width: 100%;
-  max-width: var(--container-sm);
+  max-width: 640px;
   height: 360px;
   margin: 0 auto;
-  border-radius: var(--radius-lg);
+  border-radius: 15px;
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  will-change: transform;
-  transform: translateZ(0);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .cinematic-video {
   width: 100%;
   height: 100%;
-  display: block;
-  will-change: auto;
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  background: var(--wedding-black);
+  border: none;
 }
+
 
 .video-overlay {
   position: absolute;
