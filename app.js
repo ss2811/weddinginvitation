@@ -1,4 +1,4 @@
-// Wedding Invitation JavaScript - Enhanced with Mobile Fixes and Optimizations
+// Wedding Invitation JavaScript - Optimized without Swipe/Mouse Navigation
 
 class WeddingInvitation {
     constructor() {
@@ -10,12 +10,9 @@ class WeddingInvitation {
         this.weddingDate = new Date('2025-09-24T07:00:00+08:00');
         this.tutorialShown = false;
         this.isTransitioning = false;
-        this.swipeStartY = 0;
-        this.swipeEndY = 0;
-        this.swipeStartTime = 0;
         this.tutorialTimeout = null;
-        this.isFormInteracting = false; // Track form interaction state
-        this.swipeDisabledZones = new Set(); // Track swipe-disabled zones
+        this.isFormInteracting = false;
+        this.swipeDisabledZones = new Set();
         
         // Firebase placeholder - Replace with actual config
         this.firebaseConfig = {
@@ -33,35 +30,53 @@ class WeddingInvitation {
     
     init() {
         this.extractGuestName();
-        this.createFallingPetals();
+        this.createFallingPetals(); // Updated to use only white daisies
         this.initializeFirebase();
         this.hideLoadingScreen();
         this.updateProgressIndicator();
         this.initializeSections();
         this.setupTutorial();
-        this.setupFormSafeZones(); // Set up swipe-safe zones for forms
-        this.updateArrowVisibility(); // Initialize arrow visibility
+        this.setupFormSafeZones();
+        this.updateArrowVisibility();
         // Setup event listeners after DOM is ready
         setTimeout(() => {
             this.setupEventListeners();
         }, 100);
     }
     
+    // MOBILE VIDEO OPTIMIZATION - Stop heavy animations during video play
     hideHeavyEffectsDuringVideoPlay() {
-      // Sembunyikan overlay dan animasi yang berat
-      const overlays = document.querySelectorAll('.video-overlay, .petals-container, .some-other-heavy-animation');
-      overlays.forEach(el => {
-        if (!el.classList.contains('hidden')) {
-          el.classList.add('hidden');
+        console.log('Stopping heavy animations for video optimization');
+        const petalsContainer = document.getElementById('petalsContainer');
+        const videoSection = document.getElementById('section1');
+        
+        if (petalsContainer) {
+            petalsContainer.style.display = 'none';
         }
-      });
+        
+        if (videoSection) {
+            videoSection.classList.add('playing');
+        }
+        
+        // Stop other heavy animations
+        document.body.style.setProperty('--animation-play-state', 'paused');
     }
 
     showHeavyEffectsAfterVideoPauseOrEnd() {
-      const overlays = document.querySelectorAll('.video-overlay, .petals-container, .some-other-heavy-animation');
-      overlays.forEach(el => {
-        el.classList.remove('hidden');
-      });
+        console.log('Resuming heavy animations after video');
+        const petalsContainer = document.getElementById('petalsContainer');
+        const videoSection = document.getElementById('section1');
+        
+        if (petalsContainer) {
+            petalsContainer.style.display = 'block';
+        }
+        
+        if (videoSection) {
+            videoSection.classList.remove('playing');
+        }
+        
+        // Resume animations
+        document.body.style.setProperty('--animation-play-state', 'running');
     }
     
     setupFormSafeZones() {
@@ -80,7 +95,6 @@ class WeddingInvitation {
             });
             
             element.addEventListener('blur', () => {
-                // Delay to allow for quick focus switches
                 setTimeout(() => {
                     if (!document.activeElement || !this.isFormElement(document.activeElement)) {
                         this.isFormInteracting = false;
@@ -89,10 +103,9 @@ class WeddingInvitation {
                 }, 100);
             });
             
-            // Handle touch events on form elements
             element.addEventListener('touchstart', (e) => {
                 this.isFormInteracting = true;
-                e.stopPropagation(); // Prevent parent touch handlers
+                e.stopPropagation();
             });
         });
     }
@@ -106,26 +119,7 @@ class WeddingInvitation {
         );
     }
     
-    isInSwipeDisabledZone(x, y) {
-        const element = document.elementFromPoint(x, y);
-        if (!element) return false;
-        
-        // Check if element or any parent has swipe disabled
-        let current = element;
-        while (current && current !== document.body) {
-            if (current.hasAttribute('data-no-swipe') || 
-                current.classList.contains('form-safe-zone') ||
-                this.swipeDisabledZones.has(current)) {
-                return true;
-            }
-            current = current.parentElement;
-        }
-        
-        return false;
-    }
-    
     initializeSections() {
-        // Show only the first section initially
         document.querySelectorAll('.section').forEach((section, index) => {
             if (index === 0) {
                 section.classList.remove('hidden');
@@ -140,7 +134,6 @@ class WeddingInvitation {
     }
     
     setupTutorial() {
-        // Show tutorial after 2 seconds on first visit
         this.tutorialTimeout = setTimeout(() => {
             if (!this.tutorialShown && this.currentSection === 0) {
                 this.showTutorial();
@@ -156,7 +149,6 @@ class WeddingInvitation {
             tutorialOverlay.classList.remove('hidden');
             this.tutorialShown = true;
             
-            // Add navigation pulse guide
             if (navPulseGuide) {
                 navPulseGuide.style.opacity = '1';
                 setTimeout(() => {
@@ -164,7 +156,6 @@ class WeddingInvitation {
                 }, 5000);
             }
             
-            // Add body scroll lock
             document.body.style.overflow = 'hidden';
         }
     }
@@ -209,7 +200,6 @@ class WeddingInvitation {
             arrowDown.classList.add('show');
         }
         
-        // Hide arrows after 3 seconds
         setTimeout(() => {
             if (arrowUp) arrowUp.classList.remove('show');
             if (arrowDown) arrowDown.classList.remove('show');
@@ -233,7 +223,6 @@ class WeddingInvitation {
                 }
             });
             
-            // Show arrow on hover/touch
             const arrowNavUp = document.getElementById('arrowNavUp');
             if (arrowNavUp) {
                 arrowNavUp.addEventListener('mouseenter', () => {
@@ -267,7 +256,6 @@ class WeddingInvitation {
                 }
             });
             
-            // Show arrow on hover/touch
             const arrowNavDown = document.getElementById('arrowNavDown');
             if (arrowNavDown) {
                 arrowNavDown.addEventListener('mouseenter', () => {
@@ -323,7 +311,6 @@ class WeddingInvitation {
             });
         }
         
-        // Close tutorial on overlay click
         const tutorialOverlay = document.getElementById('tutorialOverlay');
         if (tutorialOverlay) {
             tutorialOverlay.addEventListener('click', (e) => {
@@ -333,7 +320,7 @@ class WeddingInvitation {
             });
         }
         
-        // Open invitation button - FIXED
+        // Open invitation button
         const openBtn = document.getElementById('openInvitationBtn');
         if (openBtn) {
             openBtn.addEventListener('click', (e) => {
@@ -350,7 +337,7 @@ class WeddingInvitation {
             console.error('Open invitation button not found');
         }
         
-        // Skip video button - UPDATED to remove countdown
+        // Skip video button
         const skipBtn = document.getElementById('skipVideoBtn');
         if (skipBtn) {
             skipBtn.addEventListener('click', (e) => {
@@ -370,7 +357,7 @@ class WeddingInvitation {
             });
         }
         
-        // Video controls - REMOVED fullscreen button functionality
+        // Video controls
         const volumeBtn = document.getElementById('volumeBtn');
         if (volumeBtn) {
             volumeBtn.addEventListener('click', (e) => {
@@ -380,10 +367,9 @@ class WeddingInvitation {
             });
         }
         
-        // Navigation dots - FIXED with better selector
+        // Navigation dots
         const navDots = document.querySelectorAll('.nav-dot');
         console.log(`Found ${navDots.length} navigation dots`);
-        
         navDots.forEach((dot, index) => {
             dot.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -392,19 +378,16 @@ class WeddingInvitation {
                 this.goToSection(index);
             });
             
-            // Add hover effect for better UX
             dot.addEventListener('mouseenter', () => {
                 if (!dot.classList.contains('active')) {
                     dot.style.transform = 'scale(1.2)';
                 }
             });
-            
             dot.addEventListener('mouseleave', () => {
                 if (!dot.classList.contains('active')) {
                     dot.style.transform = 'scale(1)';
                 }
             });
-            
             console.log(`Navigation dot ${index} listener attached`);
         });
         
@@ -445,246 +428,67 @@ class WeddingInvitation {
             });
         }
         
-        // Video section handling - UPDATED for mobile optimization
+        // Video section handling - ENHANCED FOR MOBILE OPTIMIZATION
         const video = document.getElementById('cinematicVideo');
         if (video) {
-            // Optimize video loading for mobile
-            video.preload = 'metadata'; // Only load metadata initially
+            // Mobile optimization
+            video.preload = 'metadata';
+            
+            // Video event listeners for performance optimization
             video.addEventListener('loadeddata', () => {
                 this.startSkipCountdown();
             });
             
-            // Add mobile-specific optimizations
+            video.addEventListener('play', () => {
+                console.log('Video started playing - optimizing performance');
+                this.hideHeavyEffectsDuringVideoPlay();
+                this.isVideoPlaying = true;
+            });
+            
+            video.addEventListener('pause', () => {
+                console.log('Video paused - resuming effects');
+                this.showHeavyEffectsAfterVideoPauseOrEnd();
+                this.isVideoPlaying = false;
+            });
+            
+            video.addEventListener('ended', () => {
+                console.log('Video ended - resuming effects');
+                this.showHeavyEffectsAfterVideoPauseOrEnd();
+                this.isVideoPlaying = false;
+            });
+            
+            // Mobile-specific optimizations
             if (this.isMobileDevice()) {
                 video.muted = true;
                 video.playsInline = true;
                 video.setAttribute('webkit-playsinline', 'true');
                 video.setAttribute('x5-playsinline', 'true');
+                
+                // Additional mobile video optimizations
+                video.style.willChange = 'auto';
+                video.style.transform = 'translateZ(0)';
             }
-            // Request fullscreen when video plays
-            video.addEventListener('play', () => {
-                if (video.requestFullscreen) {
-                  video.requestFullscreen();
-                } else if (video.webkitRequestFullscreen) {
-                  video.webkitRequestFullscreen();
-                } else if (video.msRequestFullscreen) {
-                  video.msRequestFullscreen();
-                }
-            });
+            
             // Start countdown immediately if video exists
             setTimeout(() => {
                 this.startSkipCountdown();
             }, 1000);
         }
         
-        // Enhanced keyboard navigation
+        // Keyboard navigation only (no mouse wheel or touch gestures)
         document.addEventListener('keydown', (e) => {
             this.handleKeyNavigation(e);
         });
-        
-        // Enhanced touch gestures for mobile with form protection
-        this.setupTouchGestures();
-        
-        // Mouse wheel navigation
-        this.setupMouseWheelNavigation();
-        
-        // Prevent default touch behaviors that might interfere
-        document.addEventListener('touchmove', (e) => {
-            if (e.touches.length > 1) {
-                e.preventDefault();
-            }
-        }, { passive: false });
         
         console.log('All event listeners setup complete');
     }
     
     isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-               window.innerWidth <= 768;
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
     }
     
-    setupMouseWheelNavigation() {
-        let wheelTimeout = null;
-        
-        document.addEventListener('wheel', (e) => {
-            // Don't navigate if user is interacting with forms
-            if (this.isFormInteracting) {
-                return;
-            }
-            
-            // Prevent default scrolling
-            e.preventDefault();
-            
-            // Debounce wheel events
-            if (wheelTimeout) return;
-            
-            wheelTimeout = setTimeout(() => {
-                wheelTimeout = null;
-            }, 300);
-            
-            if (this.isTransitioning) return;
-            
-            const delta = e.deltaY;
-            const threshold = 50;
-            
-            if (delta > threshold && this.currentSection < this.totalSections - 1) {
-                // Scroll down - next section
-                console.log('Wheel scroll down detected');
-                this.goToSection(this.currentSection + 1, 'up');
-            } else if (delta < -threshold && this.currentSection > 0) {
-                // Scroll up - previous section
-                console.log('Wheel scroll up detected');
-                this.goToSection(this.currentSection - 1, 'down');
-            }
-        }, { passive: false });
-    }
-    
-    setupTouchGestures() {
-        let startY = 0;
-        let startX = 0;
-        let startTime = 0;
-        let isScrolling = false;
-        let touchStartElement = null;
-        
-        const handleTouchStart = (e) => {
-            // Only handle single touch
-            if (e.touches.length !== 1) return;
-            
-            const touch = e.touches[0];
-            startY = touch.clientY;
-            startX = touch.clientX;
-            startTime = Date.now();
-            isScrolling = false;
-            touchStartElement = e.target;
-            
-            this.swipeStartY = startY;
-            this.swipeStartTime = startTime;
-            
-            // Check if touch started in a swipe-disabled zone
-            if (this.isInSwipeDisabledZone(touch.clientX, touch.clientY)) {
-                console.log('Touch started in swipe-disabled zone');
-                return;
-            }
-        };
-        
-        const handleTouchMove = (e) => {
-            if (e.touches.length !== 1) return;
-            
-            const touch = e.touches[0];
-            const currentY = touch.clientY;
-            const currentX = touch.clientX;
-            const deltaY = Math.abs(currentY - startY);
-            const deltaX = Math.abs(currentX - startX);
-            
-            // Check if we're in a form interaction area
-            if (this.isFormInteracting || 
-                this.isInSwipeDisabledZone(touch.clientX, touch.clientY)) {
-                return; // Allow normal scrolling/interaction
-            }
-            
-            // Determine if this is a vertical or horizontal scroll
-            if (!isScrolling && (deltaY > 10 || deltaX > 10)) {
-                isScrolling = deltaY > deltaX;
-                
-                // If it's a vertical swipe and delta is significant, prevent default
-                if (isScrolling && deltaY > 30) {
-                    e.preventDefault();
-                }
-            }
-        };
-        
-        const handleTouchEnd = (e) => {
-            if (e.changedTouches.length !== 1) return;
-            
-            const touch = e.changedTouches[0];
-            const endY = touch.clientY;
-            const endTime = Date.now();
-            const deltaY = startY - endY;
-            const deltaTime = endTime - startTime;
-            const velocity = Math.abs(deltaY) / deltaTime;
-            
-            this.swipeEndY = endY;
-            
-            // Don't process swipes if:
-            // 1. User is interacting with forms
-            // 2. Touch started or ended in swipe-disabled zone
-            // 3. Touch started on a form element
-            if (this.isFormInteracting || 
-                this.isInSwipeDisabledZone(touch.clientX, touch.clientY) ||
-                this.isFormElement(touchStartElement)) {
-                console.log('Swipe blocked due to form interaction');
-                return;
-            }
-            
-            // Only process swipes that are:
-            // 1. Primarily vertical (not horizontal scrolling)
-            // 2. Have sufficient distance (>80px for mobile) OR sufficient velocity (>0.4px/ms)
-            // 3. Completed within reasonable time (<800ms)
-            const minDistance = this.isMobileDevice() ? 80 : 50;
-            const minVelocity = 0.4;
-            const maxTime = 800;
-            
-            if (isScrolling && 
-                (Math.abs(deltaY) > minDistance || velocity > minVelocity) &&
-                deltaTime < maxTime &&
-                !this.isTransitioning) {
-                
-                console.log(`Swipe detected: deltaY=${deltaY}, velocity=${velocity}`);
-                this.handleSwipe(deltaY);
-                
-                // Haptic feedback if available
-                this.triggerHapticFeedback();
-            }
-        };
-        
-        // Add touch event listeners
-        document.addEventListener('touchstart', handleTouchStart, { passive: true });
-        document.addEventListener('touchmove', handleTouchMove, { passive: false });
-        document.addEventListener('touchend', handleTouchEnd, { passive: true });
-        
-        // Store references for potential cleanup
-        this.touchHandlers = {
-            touchstart: handleTouchStart,
-            touchmove: handleTouchMove,
-            touchend: handleTouchEnd
-        };
-    }
-    
-    handleSwipe(deltaY) {
-        const swipeThreshold = this.isMobileDevice() ? 50 : 30;
-        
-        if (Math.abs(deltaY) > swipeThreshold) {
-            if (deltaY > 0 && this.currentSection < this.totalSections - 1) {
-                // Swipe up - next section
-                console.log('Swiping to next section');
-                this.goToSection(this.currentSection + 1, 'up');
-                this.showSwipeIndicator('next');
-            } else if (deltaY < 0 && this.currentSection > 0) {
-                // Swipe down - previous section
-                console.log('Swiping to previous section');
-                this.goToSection(this.currentSection - 1, 'down');
-                this.showSwipeIndicator('prev');
-            }
-        }
-    }
-    
-    showSwipeIndicator(direction) {
-    }
-    
-    triggerHapticFeedback() {
-        // Haptic feedback for supported devices
-        if ('vibrate' in navigator) {
-            navigator.vibrate(50);
-        }
-        
-        // iOS haptic feedback
-        if (window.DeviceMotionEvent && typeof window.DeviceMotionEvent.requestPermission === 'function') {
-            // Light haptic feedback
-            if ('hapticFeedback' in navigator) {
-                navigator.hapticFeedback.impact('light');
-            }
-        }
-    }
+    // REMOVED: setupMouseWheelNavigation() - per user request
+    // REMOVED: setupTouchGestures() - per user request
     
     extractGuestName() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -700,18 +504,19 @@ class WeddingInvitation {
         }
     }
     
+    // UPDATED: Only white daisy petals
     createFallingPetals() {
         const container = document.getElementById('petalsContainer');
         if (!container) return;
-        
-        const petalSymbols = ['🌼', '🌸', '🌺', '💮', '🏵️'];
+
+        const petalSymbols = ['🌼']; // Only white daisy as requested
         
         const createPetal = () => {
             if (Math.random() > 0.3) return; // 70% chance to not create a petal
             
             const petal = document.createElement('div');
             petal.className = 'petal';
-            petal.innerHTML = petalSymbols[Math.floor(Math.random() * petalSymbols.length)];
+            petal.innerHTML = petalSymbols[0]; // Always white daisy
             
             // Random horizontal position
             petal.style.left = Math.random() * 100 + '%';
@@ -774,7 +579,6 @@ class WeddingInvitation {
         if (!container) return;
         
         container.innerHTML = '';
-        
         wishes.forEach(wish => {
             const wishCard = document.createElement('div');
             wishCard.className = 'wish-card';
@@ -785,38 +589,13 @@ class WeddingInvitation {
                 </div>
                 <div class="wish-message">${wish.message}</div>
                 <div class="wish-actions">
-                    <button class="heart-btn" data-likes="${wish.likes}">
-                        ❤️ <span class="like-count">${wish.likes}</span>
+                    <button class="heart-btn" onclick="this.classList.toggle('liked')">
+                        ❤️ ${wish.likes}
                     </button>
                 </div>
             `;
-            
-            const heartBtn = wishCard.querySelector('.heart-btn');
-            heartBtn.addEventListener('click', () => {
-                this.toggleWishLike(heartBtn);
-            });
-            
             container.appendChild(wishCard);
         });
-    }
-    
-    toggleWishLike(button) {
-        const likeCountSpan = button.querySelector('.like-count');
-        let currentLikes = parseInt(button.dataset.likes);
-        
-        if (button.classList.contains('liked')) {
-            currentLikes--;
-            button.classList.remove('liked');
-        } else {
-            currentLikes++;
-            button.classList.add('liked');
-        }
-        
-        button.dataset.likes = currentLikes;
-        likeCountSpan.textContent = currentLikes;
-        
-        // Haptic feedback
-        this.triggerHapticFeedback();
     }
     
     hideLoadingScreen() {
@@ -828,176 +607,125 @@ class WeddingInvitation {
         }, 2000);
     }
     
-    goToSection(sectionIndex, direction = null) {
-        if (sectionIndex < 0 || sectionIndex >= this.totalSections) return;
-        
-        if (this.isTransitioning) {
-            console.log('Navigation blocked - transition in progress');
-            return;
+    updateProgressIndicator() {
+        const progressBar = document.getElementById('progressBar');
+        if (progressBar) {
+            const progress = ((this.currentSection + 1) / this.totalSections) * 100;
+            progressBar.style.width = `${progress}%`;
         }
-        
-        console.log(`Navigating to section ${sectionIndex} from ${this.currentSection}`);
-        
-        this.isTransitioning = true;
-        
-        // Clear form interaction state when navigating
-        this.isFormInteracting = false;
-        
-        // Clear tutorial timeout if navigating away from welcome
-        if (this.tutorialTimeout && sectionIndex !== 0) {
-            clearTimeout(this.tutorialTimeout);
-        }
-        
-        // Handle video section special behavior
-        if (this.currentSection === 1 && sectionIndex !== 1) {
-            this.pauseVideo();
-        } else if (sectionIndex === 1) {
-            setTimeout(() => {
-                this.playVideo();
-            }, 300);
-        }
-        
-        // Determine transition direction if not provided
-        if (!direction) {
-            direction = sectionIndex > this.currentSection ? 'up' : 'down';
-        }
-        
-        // Hide all sections first
-        document.querySelectorAll('.section').forEach(section => {
-            section.classList.add('hidden');
-            section.classList.remove('visible', 'section-transition-up', 'section-transition-down');
-            section.style.display = 'none';
-        });
-        
-        // Show target section with animation
-        const targetSection = document.getElementById(`section${sectionIndex}`);
-        if (targetSection) {
-            targetSection.style.display = 'flex';
-            
-            // Force reflow
-            targetSection.offsetHeight;
-            
-            setTimeout(() => {
-                targetSection.classList.remove('hidden');
-                targetSection.classList.add('visible');
-                
-                // Add transition animation
-                if (direction === 'up') {
-                    targetSection.classList.add('section-transition-up');
-                } else {
-                    targetSection.classList.add('section-transition-down');
-                }
-                
-                // Remove transition class after animation
-                setTimeout(() => {
-                    targetSection.classList.remove('section-transition-up', 'section-transition-down');
-                    this.isTransitioning = false;
-                    console.log(`Navigation to section ${sectionIndex} complete`);
-                }, 600);
-            }, 50);
-            
-            // Smooth scroll to top
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        } else {
-            console.error(`Section ${sectionIndex} not found`);
-            this.isTransitioning = false;
-        }
-        
-        // Update navigation
-        this.updateNavigation(sectionIndex);
-        this.currentSection = sectionIndex;
-        
-        // Update arrow visibility based on new section
-        this.updateArrowVisibility();
-        
-        // Start countdown if on countdown section
-        if (sectionIndex === 2) {
-            setTimeout(() => {
-                this.startCountdown();
-            }, 500);
-        } else {
-            this.stopCountdown();
-        }
-        
-        this.updateProgressIndicator();
-        
-        // Haptic feedback for navigation
-        this.triggerHapticFeedback();
-        
-        // REMOVED: Navigation toast notifications are no longer shown
     }
     
-    updateNavigation(activeIndex) {
+    updateNavigation() {
         document.querySelectorAll('.nav-dot').forEach((dot, index) => {
-            if (index === activeIndex) {
+            if (index === this.currentSection) {
                 dot.classList.add('active');
             } else {
                 dot.classList.remove('active');
             }
         });
+        
+        this.updateProgressIndicator();
+        this.updateArrowVisibility();
     }
     
-    updateProgressIndicator() {
-        const progressBar = document.getElementById('progressBar');
-        if (progressBar) {
-            const progress = (this.currentSection / (this.totalSections - 1)) * 100;
-            progressBar.style.width = `${progress}%`;
+    goToSection(sectionIndex, direction = 'up') {
+        if (this.isTransitioning || sectionIndex < 0 || sectionIndex >= this.totalSections) {
+            return;
         }
+        
+        this.isTransitioning = true;
+        
+        // Hide current section
+        const currentSection = document.getElementById(`section${this.currentSection}`);
+        if (currentSection) {
+            currentSection.classList.add('hidden');
+            currentSection.classList.remove('visible');
+            currentSection.style.display = 'none';
+        }
+        
+        // Show new section
+        const newSection = document.getElementById(`section${sectionIndex}`);
+        if (newSection) {
+            newSection.style.display = 'flex';
+            newSection.classList.remove('hidden');
+            newSection.classList.add('visible');
+            
+            // Add transition class based on direction
+            if (direction === 'up') {
+                newSection.classList.add('section-transition-up');
+            } else {
+                newSection.classList.add('section-transition-down');
+            }
+            
+            // Remove transition class after animation
+            setTimeout(() => {
+                newSection.classList.remove('section-transition-up', 'section-transition-down');
+            }, 600);
+        }
+        
+        this.currentSection = sectionIndex;
+        this.updateNavigation();
+        
+        // Handle section-specific logic
+        this.handleSectionChange(sectionIndex);
+        
+        setTimeout(() => {
+            this.isTransitioning = false;
+        }, 600);
     }
     
-    // UPDATED: Remove countdown timer display, only show "Skip" text
-    startSkipCountdown() {
-        const skipBtn = document.getElementById('skipVideoBtn');
-        
-        if (!skipBtn) return;
-        
-        // Make skip button available immediately
-        skipBtn.style.opacity = '1';
-        skipBtn.style.pointerEvents = 'auto';
-        skipBtn.classList.add('ready');
-        
-        // Remove any countdown elements if they exist
-        const countdownElement = skipBtn.querySelector('.countdown');
-        if (countdownElement) {
-            countdownElement.remove();
+    handleSectionChange(sectionIndex) {
+        switch(sectionIndex) {
+            case 1: // Video section
+                setTimeout(() => {
+                    this.playVideo();
+                }, 500);
+                break;
+            case 2: // Countdown section
+                this.startCountdown();
+                break;
+            case 8: // Wishes section
+                this.loadWishes();
+                break;
         }
-        
-        // Ensure only "Skip" text is shown
-        const skipText = skipBtn.querySelector('span');
-        if (skipText) {
-            skipText.textContent = 'Skip';
-        }
-    }
-    
-    skipVideo() {
-        if (this.skipTimer) {
-            clearInterval(this.skipTimer);
-        }
-        this.goToSection(2, 'up');
     }
     
     playVideo() {
         const video = document.getElementById('cinematicVideo');
         if (video) {
-            // Mobile optimization: lower quality settings if possible
+            console.log('Attempting to play video with mobile optimizations');
+            
+            // Mobile optimization before play
             if (this.isMobileDevice()) {
-                video.preload = 'metadata';
-                video.load(); // Reload with new settings
+                this.hideHeavyEffectsDuringVideoPlay();
             }
             
-            video.play().catch(console.error);
-            this.isVideoPlaying = true;
+            video.play().catch(error => {
+                console.error('Video play failed:', error);
+                this.showHeavyEffectsAfterVideoPauseOrEnd();
+            });
         }
     }
     
-    pauseVideo() {
+    skipVideo() {
         const video = document.getElementById('cinematicVideo');
         if (video) {
             video.pause();
-            this.isVideoPlaying = false;
+            this.showHeavyEffectsAfterVideoPauseOrEnd();
+        }
+        
+        if (this.skipTimer) {
+            clearTimeout(this.skipTimer);
+        }
+        
+        this.goToSection(2);
+    }
+    
+    startSkipCountdown() {
+        // Simplified skip functionality without countdown
+        const skipBtn = document.getElementById('skipVideoBtn');
+        if (skipBtn) {
+            skipBtn.style.display = 'flex';
         }
     }
     
@@ -1012,33 +740,35 @@ class WeddingInvitation {
     }
     
     toggleMusic() {
-        const audio = document.getElementById('backgroundMusic');
-        const toggleBtn = document.getElementById('musicToggle');
+        const music = document.getElementById('backgroundMusic');
+        const musicToggle = document.getElementById('musicToggle');
         
-        if (audio && toggleBtn) {
-            if (audio.paused) {
-                audio.play().then(() => {
-                    toggleBtn.classList.add('playing');
-                    toggleBtn.innerHTML = '<span class="music-icon">🎵</span>';
-                }).catch(console.error);
+        if (music && musicToggle) {
+            if (music.paused) {
+                music.play();
+                musicToggle.classList.add('playing');
             } else {
-                audio.pause();
-                toggleBtn.classList.remove('playing');
-                toggleBtn.innerHTML = '<span class="music-icon">🔇</span>';
+                music.pause();
+                musicToggle.classList.remove('playing');
             }
         }
     }
     
     startCountdown() {
-        this.stopCountdown(); // Clear any existing countdown
+        if (this.countdownTimer) {
+            clearInterval(this.countdownTimer);
+        }
         
         this.countdownTimer = setInterval(() => {
             const now = new Date().getTime();
             const distance = this.weddingDate.getTime() - now;
             
             if (distance < 0) {
-                this.stopCountdown();
-                this.showCountdownComplete();
+                clearInterval(this.countdownTimer);
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
                 return;
             }
             
@@ -1047,88 +777,56 @@ class WeddingInvitation {
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
             
-            this.updateCountdownDisplay(days, hours, minutes, seconds);
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
         }, 1000);
     }
     
-    stopCountdown() {
-        if (this.countdownTimer) {
-            clearInterval(this.countdownTimer);
-            this.countdownTimer = null;
-        }
+    loadWishes() {
+        // In a real implementation, this would load wishes from Firebase
+        console.log('Loading wishes...');
     }
     
-    updateCountdownDisplay(days, hours, minutes, seconds) {
-        const daysEl = document.getElementById('days');
-        const hoursEl = document.getElementById('hours');
-        const minutesEl = document.getElementById('minutes');
-        const secondsEl = document.getElementById('seconds');
-        
-        if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
-        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
-        if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
-        if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
-    }
-    
-    showCountdownComplete() {
-        const countdownSection = document.querySelector('.countdown-timer');
-        if (countdownSection) {
-            countdownSection.innerHTML = `
-                <div class="countdown-complete">
-                    <h3 class="gradient-text">Hari Bahagia Telah Tiba! 🎉</h3>
-                    <p>Terima kasih telah menjadi bagian dari perjalanan cinta kami</p>
-                </div>
-            `;
-        }
-    }
-    
-    // UPDATED: Simplified RSVP form without "Acara yang dihadiri"
     handleRSVPSubmission(e) {
         e.preventDefault();
         
+        const formData = new FormData(e.target);
         const rsvpData = {
-            name: document.getElementById('rsvpName')?.value,
-            guestCount: document.getElementById('guestCount')?.value,
+            name: formData.get('rsvpName') || document.getElementById('rsvpName').value,
+            guestCount: document.getElementById('guestCount').value,
             attendance: document.querySelector('input[name="attendance"]:checked')?.value,
-            message: document.getElementById('wishMessage')?.value,
-            displayWish: document.getElementById('displayWish')?.checked,
-            timestamp: new Date()
+            wishMessage: document.getElementById('wishMessage').value,
+            displayWish: document.getElementById('displayWish').checked
         };
         
+        console.log('RSVP Data:', rsvpData);
+        
+        // Validation
         if (!rsvpData.name || !rsvpData.attendance) {
-            this.showToast('Mohon lengkapi data yang diperlukan', 'error');
+            this.showToast('Mohon lengkapi semua field yang wajib diisi', 'error');
             return;
         }
         
-        // Handle wish submission
-        if (rsvpData.message) {
-            if (rsvpData.displayWish) {
-                this.submitWishToFirebase(rsvpData);
-            } else {
-                this.redirectToWhatsApp(rsvpData);
-                return;
-            }
-        }
+        // In a real implementation, this would save to Firebase
+        this.showToast('RSVP berhasil dikirim! Terima kasih.', 'success');
         
-        this.submitRSVP(rsvpData);
+        // Clear form
+        e.target.reset();
+        
+        // If wish should be displayed, add it to wishes
+        if (rsvpData.displayWish && rsvpData.wishMessage) {
+            this.addNewWish({
+                name: rsvpData.name,
+                message: rsvpData.wishMessage,
+                date: new Date().toLocaleDateString('id-ID'),
+                likes: 0
+            });
+        }
     }
     
-    submitRSVP(data) {
-        // Mock submission
-        setTimeout(() => {
-            this.showToast('RSVP berhasil dikirim!', 'success');
-            this.clearRSVPForm();
-            if (data.displayWish && data.message) {
-                this.addWishToDisplay(data);
-            }
-        }, 1000);
-    }
-    
-    submitWishToFirebase(data) {
-        // Firebase wish submission placeholder
-    }
-    
-    addWishToDisplay(data) {
+    addNewWish(wishData) {
         const container = document.getElementById('wishesContainer');
         if (!container) return;
         
@@ -1136,58 +834,19 @@ class WeddingInvitation {
         wishCard.className = 'wish-card';
         wishCard.innerHTML = `
             <div class="wish-header">
-                <div class="wish-name">${data.name}</div>
-                <div class="wish-date">${new Date().toLocaleDateString('id-ID')}</div>
+                <div class="wish-name">${wishData.name}</div>
+                <div class="wish-date">${wishData.date}</div>
             </div>
-            <div class="wish-message">${data.message}</div>
+            <div class="wish-message">${wishData.message}</div>
             <div class="wish-actions">
-                <button class="heart-btn" data-likes="0">
-                    ❤️ <span class="like-count">0</span>
+                <button class="heart-btn" onclick="this.classList.toggle('liked')">
+                    ❤️ ${wishData.likes}
                 </button>
             </div>
         `;
         
-        const heartBtn = wishCard.querySelector('.heart-btn');
-        heartBtn.addEventListener('click', () => {
-            this.toggleWishLike(heartBtn);
-        });
-        
+        // Add to beginning of container
         container.insertBefore(wishCard, container.firstChild);
-    }
-    
-    // UPDATED: Simplified WhatsApp message without event selection
-    redirectToWhatsApp(data) {
-        const message = `Halo Suriansyah & Sonia Agustina,
-
-RSVP dari: ${data.name}
-Jumlah tamu: ${data.guestCount}
-Kehadiran: ${data.attendance === 'yes' ? 'Hadir' : 'Tidak Hadir'}
-
-Ucapan: ${data.message}
-
-Terima kasih! 🙏`;
-        
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/085251815099?text=${encodedMessage}`;
-        
-        window.open(whatsappUrl, '_blank');
-        
-        this.showToast('Mengalihkan ke WhatsApp...', 'info');
-        this.clearRSVPForm();
-    }
-    
-    clearRSVPForm() {
-        const form = document.getElementById('rsvpForm');
-        const rsvpName = document.getElementById('rsvpName');
-        const guestDisplay = document.getElementById('guestNameDisplay');
-        
-        if (form) form.reset();
-        if (rsvpName && guestDisplay && guestDisplay.textContent !== '[Nama Tamu]') {
-            rsvpName.value = guestDisplay.textContent;
-        }
-        
-        // Reset form interaction state
-        this.isFormInteracting = false;
     }
     
     copyAccountNumber(accountId) {
@@ -1196,6 +855,7 @@ Terima kasih! 🙏`;
         
         const accountNumber = accountElement.textContent;
         
+        // Copy to clipboard
         navigator.clipboard.writeText(accountNumber).then(() => {
             this.showToast('Nomor rekening berhasil disalin!', 'success');
         }).catch(() => {
@@ -1203,121 +863,80 @@ Terima kasih! 🙏`;
             const textArea = document.createElement('textarea');
             textArea.value = accountNumber;
             document.body.appendChild(textArea);
-            textArea.focus();
             textArea.select();
-            
-            try {
-                document.execCommand('copy');
-                this.showToast('Nomor rekening berhasil disalin!', 'success');
-            } catch (err) {
-                this.showToast('Gagal menyalin nomor rekening', 'error');
-            }
-            
+            document.execCommand('copy');
             document.body.removeChild(textArea);
+            
+            this.showToast('Nomor rekening berhasil disalin!', 'success');
         });
-        
-        // Haptic feedback
-        this.triggerHapticFeedback();
     }
     
     addToCalendar() {
-        const startDate = new Date('2025-09-24T07:00:00+08:00');
-        const endDate = new Date('2025-09-24T17:00:00+08:00');
+        const title = 'Pernikahan Suriansyah & Sonia Agustina';
+        const details = 'Akad Nikah dan Resepsi Pernikahan';
+        const location = 'Masjid Jabal Rahmah Mandin, Kotabaru';
+        const startDate = '20250924T070000Z';
+        const endDate = '20250924T120000Z';
         
-        const formatDate = (date) => {
-            return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-        };
-        
-        const eventDetails = {
-            title: 'Pernikahan Suriansyah & Sonia Agustina',
-            start: formatDate(startDate),
-            end: formatDate(endDate),
-            description: 'Akad Nikah: 07.00-08.00 WITA di Masjid Jabal Rahmah Mandin, Kotabaru\\nResepsi: 08.00 WITA di Rumah Mempelai Wanita',
-            location: 'Masjid Jabal Rahmah Mandin, Kotabaru'
-        };
-        
-        const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${eventDetails.start}/${eventDetails.end}&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
+        const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
         
         window.open(googleCalendarUrl, '_blank');
-        this.showToast('Mengarahkan ke Google Calendar...', 'info');
     }
     
     shareInvitation() {
         const shareData = {
             title: 'Undangan Pernikahan Suriansyah & Sonia Agustina',
-            text: 'Kami mengundang Anda dalam pernikahan kami pada 24 September 2025',
+            text: 'Kami mengundang Anda untuk hadir dalam acara pernikahan kami pada 24 September 2025',
             url: window.location.href
         };
         
         if (navigator.share) {
             navigator.share(shareData).catch(console.error);
         } else {
-            // Fallback to copying URL
+            // Fallback: copy URL to clipboard
             navigator.clipboard.writeText(window.location.href).then(() => {
                 this.showToast('Link undangan berhasil disalin!', 'success');
-            }).catch(() => {
-                this.showToast('Gagal membagikan undangan', 'error');
             });
         }
     }
     
     handleKeyNavigation(e) {
-        // Don't handle keys if tutorial is open or user is interacting with forms
-        if (!document.getElementById('tutorialOverlay').classList.contains('hidden') || 
-            this.isFormInteracting) {
-            if (e.key === 'Escape') {
-                this.hideTutorial();
-            }
+        // Don't navigate if user is typing in form
+        if (this.isFormInteracting) {
             return;
         }
         
         switch(e.key) {
-            case 'ArrowDown':
-            case 'PageDown':
-            case ' ': // Spacebar
-                e.preventDefault();
-                if (this.currentSection < this.totalSections - 1) {
-                    this.goToSection(this.currentSection + 1, 'up');
-                }
-                break;
             case 'ArrowUp':
-            case 'PageUp':
+            case 'ArrowLeft':
                 e.preventDefault();
                 if (this.currentSection > 0) {
                     this.goToSection(this.currentSection - 1, 'down');
                 }
                 break;
-            case 'Home':
+            case 'ArrowDown':
+            case 'ArrowRight':
                 e.preventDefault();
-                this.goToSection(0);
-                break;
-            case 'End':
-                e.preventDefault();
-                this.goToSection(this.totalSections - 1);
-                break;
-            case 'Escape':
-                if (this.currentSection === 1) {
-                    this.skipVideo();
+                if (this.currentSection < this.totalSections - 1) {
+                    this.goToSection(this.currentSection + 1, 'up');
                 }
                 break;
-            case 'h':
-            case 'H':
-            case '?':
+            case 'Escape':
                 e.preventDefault();
-                this.showTutorial();
+                this.hideTutorial();
                 break;
         }
     }
     
-    showToast(message, type = 'info') {
-        const container = document.getElementById('toastContainer');
-        if (!container) return;
+    showToast(message, type = 'success') {
+        const toastContainer = document.getElementById('toastContainer');
+        if (!toastContainer) return;
         
         const toast = document.createElement('div');
         toast.className = `toast toast--${type}`;
         toast.textContent = message;
         
-        container.appendChild(toast);
+        toastContainer.appendChild(toast);
         
         // Remove toast after 3 seconds
         setTimeout(() => {
@@ -1326,127 +945,21 @@ Terima kasih! 🙏`;
             }
         }, 3000);
     }
-    
-    // Cleanup method for potential memory leaks
-    destroy() {
-        // Clear timers
-        if (this.skipTimer) clearInterval(this.skipTimer);
-        if (this.countdownTimer) clearInterval(this.countdownTimer);
-        if (this.tutorialTimeout) clearTimeout(this.tutorialTimeout);
-        
-        // Remove event listeners if needed
-        if (this.touchHandlers) {
-            document.removeEventListener('touchstart', this.touchHandlers.touchstart);
-            document.removeEventListener('touchmove', this.touchHandlers.touchmove);
-            document.removeEventListener('touchend', this.touchHandlers.touchend);
-        }
-    }
 }
 
-// Additional utility functions
-const Utils = {
-    // Format date for Indonesian locale
-    formatDateID: (date) => {
-        return new Intl.DateTimeFormat('id-ID', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        }).format(date);
-    },
-    
-    // Debounce function for performance
-    debounce: (func, wait) => {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    },
-    
-    // Check if device is mobile
-    isMobile: () => {
-        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    },
-    
-    // Generate random ID
-    generateId: () => {
-        return Math.random().toString(36).substr(2, 9);
-    },
-    
-    // Smooth scroll to element
-    smoothScrollTo: (element, offset = 0) => {
-        const targetPosition = element.offsetTop - offset;
-        window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-        });
-    },
-    
-    // Check if device supports touch
-    isTouchDevice: () => {
-        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    },
-    
-    // Get swipe direction
-    getSwipeDirection: (startX, startY, endX, endY) => {
-        const deltaX = endX - startX;
-        const deltaY = endY - startY;
-        
-        if (Math.abs(deltaX) > Math.abs(deltaY)) {
-            return deltaX > 0 ? 'right' : 'left';
-        } else {
-            return deltaY > 0 ? 'down' : 'up';
-        }
-    }
-};
-
-// Initialize the application when DOM is loaded
+// Initialize the wedding invitation when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, initializing wedding invitation...');
-    const invitation = new WeddingInvitation();
-    
-    // Make invitation instance globally available for debugging
-    window.weddingInvitation = invitation;
-    
-    // Add viewport meta tag adjustment for mobile
-    if (Utils.isMobile()) {
-        const viewport = document.querySelector('meta[name="viewport"]');
-        if (viewport) {
-            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-        }
-    }
-    
-    // Prevent zoom on double tap for iOS
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', (event) => {
-        const now = (new Date()).getTime();
-        if (now - lastTouchEnd <= 300) {
-            event.preventDefault();
-        }
-        lastTouchEnd = now;
-    }, false);
-    
-    // Handle orientation changes
-    window.addEventListener('orientationchange', () => {
-        setTimeout(() => {
-            window.scrollTo(0, 0);
-        }, 100);
-    });
+    console.log('DOM loaded, initializing Wedding Invitation...');
+    new WeddingInvitation();
 });
 
-// Service Worker registration for PWA capabilities (optional)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        // Service Worker can be added here for offline capabilities
+// Fallback initialization
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Fallback: DOM loaded, initializing Wedding Invitation...');
+        new WeddingInvitation();
     });
-}
-
-// Export for testing purposes
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { WeddingInvitation, Utils };
+} else {
+    console.log('DOM already loaded, initializing Wedding Invitation immediately...');
+    new WeddingInvitation();
 }
