@@ -1,556 +1,917 @@
+// Wedding Invitation JavaScript - Updated with Navigation Arrows
+
 class WeddingInvitation {
-  constructor() {
-    this.init();
-  }
-
-  init() {
-    this.setupFirebase();
-    this.setupEventListeners();
-    this.setupCountdown();
-    this.setupMusic();
-    this.setupNavigation();
-    this.setupGuestName();
-    this.setupAnimations();
-    this.createFallingPetals();
-  }
-
-  setupFirebase() {
-    this.mockDatabase = {
-      rsvp: [],
-      wishes: [
-        {
-          name: "Contoh Tamu",
-          message:
-            "Selamat menempuh hidup baru! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Barakahu lakuma wa baraka alaikuma wa jama'a fi khair.",
-          timestamp: new Date(),
-          display: true,
-        },
-      ],
-    };
-    this.loadWishes();
-  }
-
-  setupEventListeners() {
-    const openBtn = document.getElementById("openInvitation");
-    if (openBtn) {
-      openBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        this.startInvitation();
-      });
+    constructor() {
+        this.currentSection = 0;
+        this.totalSections = 10;
+        this.isVideoPlaying = false;
+        this.skipTimer = null;
+        this.countdownTimer = null;
+        this.weddingDate = new Date('2025-09-24T07:00:00+08:00');
+        this.hasShownTutorial = false;
+        
+        // Firebase placeholder - Replace with actual config
+        this.firebaseConfig = {
+            // PLACEHOLDER_FIREBASE_CONFIG
+            // apiKey: "your-api-key",
+            // authDomain: "your-project.firebaseapp.com",
+            // projectId: "your-project-id",
+            // storageBucket: "your-project.appspot.com",
+            // messagingSenderId: "123456789",
+            // appId: "your-app-id"
+        };
+        
+        this.init();
     }
-
-    const skipVideo = document.getElementById("skipVideo");
-    if (skipVideo) {
-      skipVideo.addEventListener("click", () => this.skipVideo());
-    }
-
-    const googleCalBtn = document.getElementById("addToGoogleCal");
-    if (googleCalBtn) {
-      googleCalBtn.addEventListener("click", () => this.addToGoogleCalendar());
-    }
-
-    const whatsappBtn = document.getElementById("shareWhatsapp");
-    if (whatsappBtn) {
-      whatsappBtn.addEventListener("click", () => this.shareWhatsApp());
-    }
-
-    const facebookBtn = document.getElementById("shareFacebook");
-    if (facebookBtn) {
-      facebookBtn.addEventListener("click", () => this.shareFacebook());
-    }
-
-    const twitterBtn = document.getElementById("shareTwitter");
-    if (twitterBtn) {
-      twitterBtn.addEventListener("click", () => this.shareTwitter());
-    }
-
-    const copyLinkBtn = document.getElementById("copyLink");
-    if (copyLinkBtn) {
-      copyLinkBtn.addEventListener("click", () => this.copyInvitationLink());
-    }
-
-    const musicToggle = document.getElementById("musicToggle");
-    if (musicToggle) {
-      musicToggle.addEventListener("click", () => this.toggleMusic());
-    }
-
-    const rsvpForm = document.getElementById("rsvpForm");
-    if (rsvpForm) {
-      rsvpForm.addEventListener("submit", (e) => this.handleRSVP(e));
-    }
-
-    const wishesForm = document.getElementById("wishesForm");
-    if (wishesForm) {
-      wishesForm.addEventListener("submit", (e) => this.handleWishes(e));
-    }
-
-    document.querySelectorAll(".copy-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => this.copyToClipboard(e));
-    });
-
-    window.addEventListener("scroll", () => {
-      this.updateNavigation();
-      this.checkVideoPause();
-    });
-  }
-
-  startInvitation() {
-    const section1 = document.getElementById("section1");
-    const section2 = document.getElementById("section2");
-    if (section1) section1.style.display = "none";
-    if (section2) {
-      section2.classList.remove("hidden");
-      section2.style.display = "flex";
-    }
-  }
-
-  skipVideo() {
-    const section2 = document.getElementById("section2");
-    if (section2) section2.style.display = "none";
-    this.pauseVideo();
-    this.scrollToSection("section3");
-    this.startMusic();
-  }
-
-  pauseVideo() {
-    if (this.music) this.music.pause();
-    const video = document.getElementById("cinematicVideo");
-    if (video) video.pause();
-  }
-
-  checkVideoPause() {
-    const section2 = document.getElementById("section2");
-    if (section2 && section2.style.display === "none") {
-      this.pauseVideo();
-    }
-  }
-
-  setupCountdown() {
-    const weddingDate = new Date("2025-09-24T07:00:00+08:00");
-    const updateCountdown = () => {
-      const now = new Date();
-      const diff = weddingDate - now;
-
-      if (diff > 0) {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((diff / (1000 * 60)) % 60);
-        const seconds = Math.floor((diff / 1000) % 60);
-
-        const daysEl = document.getElementById("days");
-        const hoursEl = document.getElementById("hours");
-        const minutesEl = document.getElementById("minutes");
-        const secondsEl = document.getElementById("seconds");
-
-        if (daysEl) daysEl.textContent = days.toString().padStart(2, "0");
-        if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, "0");
-        if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, "0");
-        if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, "0");
-      } else {
-        const daysEl = document.getElementById("days");
-        const hoursEl = document.getElementById("hours");
-        const minutesEl = document.getElementById("minutes");
-        const secondsEl = document.getElementById("seconds");
-
-        if (daysEl) daysEl.textContent = "00";
-        if (hoursEl) hoursEl.textContent = "00";
-        if (minutesEl) minutesEl.textContent = "00";
-        if (secondsEl) secondsEl.textContent = "00";
-      }
-    };
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-  }
-
-  addToGoogleCalendar() {
-    const title = "Pernikahan Suriansyah & Sonia";
-    const details =
-      "Akad Nikah dan Resepsi Pernikahan\n\nAkad: 07:00-08:00 WITA\nResepsi: 08:00 WITA - selesai\n\nLokasi: Rumah Mempelai Wanita, Samping Masjid Jabal Rahmah, Mandin, Kotabaru";
-    const location =
-      "Rumah Mempelai Wanita, samping masjid Jabal Rahmah, Mandin, Kotabaru";
-    const startDate = "20250924T070000";
-    const endDate = "20250924T120000";
-
-    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
-      title
-    )}&dates=${startDate}/${endDate}&details=${encodeURIComponent(
-      details
-    )}&location=${encodeURIComponent(location)}`;
-
-    window.open(url, "_blank");
-  }
-
-  shareWhatsApp() {
-    const text = `Assalamu'alaikum! Kami mengundang Anda untuk hadir dalam acara pernikahan kami:
     
-Suri & Osi
-Tanggal 24 September 2025
-Lokasi Rumah Mempelai Wanita,
-samping Masjid Jabal Rahmah Mandin, Kotabaru
+    init() {
+        this.setupEventListeners();
+        this.extractGuestName();
+        this.createFallingPetals();
+        this.initializeFirebase();
+        this.hideLoadingScreen();
+        this.updateProgressIndicator();
+        this.initializeSections();
+        this.updateNavigationArrows();
+    }
     
-Selengkapnya lihat di ${window.location.href}
-`;
-    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-    window.open(url, "_blank");
-  }
-
-  shareFacebook() {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-      window.location.href
-    )}`;
-    window.open(url, "_blank");
-  }
-
-  shareTwitter() {
-    const text = "Pernikahan Suri & Osi pada 24 September 2025";
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-      text
-    )}&url=${encodeURIComponent(window.location.href)}`;
-    window.open(url, "_blank");
-  }
-
-  async copyInvitationLink() {
-    const button = document.getElementById("copyLink");
-    if (!button) return;
-
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      const originalText = button.innerHTML;
-      button.innerHTML = '<i class="fas fa-check"></i> Link Tersalin';
-      button.style.background = "var(--color-success)";
-      button.style.borderColor = "var(--color-success)";
-      button.style.color = "white";
-
-      setTimeout(() => {
-        button.innerHTML = originalText;
-        button.style.background = "";
-        button.style.borderColor = "";
-        button.style.color = "";
-      }, 2000);
-    } catch {
-      alert("Gagal menyalin tautan. Silakan salin secara manual.");
+    initializeSections() {
+        // Show only the first section initially
+        document.querySelectorAll('.section').forEach((section, index) => {
+            if (index === 0) {
+                section.classList.remove('hidden');
+                section.classList.add('visible');
+                section.style.display = 'flex';
+            } else {
+                section.classList.add('hidden');
+                section.classList.remove('visible');
+                section.style.display = 'none';
+            }
+        });
     }
-  }
-
-  handleRSVP(e) {
-    e.preventDefault();
-
-    const name = document.getElementById("rsvpName")?.value || "";
-    const attendance = document.getElementById("attendance")?.value || "";
-
-    if (!name || !attendance) {
-      alert("Silakan lengkapi semua field yang diperlukan.");
-      return;
+    
+    setupEventListeners() {
+        // Open invitation button
+        const openBtn = document.getElementById('openInvitationBtn');
+        if (openBtn) {
+            openBtn.addEventListener('click', () => {
+                this.showTutorial();
+            });
+        }
+        
+        // Tutorial close button
+        const closeTutorialBtn = document.getElementById('closeTutorial');
+        if (closeTutorialBtn) {
+            closeTutorialBtn.addEventListener('click', () => {
+                this.hideTutorial();
+                this.goToSection(1);
+            });
+        }
+        
+        // Navigation arrows
+        const navArrowUp = document.getElementById('navArrowUp');
+        const navArrowDown = document.getElementById('navArrowDown');
+        
+        if (navArrowUp) {
+            navArrowUp.addEventListener('click', () => {
+                this.navigateToPrevious();
+            });
+        }
+        
+        if (navArrowDown) {
+            navArrowDown.addEventListener('click', () => {
+                this.navigateToNext();
+            });
+        }
+        
+        // Skip video button
+        const skipBtn = document.getElementById('skipVideoBtn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                this.skipVideo();
+            });
+        }
+        
+        // Music player
+        const musicToggle = document.getElementById('musicToggle');
+        if (musicToggle) {
+            musicToggle.addEventListener('click', () => {
+                this.toggleMusic();
+            });
+        }
+        
+        // Video controls
+        const volumeBtn = document.getElementById('volumeBtn');
+        if (volumeBtn) {
+            volumeBtn.addEventListener('click', () => {
+                this.toggleVideoVolume();
+            });
+        }
+        
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', () => {
+                this.toggleFullscreen();
+            });
+        }
+        
+        // Navigation dots
+        document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                this.goToSection(index);
+            });
+        });
+        
+        // RSVP form
+        const rsvpForm = document.getElementById('rsvpForm');
+        if (rsvpForm) {
+            rsvpForm.addEventListener('submit', (e) => {
+                this.handleRSVPSubmission(e);
+            });
+        }
+        
+        // Attendance toggle
+        document.querySelectorAll('input[name="attendance"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                this.toggleEventSelection();
+            });
+        });
+        
+        // Copy buttons
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.copyAccountNumber(e.target.dataset.account);
+            });
+        });
+        
+        // Save date button
+        const saveDateBtn = document.getElementById('saveDateBtn');
+        if (saveDateBtn) {
+            saveDateBtn.addEventListener('click', () => {
+                this.addToCalendar();
+            });
+        }
+        
+        // Share button
+        const shareBtn = document.getElementById('shareBtn');
+        if (shareBtn) {
+            shareBtn.addEventListener('click', () => {
+                this.shareInvitation();
+            });
+        }
+        
+        // Video section handling
+        const video = document.getElementById('cinematicVideo');
+        if (video) {
+            video.addEventListener('loadeddata', () => {
+                this.startSkipCountdown();
+            });
+            // Start countdown immediately if video exists
+            setTimeout(() => {
+                this.startSkipCountdown();
+            }, 1000);
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            this.handleKeyNavigation(e);
+        });
+        
+        // Touch gestures for mobile
+        this.setupTouchGestures();
     }
-
-    this.mockDatabase.rsvp.push({
-      name,
-      attendance,
-      timestamp: new Date(),
-    });
-
-    this.showSuccessMessage("Terima kasih! Konfirmasi kehadiran Anda telah diterima.");
-    e.target.reset();
-    this.showConfetti();
-  }
-
-  handleWishes(e) {
-    e.preventDefault();
-
-    const name = document.getElementById("wishName")?.value || "";
-    const message = document.getElementById("wishMessage")?.value || "";
-    const option = document.querySelector('input[name="wishOption"]:checked')?.value || "display";
-
-    if (!name || !message) {
-      alert("Silakan lengkapi nama dan ucapan.");
-      return;
+    
+    showTutorial() {
+        const tutorialOverlay = document.getElementById('tutorialOverlay');
+        if (tutorialOverlay && !this.hasShownTutorial) {
+            tutorialOverlay.classList.remove('hidden');
+            this.hasShownTutorial = true;
+        } else {
+            // If tutorial was already shown, go directly to section 1
+            this.goToSection(1);
+        }
     }
-
-    if (option === "whatsapp") {
-      const url = `https://wa.me/085251815099?text=${encodeURIComponent(
-        `Ucapan Pernikahan dari: ${name}\n\n${message}`
-      )}`;
-      window.open(url, "_blank");
-    } else {
-      this.mockDatabase.wishes.unshift({
-        name,
-        message,
-        timestamp: new Date(),
-        display: true,
-      });
-      this.displayNewWish({ name, message, timestamp: new Date() });
+    
+    hideTutorial() {
+        const tutorialOverlay = document.getElementById('tutorialOverlay');
+        if (tutorialOverlay) {
+            tutorialOverlay.classList.add('hidden');
+        }
     }
-
-    this.showSuccessMessage("Terima kasih atas ucapan dan doa Anda!");
-    e.target.reset();
-    this.showConfetti();
-  }
-
-  displayNewWish(wish) {
-    const container = document.getElementById("wishesContainer");
-    if (!container) return;
-
-    const elem = document.createElement("div");
-    elem.className = "wish-item";
-    elem.innerHTML = `
-      <div class="wish-header">
-        <h4>${this.escapeHtml(wish.name)}</h4>
-        <span class="wish-time">${this.formatTime(wish.timestamp)}</span>
-      </div>
-      <p class="wish-text">${this.escapeHtml(wish.message)}</p>
-    `;
-
-    container.prepend(elem);
-  }
-
-  formatTime(date) {
-    const diff = new Date() - new Date(date);
-    if (diff < 60000) return "Baru saja";
-    if (diff < 3600000) return `${Math.floor(diff / 60000)} menit yang lalu`;
-    if (diff < 86400000) return `${Math.floor(diff / 3600000)} jam yang lalu`;
-    return `${Math.floor(diff / 86400000)} hari yang lalu`;
-  }
-
-  escapeHtml(text) {
-    const div = document.createElement("div");
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
-  copyToClipboard(e) {
-    const btn = e.target.closest(".copy-btn");
-    const text = btn?.dataset.copy;
-    if (!text) return;
-
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        const original = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check"></i> Tersalin';
-        btn.classList.add("copied");
+    
+    navigateToPrevious() {
+        if (this.currentSection > 0) {
+            this.goToSection(this.currentSection - 1);
+        }
+    }
+    
+    navigateToNext() {
+        if (this.currentSection < this.totalSections - 1) {
+            this.goToSection(this.currentSection + 1);
+        }
+    }
+    
+    updateNavigationArrows() {
+        const navArrowUp = document.getElementById('navArrowUp');
+        const navArrowDown = document.getElementById('navArrowDown');
+        
+        if (navArrowUp) {
+            if (this.currentSection === 0) {
+                navArrowUp.classList.add('hidden');
+            } else {
+                navArrowUp.classList.remove('hidden');
+            }
+        }
+        
+        if (navArrowDown) {
+            if (this.currentSection === this.totalSections - 1) {
+                navArrowDown.classList.add('hidden');
+            } else {
+                navArrowDown.classList.remove('hidden');
+            }
+        }
+    }
+    
+    extractGuestName() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('guest') || urlParams.get('to') || '[Nama Tamu]';
+        const guestDisplay = document.getElementById('guestNameDisplay');
+        const rsvpName = document.getElementById('rsvpName');
+        
+        if (guestDisplay) {
+            guestDisplay.textContent = guestName;
+        }
+        if (rsvpName && guestName !== '[Nama Tamu]') {
+            rsvpName.value = guestName;
+        }
+    }
+    
+    createFallingPetals() {
+        const container = document.getElementById('petalsContainer');
+        if (!container) return;
+        
+        const petalSymbols = ['🌼', '🌸', '🌺', '💮', '🏵️'];
+        
+        setInterval(() => {
+            if (Math.random() > 0.3) return; // 70% chance to not create a petal
+            
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.innerHTML = petalSymbols[Math.floor(Math.random() * petalSymbols.length)];
+            
+            // Random horizontal position
+            petal.style.left = Math.random() * 100 + '%';
+            
+            // Random animation duration and delay
+            const duration = 5 + Math.random() * 5; // 5-10 seconds
+            const delay = Math.random() * 2; // 0-2 seconds delay
+            
+            petal.style.animation = `fall ${duration}s linear ${delay}s forwards`;
+            
+            container.appendChild(petal);
+            
+            // Remove petal after animation
+            setTimeout(() => {
+                if (petal.parentNode) {
+                    petal.parentNode.removeChild(petal);
+                }
+            }, (duration + delay) * 1000);
+        }, 300);
+    }
+    
+    initializeFirebase() {
+        // Firebase initialization placeholder
+        // Mock data for demonstration
+        this.loadMockWishes();
+    }
+    
+    loadMockWishes() {
+        const mockWishes = [
+            {
+                name: "Ahmad & Siti",
+                message: "Selamat menempuh hidup baru! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah.",
+                date: new Date().toLocaleDateString('id-ID'),
+                likes: 5
+            },
+            {
+                name: "Keluarga Besar Rahman",
+                message: "Barakallahu lakuma wa baraka alaikuma wa jama'a bainakuma fi khair. Selamat menempuh hidup baru!",
+                date: new Date().toLocaleDateString('id-ID'),
+                likes: 8
+            },
+            {
+                name: "Teman Kerja",
+                message: "Selamat menikah! Semoga pernikahan kalian dipenuhi kebahagiaan dan berkah dari Allah SWT.",
+                date: new Date().toLocaleDateString('id-ID'),
+                likes: 3
+            }
+        ];
+        
         setTimeout(() => {
-          btn.innerHTML = original;
-          btn.classList.remove("copied");
+            this.displayWishes(mockWishes);
+        }, 1000);
+    }
+    
+    displayWishes(wishes) {
+        const container = document.getElementById('wishesContainer');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        wishes.forEach(wish => {
+            const wishCard = document.createElement('div');
+            wishCard.className = 'wish-card';
+            wishCard.innerHTML = `
+                <div class="wish-header">
+                    <div class="wish-name">${wish.name}</div>
+                    <div class="wish-date">${wish.date}</div>
+                </div>
+                <div class="wish-message">${wish.message}</div>
+                <div class="wish-actions">
+                    <button class="heart-btn" data-likes="${wish.likes}">
+                        ❤️ <span class="like-count">${wish.likes}</span>
+                    </button>
+                </div>
+            `;
+            
+            const heartBtn = wishCard.querySelector('.heart-btn');
+            heartBtn.addEventListener('click', () => {
+                this.toggleWishLike(heartBtn);
+            });
+            
+            container.appendChild(wishCard);
+        });
+    }
+    
+    toggleWishLike(button) {
+        const likeCountSpan = button.querySelector('.like-count');
+        let currentLikes = parseInt(button.dataset.likes);
+        
+        if (button.classList.contains('liked')) {
+            currentLikes--;
+            button.classList.remove('liked');
+        } else {
+            currentLikes++;
+            button.classList.add('liked');
+        }
+        
+        button.dataset.likes = currentLikes;
+        likeCountSpan.textContent = currentLikes;
+    }
+    
+    hideLoadingScreen() {
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('hidden');
+            }
         }, 2000);
-      })
-      .catch(() => {
-        alert("Gagal menyalin, silakan salin secara manual: " + text);
-      });
-  }
-
-  setupMusic() {
-    this.music = document.getElementById("backgroundMusic");
-    this.musicButton = document.getElementById("musicToggle");
-    this.isPlaying = false;
-  }
-
-  startMusic() {
-    if (this.musicButton && !this.isPlaying) {
-      this.isPlaying = true;
-      this.musicButton.classList.remove("muted");
-      if (this.music) this.music.play();
     }
-  }
-
-  toggleMusic() {
-    if (!this.musicButton || !this.music) return;
-    if (this.isPlaying) {
-      this.music.pause();
-      this.musicButton.classList.add("muted");
-      this.isPlaying = false;
-    } else {
-      this.music.play();
-      this.musicButton.classList.remove("muted");
-      this.isPlaying = true;
+    
+    goToSection(sectionIndex) {
+        if (sectionIndex < 0 || sectionIndex >= this.totalSections) return;
+        
+        // Handle video section special behavior
+        if (this.currentSection === 1 && sectionIndex !== 1) {
+            this.pauseVideo();
+        } else if (sectionIndex === 1) {
+            this.playVideo();
+        }
+        
+        // Hide all sections first
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.add('hidden');
+            section.classList.remove('visible');
+            section.style.display = 'none';
+        });
+        
+        // Show target section
+        const targetSection = document.getElementById(`section${sectionIndex}`);
+        if (targetSection) {
+            targetSection.classList.remove('hidden');
+            targetSection.classList.add('visible');
+            targetSection.style.display = 'flex';
+            
+            // Smooth scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        } else {
+            console.error(`Section ${sectionIndex} not found`);
+        }
+        
+        // Update navigation
+        this.updateNavigation(sectionIndex);
+        this.currentSection = sectionIndex;
+        
+        // Update navigation arrows visibility
+        this.updateNavigationArrows();
+        
+        // Start countdown if on countdown section
+        if (sectionIndex === 2) {
+            setTimeout(() => {
+                this.startCountdown();
+            }, 500);
+        } else {
+            this.stopCountdown();
+        }
+        
+        this.updateProgressIndicator();
     }
-  }
-
-  setupNavigation() {
-    const navLinks = document.querySelectorAll(".nav-link");
-    navLinks.forEach((link) => {
-      link.addEventListener("click", (e) => {
+    
+    updateNavigation(activeIndex) {
+        document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+            if (index === activeIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    updateProgressIndicator() {
+        const progressBar = document.getElementById('progressBar');
+        if (progressBar) {
+            const progress = (this.currentSection / (this.totalSections - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+    }
+    
+    startSkipCountdown() {
+        let countdown = 5;
+        const countdownElement = document.getElementById('skipCountdown');
+        const skipBtn = document.getElementById('skipVideoBtn');
+        
+        if (!skipBtn) return;
+        
+        // Make skip button initially semi-transparent
+        skipBtn.style.opacity = '0.7';
+        skipBtn.style.pointerEvents = 'auto';
+        
+        this.skipTimer = setInterval(() => {
+            countdown--;
+            if (countdownElement) {
+                countdownElement.textContent = countdown;
+            }
+            
+            if (countdown <= 0) {
+                clearInterval(this.skipTimer);
+                if (skipBtn) {
+                    skipBtn.style.opacity = '1';
+                    skipBtn.style.pointerEvents = 'auto';
+                    skipBtn.classList.add('ready');
+                }
+            }
+        }, 1000);
+    }
+    
+    skipVideo() {
+        if (this.skipTimer) {
+            clearInterval(this.skipTimer);
+        }
+        this.goToSection(2);
+    }
+    
+    playVideo() {
+        const video = document.getElementById('cinematicVideo');
+        if (video) {
+            video.play().catch(console.error);
+            this.isVideoPlaying = true;
+        }
+    }
+    
+    pauseVideo() {
+        const video = document.getElementById('cinematicVideo');
+        if (video) {
+            video.pause();
+            this.isVideoPlaying = false;
+        }
+    }
+    
+    toggleVideoVolume() {
+        const video = document.getElementById('cinematicVideo');
+        const volumeBtn = document.getElementById('volumeBtn');
+        
+        if (video && volumeBtn) {
+            video.muted = !video.muted;
+            volumeBtn.textContent = video.muted ? '🔇' : '🔊';
+        }
+    }
+    
+    toggleFullscreen() {
+        const video = document.getElementById('cinematicVideo');
+        if (video) {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            } else if (video.mozRequestFullScreen) {
+                video.mozRequestFullScreen();
+            } else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            }
+        }
+    }
+    
+    toggleMusic() {
+        const audio = document.getElementById('backgroundMusic');
+        const toggleBtn = document.getElementById('musicToggle');
+        
+        if (audio && toggleBtn) {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    toggleBtn.classList.add('playing');
+                    toggleBtn.innerHTML = '<span class="music-icon">🎵</span>';
+                }).catch(console.error);
+            } else {
+                audio.pause();
+                toggleBtn.classList.remove('playing');
+                toggleBtn.innerHTML = '<span class="music-icon">🔇</span>';
+            }
+        }
+    }
+    
+    startCountdown() {
+        this.stopCountdown(); // Clear any existing countdown
+        
+        this.countdownTimer = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = this.weddingDate.getTime() - now;
+            
+            if (distance < 0) {
+                this.stopCountdown();
+                this.showCountdownComplete();
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            this.updateCountdownDisplay(days, hours, minutes, seconds);
+        }, 1000);
+    }
+    
+    stopCountdown() {
+        if (this.countdownTimer) {
+            clearInterval(this.countdownTimer);
+            this.countdownTimer = null;
+        }
+    }
+    
+    updateCountdownDisplay(days, hours, minutes, seconds) {
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        
+        if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+        if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+    }
+    
+    showCountdownComplete() {
+        const countdownSection = document.querySelector('.countdown-timer');
+        if (countdownSection) {
+            countdownSection.innerHTML = `
+                <div class="countdown-complete">
+                    <h3 class="gradient-text">Hari Bahagia Telah Tiba! 🎉</h3>
+                    <p>Terima kasih telah menjadi bagian dari perjalanan cinta kami</p>
+                </div>
+            `;
+        }
+    }
+    
+    handleRSVPSubmission(e) {
         e.preventDefault();
-        const id = link.getAttribute("href").substring(1);
-        this.scrollToSection(id);
-      });
-    });
-  }
-
-  scrollToSection(id) {
-    const section = document.getElementById(id);
-    if (!section) return;
-
-    section.classList.remove("hidden");
-    section.style.display = "flex";
-
-    const navbarHeight = document.querySelector(".navbar")?.offsetHeight || 60;
-    const offsetTop = section.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-
-    window.scrollTo({ top: offsetTop, behavior: "smooth" });
-  }
-
-  updateNavigation() {
-    const sections = document.querySelectorAll(".section:not(.hidden)");
-    const navLinks = document.querySelectorAll(".nav-link");
-
-    const navbarHeight = document.querySelector(".navbar")?.offsetHeight || 60;
-    let currentSection = "";
-
-    sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-      if (rect.top <= navbarHeight + 100 && rect.bottom > navbarHeight + 100) {
-        currentSection = section.id;
-      }
-    });
-
-    navLinks.forEach((link) => {
-      link.classList.remove("active");
-      if (link.getAttribute("href").substring(1) === currentSection) {
-        link.classList.add("active");
-      }
-    });
-  }
-
-  setupGuestName() {
-    const params = new URLSearchParams(window.location.search);
-    const guestName = params.get("to") || params.get("guest") || "Tamu Terhormat";
-
-    const guestNameElem = document.getElementById("guestName");
-    if (guestNameElem) {
-      guestNameElem.textContent = guestName;
+        
+        const rsvpData = {
+            name: document.getElementById('rsvpName')?.value,
+            guestCount: document.getElementById('guestCount')?.value,
+            attendance: document.querySelector('input[name="attendance"]:checked')?.value,
+            events: Array.from(document.querySelectorAll('.event-checkboxes input:checked')).map(cb => cb.value),
+            message: document.getElementById('wishMessage')?.value,
+            displayWish: document.getElementById('displayWish')?.checked,
+            timestamp: new Date()
+        };
+        
+        if (!rsvpData.name || !rsvpData.attendance) {
+            this.showToast('Mohon lengkapi data yang diperlukan', 'error');
+            return;
+        }
+        
+        // Handle wish submission
+        if (rsvpData.message) {
+            if (rsvpData.displayWish) {
+                this.submitWishToFirebase(rsvpData);
+            } else {
+                this.redirectToWhatsApp(rsvpData);
+                return;
+            }
+        }
+        
+        this.submitRSVP(rsvpData);
     }
-  }
-
-  createFallingPetals() {
-    setInterval(() => {
-      if (window.scrollY > window.innerHeight * 2) {
-        this.createDaisy();
-      }
-    }, 3000);
-  }
-
-  createDaisy() {
-    const daisy = document.createElement("div");
-    daisy.style.cssText = `
-      position: fixed;
-      top: -50px;
-      left: ${Math.random() * 100}vw;
-      width: ${Math.random() * 15 + 10}px;
-      height: ${Math.random() * 15 + 10}px;
-      background: white;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 100;
-      box-shadow:
-        -4px 0 0 white,
-        4px 0 0 white,
-        0 -4px 0 white,
-        0 4px 0 white,
-        -3px -3px 0 white,
-        3px -3px 0 white,
-        -3px 3px 0 white,
-        3px 3px 0 white;
-      animation: fall ${Math.random() * 3 + 5}s linear forwards;
-    `;
-    document.body.appendChild(daisy);
-    setTimeout(() => {
-      daisy.remove();
-    }, 8000);
-  }
-
-  showSuccessMessage(message) {
-    const div = document.createElement("div");
-    div.style.cssText = `
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: var(--color-success);
-      color: white;
-      padding: 20px 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      z-index: 10000;
-      text-align: center;
-      font-weight: 600;
-    `;
-    div.textContent = message;
-    document.body.appendChild(div);
-    setTimeout(() => div.remove(), 3000);
-  }
-
-  showConfetti() {
-    const overlay = document.getElementById("confettiOverlay");
-    if (!overlay) return;
-
-    overlay.classList.add("active");
-
-    const colors = ["#1FB8CD", "#FFC185", "#B4413C", "#ECEBD5", "#5D878F"];
-
-    for (let i = 0; i < 50; i++) {
-      setTimeout(() => {
-        this.createConfettiParticle(overlay, colors);
-      }, i * 50);
+    
+    submitRSVP(data) {
+        // Mock submission
+        setTimeout(() => {
+            this.showToast('RSVP berhasil dikirim!', 'success');
+            this.clearRSVPForm();
+            if (data.displayWish && data.message) {
+                this.addWishToDisplay(data);
+            }
+        }, 1000);
     }
+    
+    submitWishToFirebase(data) {
+        // Firebase wish submission placeholder
+    }
+    
+    addWishToDisplay(data) {
+        const container = document.getElementById('wishesContainer');
+        if (!container) return;
+        
+        const wishCard = document.createElement('div');
+        wishCard.className = 'wish-card';
+        wishCard.innerHTML = `
+            <div class="wish-header">
+                <div class="wish-name">${data.name}</div>
+                <div class="wish-date">${new Date().toLocaleDateString('id-ID')}</div>
+            </div>
+            <div class="wish-message">${data.message}</div>
+            <div class="wish-actions">
+                <button class="heart-btn" data-likes="0">
+                    ❤️ <span class="like-count">0</span>
+                </button>
+            </div>
+        `;
+        
+        const heartBtn = wishCard.querySelector('.heart-btn');
+        heartBtn.addEventListener('click', () => {
+            this.toggleWishLike(heartBtn);
+        });
+        
+        container.insertBefore(wishCard, container.firstChild);
+    }
+    
+    redirectToWhatsApp(data) {
+        const message = `Halo Suriansyah & Sonia Agustina,
 
-    setTimeout(() => {
-      overlay.classList.remove("active");
-      overlay.innerHTML = "";
-    }, 3000);
-  }
+RSVP dari: ${data.name}
+Jumlah tamu: ${data.guestCount}
+Kehadiran: ${data.attendance === 'yes' ? 'Hadir' : 'Tidak Hadir'}
+${data.events.length > 0 ? 'Acara: ' + data.events.join(', ') : ''}
 
-  createConfettiParticle(container, colors) {
-    const particle = document.createElement("div");
-    particle.className = "confetti-particle";
-    particle.style.cssText = `
-      left: ${Math.random() * 100}vw;
-      background-color: ${colors[Math.floor(Math.random() * colors.length)]};
-      animation-delay: 0s;
-      animation-duration: ${Math.random() * 2 + 2}s;
-    `;
-    container.appendChild(particle);
-    setTimeout(() => particle.remove(), 4000);
-  }
+Ucapan: ${data.message}
+
+Terima kasih! 🙏`;
+        
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/085251815099?text=${encodedMessage}`;
+        
+        window.open(whatsappUrl, '_blank');
+        
+        this.showToast('Mengalihkan ke WhatsApp...', 'info');
+        this.clearRSVPForm();
+    }
+    
+    clearRSVPForm() {
+        const form = document.getElementById('rsvpForm');
+        const rsvpName = document.getElementById('rsvpName');
+        const guestDisplay = document.getElementById('guestNameDisplay');
+        
+        if (form) form.reset();
+        if (rsvpName && guestDisplay && guestDisplay.textContent !== '[Nama Tamu]') {
+            rsvpName.value = guestDisplay.textContent;
+        }
+    }
+    
+    toggleEventSelection() {
+        const attendanceValue = document.querySelector('input[name="attendance"]:checked')?.value;
+        const eventSelection = document.getElementById('eventSelection');
+        
+        if (eventSelection) {
+            if (attendanceValue === 'yes') {
+                eventSelection.style.display = 'block';
+            } else {
+                eventSelection.style.display = 'none';
+            }
+        }
+    }
+    
+    copyAccountNumber(accountId) {
+        const accountElement = document.getElementById(accountId);
+        if (!accountElement) return;
+        
+        const accountNumber = accountElement.textContent;
+        
+        navigator.clipboard.writeText(accountNumber).then(() => {
+            this.showToast('Nomor rekening berhasil disalin!', 'success');
+        }).catch(() => {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = accountNumber;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                this.showToast('Nomor rekening berhasil disalin!', 'success');
+            } catch (err) {
+                this.showToast('Gagal menyalin nomor rekening', 'error');
+            }
+            
+            document.body.removeChild(textArea);
+        });
+    }
+    
+    addToCalendar() {
+        const startDate = new Date('2025-09-24T07:00:00+08:00');
+        const endDate = new Date('2025-09-24T17:00:00+08:00');
+        
+        const formatDate = (date) => {
+            return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+        };
+        
+        const eventDetails = {
+            title: 'Pernikahan Suriansyah & Sonia Agustina',
+            start: formatDate(startDate),
+            end: formatDate(endDate),
+            description: 'Akad Nikah: 07.00-08.00 WITA di Masjid Jabal Rahmah Mandin, Kotabaru\\nResepsi: 08.00 WITA di Rumah Mempelai Wanita',
+            location: 'Masjid Jabal Rahmah Mandin, Kotabaru'
+        };
+        
+        const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${eventDetails.start}/${eventDetails.end}&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
+        
+        window.open(googleCalendarUrl, '_blank');
+        this.showToast('Mengarahkan ke Google Calendar...', 'info');
+    }
+    
+    shareInvitation() {
+        const shareData = {
+            title: 'Undangan Pernikahan Suriansyah & Sonia Agustina',
+            text: 'Kami mengundang Anda dalam pernikahan kami pada 24 September 2025',
+            url: window.location.href
+        };
+        
+        if (navigator.share) {
+            navigator.share(shareData).catch(console.error);
+        } else {
+            // Fallback to copying URL
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                this.showToast('Link undangan berhasil disalin!', 'success');
+            }).catch(() => {
+                this.showToast('Gagal membagikan undangan', 'error');
+            });
+        }
+    }
+    
+    handleKeyNavigation(e) {
+        switch(e.key) {
+            case 'ArrowDown':
+            case 'PageDown':
+                e.preventDefault();
+                if (this.currentSection < this.totalSections - 1) {
+                    this.goToSection(this.currentSection + 1);
+                }
+                break;
+            case 'ArrowUp':
+            case 'PageUp':
+                e.preventDefault();
+                if (this.currentSection > 0) {
+                    this.goToSection(this.currentSection - 1);
+                }
+                break;
+            case 'Home':
+                e.preventDefault();
+                this.goToSection(0);
+                break;
+            case 'End':
+                e.preventDefault();
+                this.goToSection(this.totalSections - 1);
+                break;
+            case 'Escape':
+                if (this.currentSection === 1) {
+                    this.skipVideo();
+                }
+                break;
+        }
+    }
+    
+    setupTouchGestures() {
+        let startY = 0;
+        let endY = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+        
+        document.addEventListener('touchend', (e) => {
+            endY = e.changedTouches[0].clientY;
+            this.handleSwipe();
+        }, { passive: true });
+        
+        const handleSwipe = () => {
+            const swipeThreshold = 50;
+            const deltaY = startY - endY;
+            
+            if (Math.abs(deltaY) > swipeThreshold) {
+                if (deltaY > 0 && this.currentSection < this.totalSections - 1) {
+                    // Swipe up - next section
+                    this.goToSection(this.currentSection + 1);
+                } else if (deltaY < 0 && this.currentSection > 0) {
+                    // Swipe down - previous section
+                    this.goToSection(this.currentSection - 1);
+                }
+            }
+        };
+        
+        this.handleSwipe = handleSwipe;
+    }
+    
+    showToast(message, type = 'info') {
+        // Only show essential toasts, not navigation messages
+        if (message.includes('navigated to') || message.includes('section')) {
+            return; // Skip navigation toast messages
+        }
+        
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        
+        const toast = document.createElement('div');
+        toast.className = `toast toast--${type}`;
+        toast.textContent = message;
+        
+        container.appendChild(toast);
+        
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 3000);
+    }
 }
 
-document.addEventListener("DOMContentLoaded", () => new WeddingInvitation());
+// Initialize the application when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const invitation = new WeddingInvitation();
+    
+    // Make invitation instance globally available for debugging
+    window.weddingInvitation = invitation;
+});
 
-// Additional smooth scroll behavior for older browsers
-if (!CSS.supports("scroll-behavior", "smooth")) {
-  const links = document.querySelectorAll('a[href^="#"]');
+// Additional utility functions
+const Utils = {
+    // Format date for Indonesian locale
+    formatDateID: (date) => {
+        return new Intl.DateTimeFormat('id-ID', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }).format(date);
+    },
+    
+    // Debounce function for performance
+    debounce: (func, wait) => {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    },
+    
+    // Check if device is mobile
+    isMobile: () => {
+        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    },
+    
+    // Generate random ID
+    generateId: () => {
+        return Math.random().toString(36).substr(2, 9);
+    },
+    
+    // Smooth scroll to element
+    smoothScrollTo: (element, offset = 0) => {
+        const targetPosition = element.offsetTop - offset;
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+    }
+};
 
-  links.forEach((link) => {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-
-      const targetId = this.getAttribute("href");
-      const target = document.querySelector(targetId);
-      if (!target) return;
-
-      const navbarHeight = document.querySelector(".navbar")?.offsetHeight || 60;
-      const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-
-      const startPosition = window.pageYOffset;
-      const distance = targetPosition - startPosition;
-      const duration = 1000;
-      let start = null;
-
-      function animation(currentTime) {
-        if (start === null) start = currentTime;
-        const timeElapsed = currentTime - start;
-        const run = ease(timeElapsed, startPosition, distance, duration);
-        window.scrollTo(0, run);
-        if (timeElapsed < duration) requestAnimationFrame(animation);
-      }
-
-      function ease(t, b, c, d) {
-        t /= d / 2;
-        if (t < 1) return (c / 2) * t * t + b;
-        t--;
-        return (-c / 2) * (t * (t - 2) - 1) + b;
-      }
-
-      requestAnimationFrame(animation);
-    });
-  });
+// Export for testing purposes
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { WeddingInvitation, Utils };
 }
