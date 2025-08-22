@@ -900,7 +900,7 @@ body {
   z-index: 9999;
   opacity: 1;
   transition: all 0.5s ease;
-  padding: 0.75rem;
+  padding: 0.5rem;
 }
 
 .tutorial-overlay.hidden {
@@ -911,7 +911,7 @@ body {
 .tutorial-content {
   max-width: 500px;
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.5rem;
   position: relative;
   animation: tutorialSlideIn 0.5s ease-out;
 }
@@ -2342,12 +2342,12 @@ input[type="checkbox"]:checked + .checkmark::after {
   }
   
   .tutorial-content {
-    padding: 1.5rem;
+    padding: 1rem;
     margin: 1rem;
   }
   
   .tutorial-icon {
-    font-size: 2.5rem;
+    font-size: 1rem;
   }
   
   .navigation-demo {
