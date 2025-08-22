@@ -47,6 +47,23 @@ class WeddingInvitation {
         }, 100);
     }
     
+    hideHeavyEffectsDuringVideoPlay() {
+      // Sembunyikan overlay dan animasi yang berat
+      const overlays = document.querySelectorAll('.video-overlay, .petals-container, .some-other-heavy-animation');
+      overlays.forEach(el => {
+        if (!el.classList.contains('hidden')) {
+          el.classList.add('hidden');
+        }
+      });
+    }
+
+    showHeavyEffectsAfterVideoPauseOrEnd() {
+      const overlays = document.querySelectorAll('.video-overlay, .petals-container, .some-other-heavy-animation');
+      overlays.forEach(el => {
+        el.classList.remove('hidden');
+      });
+    }
+    
     setupFormSafeZones() {
         // Mark all form safe zones
         const safeZones = document.querySelectorAll('[data-no-swipe], .form-safe-zone');
