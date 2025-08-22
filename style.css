@@ -780,8 +780,8 @@ body {
 /* Transparent Navigation Arrows */
 .arrow-nav {
   position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 20px;
+  transform: none;
   z-index: 1500; /* Higher z-index to ensure visibility */
   opacity: 0.6; /* More visible by default */
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
