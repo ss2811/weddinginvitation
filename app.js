@@ -684,11 +684,13 @@ function onPlayerStateChange(event) {
         }
     });
     
-    // Enable YouTube API
+const iframe = document.getElementById('weddingVideo'); // kalau id lain: ganti sesuai id iframe Anda
+if (iframe && typeof iframe.src === 'string') {
     if (iframe.src.indexOf('enablejsapi=1') === -1) {
-        iframe.src += '&enablejsapi=1&origin=' + encodeURIComponent(window.location.origin);
+        const sep = iframe.src.indexOf('?') === -1 ? '?' : '&';
+        iframe.src = iframe.src + sep + 'enablejsapi=1&origin=' + encodeURIComponent(window.location.origin);
     }
-}
+}    
 
 // Utility Functions
 function showNotification(message) {
