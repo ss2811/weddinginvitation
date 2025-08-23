@@ -867,7 +867,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* tombol atas di pojok atas, tombol bawah di pojok bawah */
-  gap: 0;
+  gap: 20vh;
   padding: 10px 0;
   z-index: 1000;
   transform: none; /* hilangkan translateY */
@@ -1100,13 +1100,13 @@ p {
 .countdown-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-12); /* Jarak antar box dikecilkan */
+  gap: var(--space-11); /* Jarak antar box dikecilkan */
   margin: var(--space-32) 0;
 }
 
 .countdown-item {
   background: rgba(255, 255, 255, 0.1);
-  padding: var(--space-12); /* Padding (jarak dalam) box dikecilkan */
+  padding: var(--space-11); /* Padding (jarak dalam) box dikecilkan */
   border-radius: var(--radius-lg);
   border: 2px solid var(--wedding-gold);
   text-align: center;
@@ -1114,7 +1114,7 @@ p {
 
 .countdown-item span {
   display: block;
-  font-size: 2rem; /* Ukuran angka dikecilkan */
+  font-size: 1.9rem; /* Ukuran angka dikecilkan */
   font-weight: 700;
   color: var(--wedding-gold);
   font-family: 'Playfair Display', serif; /* Font yang sudah diubah sebelumnya */
@@ -1122,7 +1122,7 @@ p {
 
 .countdown-item label {
   color: var(--wedding-white);
-  font-size: 0.8rem; /* Ukuran tulisan 'Hari', 'Jam', dll. dikecilkan */
+  font-size: 0.7rem; /* Ukuran tulisan 'Hari', 'Jam', dll. dikecilkan */
   text-transform: uppercase;
   letter-spacing: 1px;
 }
