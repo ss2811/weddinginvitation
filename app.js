@@ -1,464 +1,330 @@
-// Wedding Invitation JavaScript
+// Wedding Invitation JavaScript - Fixed Version
 
-/**
- * FIREBASE SETUP INSTRUCTIONS
- * 
- * 1. Go to https://console.firebase.google.com/
- * 2. Create a new project or select existing project
- * 3. Enable Firestore Database:
- *    - Go to Firestore Database in the left sidebar
- *    - Click "Create database"
- *    - Choose "Start in test mode" for development
- *    - Select your preferred location
- * 
- * 4. Get your Firebase config:
- *    - Go to Project Settings (gear icon)
- *    - Scroll down to "Your apps" section
- *    - Click "Web" icon to add a web app
- *    - Register your app with a nickname
- *    - Copy the firebaseConfig object
- * 
- * 5. Replace the firebaseConfig below with your actual config
- * 
- * 6. Set up Firestore Security Rules:
- *    Go to Firestore Database > Rules and replace with:
- *    
- *    rules_version = '2';
- *    service cloud.firestore {
- *      match /databases/{database}/documents {
- *        match /rsvp/{document} {
- *          allow read, write: if true;
- *        }
- *        match /messages/{document} {
- *          allow read, write: if true;
- *        }
- *      }
- *    }
- * 
- * 7. Database Structure:
- *    Collection: 'rsvp'
- *    Documents: auto-generated IDs
- *    Fields: {
- *      name: string,
- *      attendance: string ('ya' or 'tidak'),
- *      message: string,
- *      messageOption: string ('display' or 'whatsapp'),
- *      timestamp: timestamp,
- *      phoneNumber: string (optional)
- *    }
- */
+// Global variables
+let currentSession = 0;
+let backgroundMusic;
+let countdownInterval;
+let isVideoPlaying = false;
 
-// Firebase Configuration - REPLACE WITH YOUR ACTUAL CONFIG
+// Firebase configuration and initialization
+// FIREBASE INTEGRATION SETUP:
+// 1. Go to https://console.firebase.google.com/
+// 2. Create a new project or use existing one
+// 3. Enable Firestore Database
+// 4. Get your Firebase config object from Project Settings > General > Your apps
+// 5. Replace the config object below with your actual Firebase config
+// 6. Enable Firestore rules for read/write access:
+/*
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /messages/{document} {
+      allow read, write: if true;
+    }
+    match /rsvp/{document} {
+      allow read, write: if true;
+    }
+  }
+}
+*/
+
+// Uncomment and configure when ready to use Firebase
+/*
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, addDoc, getDocs, orderBy, query } from 'firebase/firestore';
+
 const firebaseConfig = {
-  apiKey: "your-api-key-here",
+  // Your Firebase config object goes here
+  apiKey: "your-api-key",
   authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project-id-here",
+  projectId: "your-project-id",
   storageBucket: "your-project.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "your-app-id-here"
+  messagingSenderId: "123456789",
+  appId: "your-app-id"
 };
 
-// Initialize Firebase (only if config is properly set)
-let db = null;
-let isFirebaseEnabled = false;
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+*/
 
-try {
-  if (firebaseConfig.apiKey !== "your-api-key-here") {
-    firebase.initializeApp(firebaseConfig);
-    db = firebase.firestore();
-    isFirebaseEnabled = true;
-    console.log('Firebase initialized successfully');
-  } else {
-    console.log('Firebase not configured. Using demo mode.');
-  }
-} catch (error) {
-  console.error('Firebase initialization error:', error);
+// Initialize application when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeApp();
+});
+
+function initializeApp() {
+    backgroundMusic = document.getElementById('backgroundMusic');
+    setupNavigation();
+    startCountdown();
+    loadGuestMessages();
+    setupVideoControls();
+    
+    // Start with session 0 (landing page) and make it active
+    showSession(0);
+    
+    // Auto-play background music with user gesture fallback
+    playBackgroundMusic();
 }
 
-// Daisy SVG Template (Peaceminusone style)
-const daisySVG = `
-<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-  <g>
-    <!-- Petals -->
-    <ellipse cx="20" cy="8" rx="3" ry="8" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9"/>
-    <ellipse cx="32" cy="20" rx="8" ry="3" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9"/>
-    <ellipse cx="20" cy="32" rx="3" ry="8" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9"/>
-    <ellipse cx="8" cy="20" rx="8" ry="3" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9"/>
-    <ellipse cx="27.5" cy="12.5" rx="3" ry="6" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9" transform="rotate(45 27.5 12.5)"/>
-    <ellipse cx="27.5" cy="27.5" rx="6" ry="3" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9" transform="rotate(45 27.5 27.5)"/>
-    <ellipse cx="12.5" cy="27.5" rx="3" ry="6" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9" transform="rotate(45 12.5 27.5)"/>
-    <ellipse cx="12.5" cy="12.5" rx="6" ry="3" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9" transform="rotate(45 12.5 12.5)"/>
-    <!-- Center -->
-    <circle cx="20" cy="20" r="4" fill="#FFD700" stroke="#FFA500" stroke-width="0.5"/>
-  </g>
-</svg>
-`;
-
-// Application State
-class WeddingInvitation {
-  constructor() {
-    this.currentSession = 0;
-    this.totalSessions = 10;
-    this.isAnimating = false;
-    this.weddingDate = new Date('2025-09-24T07:00:00+08:00'); // WITA timezone
-    this.countdownInterval = null;
-    this.daisyInterval = null;
-    this.activeDaisies = [];
-    this.sessionsWithDaisies = [0, 1, 2, 3, 4, 5, 6, 7, 8]; // Sessions 0-8 only
-    
-    this.init();
-  }
-
-  init() {
-    // Wait for DOM to be fully loaded before setting up event listeners
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        this.setupEventListeners();
-        this.hideLoading();
-        this.startCountdown();
-        this.loadGuestMessages();
-        this.startDaisyAnimation();
-      });
-    } else {
-      this.setupEventListeners();
-      this.hideLoading();
-      this.startCountdown();
-      this.loadGuestMessages();
-      this.startDaisyAnimation();
-    }
-  }
-
-  hideLoading() {
-    setTimeout(() => {
-      const loading = document.getElementById('loading');
-      const navigation = document.getElementById('navigation');
-      
-      if (loading) {
-        loading.style.opacity = '0';
-        setTimeout(() => {
-          loading.style.display = 'none';
-        }, 500);
-      }
-      
-      if (navigation) {
-        navigation.classList.remove('hidden');
-      }
-    }, 2000);
-  }
-
-  // Daisy Animation System
-  startDaisyAnimation() {
-    const container = document.getElementById('daisyContainer');
-    if (!container) return;
-
-    // Create initial daisies
-    if (this.sessionsWithDaisies.includes(this.currentSession)) {
-      this.createDaisy();
-    }
-    
-    // Create new daisies at intervals
-    this.daisyInterval = setInterval(() => {
-      if (this.sessionsWithDaisies.includes(this.currentSession)) {
-        this.createDaisy();
-      }
-    }, 2000 + Math.random() * 3000); // Random interval between 2-5 seconds
-  }
-
-  createDaisy() {
-    const container = document.getElementById('daisyContainer');
-    if (!container || !this.sessionsWithDaisies.includes(this.currentSession)) return;
-
-    const daisy = document.createElement('div');
-    daisy.className = 'daisy';
-    daisy.innerHTML = daisySVG;
-
-    // Random size (small, medium, large)
-    const sizes = [16, 20, 24, 28, 32];
-    const size = sizes[Math.floor(Math.random() * sizes.length)];
-    daisy.style.width = size + 'px';
-    daisy.style.height = size + 'px';
-
-    // Random starting position
-    const startX = Math.random() * (window.innerWidth - size);
-    daisy.style.left = startX + 'px';
-    daisy.style.top = '-100px';
-
-    // Random animation class
-    const animations = ['daisy-fall-1', 'daisy-fall-2', 'daisy-fall-3', 'daisy-fall-4', 'daisy-fall-5'];
-    const animationClass = animations[Math.floor(Math.random() * animations.length)];
-    daisy.classList.add(animationClass);
-
-    container.appendChild(daisy);
-    this.activeDaisies.push(daisy);
-
-    // Remove daisy after animation completes
-    const animationDuration = {
-      'daisy-fall-1': 8000,
-      'daisy-fall-2': 10000,
-      'daisy-fall-3': 12000,
-      'daisy-fall-4': 9000,
-      'daisy-fall-5': 11000
-    };
-
-    setTimeout(() => {
-      if (container.contains(daisy)) {
-        container.removeChild(daisy);
-      }
-      const index = this.activeDaisies.indexOf(daisy);
-      if (index > -1) {
-        this.activeDaisies.splice(index, 1);
-      }
-    }, animationDuration[animationClass]);
-  }
-
-  updateDaisyVisibility() {
-    const container = document.getElementById('daisyContainer');
-    if (!container) return;
-
-    // Show/hide daisies based on current session
-    if (this.sessionsWithDaisies.includes(this.currentSession)) {
-      container.style.display = 'block';
-      container.style.visibility = 'visible';
-    } else {
-      container.style.display = 'none';
-      container.style.visibility = 'hidden';
-      // Clear existing daisies when hiding
-      this.clearAllDaisies();
-    }
-    
-    console.log(`Session ${this.currentSession}: Daisies ${this.sessionsWithDaisies.includes(this.currentSession) ? 'visible' : 'hidden'}`);
-  }
-
-  clearAllDaisies() {
-    const container = document.getElementById('daisyContainer');
-    if (container) {
-      // Remove all existing daisies
-      while (container.firstChild) {
-        container.removeChild(container.firstChild);
-      }
-    }
-    this.activeDaisies = [];
-  }
-
-  setupEventListeners() {
-    // Keyboard navigation only (no touch/swipe)
-    document.addEventListener('keydown', (e) => this.handleKeyboard(e));
-    
-    // Arrow navigation - Fixed selectors and added error handling
-    const arrowUp = document.getElementById('arrowUp');
-    const arrowDown = document.getElementById('arrowDown');
-    
-    if (arrowUp) {
-      arrowUp.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('Arrow up clicked');
-        this.navigateToSession(this.currentSession - 1);
-      });
-    }
-    
-    if (arrowDown) {
-      arrowDown.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('Arrow down clicked');
-        this.navigateToSession(this.currentSession + 1);
-      });
-    }
-    
-    // Dot navigation - Fixed event handling
+// Navigation Functions
+function setupNavigation() {
+    // Dot navigation
     const dots = document.querySelectorAll('.dot');
     dots.forEach((dot, index) => {
-      dot.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log(`Dot ${index} clicked`);
-        this.navigateToSession(index);
-      });
+        dot.addEventListener('click', () => navigateToSession(index));
     });
-
-    // Welcome screen button - Fixed selector and event handling
-    const openInvitationBtn = document.getElementById('openInvitation');
-    if (openInvitationBtn) {
-      openInvitationBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('Open invitation clicked');
-        this.navigateToSession(1);
-      });
-    }
-
-    // Countdown actions
-    const saveDate = document.getElementById('saveDate');
-    const shareInvitation = document.getElementById('shareInvitation');
     
-    if (saveDate) {
-      saveDate.addEventListener('click', () => this.saveDate());
+    // Arrow navigation
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            if (currentSession > 0) {
+                navigateToSession(currentSession - 1);
+            }
+        });
     }
     
-    if (shareInvitation) {
-      shareInvitation.addEventListener('click', () => this.shareInvitation());
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            if (currentSession < 9) {
+                navigateToSession(currentSession + 1);
+            }
+        });
     }
-
-    // RSVP form
-    const rsvpForm = document.getElementById('rsvpForm');
-    if (rsvpForm) {
-      rsvpForm.addEventListener('submit', (e) => this.handleRSVP(e));
-    }
-
-    // Prevent default scroll behavior except for specific elements
-    document.body.addEventListener('touchmove', (e) => {
-      if (e.target.closest('.guest-messages') || e.target.closest('textarea')) {
-        return; // Allow scrolling in messages and textarea
-      }
-      e.preventDefault();
-    }, { passive: false });
-
-    // Video controls
-    this.setupVideoControls();
-
-    // Initialize navigation state
-    this.updateNavigationState();
-    this.updateDaisyVisibility();
-  }
-
-  handleKeyboard(e) {
-    if (this.isAnimating) return;
     
-    switch(e.key) {
-      case 'ArrowUp':
-        e.preventDefault();
-        this.navigateToSession(this.currentSession - 1);
-        break;
-      case 'ArrowDown':
-        e.preventDefault();
-        this.navigateToSession(this.currentSession + 1);
-        break;
-      case 'Home':
-        e.preventDefault();
-        this.navigateToSession(0);
-        break;
-      case 'End':
-        e.preventDefault();
-        this.navigateToSession(this.totalSessions - 1);
-        break;
-    }
-  }
-
-  navigateToSession(sessionIndex) {
-    console.log(`Navigating from ${this.currentSession} to ${sessionIndex}`);
+    // Update arrow button states
+    updateArrowButtons();
     
-    if (this.isAnimating || sessionIndex < 0 || sessionIndex >= this.totalSessions || sessionIndex === this.currentSession) {
-      console.log('Navigation blocked:', { isAnimating: this.isAnimating, sessionIndex, totalSessions: this.totalSessions, currentSession: this.currentSession });
-      return;
-    }
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp' && currentSession > 0) {
+            navigateToSession(currentSession - 1);
+        } else if (e.key === 'ArrowDown' && currentSession < 9) {
+            navigateToSession(currentSession + 1);
+        }
+    });
+}
 
-    this.isAnimating = true;
+function navigateToSession(sessionNumber) {
+    if (sessionNumber < 0 || sessionNumber > 9 || sessionNumber === currentSession) return;
+    
+    console.log(`Navigating from session ${currentSession} to session ${sessionNumber}`);
+    
+    // Hide current session
+    const currentSessionElement = document.getElementById(`session${currentSession}`);
+    if (currentSessionElement) {
+        currentSessionElement.classList.remove('active');
+        currentSessionElement.classList.add('hidden');
+    }
+    
+    // Show new session
+    const newSessionElement = document.getElementById(`session${sessionNumber}`);
+    if (newSessionElement) {
+        newSessionElement.classList.remove('hidden');
+        // Use setTimeout to ensure the display change takes effect before adding active
+        setTimeout(() => {
+            newSessionElement.classList.add('active');
+        }, 10);
+    }
+    
+    // Update navigation dots
+    const dots = document.querySelectorAll('.dot');
+    if (dots[currentSession]) {
+        dots[currentSession].classList.remove('active');
+    }
+    if (dots[sessionNumber]) {
+        dots[sessionNumber].classList.add('active');
+    }
     
     // Update current session
-    const currentSessionEl = document.querySelector(`.session[data-session="${this.currentSession}"]`);
-    const nextSessionEl = document.querySelector(`.session[data-session="${sessionIndex}"]`);
+    currentSession = sessionNumber;
     
-    console.log('Session elements:', { current: currentSessionEl, next: nextSessionEl });
+    // Update arrow button states
+    updateArrowButtons();
     
-    if (!currentSessionEl || !nextSessionEl) {
-      console.error('Session elements not found');
-      this.isAnimating = false;
-      return;
+    // Handle session-specific actions
+    if (sessionNumber === 7) {
+        setTimeout(() => loadGuestMessages(), 100);
     }
-    
-    // Remove active class from current session
-    currentSessionEl.classList.remove('active');
-    
-    // Add active class to next session with proper timing
-    setTimeout(() => {
-      nextSessionEl.classList.add('active');
-      this.currentSession = sessionIndex;
-      this.updateNavigationState();
-      this.updateDaisyVisibility();
-      
-      console.log('Navigation completed to session:', sessionIndex);
-      
-      setTimeout(() => {
-        this.isAnimating = false;
-      }, 500);
-    }, 100);
-  }
+}
 
-  updateNavigationState() {
+function showSession(sessionNumber) {
+    console.log(`Showing session ${sessionNumber}`);
+    
+    const sessions = document.querySelectorAll('.session');
+    sessions.forEach((session, index) => {
+        if (index === sessionNumber) {
+            session.classList.remove('hidden');
+            session.classList.add('active');
+        } else {
+            session.classList.remove('active');
+            session.classList.add('hidden');
+        }
+    });
+    
     // Update dots
     const dots = document.querySelectorAll('.dot');
     dots.forEach((dot, index) => {
-      if (index === this.currentSession) {
-        dot.classList.add('active');
-      } else {
-        dot.classList.remove('active');
-      }
+        if (index === sessionNumber) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
     });
-
-    // Update arrow buttons
-    const arrowUp = document.getElementById('arrowUp');
-    const arrowDown = document.getElementById('arrowDown');
     
-    if (arrowUp) {
-      arrowUp.disabled = this.currentSession === 0;
-      arrowUp.style.opacity = this.currentSession === 0 ? '0.3' : '1';
+    currentSession = sessionNumber;
+    updateArrowButtons();
+}
+
+function updateArrowButtons() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (prevBtn) {
+        if (currentSession <= 0) {
+            prevBtn.disabled = true;
+            prevBtn.style.opacity = '0.5';
+        } else {
+            prevBtn.disabled = false;
+            prevBtn.style.opacity = '1';
+        }
     }
     
-    if (arrowDown) {
-      arrowDown.disabled = this.currentSession === this.totalSessions - 1;
-      arrowDown.style.opacity = this.currentSession === this.totalSessions - 1 ? '0.3' : '1';
+    if (nextBtn) {
+        if (currentSession >= 9) {
+            nextBtn.disabled = true;
+            nextBtn.style.opacity = '0.5';
+        } else {
+            nextBtn.disabled = false;
+            nextBtn.style.opacity = '1';
+        }
     }
-  }
+}
 
-  startCountdown() {
-    this.updateCountdown();
-    this.countdownInterval = setInterval(() => this.updateCountdown(), 1000);
-  }
-
-  updateCountdown() {
-    const now = new Date().getTime();
-    const distance = this.weddingDate.getTime() - now;
-
-    const daysEl = document.getElementById('days');
-    const hoursEl = document.getElementById('hours');
-    const minutesEl = document.getElementById('minutes');
-    const secondsEl = document.getElementById('seconds');
-
-    if (distance < 0) {
-      const countdownEl = document.getElementById('countdown');
-      if (countdownEl) {
-        countdownEl.innerHTML = '<div class="countdown-finished">Hari Pernikahan Telah Tiba! 🎉</div>';
-      }
-      clearInterval(this.countdownInterval);
-      return;
+// Audio Functions
+function playBackgroundMusic() {
+    if (backgroundMusic) {
+        backgroundMusic.play().catch(error => {
+            console.log('Auto-play prevented:', error);
+            // Show a button to enable music if auto-play fails
+            showMusicEnableButton();
+        });
     }
+}
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+function pauseBackgroundMusic() {
+    if (backgroundMusic && !backgroundMusic.paused) {
+        backgroundMusic.pause();
+    }
+}
 
-    if (daysEl) daysEl.textContent = days.toString().padStart(2, '0');
-    if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
-    if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, '0');
-    if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, '0');
-  }
+function resumeBackgroundMusic() {
+    if (backgroundMusic && backgroundMusic.paused && !isVideoPlaying) {
+        backgroundMusic.play().catch(error => {
+            console.log('Failed to resume music:', error);
+        });
+    }
+}
 
-  async saveDate() {
-    try {
-      // Create calendar event
-      const event = {
-        title: 'Pernikahan Suriansyah & Sonia Agustina Oemar',
-        start: '20250924T070000',
-        end: '20250924T120000',
-        description: 'Akad Nikah dan Resepsi Pernikahan',
-        location: 'Mesjid Jabal Rahmah Mandin'
-      };
+function showMusicEnableButton() {
+    // Check if button already exists
+    if (document.querySelector('.music-enable-btn')) return;
+    
+    // Create and show a button to enable music
+    const musicButton = document.createElement('button');
+    musicButton.textContent = '🎵 Enable Music';
+    musicButton.className = 'btn btn--outline music-enable-btn';
+    musicButton.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1001;
+        background: var(--wedding-gold);
+        color: var(--wedding-black);
+        border: none;
+    `;
+    
+    musicButton.addEventListener('click', () => {
+        backgroundMusic.play().then(() => {
+            musicButton.remove();
+        }).catch(error => {
+            console.log('Failed to play music:', error);
+        });
+    });
+    
+    document.body.appendChild(musicButton);
+}
 
-      const calendarUrl = `data:text/calendar;charset=utf8,BEGIN:VCALENDAR
+// Session 0 Functions
+function openInvitation() {
+    console.log('Opening invitation - navigating to session 1');
+    navigateToSession(1);
+    // Ensure music is playing when invitation is opened
+    playBackgroundMusic();
+}
+
+// Session 1 Functions - Countdown
+function startCountdown() {
+    const weddingDate = new Date('2025-09-24T07:00:00+08:00'); // WITA timezone
+    
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = weddingDate.getTime() - now;
+        
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        
+        if (!daysEl || !hoursEl || !minutesEl || !secondsEl) {
+            return;
+        }
+        
+        if (distance < 0) {
+            clearInterval(countdownInterval);
+            daysEl.textContent = '00';
+            hoursEl.textContent = '00';
+            minutesEl.textContent = '00';
+            secondsEl.textContent = '00';
+            return;
+        }
+        
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        daysEl.textContent = days.toString().padStart(2, '0');
+        hoursEl.textContent = hours.toString().padStart(2, '0');
+        minutesEl.textContent = minutes.toString().padStart(2, '0');
+        secondsEl.textContent = seconds.toString().padStart(2, '0');
+    }
+    
+    // Update immediately
+    updateCountdown();
+    
+    // Update every second
+    countdownInterval = setInterval(updateCountdown, 1000);
+}
+
+function saveTheDate() {
+    const event = {
+        title: 'Wedding Suriansyah & Sonia Agustina Oemar',
+        start: '20250924T070000Z',
+        end: '20250924T120000Z',
+        description: 'Acara Pernikahan Suriansyah & Sonia Agustina Oemar',
+        location: 'Masjid Jabal Rahmah Mandin'
+    };
+    
+    const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
+PRODID:-//Wedding Invitation//EN
 BEGIN:VEVENT
+UID:${Date.now()}@weddinginvitation.com
+DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
 DTSTART:${event.start}
 DTEND:${event.end}
 SUMMARY:${event.title}
@@ -466,353 +332,424 @@ DESCRIPTION:${event.description}
 LOCATION:${event.location}
 END:VEVENT
 END:VCALENDAR`;
-
-      const link = document.createElement('a');
-      link.href = calendarUrl;
-      link.download = 'wedding-suriansyah-sonia.ics';
-      link.click();
-
-      this.showToast('Event berhasil disimpan ke kalender!');
-    } catch (error) {
-      console.error('Error saving date:', error);
-      this.showToast('Gagal menyimpan event. Coba lagi nanti.');
-    }
-  }
-
-  shareInvitation() {
-    if (navigator.share) {
-      navigator.share({
-        title: 'Wedding Invitation - Suriansyah & Sonia',
-        text: 'Anda diundang ke pernikahan Suriansyah & Sonia Agustina Oemar pada 24 September 2025',
-        url: window.location.href
-      });
-    } else {
-      // Fallback to clipboard
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        this.showToast('Link undangan berhasil disalin!');
-      }).catch(() => {
-        this.showToast('Gagal membagikan undangan.');
-      });
-    }
-  }
-
-  async handleRSVP(e) {
-    e.preventDefault();
     
-    const guestName = document.getElementById('guestName');
-    const attendance = document.getElementById('attendance');
-    const message = document.getElementById('message');
-    const messageOption = document.querySelector('input[name="messageOption"]:checked');
-
-    if (!guestName || !attendance || !messageOption) {
-      this.showToast('Form elements not found.');
-      return;
-    }
-
-    const name = guestName.value.trim();
-    const attendanceValue = attendance.value;
-    const messageValue = message ? message.value.trim() : '';
-    const messageOptionValue = messageOption.value;
-
-    if (!name || !attendanceValue) {
-      this.showToast('Mohon lengkapi nama dan kehadiran.');
-      return;
-    }
-
-    try {
-      const rsvpData = {
-        name: name,
-        attendance: attendanceValue,
-        message: messageValue,
-        messageOption: messageOptionValue,
-        timestamp: isFirebaseEnabled ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
-      };
-
-      if (messageOptionValue === 'whatsapp') {
-        // Send via WhatsApp
-        const whatsappMessage = `Assalamu'alaikum,
-
-Saya ${name} ${attendanceValue === 'ya' ? 'akan hadir' : 'tidak bisa hadir'} di acara pernikahan Suriansyah & Sonia pada 24 September 2025.
-
-${messageValue ? `Ucapan: ${messageValue}` : ''}
-
-Terima kasih.`;
-
-        const whatsappUrl = `https://wa.me/6285251815099?text=${encodeURIComponent(whatsappMessage)}`;
-        window.open(whatsappUrl, '_blank');
-      } else {
-        // Save to Firebase for display
-        if (isFirebaseEnabled && db) {
-          await db.collection('rsvp').add(rsvpData);
-        } else {
-          // Demo mode - just show success
-          console.log('Demo mode: RSVP data:', rsvpData);
-        }
-      }
-
-      // Also save basic RSVP info to Firebase regardless of message option
-      if (isFirebaseEnabled && db) {
-        await db.collection('rsvp').add({
-          name: name,
-          attendance: attendanceValue,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }
-
-      // Show success
-      const rsvpForm = document.getElementById('rsvpForm');
-      const rsvpSuccess = document.getElementById('rsvpSuccess');
-      
-      if (rsvpForm) rsvpForm.classList.add('hidden');
-      if (rsvpSuccess) rsvpSuccess.classList.remove('hidden');
-      
-      this.showToast('RSVP berhasil dikirim!');
-      
-      // Refresh messages if display option was chosen
-      if (messageOptionValue === 'display') {
-        setTimeout(() => this.loadGuestMessages(), 2000);
-      }
-
-    } catch (error) {
-      console.error('Error submitting RSVP:', error);
-      this.showToast('Gagal mengirim RSVP. Coba lagi nanti.');
-    }
-  }
-
-  async loadGuestMessages() {
-    const messagesContainer = document.getElementById('guestMessages');
-    if (!messagesContainer) return;
+    const blob = new Blob([icsContent], { type: 'text/calendar' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'wedding-invitation.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
     
-    try {
-      if (isFirebaseEnabled && db) {
-        // Real Firebase data
-        const snapshot = await db.collection('rsvp')
-          .where('messageOption', '==', 'display')
-          .where('message', '>', '')
-          .orderBy('message')
-          .orderBy('timestamp', 'desc')
-          .limit(20)
-          .get();
-
-        if (snapshot.empty) {
-          messagesContainer.innerHTML = '<div class="loading-messages">Belum ada ucapan yang ditampilkan.</div>';
-          return;
-        }
-
-        let messagesHTML = '';
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          messagesHTML += this.createMessageCard(data);
-        });
-
-        messagesContainer.innerHTML = messagesHTML;
-
-        // Set up real-time listener
-        db.collection('rsvp')
-          .where('messageOption', '==', 'display')
-          .where('message', '>', '')
-          .orderBy('message')
-          .orderBy('timestamp', 'desc')
-          .limit(20)
-          .onSnapshot(snapshot => {
-            let messagesHTML = '';
-            snapshot.forEach(doc => {
-              const data = doc.data();
-              messagesHTML += this.createMessageCard(data);
-            });
-            messagesContainer.innerHTML = messagesHTML || '<div class="loading-messages">Belum ada ucapan yang ditampilkan.</div>';
-          });
-
-      } else {
-        // Demo data for testing
-        const demoMessages = [
-          {
-            name: 'Ahmad Rizki',
-            message: 'Selamat untuk Suriansyah dan Sonia! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Barakallahu lakuma wa baraka alaikuma wa jama\'a bainakuma fi khair.',
-            attendance: 'ya'
-          },
-          {
-            name: 'Siti Nurhaliza',
-            message: 'Alhamdulillah, akhirnya kalian menikah juga! Semoga langgeng sampai maut memisahkan. Semoga dimudahkan rezekinya dan diberi keturunan yang sholeh sholehah.',
-            attendance: 'ya'
-          },
-          {
-            name: 'Budi Santoso',
-            message: 'Congratulations! Wishing you both a lifetime of love and happiness. May your marriage be filled with all the right ingredients: a heap of love, a dash of humor, a touch of romance, and a spoonful of understanding.',
-            attendance: 'tidak'
-          }
-        ];
-
-        let messagesHTML = '';
-        demoMessages.forEach(data => {
-          messagesHTML += this.createMessageCard(data);
-        });
-        messagesContainer.innerHTML = messagesHTML;
-      }
-
-    } catch (error) {
-      console.error('Error loading messages:', error);
-      messagesContainer.innerHTML = '<div class="loading-messages">Gagal memuat ucapan. Coba refresh halaman.</div>';
-    }
-  }
-
-  createMessageCard(data) {
-    const attendanceText = data.attendance === 'ya' ? 'Akan hadir' : 'Tidak bisa hadir';
-    return `
-      <div class="message-card">
-        <div class="message-name">${this.escapeHtml(data.name)}</div>
-        <div class="message-text">${this.escapeHtml(data.message)}</div>
-        <div class="message-attendance">${attendanceText}</div>
-      </div>
-    `;
-  }
-
-  escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
-  setupVideoControls() {
-    const video = document.getElementById('weddingVideo');
-    if (!video) return;
-
-    // Auto-fullscreen functionality
-    video.addEventListener('load', () => {
-      const iframe = video.contentWindow;
-      if (iframe) {
-        iframe.addEventListener('play', () => {
-          if (video.requestFullscreen) {
-            video.requestFullscreen();
-          } else if (video.webkitRequestFullscreen) {
-            video.webkitRequestFullscreen();
-          } else if (video.msRequestFullscreen) {
-            video.msRequestFullscreen();
-          }
-        });
-      }
-    });
-  }
-
-  showToast(message) {
-    const toast = document.getElementById('toast');
-    if (!toast) return;
-    
-    toast.textContent = message;
-    toast.classList.remove('hidden');
-    toast.classList.add('show');
-
-    setTimeout(() => {
-      toast.classList.remove('show');
-      setTimeout(() => {
-        toast.classList.add('hidden');
-      }, 300);
-    }, 3000);
-  }
-
-  // Cleanup function
-  destroy() {
-    if (this.countdownInterval) {
-      clearInterval(this.countdownInterval);
-    }
-    if (this.daisyInterval) {
-      clearInterval(this.daisyInterval);
-    }
-    this.clearAllDaisies();
-  }
+    showNotification('Calendar event saved! 📅');
 }
 
-// Copy to Clipboard Function
-function copyToClipboard(text, bank) {
-  navigator.clipboard.writeText(text).then(() => {
-    const status = document.getElementById(`${bank}-status`);
-    if (status) {
-      status.textContent = 'Nomor rekening berhasil disalin!';
-      status.classList.add('show');
-      
-      setTimeout(() => {
-        status.classList.remove('show');
-      }, 3000);
+function shareInvitation() {
+    const shareText = 'Anda diundang ke pernikahan Suriansyah & Sonia Agustina Oemar - 24 September 2025';
+    const shareUrl = window.location.href;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'Wedding Invitation',
+            text: shareText,
+            url: shareUrl
+        }).catch(error => {
+            console.log('Error sharing:', error);
+            fallbackShare(shareText, shareUrl);
+        });
+    } else {
+        fallbackShare(shareText, shareUrl);
     }
-  }).catch(err => {
-    console.error('Failed to copy: ', err);
-    // Fallback for older browsers
+}
+
+function fallbackShare(shareText, shareUrl) {
+    // Fallback for browsers that don't support Web Share API
+    const shareMenu = document.createElement('div');
+    shareMenu.className = 'share-menu';
+    shareMenu.innerHTML = `
+        <div class="share-content">
+            <h3>Bagikan Undangan</h3>
+            <div class="share-buttons">
+                <button onclick="shareToWhatsApp('${encodeURIComponent(shareText + ' ' + shareUrl)}')" class="btn btn--primary">WhatsApp</button>
+                <button onclick="shareToFacebook('${encodeURIComponent(shareUrl)}')" class="btn btn--primary">Facebook</button>
+                <button onclick="copyToClipboard('${shareUrl}')" class="btn btn--outline">Copy Link</button>
+            </div>
+            <button onclick="closeShareMenu()" class="btn btn--outline">Tutup</button>
+        </div>
+    `;
+    shareMenu.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.8); z-index: 1002; display: flex;
+        align-items: center; justify-content: center;
+    `;
+    shareMenu.querySelector('.share-content').style.cssText = `
+        background: var(--wedding-black); padding: 2rem; border-radius: 1rem;
+        text-align: center; max-width: 300px; width: 90%;
+        border: 2px solid var(--wedding-gold);
+    `;
+    shareMenu.querySelector('.share-buttons').style.cssText = `
+        display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0;
+    `;
+    
+    document.body.appendChild(shareMenu);
+}
+
+function shareToWhatsApp(text) {
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+    closeShareMenu();
+}
+
+function shareToFacebook(url) {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+    closeShareMenu();
+}
+
+function closeShareMenu() {
+    const shareMenu = document.querySelector('.share-menu');
+    if (shareMenu) {
+        shareMenu.remove();
+    }
+}
+
+// Session 4 Functions
+function openMaps() {
+    window.open('https://maps.app.goo.gl/TvD12aGBA8WGaKQX8', '_blank');
+}
+
+// Session 5 Functions - RSVP
+function setupRSVPForm() {
+    const form = document.getElementById('rsvpForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitRSVP();
+        });
+    }
+}
+
+// Call this after DOM is loaded
+setTimeout(setupRSVPForm, 100);
+
+async function submitRSVP() {
+    const nameEl = document.getElementById('guestName');
+    const messageEl = document.getElementById('guestMessage');
+    const attendanceEl = document.getElementById('attendance');
+    const displayMessageEl = document.getElementById('displayMessage');
+    
+    if (!nameEl || !messageEl || !attendanceEl) {
+        showNotification('Form elements not found! ⚠️');
+        return;
+    }
+    
+    const name = nameEl.value.trim();
+    const message = messageEl.value.trim();
+    const attendance = attendanceEl.value;
+    const displayMessage = displayMessageEl ? displayMessageEl.checked : false;
+    
+    if (!name || !message || !attendance) {
+        showNotification('Mohon lengkapi semua field! ⚠️');
+        return;
+    }
+    
+    const rsvpData = {
+        name: name,
+        message: message,
+        attendance: attendance,
+        displayMessage: displayMessage,
+        timestamp: new Date(),
+        createdAt: new Date().toISOString()
+    };
+    
+    try {
+        // Firebase Integration - Uncomment when Firebase is configured
+        /*
+        await addDoc(collection(db, 'rsvp'), rsvpData);
+        
+        if (displayMessage) {
+            await addDoc(collection(db, 'messages'), {
+                name: name,
+                message: message,
+                timestamp: new Date(),
+                createdAt: new Date().toISOString()
+            });
+        }
+        */
+        
+        // Temporary local storage fallback (remove when Firebase is active)
+        const existingRSVP = JSON.parse(localStorage.getItem('weddingRSVP') || '[]');
+        existingRSVP.push(rsvpData);
+        localStorage.setItem('weddingRSVP', JSON.stringify(existingRSVP));
+        
+        if (displayMessage) {
+            const existingMessages = JSON.parse(localStorage.getItem('weddingMessages') || '[]');
+            existingMessages.push({
+                name: name,
+                message: message,
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('weddingMessages', JSON.stringify(existingMessages));
+        }
+        
+        showNotification('Terima kasih atas konfirmasi dan ucapannya! 💝');
+        
+        // Reset form
+        if (nameEl) nameEl.value = '';
+        if (messageEl) messageEl.value = '';
+        if (attendanceEl) attendanceEl.value = '';
+        if (displayMessageEl) displayMessageEl.checked = false;
+        
+    } catch (error) {
+        console.error('Error submitting RSVP:', error);
+        showNotification('Terjadi kesalahan. Silakan coba lagi. ❌');
+    }
+}
+
+function sendWhatsApp() {
+    const nameEl = document.getElementById('guestName');
+    const messageEl = document.getElementById('guestMessage');
+    const attendanceEl = document.getElementById('attendance');
+    
+    if (!nameEl || !messageEl || !attendanceEl) {
+        showNotification('Form elements not found! ⚠️');
+        return;
+    }
+    
+    const name = nameEl.value.trim();
+    const message = messageEl.value.trim();
+    const attendance = attendanceEl.value;
+    
+    if (!name || !message || !attendance) {
+        showNotification('Mohon lengkapi semua field terlebih dahulu! ⚠️');
+        return;
+    }
+    
+    const attendanceText = attendance === 'hadir' ? 'Akan Hadir' : 'Tidak Dapat Hadir';
+    const whatsappMessage = `Halo, saya ${name}.\n\nKonfirmasi: ${attendanceText}\n\nUcapan: ${message}`;
+    
+    // Phone number is hidden as requested (085251815099)
+    window.open(`https://wa.me/6285251815099?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
+}
+
+// Session 6 Functions - Copy Account Numbers
+function copyAccount(accountNumber) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(accountNumber).then(() => {
+            showNotification('Nomor rekening berhasil disalin! 📋');
+        }).catch(() => {
+            fallbackCopyTextToClipboard(accountNumber);
+        });
+    } else {
+        fallbackCopyTextToClipboard(accountNumber);
+    }
+}
+
+function fallbackCopyTextToClipboard(text) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
+    textArea.style.cssText = 'position: fixed; top: 0; left: 0; opacity: 0;';
     document.body.appendChild(textArea);
+    textArea.focus();
     textArea.select();
+    
     try {
-      document.execCommand('copy');
-      const status = document.getElementById(`${bank}-status`);
-      if (status) {
-        status.textContent = 'Nomor rekening berhasil disalin!';
-        status.classList.add('show');
-        
-        setTimeout(() => {
-          status.classList.remove('show');
-        }, 3000);
-      }
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showNotification('Nomor rekening berhasil disalin! 📋');
+        } else {
+            showNotification('Gagal menyalin nomor rekening ❌');
+        }
     } catch (err) {
-      console.error('Fallback copy failed:', err);
+        showNotification('Gagal menyalin nomor rekening ❌');
+        console.error('Copy failed:', err);
     }
+    
     document.body.removeChild(textArea);
-  });
 }
 
-// Initialize Application
-let weddingApp;
-
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM loaded, initializing wedding app...');
-  weddingApp = new WeddingInvitation();
-});
-
-// Fallback initialization
-if (document.readyState !== 'loading') {
-  console.log('Document already loaded, initializing wedding app...');
-  weddingApp = new WeddingInvitation();
+// Session 7 Functions - Load Guest Messages
+async function loadGuestMessages() {
+    const container = document.getElementById('messagesContainer');
+    
+    if (!container) {
+        console.error('Messages container not found');
+        return;
+    }
+    
+    try {
+        // Firebase Integration - Uncomment when Firebase is configured
+        /*
+        const messagesQuery = query(
+            collection(db, 'messages'),
+            orderBy('timestamp', 'desc')
+        );
+        const querySnapshot = await getDocs(messagesQuery);
+        const messages = [];
+        querySnapshot.forEach((doc) => {
+            messages.push(doc.data());
+        });
+        */
+        
+        // Temporary local storage fallback (remove when Firebase is active)
+        const messages = JSON.parse(localStorage.getItem('weddingMessages') || '[]');
+        messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        
+        if (messages.length === 0) {
+            container.innerHTML = '<p class="no-messages">Belum ada ucapan dari tamu</p>';
+            return;
+        }
+        
+        container.innerHTML = messages.map(msg => `
+            <div class="message-item">
+                <div class="message-name">${escapeHtml(msg.name)}</div>
+                <div class="message-text">${escapeHtml(msg.message)}</div>
+            </div>
+        `).join('');
+        
+    } catch (error) {
+        console.error('Error loading messages:', error);
+        container.innerHTML = '<p class="no-messages">Gagal memuat ucapan</p>';
+    }
 }
 
-// Prevent context menu and text selection for better mobile experience
-document.addEventListener('contextmenu', e => e.preventDefault());
-document.addEventListener('selectstart', e => {
-  if (!e.target.matches('input, textarea')) {
-    e.preventDefault();
-  }
-});
-
-// Handle orientation change
-window.addEventListener('orientationchange', () => {
-  setTimeout(() => {
-    window.scrollTo(0, 0);
-  }, 500);
-});
-
-// Performance optimization: Preload images
-const imagesToPreload = [
-  'https://github.com/ss2811/weddinginvitation/blob/main/backgroundhitam.jpeg?raw=true',
-  'https://github.com/ss2811/weddinginvitation/blob/main/backgroundbiru.jpeg?raw=true',
-  'https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/bride.jpeg',
-  'https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/groom.jpeg'
-];
-
-imagesToPreload.forEach(src => {
-  const img = new Image();
-  img.src = src;
-});
-
-// Service Worker Registration for PWA (optional)
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => console.log('SW registered'))
-      .catch(registrationError => console.log('SW registration failed'));
-  });
+// Session 9 Functions - Video Controls
+function setupVideoControls() {
+    const iframe = document.getElementById('weddingVideo');
+    if (!iframe) return;
+    
+    // Listen for messages from YouTube iframe
+    window.addEventListener('message', function(event) {
+        if (event.origin !== 'https://www.youtube.com') return;
+        
+        try {
+            const data = JSON.parse(event.data);
+            if (data.event === 'video-play') {
+                isVideoPlaying = true;
+                pauseBackgroundMusic();
+            } else if (data.event === 'video-pause' || data.event === 'video-stop') {
+                isVideoPlaying = false;
+                setTimeout(() => {
+                    if (!isVideoPlaying) {
+                        resumeBackgroundMusic();
+                    }
+                }, 500);
+            }
+        } catch (e) {
+            // Ignore parsing errors
+        }
+    });
+    
+    // Enable YouTube API
+    if (iframe.src.indexOf('enablejsapi=1') === -1) {
+        iframe.src += '&enablejsapi=1&origin=' + encodeURIComponent(window.location.origin);
+    }
 }
 
-// Cleanup on page unload
-window.addEventListener('beforeunload', () => {
-  if (weddingApp) {
-    weddingApp.destroy();
-  }
+// Utility Functions
+function showNotification(message) {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notif => notif.remove());
+    
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.className = 'notification';
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background: var(--wedding-gold);
+        color: var(--wedding-black); padding: 1rem 1.5rem; border-radius: 0.5rem;
+        z-index: 1003; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        animation: slideIn 0.3s ease-out forwards; max-width: 300px;
+        word-wrap: break-word;
+    `;
+    
+    // Add animation keyframes if not already present
+    if (!document.querySelector('#notificationStyles')) {
+        const style = document.createElement('style');
+        style.id = 'notificationStyles';
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out forwards';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+function copyToClipboard(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            showNotification('Link berhasil disalin! 📋');
+        }).catch(() => {
+            fallbackCopyTextToClipboard(text);
+        });
+    } else {
+        fallbackCopyTextToClipboard(text);
+    }
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.toString().replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
+// Touch gesture handling for mobile (disabled as requested)
+let touchStartY = 0;
+let touchEndY = 0;
+
+document.addEventListener('touchstart', function(e) {
+    touchStartY = e.changedTouches[0].screenY;
 });
+
+document.addEventListener('touchend', function(e) {
+    touchEndY = e.changedTouches[0].screenY;
+    // Swipe gestures disabled as per user request
+    // handleSwipe();
+});
+
+function handleSwipe() {
+    // Function kept for potential future use but disabled
+    // Swipe gestures are not implemented as per user request
+}
+
+// Cleanup function
+window.addEventListener('beforeunload', function() {
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+    }
+});
+
+// Export functions for global access
+window.openInvitation = openInvitation;
+window.saveTheDate = saveTheDate;
+window.shareInvitation = shareInvitation;
+window.shareToWhatsApp = shareToWhatsApp;
+window.shareToFacebook = shareToFacebook;
+window.closeShareMenu = closeShareMenu;
+window.copyToClipboard = copyToClipboard;
+window.openMaps = openMaps;
+window.sendWhatsApp = sendWhatsApp;
+window.copyAccount = copyAccount;
