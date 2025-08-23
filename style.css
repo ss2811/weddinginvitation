@@ -817,7 +817,7 @@ body {
   backdrop-filter: blur(10px);
   max-height: 90vh;
   overflow-y: auto;
-  z-index: 1;
+  z-index: 1000;
 }
 
 .session-0 .session-content {
@@ -955,7 +955,7 @@ body {
   opacity: 1;       /* sesuaikan jika perlu */
   animation: float 6s ease-in-out infinite; /* tetap bisa pakai animasi float */
   pointer-events: none; /* agar tidak menghalangi klik */
-  z-index: 10;
+  z-index: 1;
 }
 
 .daisy-1 {
@@ -1488,6 +1488,9 @@ p {
     padding: var(--space-20);
     max-width: 100%;
     max-height: calc(100vh - 80px);
+    position: relative;
+    z-index: 1000;
+    
   }
   
   .nav-dots {
@@ -1551,7 +1554,8 @@ p {
 @media (max-width: 480px) {
   .session-content {
     padding: var(--space-16);
-    z-index: 1;
+    position: relative;
+    z-index: 1000;
   }
   
   .countdown-container {
