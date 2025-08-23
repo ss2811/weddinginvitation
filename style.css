@@ -897,8 +897,8 @@ body {
 }
 
 .arrow-btn:hover {
-  background: var(--wedding-gold);
-  color: var(--wedding-black);
+  /* background: var(--wedding-gold); Dihapus atau dijadikan komentar */
+  color: var(--wedding-white); /* Kembalikan warna teks jika perlu */
   transform: scale(1.05);
 }
 
@@ -1513,8 +1513,8 @@ p {
   }
   
   .arrow-btn {
-    min-width: 50px;
-    padding: var(--space-6);
+    min-width: 38px;
+    padding: var(--space-5);
   }
   
   .countdown-container {
