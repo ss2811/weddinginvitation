@@ -817,7 +817,7 @@ body {
   backdrop-filter: blur(10px);
   max-height: 90vh;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 900;
 }
 
 .session-0 .session-content {
@@ -964,6 +964,9 @@ body {
   animation-name: floatFarRotate;
   animation-duration: 10s;
   animation-delay: 0s;
+  position: absolute;
+  pointer-events: none; /* agar tidak menghalangi klik */
+  z-index: 1;
 }
 
 /* Daisy 2: Bergerak horizontal jauh ±40px dan vertikal ±40px */
@@ -973,6 +976,9 @@ body {
   animation-name: floatFarHorizontal;
   animation-duration: 12s;
   animation-delay: 2s;
+  position: absolute;
+  pointer-events: none; /* agar tidak menghalangi klik */
+  z-index: 1;
 }
 
 /* Daisy 3: Bergerak vertikal jauh ±50px dengan rotasi kebalikan */
@@ -982,6 +988,9 @@ body {
   animation-name: floatFarRotateReverse;
   animation-duration: 9s;
   animation-delay: 4s;
+  position: absolute;
+  pointer-events: none; /* agar tidak menghalangi klik */
+  z-index: 1;
 }
 
 /* Animasi naik turun jauh dengan rotasi maju */
@@ -1489,7 +1498,7 @@ p {
     max-width: 100%;
     max-height: calc(100vh - 80px);
     position: relative;
-    z-index: 1000;
+    z-index: 900;
     
   }
   
@@ -1555,7 +1564,7 @@ p {
   .session-content {
     padding: var(--space-16);
     position: relative;
-    z-index: 1000;
+    z-index: 900;
   }
   
   .countdown-container {
