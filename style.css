@@ -936,7 +936,7 @@ body {
 
 .tutorial-title {
   font-family: 'Playfair Display', serif;
-  font-size: 0.75rem;
+  font-size: 1.2rem;
   margin: 0;
 }
 
@@ -969,7 +969,7 @@ body {
 }
 
 .tutorial-icon {
-  font-size: 0.75rem;
+  font-size: 1.2rem;
   margin-bottom: 1rem;
 }
 
@@ -1469,6 +1469,17 @@ body {
   font-weight: 700;
   margin-bottom: 1rem;
   line-height: 1.2;
+}
+
+
+.wedding-invitation-text {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 400;
+    opacity: 0.9;
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
 }
 
 .groom-name, .bride-name {
@@ -1981,7 +1992,7 @@ textarea.form-control {
 }
 
 input[type="checkbox"]:checked + .checkmark::after {
-  content: 'âœ“';
+  content: '✓';
   position: absolute;
   top: 50%;
   left: 50%;
