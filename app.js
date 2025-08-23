@@ -57,7 +57,6 @@ function initializeApp() {
     setupNavigation();
     startCountdown();
     loadGuestMessages();
-    setupVideoControls();
     showMusicEnableButton();
     
     // Start with session 0 (landing page) and make it active
