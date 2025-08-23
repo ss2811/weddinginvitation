@@ -860,17 +860,16 @@ body {
 /* Arrow Navigation */
 .nav-arrows {
   position: fixed;
-  left: 10px; /* ubah jarak dari kiri sesuai kebutuhan */
-  top: 0;
-  bottom: 0;
-  height: 100vh;
+  left: 10px;
+  top: 50%; /* Posisikan di tengah layar */
+  transform: translateY(-50%); /* Sempurnakan posisi tengah */
+  height: 90vh; /* Buat tingginya 90% dari layar */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* tombol atas di pojok atas, tombol bawah di pojok bawah */
-  gap: 20vh;
-  padding: 10px 0;
+  justify-content: space-between;
   z-index: 1000;
-  transform: none; /* hilangkan translateY */
+  padding: 0;
+  box-sizing: border-box;
 }
 .arrow-btn {
   background: rgba(0, 0, 0, 0.7);
