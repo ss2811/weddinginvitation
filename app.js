@@ -58,12 +58,13 @@ function initializeApp() {
     startCountdown();
     loadGuestMessages();
     setupVideoControls();
+    showMusicEnableButton();
     
     // Start with session 0 (landing page) and make it active
     showSession(0);
     
     // Auto-play background music with user gesture fallback
-    playBackgroundMusic();
+    // playBackgroundMusic();
 }
 
 // Navigation Functions
@@ -234,37 +235,57 @@ function showMusicEnableButton() {
     
     // Create and show a button to enable music
     const musicButton = document.createElement('button');
-    musicButton.textContent = '🎵 ';
-    musicButton.className = 'btn btn--outline music-enable-btn';
+    musicButton.innerHTML = '🎵'; // Ikon awal
+    musicButton.className = 'btn music-toggle-btn'; // Ganti nama kelas agar unik
     musicButton.style.cssText = `
         position: fixed;
         bottom: 20px;
-        left: auto;
-	right: 20px;
-        transform: none;
+        right: 20px;
         z-index: 1001;
         background: var(--wedding-gold);
         color: var(--wedding-black);
         border: none;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     `;
     
-    musicButton.addEventListener('click', () => {
-        backgroundMusic.play().then(() => {
-            musicButton.remove();
-        }).catch(error => {
-            console.log('Failed to play music:', error);
-        });
-    });
-    
-    document.body.appendChild(musicButton);
-}
+    // Fungsi untuk toggle musik
+    function toggleMusic() {
+        if (backgroundMusic.paused) {
+            backgroundMusic.play().catch(e => console.log("Gagal memutar musik"));
+            musicButton.innerHTML = '🎵'; // Ikon saat musik menyala
+        } else {
+            backgroundMusic.pause();
+            musicButton.innerHTML = '🔇'; // Ikon saat musik mati
+        }
+    }
 
+    // Tambahkan event listener ke tombol
+    musicButton.addEventListener('click', toggleMusic);
+
+    document.body.appendChild(musicButton);
+
+    // Coba putar musik pertama kali, jika berhasil, update ikon
+    backgroundMusic.play().then(() => {
+        musicButton.innerHTML = '🎵';
+    }).catch(error => {
+        console.log('Auto-play dicegah:', error);
+        musicButton.innerHTML = '🔇'; // Jika auto-play gagal, tampilkan ikon mute
+    });
+}
 // Session 0 Functions
 function openInvitation() {
     console.log('Opening invitation - navigating to session 1');
     navigateToSession(1);
     // Ensure music is playing when invitation is opened
-    playBackgroundMusic();
+    
 }
 
 // Session 1 Functions - Countdown
