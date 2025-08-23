@@ -1481,7 +1481,10 @@ p {
   
   .nav-arrows {
     left: var(--space-12);
-    gap: 30vh;
+    gap: 20vh; /* kurangi gap agar panah bawah tidak terlalu jauh ke bawah */
+    padding-top: 20px; /* beri jarak atas */
+    padding-bottom: 20px; /* beri jarak bawah agar panah naik ke atas */
+    height: calc(100vh - 60px); /* batasi tinggi container panah */
   }
   
   .arrow-btn {
