@@ -784,6 +784,8 @@ body {
   color: var(--color-white);
   overflow: hidden;
   background: var(--color-black);
+  width: 1024px;
+  min-height: 100vh;
 }
 
 /* Loading Screen */
@@ -823,6 +825,143 @@ body {
   font-weight: 300;
 }
 
+/* Falling Daisies Animation */
+.daisy-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+/* Hide daisies when on session 9 */
+.session[data-session="9"].active ~ .daisy-container {
+  display: none !important;
+}
+
+.daisy {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.daisy svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+/* Daisy falling animations */
+.daisy-fall-1 {
+  animation: fall1 8s linear infinite;
+}
+
+.daisy-fall-2 {
+  animation: fall2 10s linear infinite;
+}
+
+.daisy-fall-3 {
+  animation: fall3 12s linear infinite;
+}
+
+.daisy-fall-4 {
+  animation: fall4 9s linear infinite;
+}
+
+.daisy-fall-5 {
+  animation: fall5 11s linear infinite;
+}
+
+@keyframes fall1 {
+  0% {
+    transform: translateY(-100px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh) translateX(50px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fall2 {
+  0% {
+    transform: translateY(-100px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(100vh) translateX(-30px) rotate(-270deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fall3 {
+  0% {
+    transform: translateY(-100px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.7;
+  }
+  92% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(100vh) translateX(80px) rotate(450deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fall4 {
+  0% {
+    transform: translateY(-100px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.85;
+  }
+  88% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(100vh) translateX(-60px) rotate(-180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fall5 {
+  0% {
+    transform: translateY(-100px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(100vh) translateX(20px) rotate(300deg);
+    opacity: 0;
+  }
+}
+
 /* App Container */
 #app {
   height: 100vh;
@@ -852,6 +991,7 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  z-index: 1;
 }
 
 .session.active {
@@ -891,6 +1031,30 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
+/* Mobile compact layout for specific sessions */
+@media (max-width: 768px) {
+  .mobile-compact {
+    padding: var(--spacing-md) !important;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
+  .mobile-compact h2 {
+    font-size: 1.8rem !important;
+    margin-bottom: var(--spacing-md) !important;
+  }
+  
+  .mobile-compact .event-item,
+  .mobile-compact .bank-account {
+    padding: var(--spacing-md) !important;
+    margin-bottom: var(--spacing-md) !important;
+  }
+  
+  .mobile-compact .form-group {
+    margin-bottom: var(--spacing-sm) !important;
+  }
+}
+
 /* Welcome Session Specific Styles */
 .welcome-content {
   background: rgba(0, 0, 0, 0.8);
@@ -917,12 +1081,27 @@ body {
   }
 }
 
+/* Fixed layout for session 0 */
+.of-text {
+  font-family: var(--font-script);
+  font-size: 2rem;
+  color: var(--color-tosca);
+  margin: var(--spacing-md) 0;
+  text-align: center;
+}
+
 .couple-names-welcome {
   font-family: var(--font-dance);
   font-size: 2.8rem;
   color: var(--color-gold);
   margin-bottom: var(--spacing-md);
   font-weight: 600;
+  line-height: 1.2;
+}
+
+.and-text {
+  font-size: 2rem;
+  color: var(--color-tosca);
 }
 
 .wedding-date-welcome {
@@ -1024,16 +1203,27 @@ body {
   transform: scale(1.3);
 }
 
-/* Arrow Navigation */
+/* Arrow Navigation with Labels */
 .arrow-navigation {
   position: fixed;
   left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
   z-index: 100;
+}
+
+.arrow-navigation .arrow-wrapper:first-child {
+  position: absolute;
+  top: 20px;
+}
+
+.arrow-navigation .arrow-wrapper:last-child {
+  position: absolute;
+  bottom: 20px;
+}
+
+.arrow-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .arrow-btn {
@@ -1059,6 +1249,19 @@ body {
 .arrow-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
+}
+
+.arrow-label {
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--color-white);
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  opacity: 1;
 }
 
 /* Countdown Styles */
@@ -1104,50 +1307,18 @@ body {
   flex-wrap: wrap;
 }
 
-/* Bismillah Styles */
+/* Bismillah Styles - Only Arabic */
 .bismillah-container {
   text-align: center;
+  padding: var(--spacing-xl) 0;
 }
 
 .bismillah-text {
   font-family: var(--font-arabic);
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: var(--color-gold);
-  margin-bottom: var(--spacing-md);
-  line-height: 1.4;
-}
-
-.bismillah-translation {
-  font-style: italic;
-  color: var(--color-tosca);
-  margin-bottom: var(--spacing-xl);
-  font-size: 1.1rem;
-}
-
-.quranic-verse {
-  margin-top: var(--spacing-xl);
-}
-
-.arabic-text {
-  font-family: var(--font-arabic);
-  font-size: 1.8rem;
-  color: var(--color-gold);
-  line-height: 1.8;
-  margin-bottom: var(--spacing-lg);
-  text-align: right;
-  direction: rtl;
-}
-
-.verse-translation {
-  font-style: italic;
-  color: var(--color-white);
-  margin-bottom: var(--spacing-md);
   line-height: 1.6;
-}
-
-.verse-reference {
-  color: var(--color-tosca);
-  font-weight: 600;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
 }
 
 /* Couple Introduction */
@@ -1567,7 +1738,7 @@ body {
 
 /* Utility Classes */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .text-center {
@@ -1576,6 +1747,10 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  body {
+    width: 100vw;
+  }
+  
   .session-content {
     width: 95%;
     padding: var(--spacing-lg);
@@ -1617,12 +1792,8 @@ body {
     height: 100px;
   }
   
-  .arabic-text {
-    font-size: 1.5rem;
-  }
-  
   .bismillah-text {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
   
   .dot-navigation {
@@ -1640,6 +1811,20 @@ body {
   
   .video-container {
     height: 200px;
+  }
+  
+  .arrow-label {
+    font-size: 0.7rem;
+    padding: 4px 6px;
+  }
+  
+  /* Mobile positioning for arrows */
+  .arrow-navigation .arrow-wrapper:first-child {
+    top: 10px;
+  }
+  
+  .arrow-navigation .arrow-wrapper:last-child {
+    bottom: 10px;
   }
 }
 
