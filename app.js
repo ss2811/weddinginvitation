@@ -234,13 +234,14 @@ function showMusicEnableButton() {
     
     // Create and show a button to enable music
     const musicButton = document.createElement('button');
-    musicButton.textContent = '🎵 Enable Music';
+    musicButton.textContent = '🎵 ';
     musicButton.className = 'btn btn--outline music-enable-btn';
     musicButton.style.cssText = `
         position: fixed;
         bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
+        left: auto;
+	right: 20px;
+        transform: none;
         z-index: 1001;
         background: var(--wedding-gold);
         color: var(--wedding-black);
