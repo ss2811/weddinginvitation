@@ -75,17 +75,36 @@ try {
   console.error('Firebase initialization error:', error);
 }
 
+// Daisy SVG Template (Peaceminusone style)
+const daisySVG = `
+<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <!-- Petals -->
+    <ellipse cx="20" cy="8" rx="3" ry="8" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9"/>
+    <ellipse cx="32" cy="20" rx="8" ry="3" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9"/>
+    <ellipse cx="20" cy="32" rx="3" ry="8" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9"/>
+    <ellipse cx="8" cy="20" rx="8" ry="3" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9"/>
+    <ellipse cx="27.5" cy="12.5" rx="3" ry="6" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9" transform="rotate(45 27.5 12.5)"/>
+    <ellipse cx="27.5" cy="27.5" rx="6" ry="3" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9" transform="rotate(45 27.5 27.5)"/>
+    <ellipse cx="12.5" cy="27.5" rx="3" ry="6" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9" transform="rotate(45 12.5 27.5)"/>
+    <ellipse cx="12.5" cy="12.5" rx="6" ry="3" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" opacity="0.9" transform="rotate(45 12.5 12.5)"/>
+    <!-- Center -->
+    <circle cx="20" cy="20" r="4" fill="#FFD700" stroke="#FFA500" stroke-width="0.5"/>
+  </g>
+</svg>
+`;
+
 // Application State
 class WeddingInvitation {
   constructor() {
     this.currentSession = 0;
     this.totalSessions = 10;
     this.isAnimating = false;
-    this.touchStartY = 0;
-    this.touchEndY = 0;
-    this.minSwipeDistance = 50;
     this.weddingDate = new Date('2025-09-24T07:00:00+08:00'); // WITA timezone
     this.countdownInterval = null;
+    this.daisyInterval = null;
+    this.activeDaisies = [];
+    this.sessionsWithDaisies = [0, 1, 2, 3, 4, 5, 6, 7, 8]; // Sessions 0-8 only
     
     this.init();
   }
@@ -98,12 +117,14 @@ class WeddingInvitation {
         this.hideLoading();
         this.startCountdown();
         this.loadGuestMessages();
+        this.startDaisyAnimation();
       });
     } else {
       this.setupEventListeners();
       this.hideLoading();
       this.startCountdown();
       this.loadGuestMessages();
+      this.startDaisyAnimation();
     }
   }
 
@@ -125,12 +146,102 @@ class WeddingInvitation {
     }, 2000);
   }
 
-  setupEventListeners() {
-    // Touch events for swipe navigation
-    document.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
-    document.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: false });
+  // Daisy Animation System
+  startDaisyAnimation() {
+    const container = document.getElementById('daisyContainer');
+    if (!container) return;
+
+    // Create initial daisies
+    if (this.sessionsWithDaisies.includes(this.currentSession)) {
+      this.createDaisy();
+    }
     
-    // Keyboard navigation
+    // Create new daisies at intervals
+    this.daisyInterval = setInterval(() => {
+      if (this.sessionsWithDaisies.includes(this.currentSession)) {
+        this.createDaisy();
+      }
+    }, 2000 + Math.random() * 3000); // Random interval between 2-5 seconds
+  }
+
+  createDaisy() {
+    const container = document.getElementById('daisyContainer');
+    if (!container || !this.sessionsWithDaisies.includes(this.currentSession)) return;
+
+    const daisy = document.createElement('div');
+    daisy.className = 'daisy';
+    daisy.innerHTML = daisySVG;
+
+    // Random size (small, medium, large)
+    const sizes = [16, 20, 24, 28, 32];
+    const size = sizes[Math.floor(Math.random() * sizes.length)];
+    daisy.style.width = size + 'px';
+    daisy.style.height = size + 'px';
+
+    // Random starting position
+    const startX = Math.random() * (window.innerWidth - size);
+    daisy.style.left = startX + 'px';
+    daisy.style.top = '-100px';
+
+    // Random animation class
+    const animations = ['daisy-fall-1', 'daisy-fall-2', 'daisy-fall-3', 'daisy-fall-4', 'daisy-fall-5'];
+    const animationClass = animations[Math.floor(Math.random() * animations.length)];
+    daisy.classList.add(animationClass);
+
+    container.appendChild(daisy);
+    this.activeDaisies.push(daisy);
+
+    // Remove daisy after animation completes
+    const animationDuration = {
+      'daisy-fall-1': 8000,
+      'daisy-fall-2': 10000,
+      'daisy-fall-3': 12000,
+      'daisy-fall-4': 9000,
+      'daisy-fall-5': 11000
+    };
+
+    setTimeout(() => {
+      if (container.contains(daisy)) {
+        container.removeChild(daisy);
+      }
+      const index = this.activeDaisies.indexOf(daisy);
+      if (index > -1) {
+        this.activeDaisies.splice(index, 1);
+      }
+    }, animationDuration[animationClass]);
+  }
+
+  updateDaisyVisibility() {
+    const container = document.getElementById('daisyContainer');
+    if (!container) return;
+
+    // Show/hide daisies based on current session
+    if (this.sessionsWithDaisies.includes(this.currentSession)) {
+      container.style.display = 'block';
+      container.style.visibility = 'visible';
+    } else {
+      container.style.display = 'none';
+      container.style.visibility = 'hidden';
+      // Clear existing daisies when hiding
+      this.clearAllDaisies();
+    }
+    
+    console.log(`Session ${this.currentSession}: Daisies ${this.sessionsWithDaisies.includes(this.currentSession) ? 'visible' : 'hidden'}`);
+  }
+
+  clearAllDaisies() {
+    const container = document.getElementById('daisyContainer');
+    if (container) {
+      // Remove all existing daisies
+      while (container.firstChild) {
+        container.removeChild(container.firstChild);
+      }
+    }
+    this.activeDaisies = [];
+  }
+
+  setupEventListeners() {
+    // Keyboard navigation only (no touch/swipe)
     document.addEventListener('keydown', (e) => this.handleKeyboard(e));
     
     // Arrow navigation - Fixed selectors and added error handling
@@ -195,7 +306,7 @@ class WeddingInvitation {
       rsvpForm.addEventListener('submit', (e) => this.handleRSVP(e));
     }
 
-    // Prevent default scroll behavior
+    // Prevent default scroll behavior except for specific elements
     document.body.addEventListener('touchmove', (e) => {
       if (e.target.closest('.guest-messages') || e.target.closest('textarea')) {
         return; // Allow scrolling in messages and textarea
@@ -208,37 +319,7 @@ class WeddingInvitation {
 
     // Initialize navigation state
     this.updateNavigationState();
-  }
-
-  handleTouchStart(e) {
-    // Only handle touches on the main content area, not on navigation elements
-    if (e.target.closest('.navigation') || e.target.closest('button') || e.target.closest('input') || e.target.closest('textarea')) {
-      return;
-    }
-    this.touchStartY = e.touches[0].clientY;
-  }
-
-  handleTouchEnd(e) {
-    if (this.isAnimating) return;
-    
-    // Only handle touches on the main content area
-    if (e.target.closest('.navigation') || e.target.closest('button') || e.target.closest('input') || e.target.closest('textarea')) {
-      return;
-    }
-    
-    this.touchEndY = e.changedTouches[0].clientY;
-    const deltaY = this.touchStartY - this.touchEndY;
-    
-    // Check if it's a significant swipe
-    if (Math.abs(deltaY) > this.minSwipeDistance) {
-      if (deltaY > 0) {
-        // Swipe up - next session
-        this.navigateToSession(this.currentSession + 1);
-      } else {
-        // Swipe down - previous session
-        this.navigateToSession(this.currentSession - 1);
-      }
-    }
+    this.updateDaisyVisibility();
   }
 
   handleKeyboard(e) {
@@ -294,6 +375,7 @@ class WeddingInvitation {
       nextSessionEl.classList.add('active');
       this.currentSession = sessionIndex;
       this.updateNavigationState();
+      this.updateDaisyVisibility();
       
       console.log('Navigation completed to session:', sessionIndex);
       
@@ -627,6 +709,17 @@ Terima kasih.`;
       }, 300);
     }, 3000);
   }
+
+  // Cleanup function
+  destroy() {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+    }
+    if (this.daisyInterval) {
+      clearInterval(this.daisyInterval);
+    }
+    this.clearAllDaisies();
+  }
 }
 
 // Copy to Clipboard Function
@@ -716,3 +809,10 @@ if ('serviceWorker' in navigator) {
       .catch(registrationError => console.log('SW registration failed'));
   });
 }
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+  if (weddingApp) {
+    weddingApp.destroy();
+  }
+});
