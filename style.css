@@ -859,15 +859,18 @@ body {
 /* Arrow Navigation */
 .nav-arrows {
   position: fixed;
-  left: var(--space-20);
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1000;
+  left: 10px; /* ubah jarak dari kiri sesuai kebutuhan */
+  top: 0;
+  bottom: 0;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 40vh;
+  justify-content: space-between; /* tombol atas di pojok atas, tombol bawah di pojok bawah */
+  gap: 0;
+  padding: 10px 0;
+  z-index: 1000;
+  transform: none; /* hilangkan translateY */
 }
-
 .arrow-btn {
   background: rgba(0, 0, 0, 0.7);
   border: 2px solid var(--wedding-gold);
