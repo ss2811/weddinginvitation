@@ -914,10 +914,10 @@ body {
   background: linear-gradient(
     45deg,
     var(--wedding-gold) 0%,
-    var(--wedding-white) 25%,
+    var(--wedding-white) 100%,
     var(--wedding-tosca) 50%,
     var(--wedding-white) 75%,
-    var(--wedding-gold) 100%
+    var(--wedding-gold) 25%
   );
   background-size: 400% 400%;
   -webkit-background-clip: text;
@@ -1100,13 +1100,13 @@ p {
 .countdown-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-16);
+  gap: var(--space-12); /* Jarak antar box dikecilkan */
   margin: var(--space-32) 0;
 }
 
 .countdown-item {
   background: rgba(255, 255, 255, 0.1);
-  padding: var(--space-20);
+  padding: var(--space-12); /* Padding (jarak dalam) box dikecilkan */
   border-radius: var(--radius-lg);
   border: 2px solid var(--wedding-gold);
   text-align: center;
@@ -1114,19 +1114,18 @@ p {
 
 .countdown-item span {
   display: block;
-  font-size: 2.5rem;
+  font-size: 2rem; /* Ukuran angka dikecilkan */
   font-weight: 700;
   color: var(--wedding-gold);
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Playfair Display', serif; /* Font yang sudah diubah sebelumnya */
 }
 
 .countdown-item label {
   color: var(--wedding-white);
-  font-size: 0.9rem;
+  font-size: 0.8rem; /* Ukuran tulisan 'Hari', 'Jam', dll. dikecilkan */
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-
 /* Bismillah Section */
 .arabic-text {
   font-family: 'Amiri', serif;
