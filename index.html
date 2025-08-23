@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1024, initial-scale=0.4, user-scalable=no">
     <title>Wedding Invitation - Suriansyah & Sonia</title>
     <meta name="description" content="Wedding invitation of Suriansyah dan Sonia Agustina Oemar - 24 September 2025">
     <link rel="stylesheet" href="style.css">
@@ -17,6 +17,9 @@
             <div class="loading-spinner"></div>
             <p>Memuat undangan...</p>
         </div>
+
+        <!-- Falling Daisies Container -->
+        <div id="daisyContainer" class="daisy-container"></div>
 
         <!-- Navigation Controls -->
         <div id="navigation" class="navigation hidden">
@@ -34,18 +37,24 @@
                 <div class="dot" data-session="9"></div>
             </div>
             
-            <!-- Arrow Navigation -->
+            <!-- Arrow Navigation with Labels -->
             <div class="arrow-navigation">
-                <button class="arrow-btn arrow-up" id="arrowUp">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="18 15 12 9 6 15"></polyline>
-                    </svg>
-                </button>
-                <button class="arrow-btn arrow-down" id="arrowDown">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </button>
+                <div class="arrow-wrapper">
+                    <button class="arrow-btn arrow-up" id="arrowUp">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                    </button>
+                    <span class="arrow-label">Previous</span>
+                </div>
+                <div class="arrow-wrapper">
+                    <button class="arrow-btn arrow-down" id="arrowDown">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <span class="arrow-label">Next</span>
+                </div>
             </div>
         </div>
 
@@ -56,8 +65,9 @@
             <div class="session welcome-session active" data-session="0">
                 <div class="session-content">
                     <div class="welcome-content">
-                        <h1 class="sparkling-text">Wedding Invitation of</h1>
-                        <h2 class="couple-names-welcome">Suriansyah & Sonia Agustina Oemar</h2>
+                        <h1 class="sparkling-text">Wedding Invitation</h1>
+                        <div class="of-text">of</div>
+                        <h2 class="couple-names-welcome">Suriansyah<br><span class="and-text">dan</span><br>Sonia Agustina Oemar</h2>
                         <p class="wedding-date-welcome">24 September 2025</p>
                         <button class="btn btn--primary open-invitation-btn" id="openInvitation">
                             Buka Undangan
@@ -97,27 +107,18 @@
                 </div>
             </div>
 
-            <!-- Session 2: Bismillah & Quranic Verse -->
+            <!-- Session 2: Bismillah Only -->
             <div class="session" data-session="2">
                 <div class="session-content">
                     <div class="bismillah-container">
                         <div class="bismillah-text">بِسْمِ اللّهِ الرَّحْمـَنِ الرَّحِيم</div>
-                        <div class="bismillah-translation">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</div>
-                        
-                        <div class="quranic-verse">
-                            <div class="arabic-text">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ</div>
-                            <div class="verse-translation">
-                                "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berfikir."
-                            </div>
-                            <div class="verse-reference">QS. Ar-Rum: 21</div>
-                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Session 3: Couple Introduction -->
             <div class="session" data-session="3">
-                <div class="session-content">
+                <div class="session-content mobile-compact">
                     <div class="couple-intro">
                         <h2>Yang Terhormat,</h2>
                         <p class="guest-greeting">Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami:</p>
@@ -147,7 +148,7 @@
 
             <!-- Session 4: Event Details -->
             <div class="session" data-session="4">
-                <div class="session-content">
+                <div class="session-content mobile-compact">
                     <div class="event-details">
                         <h2>Detail Acara</h2>
                         
@@ -182,7 +183,7 @@
 
             <!-- Session 5: RSVP -->
             <div class="session" data-session="5">
-                <div class="session-content">
+                <div class="session-content mobile-compact">
                     <div class="rsvp-container">
                         <h2>RSVP & Ucapan</h2>
                         
@@ -235,7 +236,7 @@
 
             <!-- Session 6: Cashless Gift -->
             <div class="session" data-session="6">
-                <div class="session-content">
+                <div class="session-content mobile-compact">
                     <div class="gift-container">
                         <h2>Kado Cashless</h2>
                         <p>Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Dan jika memberi adalah ungkapan tanda kasih, Anda dapat mengirimkannya melalui:</p>
