@@ -955,7 +955,7 @@ body {
   opacity: 1;       /* sesuaikan jika perlu */
   animation: float 6s ease-in-out infinite; /* tetap bisa pakai animasi float */
   pointer-events: none; /* agar tidak menghalangi klik */
-  z-index: 1;
+  z-index: -1;
 }
 
 .daisy-1 {
@@ -966,7 +966,7 @@ body {
   animation-delay: 0s;
   position: absolute;
   pointer-events: none; /* agar tidak menghalangi klik */
-  z-index: 1;
+  z-index: -1;
 }
 
 /* Daisy 2: Bergerak horizontal jauh ±40px dan vertikal ±40px */
@@ -978,7 +978,7 @@ body {
   animation-delay: 2s;
   position: absolute;
   pointer-events: none; /* agar tidak menghalangi klik */
-  z-index: 1;
+  z-index: -1;
 }
 
 /* Daisy 3: Bergerak vertikal jauh ±50px dengan rotasi kebalikan */
@@ -990,7 +990,7 @@ body {
   animation-delay: 4s;
   position: absolute;
   pointer-events: none; /* agar tidak menghalangi klik */
-  z-index: 1;
+  z-index: -1;
 }
 
 /* Animasi naik turun jauh dengan rotasi maju */
