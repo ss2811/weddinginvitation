@@ -525,7 +525,7 @@ class WeddingInvitation {
             if (this.isTransitioning) return;
             
             const delta = e.deltaY;
-            const threshold = 80;
+            const threshold = 50;
             
             if (delta > threshold && this.currentSection < this.totalSections - 1) {
                 // Scroll down - next section
@@ -620,8 +620,8 @@ class WeddingInvitation {
             // 1. Primarily vertical (not horizontal scrolling)
             // 2. Have sufficient distance (>80px for mobile) OR sufficient velocity (>0.4px/ms)
             // 3. Completed within reasonable time (<800ms)
-            const minDistance = this.isMobileDevice() ? 100 : 65;
-            const minVelocity = 0.6;
+            const minDistance = this.isMobileDevice() ? 80 : 50;
+            const minVelocity = 0.4;
             const maxTime = 800;
             
             if (isScrolling && 
@@ -651,7 +651,7 @@ class WeddingInvitation {
     }
     
     handleSwipe(deltaY) {
-        const swipeThreshold = this.isMobileDevice() ? 80 : 50;
+        const swipeThreshold = this.isMobileDevice() ? 50 : 30;
         
         if (Math.abs(deltaY) > swipeThreshold) {
             if (deltaY > 0 && this.currentSection < this.totalSections - 1) {
@@ -704,7 +704,7 @@ class WeddingInvitation {
         const container = document.getElementById('petalsContainer');
         if (!container) return;
         
-        const petalSymbols = ['🌼'];
+        const petalSymbols = ['ðŸŒ¼', 'ðŸŒ¸', 'ðŸŒº', 'ðŸ’®', 'ðŸµï¸'];
         
         const createPetal = () => {
             if (Math.random() > 0.3) return; // 70% chance to not create a petal
@@ -786,7 +786,7 @@ class WeddingInvitation {
                 <div class="wish-message">${wish.message}</div>
                 <div class="wish-actions">
                     <button class="heart-btn" data-likes="${wish.likes}">
-                        ❤️ <span class="like-count">${wish.likes}</span>
+                        â¤ï¸ <span class="like-count">${wish.likes}</span>
                     </button>
                 </div>
             `;
@@ -1007,7 +1007,7 @@ class WeddingInvitation {
         
         if (video && volumeBtn) {
             video.muted = !video.muted;
-            volumeBtn.textContent = video.muted ? '🔇' : '🔊';
+            volumeBtn.textContent = video.muted ? 'ðŸ”‡' : 'ðŸ”Š';
         }
     }
     
@@ -1019,12 +1019,12 @@ class WeddingInvitation {
             if (audio.paused) {
                 audio.play().then(() => {
                     toggleBtn.classList.add('playing');
-                    toggleBtn.innerHTML = '<span class="music-icon">🎵</span>';
+                    toggleBtn.innerHTML = '<span class="music-icon">ðŸŽµ</span>';
                 }).catch(console.error);
             } else {
                 audio.pause();
                 toggleBtn.classList.remove('playing');
-                toggleBtn.innerHTML = '<span class="music-icon">🔇</span>';
+                toggleBtn.innerHTML = '<span class="music-icon">ðŸ”‡</span>';
             }
         }
     }
@@ -1075,7 +1075,7 @@ class WeddingInvitation {
         if (countdownSection) {
             countdownSection.innerHTML = `
                 <div class="countdown-complete">
-                    <h3 class="gradient-text">Hari Bahagia Telah Tiba! 🎉</h3>
+                    <h3 class="gradient-text">Hari Bahagia Telah Tiba! ðŸŽ‰</h3>
                     <p>Terima kasih telah menjadi bagian dari perjalanan cinta kami</p>
                 </div>
             `;
@@ -1142,7 +1142,7 @@ class WeddingInvitation {
             <div class="wish-message">${data.message}</div>
             <div class="wish-actions">
                 <button class="heart-btn" data-likes="0">
-                    ❤️ <span class="like-count">0</span>
+                    â¤ï¸ <span class="like-count">0</span>
                 </button>
             </div>
         `;
@@ -1165,7 +1165,7 @@ Kehadiran: ${data.attendance === 'yes' ? 'Hadir' : 'Tidak Hadir'}
 
 Ucapan: ${data.message}
 
-Terima kasih! 🙏`;
+Terima kasih! ðŸ™`;
         
         const encodedMessage = encodeURIComponent(message);
         const whatsappUrl = `https://wa.me/085251815099?text=${encodedMessage}`;
