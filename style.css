@@ -954,21 +954,6 @@ body {
   opacity: 1;       /* sesuaikan jika perlu */
   animation: float 6s ease-in-out infinite; /* tetap bisa pakai animasi float */
 }
-.daisy::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  background: repeating-conic-gradient(
-    from 0deg,
-    white 0deg 18deg,
-    transparent 18deg 36deg
-  );
-  border-radius: 50%;
-  z-index: -1;
-}
 
 .daisy-1 {
   top: 20%;
