@@ -112,7 +112,6 @@
         <div class="welcome-content">
             <div class="welcome-ornament"></div>
             <h1 class="welcome-title gradient-text">
-                    <span class="wedding-invitation-text">Wedding Invitation of</span>
                 <span class="groom-name">Suriansyah, S. Kep., Ners</span>
                 <span class="ampersand">&</span>
                 <span class="bride-name">Sonia Agustina Oemar, S. Farm</span>
@@ -128,7 +127,22 @@
     </section>
 
     <!-- Section 1: Cinematic Video -->
-    
+    <section class="section video-section hidden" id="section1" data-section="1">
+        <div class="video-container">
+            <video id="cinematicVideo" class="cinematic-video" autoplay muted loop>
+                <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/intro.mp4" type="video/mp4">
+                <p>Browser Anda tidak mendukung video HTML5.</p>
+            </video>
+            <div class="video-overlay">
+                <button class="skip-btn glassmorphism" id="skipVideoBtn">
+                    <span>Skip</span>
+                </button>
+                <div class="video-controls">
+                    <button class="volume-btn" id="volumeBtn">🔊</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Section 2: Countdown Timer -->
     <section class="section countdown-section hidden" id="section2" data-section="2">
@@ -347,23 +361,6 @@
     </section>
 
     <!-- Section 9: Closing -->
-    <section class="section video-section hidden" id="section1" data-section="1">
-        <div class="video-container">
-            <video id="cinematicVideo" class="cinematic-video" autoplay muted loop>
-                <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/intro.mp4" type="video/mp4">
-                <p>Browser Anda tidak mendukung video HTML5.</p>
-            </video>
-            <div class="video-overlay">
-                <button class="skip-btn glassmorphism" id="skipVideoBtn">
-                    <span>Skip</span>
-                </button>
-                <div class="video-controls">
-                    <button class="volume-btn" id="volumeBtn">🔊</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="section closing-section hidden" id="section9" data-section="9">
         <div class="closing-content">
             <h2 class="section-title gradient-text">Terima Kasih</h2>
@@ -412,4 +409,5 @@
 
     <script src="app.js"></script>
 </body>
-</html>
+    </html>
+            
