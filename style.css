@@ -944,22 +944,16 @@ body {
 
 .daisy {
   position: absolute;
-  width: 40px;
+  width: 40px;    /* atau sesuaikan ukuran GIF Anda */
   height: 40px;
-  background: radial-gradient(
-    circle,
-    #FFD700 20%,
-    transparent 20%,
-    transparent 25%,
-    white 25%,
-    white 40%,
-    transparent 40%
-  );
-  border-radius: 50%;
-  opacity: 0.7;
-  animation: float 6s ease-in-out infinite;
+  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy-peaceminusone.gif'); /* ganti dengan path GIF animasi Anda */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 0; /* biasakan di-reset karena sekarang pakai gambar */
+  opacity: 1;       /* sesuaikan jika perlu */
+  animation: float 6s ease-in-out infinite; /* tetap bisa pakai animasi float */
 }
-
 .daisy::before {
   content: '';
   position: absolute;
