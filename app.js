@@ -303,49 +303,55 @@ END:VCALENDAR`;
 
 // Ganti fungsi shareInvitation() yang lama dengan yang ini
 async function shareInvitation() {
+    // 1. Teks undangan yang ingin Anda sertakan
     const shareText = 'Assalamualaikum Wr. Wb.\nDengan penuh syukur kepada Allah SWT, kami mengundang Bapak/Ibu/Saudara(i) menghadiri pernikahan Suriansyah, S.Kep., Ners & Sonia Agustina Oemar, S.Farm. Barakallahu lakuma wa baraka ‘alaikuma wa jama‘a bainakuma fii khair.';
+    
+    // 2. Judul saat jendela 'share' muncul
+    const shareTitle = 'Undangan Pernikahan | Suriansyah & Sonia';
+    
+    // 3. Link ke undangan Anda
     const shareUrl = window.location.href;
-    const imageUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/pemisah.jpeg'; // URL gambar yang ingin dibagikan
+    
+    // 4. URL gambar yang akan menjadi preview
+    const imageUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/main/pemisah.jpeg';
 
-    // Fungsi fallback jika berbagi dengan file gagal
+    // Fungsi fallback jika berbagi file (gambar) tidak didukung
     const fallbackShare = () => {
         if (navigator.share) {
             navigator.share({
-                title: 'Undangan Pernikahan',
+                title: shareTitle,
                 text: shareText,
                 url: shareUrl,
-            }).catch(error => console.log('Error sharing (fallback):', error));
+            }).catch(error => console.log('Gagal berbagi (fallback):', error));
         } else {
-            // Fallback untuk browser yang tidak mendukung Web Share API sama sekali
-            copyToClipboard(shareUrl, 'Link undangan disalin!');
+            // Untuk browser yang sangat lama
+            copyToClipboard(shareUrl, 'Link undangan berhasil disalin!');
         }
     };
 
     try {
-        // Ambil gambar dan ubah menjadi blob
         const response = await fetch(imageUrl);
-        if (!response.ok) throw new Error('Image fetch failed');
-        const blob = await response.blob();
+        if (!response.ok) throw new Error('Gagal memuat gambar');
         
-        // Buat file dari blob
-        const file = new File([blob], 'undangan-pernikahan.jpg', { type: 'image/jpeg' });
+        const blob = await response.blob();
+        const file = new File([blob], 'undangan.jpg', { type: 'image/jpeg' });
         const filesArray = [file];
 
-        // Cek apakah browser mendukung berbagi file
+        // Cek apakah browser bisa berbagi file
         if (navigator.canShare && navigator.canShare({ files: filesArray })) {
+            // Jika bisa, bagikan SEMUANYA: file, judul, teks, dan url
             await navigator.share({
                 files: filesArray,
-                title: 'Undangan Pernikahan',
-                text: shareText,
-                url: shareUrl // URL tetap penting untuk disertakan
+                title: shareTitle,
+                text: shareText, // <-- Teks Anda disertakan di sini
+                url: shareUrl
             });
         } else {
-            // Jika tidak bisa berbagi file, jalankan fallback (hanya teks & URL)
+            // Jika tidak bisa berbagi gambar, jalankan fallback (hanya teks & link)
             fallbackShare();
         }
     } catch (error) {
-        console.error('Failed to fetch or share image, using fallback:', error);
-        // Jika ada error (misal gambar gagal dimuat), jalankan fallback
+        console.error('Gagal berbagi dengan gambar, menggunakan fallback:', error);
         fallbackShare();
     }
 }
