@@ -85,14 +85,43 @@ function setupActionButtons() {
     document.getElementById('saveDateBtn')?.addEventListener('click', saveTheDate);
     document.getElementById('shareBtn')?.addEventListener('click', shareInvitation);
     document.getElementById('openMapsBtn')?.addEventListener('click', openMaps);
-    document.getElementById('rsvpForm')?.addEventListener('submit', submitRSVP);
+
+    // Safe handling untuk rsvpForm: cek keberadaan elemen dan fungsi terlebih dahulu
+    const rsvpForm = document.getElementById('rsvpForm');
+    if (rsvpForm) {
+        if (typeof submitRSVP === 'function') {
+            rsvpForm.addEventListener('submit', submitRSVP);
+        } else {
+            // fallback: cegah reload dan tampilkan notifikasi sementara
+            rsvpForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                showNotification('Terima kasih! (Demo) — form saat ini belum aktif sepenuhnya.');
+            });
+        }
+    }
+
     document.getElementById('sendWaBtn')?.addEventListener('click', sendWhatsApp);
-    
+
     document.querySelectorAll('.copy-btn').forEach(btn => {
         btn.addEventListener('click', (e) => copyAccount(e.target.dataset.account));
     });
 }
 
+function submitRSVP(e) {
+    e.preventDefault();
+    const name = document.getElementById('guestName')?.value?.trim() || '';
+    const message = document.getElementById('guestMessage')?.value?.trim() || '';
+    const attendance = document.getElementById('attendance')?.value || '';
+
+    if (!name || !message || !attendance) {
+        showNotification('Mohon lengkapi semua field sebelum mengirim.');
+        return;
+    }
+
+    // TODO: kirim ke Firebase / server jika ingin — saat ini hanya demo
+    showNotification('Ucapan berhasil dikirim. Terima kasih!');
+    // e.target.reset(); // jika mau reset form setelah submit
+}
 
 function navigateToSession(sessionNumber) {
     if (sessionNumber < 0 || sessionNumber > 9 || sessionNumber === currentSession) return;
@@ -301,58 +330,61 @@ END:VCALENDAR`;
     }
 }
 
-// Ganti fungsi shareInvitation() yang lama dengan yang ini
+// Ganti / tambahkan fungsi shareInvitation() dengan versi ini
 async function shareInvitation() {
-    // 1. Teks undangan yang ingin Anda sertakan
-    const shareText = 'Assalamualaikum Wr. Wb.\nDengan penuh syukur kepada Allah SWT, kami mengundang Bapak/Ibu/Saudara(i) menghadiri pernikahan Suriansyah, S.Kep., Ners & Sonia Agustina Oemar, S.Farm. Barakallahu lakuma wa baraka ‘alaikuma wa jama‘a bainakuma fii khair.';
-    
-    // 2. Judul saat jendela 'share' muncul
+    const shareText = 'Assalamualaikum Wr. Wb.\nDengan penuh syukur kepada Allah SWT, kami mengundang Bapak/Ibu/Saudara(i) menghadiri pernikahan Suriansyah & Sonia. Barakallahu lakuma wa baraka ‘alaikuma.';
     const shareTitle = 'Undangan Pernikahan | Suriansyah & Sonia';
-    
-    // 3. Link ke undangan Anda
     const shareUrl = window.location.href;
-    
-    // 4. URL gambar yang akan menjadi preview
     const imageUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/main/pemisah.jpeg';
 
-    // Fungsi fallback jika berbagi file (gambar) tidak didukung
-    const fallbackShare = () => {
+    // Utility: fallback share hanya teks/url
+    const fallbackTextShare = () => {
         if (navigator.share) {
             navigator.share({
                 title: shareTitle,
-                text: shareText,
-                url: shareUrl,
-            }).catch(error => console.log('Gagal berbagi (fallback):', error));
+                text: shareText + '\n\n' + shareUrl,
+                url: shareUrl
+            }).catch(err => {
+                console.log('Fallback text share gagal:', err);
+                // Jika semua gagal, copy teks ke clipboard
+                copyToClipboard(`${shareText}\n\n${shareUrl}`, 'Teks undangan disalin ke clipboard.');
+            });
         } else {
-            // Untuk browser yang sangat lama
-            copyToClipboard(shareUrl, 'Link undangan berhasil disalin!');
+            // Browser lama: salin ke clipboard sebagai jaminan
+            copyToClipboard(`${shareText}\n\n${shareUrl}`, 'Teks undangan disalin ke clipboard.');
         }
     };
 
     try {
+        // Ambil gambar
         const response = await fetch(imageUrl);
         if (!response.ok) throw new Error('Gagal memuat gambar');
-        
-        const blob = await response.blob();
-        const file = new File([blob], 'undangan.jpg', { type: 'image/jpeg' });
-        const filesArray = [file];
 
-        // Cek apakah browser bisa berbagi file
-        if (navigator.canShare && navigator.canShare({ files: filesArray })) {
-            // Jika bisa, bagikan SEMUANYA: file, judul, teks, dan url
+        const imageBlob = await response.blob();
+        const imageFile = new File([imageBlob], 'undangan.jpg', { type: imageBlob.type || 'image/jpeg' });
+
+        // Buat file teks yang berisi teks undangan + link (agar penerima pasti punya teks)
+        const textBlob = new Blob([shareText + '\n\n' + shareUrl], { type: 'text/plain' });
+        const textFile = new File([textBlob], 'undangan.txt', { type: 'text/plain' });
+
+        const filesToShare = [imageFile, textFile];
+
+        // Jika browser mendukung share file dan bisa share filesToShare
+        if (navigator.canShare && navigator.canShare({ files: filesToShare })) {
             await navigator.share({
-                files: filesArray,
                 title: shareTitle,
-                text: shareText, // <-- Teks Anda disertakan di sini
+                text: shareText, // beberapa platform mungkin abaikan ini saat file ada, tapi tetap kita sertakan
+                files: filesToShare,
                 url: shareUrl
             });
-        } else {
-            // Jika tidak bisa berbagi gambar, jalankan fallback (hanya teks & link)
-            fallbackShare();
+            return;
         }
+
+        // Jika browser tidak mendukung share file, fallback ke text-only share
+        fallbackTextShare();
     } catch (error) {
-        console.error('Gagal berbagi dengan gambar, menggunakan fallback:', error);
-        fallbackShare();
+        console.warn('Gagal share dengan gambar, mencoba fallback teks:', error);
+        fallbackTextShare();
     }
 }
 
