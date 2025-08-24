@@ -230,32 +230,85 @@ function openInvitation() {
 }
 
 // Session 1: Countdown
+// ---------- Robust startCountdown() - REPLACE existing function ----------
 function startCountdown() {
-    const weddingDate = new Date('2025-09-24T07:00:00+08:00');
-    
-    countdownInterval = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = weddingDate.getTime() - now;
-        
+    try {
+        // Pastikan tidak ada interval lama berjalan
+        if (typeof countdownInterval !== 'undefined' && countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+        }
+
+        // Target tanggal acara (cek timezone)
+        const weddingDate = new Date('2025-09-24T07:00:00+08:00');
+        console.log('[countdown] init. weddingDate =', weddingDate.toString());
+
+        // Elemen target
         const daysEl = document.getElementById('days');
         const hoursEl = document.getElementById('hours');
         const minutesEl = document.getElementById('minutes');
         const secondsEl = document.getElementById('seconds');
-        
-        if (distance < 0) {
-            clearInterval(countdownInterval);
-            daysEl.textContent = '00';
-            hoursEl.textContent = '00';
-            minutesEl.textContent = '00';
-            secondsEl.textContent = '00';
+
+        // Jika elemen belum ada di DOM (mungkin berbeda timing), tunggu sampai muncul
+        if (!daysEl || !hoursEl || !minutesEl || !secondsEl) {
+            console.warn('[countdown] salah satu elemen countdown tidak ditemukan. Menunggu elemen muncul di DOM...');
+            // Pasang observer sederhana untuk menunggu elemen muncul
+            const observer = new MutationObserver((mutations, obs) => {
+                const d = document.getElementById('days');
+                const h = document.getElementById('hours');
+                const m = document.getElementById('minutes');
+                const s = document.getElementById('seconds');
+                if (d && h && m && s) {
+                    obs.disconnect();
+                    console.log('[countdown] elemen ditemukan oleh MutationObserver, memulai countdown sekarang.');
+                    // panggil ulang startCountdown setelah elemen ada
+                    startCountdown();
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
             return;
         }
-        
-        daysEl.textContent = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-        hoursEl.textContent = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-        minutesEl.textContent = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-        secondsEl.textContent = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
-    }, 1000);
+
+        // Fungsi update satu kali dan setiap detik
+        function update() {
+            const now = Date.now();
+            const distance = weddingDate.getTime() - now;
+
+            // Debug: log jarak (ms)
+            // console.log('[countdown] distance (ms):', distance);
+
+            if (distance <= 0) {
+                // Jika sudah lewat
+                daysEl.textContent = '00';
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                }
+                console.log('[countdown] acara sudah lewat atau sama dengan sekarang.');
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            daysEl.textContent = String(days).padStart(2, '0');
+            hoursEl.textContent = String(hours).padStart(2, '0');
+            minutesEl.textContent = String(minutes).padStart(2, '0');
+            secondsEl.textContent = String(seconds).padStart(2, '0');
+        }
+
+        // Jalankan update segera lalu set interval
+        update();
+        countdownInterval = setInterval(update, 1000);
+        console.log('[countdown] started. interval id:', countdownInterval);
+    } catch (err) {
+        console.error('[countdown] error saat memulai:', err);
+    }
 }
 
 // Ganti fungsi saveTheDate dan formatForGCal yang lama dengan ini
