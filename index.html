@@ -56,7 +56,7 @@
                     <h2 class="shimmer-text couple-names">Suriansyah dan Sonia Agustina Oemar</h2>
                     <p class="wedding-date shimmer-text">24 September 2025</p>
                 </div>
-                <button class="btn btn--primary open-invitation" onclick="openInvitation()">
+                <button class="btn btn--primary open-invitation" id="openInvitationBtn">
                     Buka Undangan
                 </button>
             </div>
@@ -68,7 +68,7 @@
                 <div class="floating-daisies">
                     <div class="daisy daisy-1"></div>
                     <div class="daisy daisy-2"></div>
-		    <div class="daisy daisy-3"></div>
+		            <div class="daisy daisy-3"></div>
                 </div>
                 <h2>Menuju Hari Bahagia</h2>
                 <div class="countdown-container">
@@ -90,8 +90,8 @@
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="btn btn--primary" onclick="saveTheDate()">Save The Date</button>
-                    <button class="btn btn--outline" onclick="shareInvitation()">Bagikan Undangan</button>
+                    <button class="btn btn--primary" id="saveDateBtn">Save The Date</button>
+                    <button class="btn btn--outline" id="shareBtn">Bagikan Undangan</button>
                 </div>
             </div>
         </section>
@@ -119,7 +119,7 @@
                 <div class="floating-daisies">
                     <div class="daisy daisy-1"></div>
                     <div class="daisy daisy-2"></div>
-		    <div class="daisy daisy-3"></div>
+		            <div class="daisy daisy-3"></div>
                 </div>
                 <div class="invitation-content">
                     <p class="greeting">Yth. Nama Tamu</p>
@@ -136,8 +136,8 @@
                             
                         </div>
                         <div class="couple-divider">
-    			    <span class="shimmer-text">&</span>
-			</div>
+    			            <span class="shimmer-text">&</span>
+			            </div>
                         <div class="photo-container">
                             <div class="photo-frame">
                                 <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/bride.jpeg" alt="Sonia Agustina Oemar" class="couple-photo">
@@ -156,7 +156,7 @@
                 <div class="floating-daisies">
                     <div class="daisy daisy-1"></div>
                     <div class="daisy daisy-2"></div>
-		    <div class="daisy daisy-3"></div>
+		            <div class="daisy daisy-3"></div>
                 </div>
                 <h2 class="shimmer-text">Detail Acara</h2>
                 <div class="event-details">
@@ -175,7 +175,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn--primary" onclick="openMaps()">
+                <button class="btn btn--primary" id="openMapsBtn">
                     📍 Buka Peta Lokasi
                 </button>
             </div>
@@ -187,7 +187,7 @@
                 <div class="floating-daisies">
                     <div class="daisy daisy-1"></div>
                     <div class="daisy daisy-2"></div>
-		    <div class="daisy daisy-3"></div>
+		            <div class="daisy daisy-3"></div>
                 </div>
                 <h2>RSVP & Ucapan</h2>
                 <form class="rsvp-form" id="rsvpForm">
@@ -199,14 +199,6 @@
                         <label class="form-label">Ucapan & Doa</label>
                         <textarea class="form-control" id="guestMessage" rows="4" placeholder="Tulis ucapan dan doa untuk kedua mempelai" required></textarea>
                     </div>
-		    <!-- Bagian Voice Note -->
-		    <div class="form-group">
-    			<label class="form-label">Pesan Suara (Opsional)</label>
-    			<div class="voice-note-controls">
-        		    <button type="button" id="recordBtn" class="btn btn--secondary">🎤 Rekam</button>
-        		    <audio id="audioPlayback" controls style="display:none;"></audio>
-    			</div>
-		    </div>
                     <div class="form-group">
                         <label class="form-label">Konfirmasi Kehadiran</label>
                         <select class="form-control" id="attendance" required>
@@ -223,7 +215,7 @@
                     </div>
                     <div class="action-buttons">
                         <button type="submit" class="btn btn--primary">Kirim Ucapan</button>
-                        <button type="button" class="btn btn--outline" onclick="sendWhatsApp()">Kirim via WhatsApp</button>
+                        <button type="button" class="btn btn--outline" id="sendWaBtn">Kirim via WhatsApp</button>
                     </div>
                 </form>
             </div>
@@ -235,7 +227,7 @@
                 <div class="floating-daisies">
                     <div class="daisy daisy-1"></div>
                     <div class="daisy daisy-2"></div>
-		    <div class="daisy daisy-3"></div>
+		            <div class="daisy daisy-3"></div>
                 </div>
                 <h2>Kado Cashless</h2>
                 <p class="gift-text">
@@ -247,7 +239,7 @@
                         <h3>Bank Mandiri</h3>
                         <div class="account-info">
                             <span class="account-number">1410001081983</span>
-                            <button class="copy-btn" onclick="copyAccount('1410001081983')">📋 Salin</button>
+                            <button type="button" class="copy-btn" data-account="1410001081983">📋 Salin</button>
                         </div>
                         <p class="account-name">a.n. Sonia Agustina Oemar</p>
                     </div>
@@ -255,7 +247,7 @@
                         <h3>Bank BPD Kalsel</h3>
                         <div class="account-info">
                             <span class="account-number">3202963349</span>
-                            <button class="copy-btn" onclick="copyAccount('3202963349')">📋 Salin</button>
+                            <button type="button" class="copy-btn" data-account="3202963349">📋 Salin</button>
                         </div>
                         <p class="account-name">a.n. Sonia Agustina Oemar</p>
                     </div>
@@ -269,7 +261,7 @@
                 <div class="floating-daisies">
                     <div class="daisy daisy-1"></div>
                     <div class="daisy daisy-2"></div>
-		    <div class="daisy daisy-3"></div>
+		            <div class="daisy daisy-3"></div>
                 </div>
                 <h2>Ucapan & Doa</h2>
                 <div class="messages-container" id="messagesContainer">
@@ -284,7 +276,7 @@
                 <div class="floating-daisies">
                     <div class="daisy daisy-1"></div>
                     <div class="daisy daisy-2"></div>
-		    <div class="daisy daisy-3"></div>
+		            <div class="daisy daisy-3"></div>
                 </div>
                 <h2 class="shimmer-text">Terima Kasih</h2>
                 <div class="thank-you-content">
@@ -310,7 +302,7 @@
                 <div class="floating-daisies">
                     <div class="daisy daisy-1"></div>
                     <div class="daisy daisy-2"></div>
-		    <div class="daisy daisy-3"></div>
+		            <div class="daisy daisy-3"></div>
                 </div>
                 <h2>Galeri</h2>
                 <div class="video-container">
@@ -327,7 +319,8 @@
         </section>
 
     </div>
-    <script src="https://www.youtube.com/iframe_api"></script> <!-- TAMBAHKAN INI -->
-    <script src="app.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- PENTING: Mengubah tipe script menjadi "module" agar bisa menggunakan import -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>
