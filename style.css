@@ -457,9 +457,9 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
   .arrow-btn { min-width: 38px; padding: 5px; }
   .countdown-container { grid-template-columns: repeat(2, 1fr); gap: var(--space-12); }
   .countdown-item span { font-size: 2rem; }
-  .couple-photos { flex-direction: column; gap: var(--space-20); }
+  .couple-photos { flex-direction: column; gap: var(--space-14); }
   .photo-frame { width: 120px; height: 120px; }
-  .couple-divider { font-size: 2rem; }
+  .couple-divider { font-size: 1rem; }
   .action-buttons { flex-direction: column; }
   .bank-accounts .account-info { flex-direction: column; align-items: stretch; }
   .invitation-title h1 { font-size: 2.5rem; }
