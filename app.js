@@ -1,152 +1,74 @@
 // Wedding Invitation JavaScript - Fixed Version
 
+// PENTING: Menggunakan import dari URL CDN Firebase karena ini adalah modul ES
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 // Global variables
 let currentSession = 0;
 let backgroundMusic;
 let countdownInterval;
 let isVideoPlaying = false;
-let ytPlayer; // <-- Tambahkan variabel ini
-let mediaRecorder;
-let audioChunks = [];
-let recordedAudioURL = '';
-// Firebase configuration and initialization
-// FIREBASE INTEGRATION SETUP:
-// 1. Go to https://console.firebase.google.com/
-// 2. Create a new project or use existing one
-// 3. Enable Firestore Database
-// 4. Get your Firebase config object from Project Settings > General > Your apps
-// 5. Replace the config object below with your actual Firebase config
-// 6. Enable Firestore rules for read/write access:
-/*
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /messages/{document} {
-      allow read, write: if true;
-    }
-    match /rsvp/{document} {
-      allow read, write: if true;
-    }
-  }
-}
-*/
+let ytPlayer;
 
-// Uncomment and configure when ready to use Firebase
-
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, getDocs, orderBy, query } from 'firebase/firestore';
-
+// Konfigurasi Firebase Anda
 const firebaseConfig = {
-  // Your Firebase config object goes here
   apiKey: "AIzaSyAbT55NRUO49GQnhN-Uf_yONSpTQBJUgqU",
   authDomain: "weddinginvitationss.firebaseapp.com",
   projectId: "weddinginvitationss",
-  storageBucket: "weddinginvitationss.firebasestorage.app",
+  storageBucket: "weddinginvitationss.appspot.com",
   messagingSenderId: "348557007083",
   appId: "1:348557007083:web:c966107d29e0dcfcbe86ae"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
+// Inisialisasi Firebase
+let db;
+try {
+    const app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    console.log("Firebase initialized successfully.");
+} catch (error) {
+    console.error("Firebase initialization failed:", error);
+}
 
 // Initialize application when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
+    initApp();
 });
 
-function setupVoiceNoteRecorder() {
-    const recordBtn = document.getElementById('recordBtn');
-    const audioPlayback = document.getElementById('audioPlayback');
-
-    if (!recordBtn) return;
-
-    recordBtn.onclick = async () => {
-        if (mediaRecorder && mediaRecorder.state === 'recording') {
-            // Hentikan rekaman
-            mediaRecorder.stop();
-            recordBtn.textContent = '🎤 Rekam Ulang';
-            recordBtn.classList.remove('is-recording');
-        } else {
-            // Mulai rekaman
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = []; // Reset chunks
-
-                mediaRecorder.ondataavailable = event => {
-                    audioChunks.push(event.data);
-                };
-
-                mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                    recordedAudioURL = URL.createObjectURL(audioBlob);
-                    audioPlayback.src = recordedAudioURL;
-                    audioPlayback.style.display = 'block';
-
-                    // Hentikan track mikrofon setelah selesai
-                    stream.getTracks().forEach(track => track.stop());
-                };
-
-                mediaRecorder.start();
-                recordBtn.textContent = '🛑 Hentikan';
-                recordBtn.classList.add('is-recording');
-                audioPlayback.style.display = 'none';
-
-            } catch (err) {
-                console.error("Error accessing microphone:", err);
-                showNotification('Gagal mengakses mikrofon. Pastikan Anda memberikan izin.');
-            }
-        }
-    };
-}
-
-function initializeApp() {
+function initApp() {
     backgroundMusic = document.getElementById('backgroundMusic');
     setupNavigation();
+    setupActionButtons();
     startCountdown();
     loadGuestMessages();
     showMusicEnableButton();
-    setupVoiceNoteRecorder();
-    // Start with session 0 (landing page) and make it active
-    showSession(0);
     
-    // Auto-play background music with user gesture fallback
-    // playBackgroundMusic();
+    // Mulai dari sesi 0 (halaman pembuka)
+    showSession(0);
 }
 
 // Navigation Functions
 function setupNavigation() {
-    // Dot navigation
+    // Navigasi titik
     const dots = document.querySelectorAll('.dot');
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => navigateToSession(index));
+    dots.forEach((dot) => {
+        dot.addEventListener('click', () => navigateToSession(parseInt(dot.dataset.session)));
     });
     
-    // Arrow navigation
+    // Navigasi panah
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            if (currentSession > 0) {
-                navigateToSession(currentSession - 1);
-            }
-        });
-    }
+    prevBtn?.addEventListener('click', () => {
+        if (currentSession > 0) navigateToSession(currentSession - 1);
+    });
     
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            if (currentSession < 9) {
-                navigateToSession(currentSession + 1);
-            }
-        });
-    }
+    nextBtn?.addEventListener('click', () => {
+        if (currentSession < 9) navigateToSession(currentSession + 1);
+    });
     
-    // Update arrow button states
-    updateArrowButtons();
-    
-    // Keyboard navigation
+    // Navigasi keyboard
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowUp' && currentSession > 0) {
             navigateToSession(currentSession - 1);
@@ -154,56 +76,54 @@ function setupNavigation() {
             navigateToSession(currentSession + 1);
         }
     });
+
+    updateArrowButtons();
 }
+
+function setupActionButtons() {
+    document.getElementById('openInvitationBtn')?.addEventListener('click', openInvitation);
+    document.getElementById('saveDateBtn')?.addEventListener('click', saveTheDate);
+    document.getElementById('shareBtn')?.addEventListener('click', shareInvitation);
+    document.getElementById('openMapsBtn')?.addEventListener('click', openMaps);
+    document.getElementById('rsvpForm')?.addEventListener('submit', submitRSVP);
+    document.getElementById('sendWaBtn')?.addEventListener('click', sendWhatsApp);
+    
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => copyAccount(e.target.dataset.account));
+    });
+}
+
 
 function navigateToSession(sessionNumber) {
     if (sessionNumber < 0 || sessionNumber > 9 || sessionNumber === currentSession) return;
     
-    console.log(`Navigating from session ${currentSession} to session ${sessionNumber}`);
-    
-    // Hide current session
     const currentSessionElement = document.getElementById(`session${currentSession}`);
-    if (currentSessionElement) {
-        currentSessionElement.classList.remove('active');
-        currentSessionElement.classList.add('hidden');
-    }
+    currentSessionElement?.classList.remove('active');
+    currentSessionElement?.classList.add('hidden');
     
-    // Show new session
     const newSessionElement = document.getElementById(`session${sessionNumber}`);
-    if (newSessionElement) {
-        newSessionElement.classList.remove('hidden');
-        // Use setTimeout to ensure the display change takes effect before adding active
-        setTimeout(() => {
-            newSessionElement.classList.add('active');
-        }, 10);
-    }
+    newSessionElement?.classList.remove('hidden');
+    setTimeout(() => {
+        newSessionElement?.classList.add('active');
+    }, 10);
     
-    // Update navigation dots
-    const dots = document.querySelectorAll('.dot');
-    if (dots[currentSession]) {
-        dots[currentSession].classList.remove('active');
-    }
-    if (dots[sessionNumber]) {
-        dots[sessionNumber].classList.add('active');
-    }
+    document.querySelector('.dot.active')?.classList.remove('active');
+    document.querySelector(`.dot[data-session='${sessionNumber}']`)?.classList.add('active');
     
-    // Update current session
     currentSession = sessionNumber;
-    
-    // Update arrow button states
     updateArrowButtons();
     
-    // Handle session-specific actions
     if (sessionNumber === 7) {
-        setTimeout(() => loadGuestMessages(), 100);
+        loadGuestMessages();
+    }
+
+    if (sessionNumber !== 9 && ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+        ytPlayer.pauseVideo();
     }
 }
 
 function showSession(sessionNumber) {
-    console.log(`Showing session ${sessionNumber}`);
-    
-    const sessions = document.querySelectorAll('.session');
-    sessions.forEach((session, index) => {
+    document.querySelectorAll('.session').forEach((session, index) => {
         if (index === sessionNumber) {
             session.classList.remove('hidden');
             session.classList.add('active');
@@ -213,15 +133,8 @@ function showSession(sessionNumber) {
         }
     });
     
-    // Update dots
-    const dots = document.querySelectorAll('.dot');
-    dots.forEach((dot, index) => {
-        if (index === sessionNumber) {
-            dot.classList.add('active');
-        } else {
-            dot.classList.remove('active');
-        }
-    });
+    document.querySelector('.dot.active')?.classList.remove('active');
+    document.querySelector(`.dot[data-session='${sessionNumber}']`)?.classList.add('active');
     
     currentSession = sessionNumber;
     updateArrowButtons();
@@ -231,116 +144,67 @@ function updateArrowButtons() {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     
-    if (prevBtn) {
-        if (currentSession <= 0) {
-            prevBtn.disabled = true;
-            prevBtn.style.opacity = '0.5';
-        } else {
-            prevBtn.disabled = false;
-            prevBtn.style.opacity = '1';
-        }
-    }
-    
-    if (nextBtn) {
-        if (currentSession >= 9) {
-            nextBtn.disabled = true;
-            nextBtn.style.opacity = '0.5';
-        } else {
-            nextBtn.disabled = false;
-            nextBtn.style.opacity = '1';
-        }
-    }
+    if (prevBtn) prevBtn.disabled = currentSession <= 0;
+    if (nextBtn) nextBtn.disabled = currentSession >= 9;
 }
 
 // Audio Functions
 function playBackgroundMusic() {
     if (backgroundMusic) {
         backgroundMusic.play().catch(error => {
-            console.log('Auto-play prevented:', error);
-            // Show a button to enable music if auto-play fails
-            showMusicEnableButton();
+            console.log('Auto-play dicegah:', error);
         });
     }
 }
 
 function pauseBackgroundMusic() {
-    if (backgroundMusic && !backgroundMusic.paused) {
-        backgroundMusic.pause();
-    }
+    backgroundMusic?.pause();
 }
 
 function resumeBackgroundMusic() {
-    if (backgroundMusic && backgroundMusic.paused && !isVideoPlaying) {
-        backgroundMusic.play().catch(error => {
-            console.log('Failed to resume music:', error);
-        });
+    if (backgroundMusic?.paused && !isVideoPlaying) {
+        backgroundMusic.play().catch(error => console.log('Gagal melanjutkan musik:', error));
     }
 }
 
 function showMusicEnableButton() {
-    // Check if button already exists
-    if (document.querySelector('.music-enable-btn')) return;
+    if (document.querySelector('.music-toggle-btn')) return;
     
-    // Create and show a button to enable music
     const musicButton = document.createElement('button');
-    musicButton.innerHTML = '🎵'; // Ikon awal
-    musicButton.className = 'btn music-toggle-btn'; // Ganti nama kelas agar unik
+    musicButton.innerHTML = '🔇';
+    musicButton.className = 'btn music-toggle-btn';
     musicButton.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1001;
-        background: var(--wedding-gold);
-        color: var(--wedding-black);
-        border: none;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        font-size: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        position: fixed; bottom: 20px; right: 20px; z-index: 1001;
+        background: var(--wedding-gold); color: var(--wedding-black); border: none;
+        width: 45px; height: 45px; border-radius: 50%; font-size: 20px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     `;
     
-    // Fungsi untuk toggle musik
-    function toggleMusic() {
+    musicButton.addEventListener('click', () => {
         if (backgroundMusic.paused) {
-            backgroundMusic.play().catch(e => console.log("Gagal memutar musik"));
-            musicButton.innerHTML = '🎵'; // Ikon saat musik menyala
+            backgroundMusic.play();
+            musicButton.innerHTML = '🎵';
         } else {
             backgroundMusic.pause();
-            musicButton.innerHTML = '🔇'; // Ikon saat musik mati
+            musicButton.innerHTML = '🔇';
         }
-    }
-
-    // Tambahkan event listener ke tombol
-    musicButton.addEventListener('click', toggleMusic);
+    });
 
     document.body.appendChild(musicButton);
-
-    // Coba putar musik pertama kali, jika berhasil, update ikon
-    backgroundMusic.play().then(() => {
-        musicButton.innerHTML = '🎵';
-    }).catch(error => {
-        console.log('Auto-play dicegah:', error);
-        musicButton.innerHTML = '🔇'; // Jika auto-play gagal, tampilkan ikon mute
-    });
 }
-// Session 0 Functions
+
+// Session 0: Landing
 function openInvitation() {
-    console.log('Opening invitation - navigating to session 1');
     navigateToSession(1);
-    // Ensure music is playing when invitation is opened
-    
+    playBackgroundMusic();
 }
 
-// Session 1 Functions - Countdown
+// Session 1: Countdown
 function startCountdown() {
-    const weddingDate = new Date('2025-09-24T07:00:00+08:00'); // WITA timezone
+    const weddingDate = new Date('2025-09-24T07:00:00+08:00');
     
-    function updateCountdown() {
+    countdownInterval = setInterval(() => {
         const now = new Date().getTime();
         const distance = weddingDate.getTime() - now;
         
@@ -348,10 +212,6 @@ function startCountdown() {
         const hoursEl = document.getElementById('hours');
         const minutesEl = document.getElementById('minutes');
         const secondsEl = document.getElementById('seconds');
-        
-        if (!daysEl || !hoursEl || !minutesEl || !secondsEl) {
-            return;
-        }
         
         if (distance < 0) {
             clearInterval(countdownInterval);
@@ -362,29 +222,18 @@ function startCountdown() {
             return;
         }
         
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-        daysEl.textContent = days.toString().padStart(2, '0');
-        hoursEl.textContent = hours.toString().padStart(2, '0');
-        minutesEl.textContent = minutes.toString().padStart(2, '0');
-        secondsEl.textContent = seconds.toString().padStart(2, '0');
-    }
-    
-    // Update immediately
-    updateCountdown();
-    
-    // Update every second
-    countdownInterval = setInterval(updateCountdown, 1000);
+        daysEl.textContent = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+        hoursEl.textContent = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+        minutesEl.textContent = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+        secondsEl.textContent = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+    }, 1000);
 }
 
 function saveTheDate() {
     const event = {
         title: 'Wedding Suriansyah & Sonia Agustina Oemar',
-        start: '20250924T070000Z',
-        end: '20250924T120000Z',
+        start: '20250924T070000',
+        end: '20250924T170000',
         description: 'Acara Pernikahan Suriansyah & Sonia Agustina Oemar',
         location: 'Masjid Jabal Rahmah Mandin'
     };
@@ -393,10 +242,10 @@ function saveTheDate() {
 VERSION:2.0
 PRODID:-//Wedding Invitation//EN
 BEGIN:VEVENT
-UID:${Date.now()}@weddinginvitation.com
-DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
-DTSTART:${event.start}
-DTEND:${event.end}
+UID:${Date.now()}@example.com
+DTSTAMP:${new Date().toISOString().replace(/[-:.]/g, '')}Z
+DTSTART;TZID=Asia/Makassar:${event.start}
+DTEND;TZID=Asia/Makassar:${event.end}
 SUMMARY:${event.title}
 DESCRIPTION:${event.description}
 LOCATION:${event.location}
@@ -413,7 +262,7 @@ END:VCALENDAR`;
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
     
-    showNotification('Calendar event saved! 📅');
+    showNotification('Acara kalender disimpan! 📅');
 }
 
 function shareInvitation() {
@@ -425,137 +274,43 @@ function shareInvitation() {
             title: 'Wedding Invitation',
             text: shareText,
             url: shareUrl
-        }).catch(error => {
-            console.log('Error sharing:', error);
-            fallbackShare(shareText, shareUrl);
-        });
+        }).catch(error => console.log('Error sharing:', error));
     } else {
-        fallbackShare(shareText, shareUrl);
+        copyToClipboard(shareUrl, 'Link undangan disalin!');
     }
 }
 
-function fallbackShare(shareText, shareUrl) {
-    // Fallback for browsers that don't support Web Share API
-    const shareMenu = document.createElement('div');
-    shareMenu.className = 'share-menu';
-    shareMenu.innerHTML = `
-        <div class="share-content">
-            <h3>Bagikan Undangan</h3>
-            <div class="share-buttons">
-                <button onclick="shareToWhatsApp('${encodeURIComponent(shareText + ' ' + shareUrl)}')" class="btn btn--primary">WhatsApp</button>
-                <button onclick="shareToFacebook('${encodeURIComponent(shareUrl)}')" class="btn btn--primary">Facebook</button>
-                <button onclick="copyToClipboard('${shareUrl}')" class="btn btn--outline">Copy Link</button>
-            </div>
-            <button onclick="closeShareMenu()" class="btn btn--outline">Tutup</button>
-        </div>
-    `;
-    shareMenu.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.8); z-index: 1002; display: flex;
-        align-items: center; justify-content: center;
-    `;
-    shareMenu.querySelector('.share-content').style.cssText = `
-        background: var(--wedding-black); padding: 2rem; border-radius: 1rem;
-        text-align: center; max-width: 300px; width: 90%;
-        border: 2px solid var(--wedding-gold);
-    `;
-    shareMenu.querySelector('.share-buttons').style.cssText = `
-        display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0;
-    `;
-    
-    document.body.appendChild(shareMenu);
-}
-
-function shareToWhatsApp(text) {
-    window.open(`https://wa.me/?text=${text}`, '_blank');
-    closeShareMenu();
-}
-
-function shareToFacebook(url) {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-    closeShareMenu();
-}
-
-function closeShareMenu() {
-    const shareMenu = document.querySelector('.share-menu');
-    if (shareMenu) {
-        shareMenu.remove();
-    }
-}
-
-// Session 4 Functions
+// Session 4: Maps
 function openMaps() {
     window.open('https://maps.app.goo.gl/TvD12aGBA8WGaKQX8', '_blank');
 }
 
-// Session 5 Functions - RSVP
-function setupRSVPForm() {
-    const form = document.getElementById('rsvpForm');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            submitRSVP();
-        });
-    }
-}
-
-// Call this after DOM is loaded
-setTimeout(setupRSVPForm, 100);
-
-async function submitRSVP() {
-    const nameEl = document.getElementById('guestName');
-    const messageEl = document.getElementById('guestMessage');
-    const attendanceEl = document.getElementById('attendance');
-    const displayMessageEl = document.getElementById('displayMessage');
-    
-    if (!nameEl || !messageEl || !attendanceEl) {
-        showNotification('Form elements not found! ⚠️');
-        return;
-    }
-    
-    const name = nameEl.value.trim();
-    const message = messageEl.value.trim();
-    const attendance = attendanceEl.value;
-    const displayMessage = displayMessageEl ? displayMessageEl.checked : false;
+// Session 5: RSVP
+async function submitRSVP(e) {
+    e.preventDefault();
+    const name = document.getElementById('guestName').value.trim();
+    const message = document.getElementById('guestMessage').value.trim();
+    const attendance = document.getElementById('attendance').value;
+    const displayMessage = document.getElementById('displayMessage').checked;
     
     if (!name || !message || !attendance) {
-        showNotification('Mohon lengkapi semua field! ⚠️');
+        showNotification('Mohon lengkapi semua kolom! ⚠️');
         return;
     }
     
-    const rsvpData = {
-        name: name,
-        message: message,
-        attendance: attendance,
-        displayMessage: displayMessage,
-        timestamp: new Date(),
-        createdAt: new Date().toISOString()
-    };
+    const rsvpData = { name, message, attendance, displayMessage, timestamp: serverTimestamp() };
     
     try {
-        // Firebase Integration - Uncomment when Firebase is configured
-        
+        if (!db) throw new Error("Database not initialized");
         await addDoc(collection(db, 'rsvp'), rsvpData);
         
         if (displayMessage) {
-            await addDoc(collection(db, 'messages'), {
-                name: name,
-                message: message,
-                timestamp: new Date(),
-                createdAt: new Date().toISOString()
-            });
+            await addDoc(collection(db, 'messages'), { name, message, timestamp: serverTimestamp() });
+            loadGuestMessages(); // Refresh messages
         }
         
-        
-        
-        
         showNotification('Terima kasih atas konfirmasi dan ucapannya! 💝');
-        
-        // Reset form
-        if (nameEl) nameEl.value = '';
-        if (messageEl) messageEl.value = '';
-        if (attendanceEl) attendanceEl.value = '';
-        if (displayMessageEl) displayMessageEl.checked = false;
+        document.getElementById('rsvpForm').reset();
         
     } catch (error) {
         console.error('Error submitting RSVP:', error);
@@ -564,7 +319,6 @@ async function submitRSVP() {
 }
 
 function sendWhatsApp() {
-    // ... (kode untuk mengambil nama, pesan, dan kehadiran tetap sama)
     const name = document.getElementById('guestName').value.trim();
     const message = document.getElementById('guestMessage').value.trim();
     const attendance = document.getElementById('attendance').value;
@@ -575,88 +329,40 @@ function sendWhatsApp() {
     }
 
     const attendanceText = attendance === 'hadir' ? 'Akan Hadir' : 'Tidak Dapat Hadir';
-    let whatsappMessage = `Halo, saya ${name}.\n\nKonfirmasi: ${attendanceText}\n\nUcapan: ${message}`;
-
-    if (recordedAudioURL) {
-        whatsappMessage += `\n\n(Saya juga merekam pesan suara, akan saya kirimkan setelah ini)`;
-        showNotification('Pesan WhatsApp disiapkan. Mohon kirim pesan suara Anda secara manual setelah ini. 🎤');
-    }
-
+    const whatsappMessage = `Halo, saya ${name}.\n\n*Konfirmasi Kehadiran:* ${attendanceText}\n\n*Ucapan & Doa:*\n${message}`;
+    
     window.open(`https://wa.me/6285251815099?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
 }
 
-// Session 6 Functions - Copy Account Numbers
+// Session 6: Copy Account
 function copyAccount(accountNumber) {
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(accountNumber).then(() => {
-            showNotification('Nomor rekening berhasil disalin! 📋');
-        }).catch(() => {
-            fallbackCopyTextToClipboard(accountNumber);
-        });
-    } else {
-        fallbackCopyTextToClipboard(accountNumber);
-    }
+    copyToClipboard(accountNumber, 'Nomor rekening berhasil disalin! 📋');
 }
 
-function fallbackCopyTextToClipboard(text) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.cssText = 'position: fixed; top: 0; left: 0; opacity: 0;';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    
-    try {
-        const successful = document.execCommand('copy');
-        if (successful) {
-            showNotification('Nomor rekening berhasil disalin! 📋');
-        } else {
-            showNotification('Gagal menyalin nomor rekening ❌');
-        }
-    } catch (err) {
-        showNotification('Gagal menyalin nomor rekening ❌');
-        console.error('Copy failed:', err);
-    }
-    
-    document.body.removeChild(textArea);
-}
-
-// Session 7 Functions - Load Guest Messages
+// Session 7: Guest Messages
 async function loadGuestMessages() {
     const container = document.getElementById('messagesContainer');
-    
-    if (!container) {
-        console.error('Messages container not found');
-        return;
-    }
+    if (!container) return;
     
     try {
-        // Firebase Integration - Uncomment when Firebase is configured
-        
-        const messagesQuery = query(
-            collection(db, 'messages'),
-            orderBy('timestamp', 'desc')
-        );
+        if (!db) throw new Error("Database not initialized");
+        const messagesQuery = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
         const querySnapshot = await getDocs(messagesQuery);
-        const messages = [];
-        querySnapshot.forEach((doc) => {
-            messages.push(doc.data());
-        });
         
-        
-        
-        
-        if (messages.length === 0) {
+        if (querySnapshot.empty) {
             container.innerHTML = '<p class="no-messages">Belum ada ucapan dari tamu</p>';
             return;
         }
         
-        container.innerHTML = messages.map(msg => `
-            <div class="message-item">
-                <div class="message-name">${escapeHtml(msg.name)}</div>
-                <div class="message-text">${escapeHtml(msg.message)}</div>
-            </div>
-        `).join('');
+        container.innerHTML = querySnapshot.docs.map(doc => {
+            const msg = doc.data();
+            return `
+                <div class="message-item">
+                    <div class="message-name">${escapeHtml(msg.name)}</div>
+                    <div class="message-text">${escapeHtml(msg.message)}</div>
+                </div>
+            `;
+        }).join('');
         
     } catch (error) {
         console.error('Error loading messages:', error);
@@ -664,69 +370,28 @@ async function loadGuestMessages() {
     }
 }
 
-// Session 9 Functions - Video Controls
-// Fungsi ini akan dipanggil otomatis oleh API YouTube setelah siap
-function onYouTubeIframeAPIReady() {
+// Session 9: YouTube Video
+window.onYouTubeIframeAPIReady = function() {
   ytPlayer = new YT.Player('weddingVideo', {
-    events: {
-      'onStateChange': onPlayerStateChange
-    }
+    events: { 'onStateChange': onPlayerStateChange }
   });
 }
 
-// Fungsi ini akan menangani status video (play, pause, dll.)
 function onPlayerStateChange(event) {
   if (event.data == YT.PlayerState.PLAYING) {
-    // Jika video diputar, hentikan musik latar
     pauseBackgroundMusic();
     isVideoPlaying = true;
   } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
-    // Jika video dijeda atau selesai, lanjutkan musik latar
     isVideoPlaying = false;
-    // Beri jeda sedikit sebelum musik kembali menyala
     setTimeout(() => {
-        if (!isVideoPlaying) { // Cek lagi untuk memastikan video tidak diputar kembali
-            resumeBackgroundMusic();
-        }
+        if (!isVideoPlaying) resumeBackgroundMusic();
     }, 500);
   }
 }
-    
-    // Listen for messages from YouTube iframe
-    window.addEventListener('message', function(event) {
-        if (event.origin !== 'https://www.youtube.com') return;
-        
-        try {
-            const data = JSON.parse(event.data);
-            if (data.event === 'video-play') {
-                isVideoPlaying = true;
-                pauseBackgroundMusic();
-            } else if (data.event === 'video-pause' || data.event === 'video-stop') {
-                isVideoPlaying = false;
-                setTimeout(() => {
-                    if (!isVideoPlaying) {
-                        resumeBackgroundMusic();
-                    }
-                }, 500);
-            }
-        } catch (e) {
-            // Ignore parsing errors
-        }
-    });
-    
-const iframe = document.getElementById('weddingVideo'); // kalau id lain: ganti sesuai id iframe Anda
-if (iframe && typeof iframe.src === 'string') {
-    if (iframe.src.indexOf('enablejsapi=1') === -1) {
-        const sep = iframe.src.indexOf('?') === -1 ? '?' : '&';
-        iframe.src = iframe.src + sep + 'enablejsapi=1&origin=' + encodeURIComponent(window.location.origin);
-    }
-}    
 
 // Utility Functions
 function showNotification(message) {
-    // Remove existing notifications
-    const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notif => notif.remove());
+    document.querySelectorAll('.notification').forEach(n => n.remove());
     
     const notification = document.createElement('div');
     notification.textContent = message;
@@ -739,19 +404,13 @@ function showNotification(message) {
         word-wrap: break-word;
     `;
     
-    // Add animation keyframes if not already present
-    if (!document.querySelector('#notificationStyles')) {
+    const styleId = 'notification-styles';
+    if (!document.getElementById(styleId)) {
         const style = document.createElement('style');
-        style.id = 'notificationStyles';
+        style.id = styleId;
         style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
+            @keyframes slideIn { from { transform: translateX(110%); } to { transform: translateX(0); } }
+            @keyframes slideOut { from { transform: translateX(0); } to { transform: translateX(110%); } }
         `;
         document.head.appendChild(style);
     }
@@ -760,72 +419,29 @@ function showNotification(message) {
     
     setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease-out forwards';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
+        setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
 
-function copyToClipboard(text) {
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => {
-            showNotification('Link berhasil disalin! 📋');
-        }).catch(() => {
-            fallbackCopyTextToClipboard(text);
-        });
-    } else {
-        fallbackCopyTextToClipboard(text);
-    }
+function copyToClipboard(text, successMessage) {
+    navigator.clipboard.writeText(text).then(() => {
+        showNotification(successMessage || 'Teks berhasil disalin!');
+    }).catch(err => {
+        console.error('Gagal menyalin:', err);
+        showNotification('Gagal menyalin ❌');
+    });
 }
 
 function escapeHtml(text) {
-    if (!text) return '';
-    const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-    };
-    return text.toString().replace(/[&<>"']/g, function(m) { return map[m]; });
+    return text
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
 }
 
-// Touch gesture handling for mobile (disabled as requested)
-let touchStartY = 0;
-let touchEndY = 0;
-
-document.addEventListener('touchstart', function(e) {
-    touchStartY = e.changedTouches[0].screenY;
+// Cleanup
+window.addEventListener('beforeunload', () => {
+    if (countdownInterval) clearInterval(countdownInterval);
 });
-
-document.addEventListener('touchend', function(e) {
-    touchEndY = e.changedTouches[0].screenY;
-    // Swipe gestures disabled as per user request
-    // handleSwipe();
-});
-
-function handleSwipe() {
-    // Function kept for potential future use but disabled
-    // Swipe gestures are not implemented as per user request
-}
-
-// Cleanup function
-window.addEventListener('beforeunload', function() {
-    if (countdownInterval) {
-        clearInterval(countdownInterval);
-    }
-});
-
-// Export functions for global access
-window.openInvitation = openInvitation;
-window.saveTheDate = saveTheDate;
-window.shareInvitation = shareInvitation;
-window.shareToWhatsApp = shareToWhatsApp;
-window.shareToFacebook = shareToFacebook;
-window.closeShareMenu = closeShareMenu;
-window.copyToClipboard = copyToClipboard;
-window.openMaps = openMaps;
-window.sendWhatsApp = sendWhatsApp;
-window.copyAccount = copyAccount;
