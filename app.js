@@ -1,580 +1,326 @@
-// Wedding Invitation JavaScript - Fixed Version
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation - Suriansyah & Sonia Agustina Oemar</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Audio Background Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/backgroundmusic.mp3" type="audio/mpeg">
+    </audio>
 
-// PENTING: Menggunakan import dari URL CDN Firebase karena ini adalah modul ES
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    <!-- Navigation Dots (Right Side) -->
+    <div class="nav-dots">
+        <div class="dot active" data-session="0"></div>
+        <div class="dot" data-session="1"></div>
+        <div class="dot" data-session="2"></div>
+        <div class="dot" data-session="3"></div>
+        <div class="dot" data-session="4"></div>
+        <div class="dot" data-session="5"></div>
+        <div class="dot" data-session="6"></div>
+        <div class="dot" data-session="7"></div>
+        <div class="dot" data-session="8"></div>
+        <div class="dot" data-session="9"></div>
+    </div>
 
-// Global variables
-let currentSession = 0;
-let backgroundMusic;
-let countdownInterval;
-let isVideoPlaying = false;
-let ytPlayer;
+    <!-- Arrow Navigation -->
+    <div class="nav-arrows">
+        <button class="arrow-btn arrow-up" id="prevBtn">
+            <span>↑</span>
+            <small>Previous</small>
+        </button>
+        <button class="arrow-btn arrow-down" id="nextBtn">
+            <span>↓</span>
+            <small>Next</small>
+        </button>
+    </div>
 
-// Konfigurasi Firebase Anda
-const firebaseConfig = {
-  apiKey: "AIzaSyAbT55NRUO49GQnhN-Uf_yONSpTQBJUgqU",
-  authDomain: "weddinginvitationss.firebaseapp.com",
-  projectId: "weddinginvitationss",
-  storageBucket: "weddinginvitationss.appspot.com",
-  messagingSenderId: "348557007083",
-  appId: "1:348557007083:web:c966107d29e0dcfcbe86ae"
-};
-
-// Inisialisasi Firebase
-let db;
-try {
-    const app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    console.log("Firebase initialized successfully.");
-} catch (error) {
-    console.error("Firebase initialization failed:", error);
-}
-
-// Initialize application when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initApp();
-});
-
-function initApp() {
-    backgroundMusic = document.getElementById('backgroundMusic');
-    setupNavigation();
-    setupActionButtons();
-    startCountdown();
-    loadGuestMessages();
-    showMusicEnableButton();
-    
-    // Mulai dari sesi 0 (halaman pembuka)
-    showSession(0);
-}
-
-// Navigation Functions
-function setupNavigation() {
-    // Navigasi titik
-    const dots = document.querySelectorAll('.dot');
-    dots.forEach((dot) => {
-        dot.addEventListener('click', () => navigateToSession(parseInt(dot.dataset.session)));
-    });
-    
-    // Navigasi panah
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    
-    prevBtn?.addEventListener('click', () => {
-        if (currentSession > 0) navigateToSession(currentSession - 1);
-    });
-    
-    nextBtn?.addEventListener('click', () => {
-        if (currentSession < 9) navigateToSession(currentSession + 1);
-    });
-    
-    // Navigasi keyboard
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp' && currentSession > 0) {
-            navigateToSession(currentSession - 1);
-        } else if (e.key === 'ArrowDown' && currentSession < 9) {
-            navigateToSession(currentSession + 1);
-        }
-    });
-
-    updateArrowButtons();
-}
-
-function setupActionButtons() {
-    document.getElementById('openInvitationBtn')?.addEventListener('click', openInvitation);
-    document.getElementById('saveDateBtn')?.addEventListener('click', saveTheDate);
-    document.getElementById('shareBtn')?.addEventListener('click', shareInvitation);
-    document.getElementById('openMapsBtn')?.addEventListener('click', openMaps);
-
-    // Safe handling untuk rsvpForm: cek keberadaan elemen dan fungsi terlebih dahulu
-    const rsvpForm = document.getElementById('rsvpForm');
-    if (rsvpForm) {
-        if (typeof submitRSVP === 'function') {
-            rsvpForm.addEventListener('submit', submitRSVP);
-        } else {
-            // fallback: cegah reload dan tampilkan notifikasi sementara
-            rsvpForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                showNotification('Terima kasih! (Demo) — form saat ini belum aktif sepenuhnya.');
-            });
-        }
-    }
-
-    document.getElementById('sendWaBtn')?.addEventListener('click', sendWhatsApp);
-
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => copyAccount(e.target.dataset.account));
-    });
-}
-
-function submitRSVP(e) {
-    e.preventDefault();
-    const name = document.getElementById('guestName')?.value?.trim() || '';
-    const message = document.getElementById('guestMessage')?.value?.trim() || '';
-    const attendance = document.getElementById('attendance')?.value || '';
-
-    if (!name || !message || !attendance) {
-        showNotification('Mohon lengkapi semua field sebelum mengirim.');
-        return;
-    }
-
-    // TODO: kirim ke Firebase / server jika ingin — saat ini hanya demo
-    showNotification('Ucapan berhasil dikirim. Terima kasih!');
-    // e.target.reset(); // jika mau reset form setelah submit
-}
-
-function navigateToSession(sessionNumber) {
-    if (sessionNumber < 0 || sessionNumber > 9 || sessionNumber === currentSession) return;
-    
-    const currentSessionElement = document.getElementById(`session${currentSession}`);
-    currentSessionElement?.classList.remove('active');
-    currentSessionElement?.classList.add('hidden');
-    
-    const newSessionElement = document.getElementById(`session${sessionNumber}`);
-    newSessionElement?.classList.remove('hidden');
-    setTimeout(() => {
-        newSessionElement?.classList.add('active');
-    }, 10);
-    
-    document.querySelector('.dot.active')?.classList.remove('active');
-    document.querySelector(`.dot[data-session='${sessionNumber}']`)?.classList.add('active');
-    
-    currentSession = sessionNumber;
-    updateArrowButtons();
-    
-    if (sessionNumber === 7) {
-        loadGuestMessages();
-    }
-
-    if (sessionNumber !== 9 && ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
-        ytPlayer.pauseVideo();
-    }
-}
-
-function showSession(sessionNumber) {
-    document.querySelectorAll('.session').forEach((session, index) => {
-        if (index === sessionNumber) {
-            session.classList.remove('hidden');
-            session.classList.add('active');
-        } else {
-            session.classList.remove('active');
-            session.classList.add('hidden');
-        }
-    });
-    
-    document.querySelector('.dot.active')?.classList.remove('active');
-    document.querySelector(`.dot[data-session='${sessionNumber}']`)?.classList.add('active');
-    
-    currentSession = sessionNumber;
-    updateArrowButtons();
-}
-
-function updateArrowButtons() {
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    
-    if (prevBtn) prevBtn.disabled = currentSession <= 0;
-    if (nextBtn) nextBtn.disabled = currentSession >= 9;
-}
-
-// Audio Functions
-function playBackgroundMusic() {
-    if (backgroundMusic) {
-        backgroundMusic.play().catch(error => {
-            console.log('Auto-play dicegah:', error);
-        });
-    }
-}
-
-function pauseBackgroundMusic() {
-    backgroundMusic?.pause();
-}
-
-function resumeBackgroundMusic() {
-    if (backgroundMusic?.paused && !isVideoPlaying) {
-        backgroundMusic.play().catch(error => console.log('Gagal melanjutkan musik:', error));
-    }
-}
-
-function showMusicEnableButton() {
-    if (document.querySelector('.music-toggle-btn')) return;
-    
-    const musicButton = document.createElement('button');
-    musicButton.innerHTML = '🔇';
-    musicButton.className = 'btn music-toggle-btn';
-    musicButton.style.cssText = `
-        position: fixed; bottom: 20px; right: 20px; z-index: 1001;
-        background: var(--wedding-gold); color: var(--wedding-black); border: none;
-        width: 45px; height: 45px; border-radius: 50%; font-size: 20px;
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    `;
-    
-    musicButton.addEventListener('click', () => {
-        if (backgroundMusic.paused) {
-            backgroundMusic.play();
-            musicButton.innerHTML = '🎵';
-        } else {
-            backgroundMusic.pause();
-            musicButton.innerHTML = '🔇';
-        }
-    });
-
-    document.body.appendChild(musicButton);
-}
-
-// Session 0: Landing
-function openInvitation() {
-    navigateToSession(1);
-    playBackgroundMusic();
-}
-
-// Session 1: Countdown
-// ---------- Robust startCountdown() - REPLACE existing function ----------
-function startCountdown() {
-    try {
-        // Pastikan tidak ada interval lama berjalan
-        if (typeof countdownInterval !== 'undefined' && countdownInterval) {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-        }
-
-        // Target tanggal acara (cek timezone)
-        const weddingDate = new Date('2025-09-24T07:00:00+08:00');
-        console.log('[countdown] init. weddingDate =', weddingDate.toString());
-
-        // Elemen target
-        const daysEl = document.getElementById('days');
-        const hoursEl = document.getElementById('hours');
-        const minutesEl = document.getElementById('minutes');
-        const secondsEl = document.getElementById('seconds');
-
-        // Jika elemen belum ada di DOM (mungkin berbeda timing), tunggu sampai muncul
-        if (!daysEl || !hoursEl || !minutesEl || !secondsEl) {
-            console.warn('[countdown] salah satu elemen countdown tidak ditemukan. Menunggu elemen muncul di DOM...');
-            // Pasang observer sederhana untuk menunggu elemen muncul
-            const observer = new MutationObserver((mutations, obs) => {
-                const d = document.getElementById('days');
-                const h = document.getElementById('hours');
-                const m = document.getElementById('minutes');
-                const s = document.getElementById('seconds');
-                if (d && h && m && s) {
-                    obs.disconnect();
-                    console.log('[countdown] elemen ditemukan oleh MutationObserver, memulai countdown sekarang.');
-                    // panggil ulang startCountdown setelah elemen ada
-                    startCountdown();
-                }
-            });
-            observer.observe(document.body, { childList: true, subtree: true });
-            return;
-        }
-
-        // Fungsi update satu kali dan setiap detik
-        function update() {
-            const now = Date.now();
-            const distance = weddingDate.getTime() - now;
-
-            // Debug: log jarak (ms)
-            // console.log('[countdown] distance (ms):', distance);
-
-            if (distance <= 0) {
-                // Jika sudah lewat
-                daysEl.textContent = '00';
-                hoursEl.textContent = '00';
-                minutesEl.textContent = '00';
-                secondsEl.textContent = '00';
-                if (countdownInterval) {
-                    clearInterval(countdownInterval);
-                    countdownInterval = null;
-                }
-                console.log('[countdown] acara sudah lewat atau sama dengan sekarang.');
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            daysEl.textContent = String(days).padStart(2, '0');
-            hoursEl.textContent = String(hours).padStart(2, '0');
-            minutesEl.textContent = String(minutes).padStart(2, '0');
-            secondsEl.textContent = String(seconds).padStart(2, '0');
-        }
-
-        // Jalankan update segera lalu set interval
-        update();
-        countdownInterval = setInterval(update, 1000);
-        console.log('[countdown] started. interval id:', countdownInterval);
-    } catch (err) {
-        console.error('[countdown] error saat memulai:', err);
-    }
-}
-
-// Ganti fungsi saveTheDate dan formatForGCal yang lama dengan ini
-async function saveTheDate() {
-    const event = {
-        title: 'Pernikahan Suriansyah & Sonia Agustina Oemar',
-        start: '2025-09-24T07:00:00+08:00', // Waktu Mulai (WITA)
-        end: '2025-09-24T17:00:00+08:00',   // Waktu Selesai (WITA)
-        description: 'Acara Pernikahan Suriansyah & Sonia Agustina Oemar. \\n\\nJangan lupa hadir dan memberikan doa restu.',
-        location: 'Masjid Jabal Rahmah Mandin & Rumah Mempelai Wanita'
-    };
-
-    // Helper untuk mengubah tanggal ke format UTC yang dibutuhkan ICS
-    // Formatnya YYYYMMDDTHHMMSSZ
-    const toUTC = (dateString) => {
-        const date = new Date(dateString);
-        const pad = (num) => num.toString().padStart(2, '0');
-        return `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}T${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}${pad(date.getUTCSeconds())}Z`;
-    };
-
-    const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Wedding Invitation//EN
-BEGIN:VEVENT
-UID:${Date.now()}@wedding.com
-DTSTAMP:${toUTC(new Date().toISOString())}
-DTSTART;TZID=Asia/Makassar:${toUTC(event.start)}
-DTEND;TZID=Asia/Makassar:${toUTC(event.end)}
-SUMMARY:${event.title}
-DESCRIPTION:${event.description}
-LOCATION:${event.location}
-END:VEVENT
-END:VCALENDAR`;
-
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-    const file = new File([blob], 'wedding_invitation.ics', { type: 'text/calendar' });
-
-    // 1. Coba gunakan Web Share API (terbaik untuk mobile)
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-            await navigator.share({
-                files: [file],
-                title: event.title,
-                text: 'Simpan tanggal pernikahan kami di kalender Anda.'
-            });
-            showNotification('Pilih aplikasi Kalender untuk menyimpan acara.');
-            return; // Hentikan eksekusi jika berhasil
-        } catch (error) {
-            console.warn('Web Share API dibatalkan atau gagal:', error);
-            // Jika pengguna membatalkan dialog share, kita lanjutkan ke metode fallback.
-        }
-    }
-
-    // 2. Fallback: Unduh file .ics secara langsung
-    try {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(file);
-        link.download = file.name;
-
-        // Trik untuk memicu klik tanpa terlihat oleh pengguna
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        // Membersihkan URL objek setelah diunduh untuk menghemat memori
-        URL.revokeObjectURL(link.href);
+    <!-- Sessions Container -->
+    <div class="sessions-container">
         
-        showNotification('File kalender (.ics) telah diunduh. Silakan buka file tersebut.');
-    } catch (error) {
-        console.error('Gagal membuat link unduhan:', error);
-        showNotification('Gagal membuat file kalender. Silakan coba lagi.');
-    }
-}
-
-// Ganti / tambahkan fungsi shareInvitation() dengan versi ini
-async function shareInvitation() {
-    const shareText = 'Assalamualaikum Wr. Wb.\nDengan penuh syukur kepada Allah SWT, kami mengundang Bapak/Ibu/Saudara(i) menghadiri pernikahan Suriansyah & Sonia. Barakallahu lakuma wa baraka ‘alaikuma.';
-    const shareTitle = 'Undangan Pernikahan | Suriansyah & Sonia';
-    const shareUrl = window.location.href;
-    const imageUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/main/pemisah.jpeg';
-
-    // Utility: fallback share hanya teks/url
-    const fallbackTextShare = () => {
-        if (navigator.share) {
-            navigator.share({
-                title: shareTitle,
-                text: shareText + '\n\n' + shareUrl,
-                url: shareUrl
-            }).catch(err => {
-                console.log('Fallback text share gagal:', err);
-                // Jika semua gagal, copy teks ke clipboard
-                copyToClipboard(`${shareText}\n\n${shareUrl}`, 'Teks undangan disalin ke clipboard.');
-            });
-        } else {
-            // Browser lama: salin ke clipboard sebagai jaminan
-            copyToClipboard(`${shareText}\n\n${shareUrl}`, 'Teks undangan disalin ke clipboard.');
-        }
-    };
-
-    try {
-        // Ambil gambar
-        const response = await fetch(imageUrl);
-        if (!response.ok) throw new Error('Gagal memuat gambar');
-
-        const imageBlob = await response.blob();
-        const imageFile = new File([imageBlob], 'undangan.jpg', { type: imageBlob.type || 'image/jpeg' });
-
-        // Buat file teks yang berisi teks undangan + link (agar penerima pasti punya teks)
-        const textBlob = new Blob([shareText + '\n\n' + shareUrl], { type: 'text/plain' });
-        const textFile = new File([textBlob], 'undangan.txt', { type: 'text/plain' });
-
-        const filesToShare = [imageFile, textFile];
-
-        // Jika browser mendukung share file dan bisa share filesToShare
-        if (navigator.canShare && navigator.canShare({ files: filesToShare })) {
-            await navigator.share({
-                title: shareTitle,
-                text: shareText, // beberapa platform mungkin abaikan ini saat file ada, tapi tetap kita sertakan
-                files: filesToShare,
-                url: shareUrl
-            });
-            return;
-        }
-
-        // Jika browser tidak mendukung share file, fallback ke text-only share
-        fallbackTextShare();
-    } catch (error) {
-        console.warn('Gagal share dengan gambar, mencoba fallback teks:', error);
-        fallbackTextShare();
-    }
-}
-
-function sendWhatsApp() {
-    const name = document.getElementById('guestName').value.trim();
-    const message = document.getElementById('guestMessage').value.trim();
-    const attendance = document.getElementById('attendance').value;
-
-    if (!name || !message || !attendance) {
-        showNotification('Mohon lengkapi nama, ucapan, dan konfirmasi kehadiran! ⚠️');
-        return;
-    }
-
-    const attendanceText = attendance === 'hadir' ? 'Akan Hadir' : 'Tidak Dapat Hadir';
-    const whatsappMessage = `Halo, saya ${name}.\n\n*Konfirmasi Kehadiran:* ${attendanceText}\n\n*Ucapan & Doa:*\n${message}`;
-    
-    window.open(`https://wa.me/6285251815099?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
-}
-
-// Session 6: Copy Account
-function copyAccount(accountNumber) {
-    copyToClipboard(accountNumber, 'Nomor rekening berhasil disalin! 📋');
-}
-
-// Session 7: Guest Messages
-// Ganti fungsi loadGuestMessages() yang lama dengan yang ini
-async function loadGuestMessages() {
-    const container = document.getElementById('messagesContainer');
-    if (!container) return;
-
-    // 1. Selalu bersihkan kontainer terlebih dahulu untuk menghapus data lama
-    container.innerHTML = '';
-
-    try {
-        if (!db) throw new Error("Database not initialized");
-
-        const messagesQuery = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
-        const querySnapshot = await getDocs(messagesQuery);
-
-        // 2. Jika tidak ada dokumen (kosong), tampilkan pesan default
-        if (querySnapshot.empty) {
-            container.innerHTML = '<p class="no-messages">Belum ada ucapan dari tamu.</p>';
-            return;
-        }
-        
-        // 3. Jika ada, buat daftar pesan baru dan pastikan menggunakan escapeHtml
-        const messagesHtml = querySnapshot.docs.map(doc => {
-            const msg = doc.data();
-            // Penting: Gunakan escapeHtml untuk keamanan dari input pengguna
-            return `
-                <div class="message-item">
-                    <p class="message-name">${escapeHtml(msg.name)}</p>
-                    <p class="message-text">${escapeHtml(msg.message)}</p>
+        <!-- Session 0: Landing -->
+        <section class="session session-0 active" id="session0">
+            <div class="session-content">
+                <div class="floating-daisies">
+                    <div class="daisy daisy-1"></div>
+                    <div class="daisy daisy-2"></div>
+                    <div class="daisy daisy-3"></div>
                 </div>
-            `;
-        }).join('');
+                <div class="invitation-title">
+                    <h1 class="shimmer-text">Wedding Invitation</h1>
+                    <h2 class="shimmer-text couple-names">of</h2>
+                    <h2 class="shimmer-text couple-names">Suriansyah dan Sonia Agustina Oemar</h2>
+                    <p class="wedding-date shimmer-text">24 September 2025</p>
+                </div>
+                <button class="btn btn--primary open-invitation" id="openInvitationBtn">
+                    Buka Undangan
+                </button>
+            </div>
+        </section>
 
-        container.innerHTML = messagesHtml;
+        <!-- Session 1: Countdown -->
+        <section class="session session-1 hidden" id="session1">
+            <div class="session-content">
+                <div class="floating-daisies">
+                    <div class="daisy daisy-1"></div>
+                    <div class="daisy daisy-2"></div>
+		            <div class="daisy daisy-3"></div>
+                </div>
+                <h2>Menuju Hari Bahagia</h2>
+                <div class="countdown-container">
+                    <div class="countdown-item">
+                        <span id="days">00</span>
+                        <label>Hari</label>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="hours">00</span>
+                        <label>Jam</label>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="minutes">00</span>
+                        <label>Menit</label>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="seconds">00</span>
+                        <label>Detik</label>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn--primary" id="saveDateBtn">Save The Date</button>
+                    <button class="btn btn--outline" id="shareBtn">Bagikan Undangan</button>
+                </div>
+            </div>
+        </section>
 
-    } catch (error) {
-        console.error('Error loading messages:', error);
-        container.innerHTML = '<p class="no-messages">Gagal memuat ucapan. Silakan coba lagi nanti.</p>';
-    }
-}
+        <!-- Session 2: Bismillah -->
+        <section class="session session-2 hidden" id="session2">
+            <div class="session-content">
+                <div class="floating-daisies">
+                    
+                </div>
+                <div class="bismillah-section">
+                    <h2 class="arabic-text shimmer-text">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</h2>
+                    <p class="translation">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</p>
+                    <blockquote class="quran-verse">
+                        "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."
+                        <cite>QS. Ar-Rum: 21</cite>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
 
-// Session 9: YouTube Video
-window.onYouTubeIframeAPIReady = function() {
-  ytPlayer = new YT.Player('weddingVideo', {
-    events: { 'onStateChange': onPlayerStateChange }
-  });
-}
+        <!-- Session 3: Invitation -->
+        <section class="session session-3 hidden" id="session3">
+            <div class="session-content">
+                <div class="floating-daisies">
+                    <div class="daisy daisy-1"></div>
+                    <div class="daisy daisy-2"></div>
+		            <div class="daisy daisy-3"></div>
+                </div>
+                <div class="invitation-content">
+                    <p class="greeting">Yth. Nama Tamu</p>
+                    <p class="invitation-text">
+                        Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i 
+                        untuk menghadiri dan memberikan doa restu pada acara pernikahan kami:
+                    </p>
+                    <div class="couple-photos">
+                        <div class="photo-container">
+                            <div class="photo-frame">
+                                <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/groom.jpeg" alt="Suriansyah" class="couple-photo">
+                            </div>
+                            <h3 class="shimmer-text">Suriansyah, S. Kep., Ners</h3>
+                            
+                        </div>
+                        <div class="couple-divider">
+    			            <span class="shimmer-text">&</span>
+			            </div>
+                        <div class="photo-container">
+                            <div class="photo-frame">
+                                <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/bride.jpeg" alt="Sonia Agustina Oemar" class="couple-photo">
+                            </div>
+                            <h3 class="shimmer-text">Sonia Agustina Oemar, S.Farm</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-function onPlayerStateChange(event) {
-  if (event.data == YT.PlayerState.PLAYING) {
-    pauseBackgroundMusic();
-    isVideoPlaying = true;
-  } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
-    isVideoPlaying = false;
-    setTimeout(() => {
-        if (!isVideoPlaying) resumeBackgroundMusic();
-    }, 500);
-  }
-}
+        <!-- Session 4: Event Details -->
+        <section class="session session-4 hidden" id="session4">
+            <div class="session-content">
+                <div class="floating-daisies">
+                    <div class="daisy daisy-1"></div>
+                    <div class="daisy daisy-2"></div>
+		            <div class="daisy daisy-3"></div>
+                </div>
+                <h2 class="shimmer-text">Detail Acara</h2>
+                <div class="event-details">
+                    <div class="event-item">
+                        <h3>Akad Nikah</h3>
+                        <div class="event-info">
+                            <p><strong>Waktu:</strong> 07:00 - 08:00 WITA</p>
+                            <p><strong>Tempat:</strong> Masjid Jabal Rahmah Mandin</p>
+                        </div>
+                    </div>
+                    <div class="event-item">
+                        <h3>Resepsi</h3>
+                        <div class="event-info">
+                            <p><strong>Waktu:</strong> 08:00 WITA - Selesai</p>
+                            <p><strong>Tempat:</strong> Rumah Mempelai Wanita<br>Samping Masjid Jabal Rahmah Mandin</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn--primary" id="openMapsBtn">
+                    📍 Buka Peta Lokasi
+                </button>
+            </div>
+        </section>
 
-// Utility Functions
-function showNotification(message) {
-    document.querySelectorAll('.notification').forEach(n => n.remove());
-    
-    const notification = document.createElement('div');
-    notification.textContent = message;
-    notification.className = 'notification';
-    notification.style.cssText = `
-        position: fixed; top: 20px; right: 20px; background: var(--wedding-gold);
-        color: var(--wedding-black); padding: 1rem 1.5rem; border-radius: 0.5rem;
-        z-index: 1003; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        animation: slideIn 0.3s ease-out forwards; max-width: 300px;
-        word-wrap: break-word;
-    `;
-    
-    const styleId = 'notification-styles';
-    if (!document.getElementById(styleId)) {
-        const style = document.createElement('style');
-        style.id = styleId;
-        style.textContent = `
-            @keyframes slideIn { from { transform: translateX(110%); } to { transform: translateX(0); } }
-            @keyframes slideOut { from { transform: translateX(0); } to { transform: translateX(110%); } }
-        `;
-        document.head.appendChild(style);
-    }
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease-out forwards';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
+        <!-- Session 5: RSVP -->
+        <section class="session session-5 hidden" id="session5">
+            <div class="session-content">
+                <div class="floating-daisies">
+                    <div class="daisy daisy-1"></div>
+                    <div class="daisy daisy-2"></div>
+		            <div class="daisy daisy-3"></div>
+                </div>
+                <h2>RSVP & Ucapan</h2>
+                <form class="rsvp-form" id="rsvpForm">
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-control" id="guestName" placeholder="Masukkan nama" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ucapan & Doa</label>
+                        <textarea class="form-control" id="guestMessage" rows="4" placeholder="Tulis ucapan dan doa untuk kedua mempelai" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Konfirmasi Kehadiran</label>
+                        <select class="form-control" id="attendance" required>
+                            <option value="">Pilih konfirmasi</option>
+                            <option value="hadir">Akan Hadir</option>
+                            <option value="tidak_hadir">Tidak Dapat Hadir</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label" for="displayMessage">
+                            <input type="checkbox" id="displayMessage">
+                            Tampilkan ucapan di sini
+                        </label>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit" class="btn btn--primary">Kirim Ucapan</button>
+                        <button type="button" class="btn btn--outline" id="sendWaBtn">Kirim via WhatsApp</button>
+                    </div>
+                </form>
+            </div>
+        </section>
 
-function copyToClipboard(text, successMessage) {
-    navigator.clipboard.writeText(text).then(() => {
-        showNotification(successMessage || 'Teks berhasil disalin!');
-    }).catch(err => {
-        console.error('Gagal menyalin:', err);
-        showNotification('Gagal menyalin ❌');
-    });
-}
+        <!-- Session 6: Cashless Gift -->
+        <section class="session session-6 hidden" id="session6">
+            <div class="session-content">
+                <div class="floating-daisies">
+                    <div class="daisy daisy-1"></div>
+                    <div class="daisy daisy-2"></div>
+		            <div class="daisy daisy-3"></div>
+                </div>
+                <h2>Kado Cashless</h2>
+                <p class="gift-text">
+                    Doa restu dari Bapak/Ibu/Saudara/i merupakan karunia yang sangat berarti bagi kami. 
+                    Dan jika ingin memberikan kado, dapat melalui rekening berikut:
+                </p>
+                <div class="bank-accounts">
+                    <div class="bank-item">
+                        <h3>Bank Mandiri</h3>
+                        <div class="account-info">
+                            <span class="account-number">1410001081983</span>
+                            <button type="button" class="copy-btn" data-account="1410001081983">📋 Salin</button>
+                        </div>
+                        <p class="account-name">a.n. Sonia Agustina Oemar</p>
+                    </div>
+                    <div class="bank-item">
+                        <h3>Bank BPD Kalsel</h3>
+                        <div class="account-info">
+                            <span class="account-number">3202963349</span>
+                            <button type="button" class="copy-btn" data-account="3202963349">📋 Salin</button>
+                        </div>
+                        <p class="account-name">a.n. Sonia Agustina Oemar</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-function escapeHtml(text) {
-    return text
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
-}
+        <!-- Session 7: Guest Messages -->
+        <section class="session session-7 hidden" id="session7">
+            <div class="session-content">
+                <div class="floating-daisies">
+                    <div class="daisy daisy-1"></div>
+                    <div class="daisy daisy-2"></div>
+		            <div class="daisy daisy-3"></div>
+                </div>
+                <h2>Ucapan & Doa</h2>
+                <div class="messages-container" id="messagesContainer">
+                    <p class="no-messages">Belum ada ucapan dari tamu</p>
+                </div>
+            </div>
+        </section>
 
-// Cleanup
-window.addEventListener('beforeunload', () => {
-    if (countdownInterval) clearInterval(countdownInterval);
-});
+        <!-- Session 8: Thank You -->
+        <section class="session session-8 hidden" id="session8">
+            <div class="session-content">
+                <div class="floating-daisies">
+                    <div class="daisy daisy-1"></div>
+                    <div class="daisy daisy-2"></div>
+		            <div class="daisy daisy-3"></div>
+                </div>
+                <h2 class="shimmer-text">Terima Kasih</h2>
+                <div class="thank-you-content">
+                    <p>
+                        Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga 
+                        apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu 
+                        kepada kedua mempelai.
+                    </p>
+                    <p>
+                        Atas kehadiran dan doa restu dari Bapak/Ibu/Saudara/i, 
+                        kami mengucapkan terima kasih.
+                    </p>
+                    <div class="signature">
+                        <p><strong>Suriansyah & Sonia Agustina Oemar</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Session 9: Gallery -->
+        <section class="session session-9 hidden" id="session9">
+            <div class="session-content">
+                <div class="floating-daisies">
+                    <div class="daisy daisy-1"></div>
+                    <div class="daisy daisy-2"></div>
+		            <div class="daisy daisy-3"></div>
+                </div>
+                <h2>Galeri</h2>
+                <div class="video-container">
+                    <iframe id="weddingVideo" 
+                            src="https://www.youtube.com/embed/xXRjeURBYAE?si=42mew4CteNsfwwQF&enablejsapi=1" 
+                            title="Wedding Video"
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- PENTING: Mengubah tipe script menjadi "module" agar bisa menggunakan import -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
