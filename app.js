@@ -542,30 +542,55 @@ function openMaps() {
 }
 
 // Session 7: Guest Messages
-// Ganti fungsi loadGuestMessages yang lama dengan yang ini
+// Helper kecil untuk mencegah XSS (jika belum ada)
+function escapeHtml(unsafe) {
+  if (unsafe == null) return '';
+  return String(unsafe)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 async function loadGuestMessages() {
   const container = document.getElementById('messagesContainer');
-  const noMessagesEl = document.getElementById('noMessages'); // Dapatkan elemen pesan kosong
+  if (!container) {
+    console.warn('[loadGuestMessages] messagesContainer tidak ditemukan.');
+    return;
+  }
 
-  if (!container || !noMessagesEl) return;
-  
+  // Coba cari elemen "no messages" secara fleksibel
+  let noMessagesEl = container.querySelector('.no-messages') || document.getElementById('noMessages');
+
+  // Jika tidak ada, buat satu sebagai fallback
+  if (!noMessagesEl) {
+    noMessagesEl = document.createElement('p');
+    noMessagesEl.className = 'no-messages';
+    noMessagesEl.id = 'noMessages';
+    noMessagesEl.textContent = 'Belum ada ucapan dari tamu';
+    container.appendChild(noMessagesEl);
+  }
+
+  // Kosongkan container lalu re-append fallback (biar konsisten)
   container.innerHTML = '';
-  
-  try {
-    if (!db) throw new Error("Database not initialized");
+  container.appendChild(noMessagesEl);
 
-    // BUAT QUERY BARU: Hanya ambil dokumen dengan isPublic == true
+  try {
+    // Pastikan db (Firestore) sudah diinisialisasi sebelumnya
+    if (typeof db === 'undefined' || !db) throw new Error('Database belum diinisialisasi.');
+
     const messagesRef = collection(db, 'messages');
-    const messagesQuery = query(messagesRef, where("isPublic", "==", true), orderBy('timestamp', 'desc'));
-    
+    // Ambil hanya yang public, urut dari terbaru
+    const messagesQuery = query(messagesRef, where('isPublic', '==', true), orderBy('timestamp', 'desc'));
     const querySnapshot = await getDocs(messagesQuery);
 
     if (querySnapshot.empty) {
-      noMessagesEl.classList.remove('hidden'); // Tampilkan pesan "belum ada ucapan"
+      noMessagesEl.classList.remove('hidden');
       return;
     }
-    
-    noMessagesEl.classList.add('hidden'); // Sembunyikan pesan jika ada ucapan
+
+    noMessagesEl.classList.add('hidden');
 
     const messagesHtml = querySnapshot.docs.map(doc => {
       const msg = doc.data();
@@ -574,7 +599,7 @@ async function loadGuestMessages() {
         <div class="message-item">
           <div class="message-header">
             <span class="message-name">${escapeHtml(msg.name)}</span>
-            <span class="message-attendance message-attendance--${msg.attendance}">${attendanceText}</span>
+            <span class="message-attendance message-attendance--${escapeHtml(msg.attendance)}">${escapeHtml(attendanceText)}</span>
           </div>
           <p class="message-text">${escapeHtml(msg.message)}</p>
         </div>
@@ -584,8 +609,10 @@ async function loadGuestMessages() {
     container.innerHTML = messagesHtml;
   } catch (error) {
     console.error('Error loading messages:', error);
-    container.innerHTML = '<p class="no-messages">Gagal memuat ucapan. Silakan coba lagi nanti.</p>';
-    noMessagesEl.classList.add('hidden');
+    // Tampilkan fallback
+    container.innerHTML = '';
+    container.appendChild(noMessagesEl);
+    noMessagesEl.classList.remove('hidden');
   }
 }
 
@@ -651,13 +678,7 @@ function copyToClipboard(text, successMessage) {
     });
 }
 
-function escapeHtml(text) {
-    return text
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
+
 }
 
 // Cleanup
