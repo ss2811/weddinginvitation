@@ -301,56 +301,52 @@ END:VCALENDAR`;
     }
 }
 
-function shareInvitation() {
-    const shareText = 'Assalamualaikum Wr. Wb.\nDengan penuh syukur kepada Allah SWT, kami mengundang Bapak/Ibu/Saudara(i) menghadiri pernikahan\nSuriansyah, S.Kep., Ners & Sonia Agustina Oemar, S.Farm\nBarakallahu lakuma wa baraka ‘alaikuma wa jama‘a bainakuma fii khair.';
+// Ganti fungsi shareInvitation() yang lama dengan yang ini
+async function shareInvitation() {
+    const shareText = 'Assalamualaikum Wr. Wb.\nDengan penuh syukur kepada Allah SWT, kami mengundang Bapak/Ibu/Saudara(i) menghadiri pernikahan Suriansyah, S.Kep., Ners & Sonia Agustina Oemar, S.Farm. Barakallahu lakuma wa baraka ‘alaikuma wa jama‘a bainakuma fii khair.';
     const shareUrl = window.location.href;
-    
-    if (navigator.share) {
-        navigator.share({
-            title: 'Wedding Invitation',
-            text: shareText,
-            url: shareUrl
-        }).catch(error => console.log('Error sharing:', error));
-    } else {
-        copyToClipboard(shareUrl, 'Link undangan disalin!');
-    }
-}
+    const imageUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/pemisah.jpeg'; // URL gambar yang ingin dibagikan
 
-// Session 4: Maps
-function openMaps() {
-    window.open('https://maps.app.goo.gl/TvD12aGBA8WGaKQX8', '_blank');
-}
-
-// Session 5: RSVP
-async function submitRSVP(e) {
-    e.preventDefault();
-    const name = document.getElementById('guestName').value.trim();
-    const message = document.getElementById('guestMessage').value.trim();
-    const attendance = document.getElementById('attendance').value;
-    const displayMessage = document.getElementById('displayMessage').checked;
-    
-    if (!name || !message || !attendance) {
-        showNotification('Mohon lengkapi semua kolom! ⚠️');
-        return;
-    }
-    
-    const rsvpData = { name, message, attendance, displayMessage, timestamp: serverTimestamp() };
-    
-    try {
-        if (!db) throw new Error("Database not initialized");
-        await addDoc(collection(db, 'rsvp'), rsvpData);
-        
-        if (displayMessage) {
-            await addDoc(collection(db, 'messages'), { name, message, timestamp: serverTimestamp() });
-            loadGuestMessages(); // Refresh messages
+    // Fungsi fallback jika berbagi dengan file gagal
+    const fallbackShare = () => {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Undangan Pernikahan',
+                text: shareText,
+                url: shareUrl,
+            }).catch(error => console.log('Error sharing (fallback):', error));
+        } else {
+            // Fallback untuk browser yang tidak mendukung Web Share API sama sekali
+            copyToClipboard(shareUrl, 'Link undangan disalin!');
         }
+    };
+
+    try {
+        // Ambil gambar dan ubah menjadi blob
+        const response = await fetch(imageUrl);
+        if (!response.ok) throw new Error('Image fetch failed');
+        const blob = await response.blob();
         
-        showNotification('Terima kasih atas konfirmasi dan ucapannya! 💝');
-        document.getElementById('rsvpForm').reset();
-        
+        // Buat file dari blob
+        const file = new File([blob], 'undangan-pernikahan.jpg', { type: 'image/jpeg' });
+        const filesArray = [file];
+
+        // Cek apakah browser mendukung berbagi file
+        if (navigator.canShare && navigator.canShare({ files: filesArray })) {
+            await navigator.share({
+                files: filesArray,
+                title: 'Undangan Pernikahan',
+                text: shareText,
+                url: shareUrl // URL tetap penting untuk disertakan
+            });
+        } else {
+            // Jika tidak bisa berbagi file, jalankan fallback (hanya teks & URL)
+            fallbackShare();
+        }
     } catch (error) {
-        console.error('Error submitting RSVP:', error);
-        showNotification('Terjadi kesalahan. Silakan coba lagi. ❌');
+        console.error('Failed to fetch or share image, using fallback:', error);
+        // Jika ada error (misal gambar gagal dimuat), jalankan fallback
+        fallbackShare();
     }
 }
 
