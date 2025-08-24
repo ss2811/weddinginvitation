@@ -229,74 +229,76 @@ function startCountdown() {
     }, 1000);
 }
 
-// Replace existing saveTheDate() with this improved version
+// Ganti fungsi saveTheDate dan formatForGCal yang lama dengan ini
 async function saveTheDate() {
     const event = {
-        title: 'Wedding Suriansyah & Sonia Agustina Oemar',
-        start: '2025-09-24T07:00:00',
-        end: '2025-09-24T17:00:00',
-        description: 'Acara Pernikahan Suriansyah & Sonia Agustina Oemar',
-        location: 'Masjid Jabal Rahmah Mandin'
+        title: 'Pernikahan Suriansyah & Sonia Agustina Oemar',
+        start: '2025-09-24T07:00:00+08:00', // Waktu Mulai (WITA)
+        end: '2025-09-24T17:00:00+08:00',   // Waktu Selesai (WITA)
+        description: 'Acara Pernikahan Suriansyah & Sonia Agustina Oemar. \\n\\nJangan lupa hadir dan memberikan doa restu.',
+        location: 'Masjid Jabal Rahmah Mandin & Rumah Mempelai Wanita'
     };
 
-    // Build ICS content
-    const dtStart = event.start.replace(/[-:]/g, '') + 'Z';
-    const dtEnd = event.end.replace(/[-:]/g, '') + 'Z';
+    // Helper untuk mengubah tanggal ke format UTC yang dibutuhkan ICS
+    // Formatnya YYYYMMDDTHHMMSSZ
+    const toUTC = (dateString) => {
+        const date = new Date(dateString);
+        const pad = (num) => num.toString().padStart(2, '0');
+        return `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}T${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}${pad(date.getUTCSeconds())}Z`;
+    };
+
     const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Wedding Invitation//EN
 BEGIN:VEVENT
-UID:${Date.now()}@example.com
-DTSTAMP:${new Date().toISOString().replace(/[-:.]/g, '')}Z
-DTSTART:${dtStart}
-DTEND:${dtEnd}
+UID:${Date.now()}@wedding.com
+DTSTAMP:${toUTC(new Date().toISOString())}
+DTSTART;TZID=Asia/Makassar:${toUTC(event.start)}
+DTEND;TZID=Asia/Makassar:${toUTC(event.end)}
 SUMMARY:${event.title}
 DESCRIPTION:${event.description}
 LOCATION:${event.location}
 END:VEVENT
 END:VCALENDAR`;
 
-    const blob = new Blob([icsContent], { type: 'text/calendar' });
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const file = new File([blob], 'wedding_invitation.ics', { type: 'text/calendar' });
 
-    // Try Web Share API (supports sharing files to apps on mobile)
-    try {
-        const file = new File([blob], 'wedding-invitation.ics', { type: 'text/calendar' });
-
-        // navigator.canShare may not exist on all browsers
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    // 1. Coba gunakan Web Share API (terbaik untuk mobile)
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
             await navigator.share({
                 files: [file],
                 title: event.title,
-                text: 'Tambahkan acara ini ke kalender Anda'
+                text: 'Simpan tanggal pernikahan kami di kalender Anda.'
             });
-            showNotification('Silakan pilih aplikasi Kalender untuk menyimpan acara.');
-            return;
+            showNotification('Pilih aplikasi Kalender untuk menyimpan acara.');
+            return; // Hentikan eksekusi jika berhasil
+        } catch (error) {
+            console.warn('Web Share API dibatalkan atau gagal:', error);
+            // Jika pengguna membatalkan dialog share, kita lanjutkan ke metode fallback.
         }
-    } catch (err) {
-        console.warn('Web Share API unavailable or failed:', err);
-        // continue to fallback
     }
 
-    // Fallback: open Google Calendar create-event URL in new tab/window
-    const gcalBase = 'https://calendar.google.com/calendar/r/eventedit';
-    const gStart = encodeURIComponent(event.start.replace(/:\d{2}$/, '') ); // simple fallback
-    const gEnd = encodeURIComponent(event.end.replace(/:\d{2}$/, ''));
-    const gTitle = encodeURIComponent(event.title);
-    const gDetails = encodeURIComponent(`${event.description}\n\nLokasi: ${event.location}`);
-    const gLoc = encodeURIComponent(event.location);
+    // 2. Fallback: Unduh file .ics secara langsung
+    try {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(file);
+        link.download = file.name;
 
-    const gcalUrl = `${gcalBase}?text=${gTitle}&details=${gDetails}&location=${gLoc}&dates=${formatForGCal(event.start)}/${formatForGCal(event.end)}`;
+        // Trik untuk memicu klik tanpa terlihat oleh pengguna
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-    window.open(gcalUrl, '_blank');
-    showNotification('Membuka Google Calendar sebagai alternatif. Silakan tambahkan acara.');
-}
-
-// Helper to format date to YYYYMMDDTHHMMSSZ for Google Calendar 'dates' param
-function formatForGCal(iso) {
-    // iso like '2025-09-24T07:00:00' -> 20250924T070000Z
-    const d = new Date(iso);
-    const pad = (n) => n.toString().padStart(2, '0');
-    return `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
+        // Membersihkan URL objek setelah diunduh untuk menghemat memori
+        URL.revokeObjectURL(link.href);
+        
+        showNotification('File kalender (.ics) telah diunduh. Silakan buka file tersebut.');
+    } catch (error) {
+        console.error('Gagal membuat link unduhan:', error);
+        showNotification('Gagal membuat file kalender. Silakan coba lagi.');
+    }
 }
 
 function shareInvitation() {
@@ -374,33 +376,43 @@ function copyAccount(accountNumber) {
 }
 
 // Session 7: Guest Messages
+// Ganti fungsi loadGuestMessages() yang lama dengan yang ini
 async function loadGuestMessages() {
     const container = document.getElementById('messagesContainer');
     if (!container) return;
-    
+
+    // 1. Selalu bersihkan kontainer terlebih dahulu untuk menghapus data lama
+    container.innerHTML = '';
+
     try {
         if (!db) throw new Error("Database not initialized");
+
         const messagesQuery = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
         const querySnapshot = await getDocs(messagesQuery);
-        
+
+        // 2. Jika tidak ada dokumen (kosong), tampilkan pesan default
         if (querySnapshot.empty) {
-            container.innerHTML = '<p class="no-messages">Belum ada ucapan dari tamu</p>';
+            container.innerHTML = '<p class="no-messages">Belum ada ucapan dari tamu.</p>';
             return;
         }
         
-        container.innerHTML = querySnapshot.docs.map(doc => {
+        // 3. Jika ada, buat daftar pesan baru dan pastikan menggunakan escapeHtml
+        const messagesHtml = querySnapshot.docs.map(doc => {
             const msg = doc.data();
+            // Penting: Gunakan escapeHtml untuk keamanan dari input pengguna
             return `
                 <div class="message-item">
-                    <div class="message-name">${escapeHtml(msg.name)}</div>
-                    <div class="message-text">${escapeHtml(msg.message)}</div>
+                    <p class="message-name">${escapeHtml(msg.name)}</p>
+                    <p class="message-text">${escapeHtml(msg.message)}</p>
                 </div>
             `;
         }).join('');
-        
+
+        container.innerHTML = messagesHtml;
+
     } catch (error) {
         console.error('Error loading messages:', error);
-        container.innerHTML = '<p class="no-messages">Gagal memuat ucapan</p>';
+        container.innerHTML = '<p class="no-messages">Gagal memuat ucapan. Silakan coba lagi nanti.</p>';
     }
 }
 
