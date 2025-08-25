@@ -1,4 +1,4 @@
-```javascript
+
 // Wedding Invitation JavaScript - Animated Version
 
 // PENTING: Menggunakan import dari URL CDN Firebase karena ini adalah modul ES
@@ -697,3 +697,4 @@ function copyToClipboard(text, successMessage) {
 window.addEventListener('beforeunload', () => {
     if (countdownInterval) clearInterval(countdownInterval);
 });
+
