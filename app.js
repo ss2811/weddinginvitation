@@ -1,3 +1,4 @@
+```javascript
 // Wedding Invitation JavaScript - Animated Version
 
 // PENTING: Menggunakan import dari URL CDN Firebase karena ini adalah modul ES
@@ -43,12 +44,13 @@ function initApp() {
     startCountdown();
     loadGuestMessages();
     showMusicEnableButton();
-    createBackgroundParticles(); // Panggil fungsi animasi latar belakang
+    createBackgroundParticles();
     
     // Mulai dari sesi 0 (halaman pembuka)
     showSession(0);
-    // Jalankan typewriter saat halaman pertama kali dimuat
-    runTypewriterSequence();
+    
+    // Efek typewriter tidak lagi dijalankan di awal
+    // runTypewriterSequence(); 
 }
 
 // --- FUNGSI ANIMASI BARU ---
@@ -116,23 +118,23 @@ function animateParticle(particle) {
         }
     });
 
+    // --- PERUBAHAN: Animasi bunga jatuh sampai bawah ---
+    // Bunga akan fade-in di awal dan tetap terlihat sampai jatuh ke bawah layar.
     tl.to(particle, {
+        opacity: Math.random() * 0.5 + 0.3, // Fade in ke opacity acak
+        duration: 2 // Fade in selama 2 detik
+    }, 0) // Mulai di detik 0
+    .to(particle, {
         y: window.innerHeight + 100, // Jatuh sampai ke bawah layar
         ease: "none",
         duration: duration
-    })
+    }, 0) // Mulai di detik 0, bersamaan dengan fade in
     .to(particle, {
         x: "+=" + (Math.random() * 200 - 100), // Bergerak ke kiri/kanan
         rotation: "+=" + (Math.random() * 720 - 360), // Berputar
         ease: "sine.inOut",
         duration: duration
-    }, "<") // Animasikan bersamaan dengan animasi jatuh
-    .to(particle, {
-        opacity: Math.random() * 0.5 + 0.3, // Fade in ke opacity acak
-        duration: duration / 4, // Fade in cepat di awal
-        repeat: 1,
-        yoyo: true // Fade out di akhir
-    }, "<");
+    }, 0); // Mulai di detik 0, bersamaan dengan jatuh
 }
 
 
@@ -153,7 +155,7 @@ function typeWriter(selector, text, onComplete) {
         if (i < text.length) {
             element.innerHTML += text.charAt(i);
             i++;
-            setTimeout(type, 80); // Kecepatan mengetik
+            setTimeout(type, 50); // Kecepatan mengetik
         } else {
             // Hapus kursor setelah selesai
             const cursor = element.querySelector('.typing-cursor');
@@ -166,36 +168,6 @@ function typeWriter(selector, text, onComplete) {
     element.innerHTML = '<span class="typing-cursor"></span>';
     type();
 }
-
-/**
- * Menjalankan urutan animasi typewriter untuk judul.
- */
-function runTypewriterSequence() {
-    // Teks yang akan ditampilkan
-    const titleText = "Wedding Invitation";
-    const ofText = "of";
-    const namesText = "Suriansyah & Sonia Agustina Oemar";
-    const dateText = "24 September 2025";
-
-    // Sembunyikan tombol buka undangan dulu
-    const openBtn = document.getElementById('openInvitationBtn');
-    if(openBtn) openBtn.style.opacity = '0';
-
-
-    typeWriter('#typewriter-title', titleText, () => {
-        typeWriter('#typewriter-of', ofText, () => {
-            typeWriter('#typewriter-names', namesText, () => {
-                typeWriter('#typewriter-date', dateText, () => {
-                    // Tampilkan tombol setelah semua teks selesai
-                    if(openBtn) {
-                        gsap.to(openBtn, { opacity: 1, duration: 0.5, delay: 0.5 });
-                    }
-                });
-            });
-        });
-    });
-}
-
 
 // Navigation Functions
 function setupNavigation() {
@@ -260,6 +232,23 @@ function navigateToSession(sessionNumber) {
     
     if (sessionNumber === 7) {
         loadGuestMessages();
+    }
+
+    // --- PERUBAHAN: Menjalankan typewriter di sesi 2 ---
+    if (sessionNumber === 2) {
+        const targetElement = document.getElementById('quran-verse-typewriter');
+        // Cek apakah efek sudah pernah dijalankan
+        if (targetElement && !targetElement.classList.contains('typed')) {
+            const quranText = `"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."`;
+            const citation = `<cite>QS. Ar-Rum: 21</cite>`;
+            
+            targetElement.innerHTML = ''; // Kosongkan dulu
+            typeWriter('#quran-verse-typewriter', quranText, () => {
+                // Tambahkan sitasi setelah selesai mengetik
+                targetElement.innerHTML += citation;
+            });
+            targetElement.classList.add('typed'); // Tandai sudah dijalankan
+        }
     }
 
     if (sessionNumber !== 9 && ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
@@ -569,8 +558,8 @@ function showPrivacyPopup() {
         <h3>Tampilkan Ucapan?</h3>
         <p>Apakah Anda ingin ucapan ini ditampilkan ?</p>
         <div class="popup-buttons">
-          <button id="btn-public" class="btn btn--primary">Tampilkan</button>
-          <button id="btn-private" class="btn btn--outline">Simpan Pribadi</button>
+          <button id="btn-public" class="btn">Tampilkan</button>
+          <button id="btn-private" class="btn">Simpan Pribadi</button>
         </div>
       </div>
     `;
