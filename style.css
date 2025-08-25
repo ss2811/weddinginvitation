@@ -205,12 +205,12 @@ body {
 
 /* Session Backgrounds with Animation */
 .session-0 {
-  background-image: url('[https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundbiru.jpeg](https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundbiru.jpeg)');
+  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundbiru.jpeg');
   animation: kenburns 40s ease-in-out infinite alternate;
 }
 .session-1, .session-2, .session-3, .session-4, 
 .session-5, .session-6, .session-7, .session-8, .session-9 {
-  background-image: url('[https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundhitam.jpeg](https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundhitam.jpeg)');
+  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundhitam.jpeg');
   animation: kenburns 40s ease-in-out infinite alternate;
 }
 
@@ -595,3 +595,4 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
     transform: scale(1);
   }
 }
+
