@@ -681,9 +681,6 @@ function copyToClipboard(text, successMessage) {
     });
 }
 
-
-}
-
 // Cleanup
 window.addEventListener('beforeunload', () => {
     if (countdownInterval) clearInterval(countdownInterval);
