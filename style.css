@@ -1,4 +1,4 @@
-```css
+
 /* PERPLEXITY DESIGN SYSTEM (BASE) */
 :root {
   /* Primitive Color Tokens */
@@ -596,3 +596,4 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
     transform: scale(1);
   }
 }
+
