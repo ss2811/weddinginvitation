@@ -1,3 +1,4 @@
+```css
 /* PERPLEXITY DESIGN SYSTEM (BASE) */
 :root {
   /* Primitive Color Tokens */
@@ -119,6 +120,8 @@ body {
   /* --- WARNA BARU --- */
   --wedding-gold: #E6BF84; /* Emas lembut */
   --wedding-pink: #F4C2C2; /* Pink lembut */
+  --wedding-tosca: #20c997; /* Warna Tosca BARU */
+  --wedding-tosca-dark: #1baa80; /* Tosca lebih gelap untuk hover */
   --wedding-black: #1a1a1a;
   --wedding-white: #fdf6f8; /* Putih dengan sentuhan pink */
   --wedding-gray: rgba(255, 255, 255, 0.85);
@@ -169,12 +172,24 @@ body {
   padding: var(--space-20);
   box-sizing: border-box;
   transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.8s ease;
-  background-size: cover;
+  background-size: 120%; /* Diperbesar untuk efek Ken Burns */
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0;
   pointer-events: none;
   z-index: 10;
+}
+
+/* --- ANIMASI BARU: Latar Belakang Bergerak (Ken Burns) --- */
+@keyframes kenburns {
+    0% {
+        background-size: 120%;
+        background-position: 50% 50%;
+    }
+    100% {
+        background-size: 130%;
+        background-position: 40% 60%;
+    }
 }
 
 .session.active {
@@ -189,13 +204,15 @@ body {
     pointer-events: none;
 }
 
-/* Session Backgrounds */
+/* Session Backgrounds with Animation */
 .session-0 {
-  background-image: url('https://github.com/ss2811/weddinginvitation/blob/main/backgroundbiru.jpeg?raw=true');
+  background-image: url('[https://github.com/ss2811/weddinginvitation/blob/main/backgroundbiru.jpeg?raw=true](https://github.com/ss2811/weddinginvitation/blob/main/backgroundbiru.jpeg?raw=true)');
+  animation: kenburns 40s ease-in-out infinite alternate;
 }
 .session-1, .session-2, .session-3, .session-4, 
 .session-5, .session-6, .session-7, .session-8, .session-9 {
-  background-image: url('https://github.com/ss2811/weddinginvitation/blob/main/backgroundhitam.jpeg?raw=true');
+  background-image: url('[https://github.com/ss2811/weddinginvitation/blob/main/backgroundhitam.jpeg?raw=true](https://github.com/ss2811/weddinginvitation/blob/main/backgroundhitam.jpeg?raw=true)');
+  animation: kenburns 40s ease-in-out infinite alternate;
 }
 
 .session-content {
@@ -211,7 +228,6 @@ body {
   max-height: 90vh;
   overflow-y: auto;
   z-index: 900;
-  /* --- ANIMASI BARU: Konten masuk --- */
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
@@ -253,7 +269,8 @@ body {
 }
 
 .dot.active {
-  background: var(--wedding-gold);
+  background: var(--wedding-tosca); /* Warna Tosca */
+  border-color: var(--wedding-tosca);
   transform: scale(1.2);
 }
 
@@ -303,6 +320,7 @@ body {
 
 .arrow-btn:hover {
   color: var(--wedding-white);
+  border-color: var(--wedding-tosca);
   transform: scale(1.05);
 }
 
@@ -312,7 +330,7 @@ body {
   background: rgba(0, 0, 0, 0.3);
 }
 
-/* --- EFEK BARU: Shimmer dengan warna baru --- */
+/* EFEK Shimmer */
 .shimmer-text {
   background: linear-gradient(
     60deg,
@@ -336,7 +354,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* --- EFEK BARU: Kursor untuk Typewriter --- */
+/* Kursor untuk Typewriter */
 .typing-cursor {
     display: inline-block;
     width: 2px;
@@ -344,6 +362,7 @@ body {
     background-color: var(--wedding-gold);
     animation: blink 0.7s infinite;
     margin-left: 4px;
+    vertical-align: middle;
 }
 
 @keyframes blink {
@@ -365,7 +384,7 @@ h3 { font-size: var(--font-size-2xl); color: var(--wedding-gold); }
 p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16); }
 
 /* Session 0 Specific Styles */
-.invitation-title { min-height: 250px; } /* Beri ruang untuk teks muncul */
+.invitation-title { min-height: 250px; display: flex; flex-direction: column; justify-content: center;}
 .invitation-title h1 { font-size: 3.5rem; margin-bottom: var(--space-8); }
 .couple-names { font-size: 2.5rem; margin-bottom: var(--space-8); }
 .wedding-date { font-size: 1.5rem; font-weight: 600; color: var(--wedding-gold); margin-bottom: var(--space-32); }
@@ -398,7 +417,7 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
 /* Bismillah Section */
 .arabic-text { font-family: var(--font-family-arabic); font-size: 2.5rem; color: var(--wedding-gold); margin-bottom: var(--space-20); direction: rtl; }
 .translation { font-style: italic; color: var(--wedding-pink); font-size: 1.1rem; margin-bottom: var(--space-24); }
-.quran-verse { background: rgba(255, 255, 255, 0.05); padding: var(--space-20); border-radius: var(--radius-md); border-left: 4px solid var(--wedding-gold); font-style: italic; line-height: 1.8; margin: var(--space-20) 0; text-align: justify; }
+.quran-verse { background: rgba(255, 255, 255, 0.05); padding: var(--space-20); border-radius: var(--radius-md); border-left: 4px solid var(--wedding-tosca); font-style: italic; line-height: 1.8; margin: var(--space-20) 0; text-align: justify; min-height: 150px; }
 .quran-verse cite { display: block; margin-top: var(--space-16); color: var(--wedding-gold); font-size: 0.9rem; font-weight: 600; text-align: right; }
 
 /* Invitation Text */
@@ -408,7 +427,16 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
 /* Couple Photos */
 .couple-photos { display: flex; align-items: center; justify-content: center; gap: var(--space-32); margin: var(--space-32) 0; }
 .photo-container { text-align: center; }
-.photo-frame { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--wedding-gold); padding: 4px; background: linear-gradient(45deg, var(--wedding-gold), var(--wedding-pink)); margin: 0 auto var(--space-16); overflow: hidden; }
+.photo-frame { 
+    width: 120px; 
+    height: 120px; 
+    border-radius: 50%; 
+    border: 4px solid var(--wedding-tosca); /* Warna Tosca pada bingkai */
+    padding: 4px; 
+    background: linear-gradient(45deg, var(--wedding-tosca), var(--wedding-pink)); /* Gradient dengan Tosca */
+    margin: 0 auto var(--space-16); 
+    overflow: hidden; 
+}
 .couple-photo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 .couple-divider { font-family: var(--font-family-special); font-size: 2rem; color: var(--wedding-gold); margin: 0 10px; }
 
@@ -424,7 +452,7 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
 .form-group { margin-bottom: var(--space-20); }
 .form-label { color: var(--wedding-gold); font-weight: 600; margin-bottom: var(--space-8); display: block; }
 .form-control { background: rgba(255, 255, 255, 0.1); border: 2px solid var(--wedding-gold); color: var(--wedding-white); border-radius: var(--radius-base); padding: var(--space-12); width: 100%; font-family: inherit; box-sizing: border-box; }
-.form-control:focus { border-color: var(--wedding-pink); outline: none; background: rgba(255, 255, 255, 0.15); }
+.form-control:focus { border-color: var(--wedding-tosca); outline: none; background: rgba(255, 255, 255, 0.15); }
 .form-control::placeholder { color: rgba(255, 255, 255, 0.6); }
 .checkbox-label { display: flex; align-items: center; gap: var(--space-8); color: var(--wedding-white); cursor: pointer; font-weight: normal; }
 .checkbox-label input[type="checkbox"] { width: auto; margin: 0; }
@@ -437,12 +465,12 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
 .account-info { display: flex; align-items: center; justify-content: space-between; gap: var(--space-12); margin: var(--space-12) 0; }
 .account-number { font-family: var(--font-family-mono); font-size: 1.2rem; color: var(--wedding-pink); font-weight: 600; }
 .copy-btn { background: var(--wedding-gold); color: var(--wedding-black); border: none; padding: var(--space-8) var(--space-16); border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; transition: all var(--duration-normal); }
-.copy-btn:hover { background: var(--wedding-pink); transform: scale(1.05); }
+.copy-btn:hover { background: var(--wedding-tosca); transform: scale(1.05); }
 .account-name { color: var(--wedding-gray); font-size: 0.9rem; }
 
 /* Messages Container */
 .messages-container { max-height: 400px; overflow-y: auto; margin: var(--space-20) 0; padding-right: 10px; }
-.message-item { background: rgba(255, 255, 255, 0.05); padding: var(--space-16); border-radius: var(--radius-md); margin-bottom: var(--space-16); border-left: 3px solid var(--wedding-gold); text-align: left; }
+.message-item { background: rgba(255, 255, 255, 0.05); padding: var(--space-16); border-radius: var(--radius-md); margin-bottom: var(--space-16); border-left: 3px solid var(--wedding-tosca); text-align: left; }
 .message-name { color: var(--wedding-pink); font-weight: 600; margin-bottom: var(--space-8); }
 .message-text { color: var(--wedding-gray); line-height: 1.6; word-wrap: break-word; }
 .no-messages { text-align: center; color: var(--wedding-gray); font-style: italic; padding: var(--space-32); }
@@ -545,6 +573,18 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
   gap: var(--space-16);
   justify-content: center;
 }
+
+/* --- PERUBAHAN: Menyamakan warna background tombol popup --- */
+.popup-buttons .btn {
+    background: var(--wedding-tosca);
+    color: var(--wedding-black);
+    border: none;
+}
+.popup-buttons .btn:hover {
+    background: var(--wedding-tosca-dark);
+    color: var(--wedding-black);
+}
+
 
 @keyframes popup-fade-in {
   from {
