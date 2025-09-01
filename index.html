@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan | Suriansyah & Sonia Agustina Oemar</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Dancing+Script:wght@400;600;700&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="enhanced-style.css">
+    <link rel="stylesheet" href="additional-animations.css">
+    <!-- YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    
+    <!-- Audio -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://www.soundjay.com/misc/sounds/magic-chime-02.wav" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</head>
+<body>
+    
+    <!-- Animated Background -->
+    <div class="animated-background"></div>
+    
+    <!-- Floating Particles -->
+    <div class="floating-particles" id="particles"></div>
+    
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-heart" style="top: 10%; left: 5%; animation-delay: 0s;">💖</div>
+        <div class="floating-flower" style="top: 20%; right: 10%; animation-delay: 1s;">🌸</div>
+        <div class="floating-star" style="top: 70%; left: 8%; animation-delay: 2s;">✨</div>
+        <div class="floating-heart" style="top: 80%; right: 15%; animation-delay: 3s;">💕</div>
+        <div class="floating-flower" style="top: 40%; left: 3%; animation-delay: 4s;">🌺</div>
+        <div class="floating-star" style="top: 60%; right: 5%; animation-delay: 5s;">⭐</div>
+        <div class="floating-heart" style="top: 30%; right: 20%; animation-delay: 6s;">💝</div>
+        <div class="floating-flower" style="top: 85%; left: 12%; animation-delay: 7s;">🌹</div>
+    </div>
+
+    <!-- LANDING PAGE (Session 0) -->
+    <div class="landing-page" id="landingPage">
+        <div class="landing-content">
+            <div class="invitation-title">
+                <h1 class="pulse">Wedding Invitation</h1>
+                <div class="couple-names shimmer-text">Suriansyah & Sonia Agustina Oemar</div>
+                <div class="wedding-date">24 September 2025</div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn--primary" id="openInvitationBtn">
+                    <span>Buka Undangan</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT (Combined Sessions 1-9) -->
+    <div class="main-content" id="mainContent" style="display: none;">
+        
+        <!-- Section 1: Countdown -->
+        <section class="content-section animate-on-scroll" id="countdown-section">
+            <div class="section-content">
+                <h1>Menuju Hari Bahagia</h1>
+                <div class="countdown-container">
+                    <div class="countdown-item">
+                        <span id="days">00</span>
+                        <label>Hari</label>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="hours">00</span>
+                        <label>Jam</label>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="minutes">00</span>
+                        <label>Menit</label>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="seconds">00</span>
+                        <label>Detik</label>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn--outline" id="saveDateBtn">Simpan Tanggal</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Bismillah & Quran Verse -->
+        <section class="content-section animate-on-scroll" id="bismillah-section">
+            <div class="section-content">
+                <div class="arabic-text shimmer-text">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+                <div class="translation slide-up">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</div>
+                
+                <div class="quran-verse animate-on-scroll">
+                    <p>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."</p>
+                    <cite>QS. Ar-Rum: 21</cite>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Invitation -->
+        <section class="content-section animate-on-scroll" id="invitation-section">
+            <div class="section-content">
+                <div class="greeting pulse">Yth. Nama Tamu</div>
+                <div class="invitation-text">
+                    <p class="slide-up">Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri dan memberikan doa restu pada acara pernikahan kami:</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Couples -->
+        <section class="content-section animate-on-scroll" id="couples-section">
+            <div class="section-content">
+                <h2>Mempelai</h2>
+                <div class="couple-photos">
+                    <div class="photo-container">
+                        <div class="photo-frame glow">
+                            <img src="https://via.placeholder.com/150x150/d4cc37/000000?text=S" alt="Suriansyah" class="couple-photo">
+                        </div>
+                        <h3>Suriansyah</h3>
+                        <p>Putra dari<br>Bapak & Ibu</p>
+                    </div>
+                    <div class="couple-divider">&</div>
+                    <div class="photo-container">
+                        <div class="photo-frame glow">
+                            <img src="https://via.placeholder.com/150x150/40E0D0/000000?text=S" alt="Sonia Agustina Oemar" class="couple-photo">
+                        </div>
+                        <h3>Sonia Agustina Oemar</h3>
+                        <p>Putri dari<br>Bapak & Ibu</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Event Details -->
+        <section class="content-section animate-on-scroll" id="events-section">
+            <div class="section-content">
+                <h2>Acara Pernikahan</h2>
+                <div class="event-details">
+                    <div class="event-item slide-up">
+                        <h3>Akad Nikah</h3>
+                        <div class="event-info">
+                            <p><strong>Waktu:</strong> 07:00 - 08:00 WITA</p>
+                            <p><strong>Tempat:</strong> Masjid Jabal Rahmah Mandin</p>
+                        </div>
+                    </div>
+                    <div class="event-item slide-up">
+                        <h3>Resepsi</h3>
+                        <div class="event-info">
+                            <p><strong>Waktu:</strong> 08:00 WITA - Selesai</p>
+                            <p><strong>Tempat:</strong> Rumah Mempelai Wanita</p>
+                            <p>Samping Masjid Jabal Rahmah Mandin</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn--primary" id="openMapsBtn">Buka Maps</button>
+                    <button class="btn btn--outline" id="shareBtn">Bagikan</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: RSVP & Messages -->
+        <section class="content-section animate-on-scroll" id="rsvp-section">
+            <div class="section-content">
+                <h2>Konfirmasi Kehadiran & Ucapan</h2>
+                <form class="rsvp-form" id="rsvpForm">
+                    <div class="form-group animate-on-scroll">
+                        <label for="guestName" class="form-label">Nama Lengkap</label>
+                        <input type="text" id="guestName" class="form-control" placeholder="Masukkan nama Anda" required>
+                    </div>
+                    
+                    <div class="form-group animate-on-scroll">
+                        <label for="attendance" class="form-label">Konfirmasi Kehadiran</label>
+                        <select id="attendance" class="form-control" required>
+                            <option value="">Pilih konfirmasi kehadiran</option>
+                            <option value="hadir">Akan Hadir</option>
+                            <option value="tidak-hadir">Tidak Hadir</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group animate-on-scroll">
+                        <label for="guestMessage" class="form-label">Ucapan & Doa</label>
+                        <textarea id="guestMessage" class="form-control" rows="4" placeholder="Tuliskan ucapan dan doa terbaik Anda" required></textarea>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn--primary" id="submitRsvpBtn">Kirim Ucapan</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Section 7: Gift -->
+        <section class="content-section animate-on-scroll" id="gift-section">
+            <div class="section-content">
+                <h2>Hadiah Pernikahan</h2>
+                <p class="gift-text slide-up">
+                    Doa restu dari Bapak/Ibu/Saudara/i merupakan karunia yang sangat berarti bagi kami. 
+                    Dan jika ingin memberikan kado, dapat melalui rekening berikut:
+                </p>
+                
+                <div class="bank-accounts">
+                    <div class="bank-item animate-on-scroll">
+                        <h3>Bank BRI</h3>
+                        <div class="account-info">
+                            <span class="account-number">1234567890123456</span>
+                            <button class="copy-btn" data-account="1234567890123456">Salin</button>
+                        </div>
+                        <div class="account-name">a.n. Sonia Agustina Oemar</div>
+                    </div>
+                    
+                    <div class="bank-item animate-on-scroll">
+                        <h3>Bank BCA</h3>
+                        <div class="account-info">
+                            <span class="account-number">1234567890</span>
+                            <button class="copy-btn" data-account="1234567890">Salin</button>
+                        </div>
+                        <div class="account-name">a.n. Sonia Agustina Oemar</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Guest Messages -->
+        <section class="content-section animate-on-scroll" id="messages-section">
+            <div class="section-content">
+                <h2>Ucapan dari Tamu</h2>
+                <div class="messages-container" id="messagesContainer">
+                    <p class="no-messages" id="noMessages">Belum ada ucapan dari tamu</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Thank You & Video -->
+        <section class="content-section animate-on-scroll" id="thankyou-section">
+            <div class="section-content">
+                <h2>Terima Kasih</h2>
+                <div class="thank-you-content slide-up">
+                    <p>Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai.</p>
+                    
+                    <p>Atas kehadiran dan doa restu dari Bapak/Ibu/Saudara/i, kami mengucapkan terima kasih.</p>
+                    
+                    <div class="signature pulse">
+                        <strong>Suriansyah & Sonia Agustina Oemar</strong>
+                    </div>
+                </div>
+                
+                <!-- Video Container -->
+                <div class="video-container animate-on-scroll">
+                    <iframe id="weddingVideo" 
+                            src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module" src="enhanced-app.js"></script>
+    
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 6 + 12) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize particles when page loads
+        document.addEventListener('DOMContentLoaded', createParticles);
+
+        // Scroll animations
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            const windowHeight = window.innerHeight;
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('animated');
+                }
+            });
+        }
+
+        // Add scroll event listener
+        window.addEventListener('scroll', handleScrollAnimations);
+
+        // Initial check for elements already in view
+        document.addEventListener('DOMContentLoaded', handleScrollAnimations);
+    </script>
+</body>
+</html>
