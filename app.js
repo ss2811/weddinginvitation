@@ -429,7 +429,7 @@ END:VCALENDAR`;
 
 // Enhanced share invitation
 async function shareInvitation() {
-    const shareText = 'Assalamualaikum Wr. Wb.\nDengan penuh syukur kepada Allah SWT, kami mengundang Bapak/Ibu/Saudara(i) menghadiri pernikahan Suriansyah & Sonia. Barakallahu lakuma wa baraka 'alaikuma.';
+    const shareText = 'Assalamualaikum Wr. Wb.\nDengan penuh syukur kepada Allah SWT, kami mengundang Bapak/Ibu/Saudara(i) menghadiri pernikahan Suriansyah & Sonia. Barakallahu lakuma wa baraka alaikuma.';
     const shareTitle = 'Undangan Pernikahan | Suriansyah & Sonia';
     const shareUrl = window.location.href;
 
