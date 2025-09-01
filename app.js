@@ -1,4 +1,3 @@
-// Wedding Invitation JavaScript - Versi Scroll Sederhana
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, orderBy, query, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -27,55 +26,32 @@ try {
     console.error("Firebase initialization failed:", error);
 }
 
-document.addEventListener('DOMContentLoaded', initApp);
-
-function initApp() {
-    backgroundMusic = document.getElementById('backgroundMusic');
-    setupEventListeners();
-    startCountdown();
-    createMusicButton(); // Buat tombol musik saat aplikasi dimuat
-}
-
-// === PENGATUR EVENT LISTENER ===
-function setupEventListeners() {
-    document.getElementById('openInvitationBtn')?.addEventListener('click', openInvitation);
-    document.getElementById('saveDateBtn')?.addEventListener('click', saveTheDate);
-    document.getElementById('shareBtn')?.addEventListener('click', shareInvitation);
-    document.getElementById('openMapsBtn')?.addEventListener('click', openMaps);
-    document.getElementById('submitRsvpBtn')?.addEventListener('click', handleRsvpSubmission);
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => copyAccount(e.target.dataset.account));
-    });
-}
-
-
 // === FUNGSI UTAMA: MEMBUKA UNDANGAN ===
 function openInvitation() {
     const landingPage = document.getElementById('landingPage');
     const mainContent = document.getElementById('mainContent');
     const musicButton = document.querySelector('.music-toggle-btn');
 
-    // 1. Putar musik & update ikon
     backgroundMusic.play().catch(e => console.log("Autoplay musik dicegah browser."));
     if (musicButton) {
-        musicButton.innerHTML = '🎵';
+        musicButton.innerHTML = '&#127926;'; // Music On Icon
         musicButton.classList.add('playing');
         musicButton.style.borderColor = 'var(--wedding-tosca)';
         musicButton.style.color = 'var(--wedding-tosca)';
     }
 
-    // 2. Hilangkan halaman pembuka dengan fade out
     landingPage.style.opacity = '0';
+    landingPage.style.transform = 'scale(1.1)';
     setTimeout(() => {
         landingPage.style.display = 'none';
-    }, 800); // Sesuaikan dengan durasi transisi di CSS
+    }, 1000);
 
-    // 3. Tampilkan konten utama dan aktifkan scroll
     mainContent.style.display = 'block';
     document.body.style.overflow = 'auto';
 
-    // 4. Muat pesan dari tamu
     loadGuestMessages();
+    // Inisialisasi animasi GSAP setelah undangan dibuka
+    initScrollAnimations();
 }
 
 // === FUNGSI MUSIK ===
@@ -83,40 +59,28 @@ function createMusicButton() {
     if (document.querySelector('.music-toggle-btn')) return;
     
     const musicButton = document.createElement('button');
-    musicButton.innerHTML = '🔇';
+    musicButton.innerHTML = '&#127925;'; // Music Off Icon
     musicButton.className = 'music-toggle-btn';
     
-    // Tambahkan style langsung di sini
     Object.assign(musicButton.style, {
-        position: 'fixed',
-        bottom: '20px',
-        right: '20px',
-        zIndex: '1001',
-        background: 'rgba(0, 0, 0, 0.4)', // Background semi-transparan
-        color: 'var(--wedding-gold)',
-        border: '2px solid var(--wedding-gold)',
-        width: '45px',
-        height: '45px',
-        borderRadius: '50%',
-        fontSize: '20px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
-        backdropFilter: 'blur(5px)',
+        position: 'fixed', bottom: '20px', right: '20px', zIndex: '1001',
+        background: 'rgba(0, 0, 0, 0.4)', color: 'var(--wedding-gold)',
+        border: '2px solid var(--wedding-gold)', width: '45px', height: '45px',
+        borderRadius: '50%', fontSize: '20px', display: 'flex',
+        alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.2)', backdropFilter: 'blur(5px)',
         transition: 'all 0.3s ease'
     });
     
     musicButton.addEventListener('click', () => {
         if (backgroundMusic.paused) {
             backgroundMusic.play();
-            musicButton.innerHTML = '🎵';
+            musicButton.innerHTML = '&#127926;'; // Music On
             musicButton.style.borderColor = 'var(--wedding-tosca)';
             musicButton.style.color = 'var(--wedding-tosca)';
         } else {
             backgroundMusic.pause();
-            musicButton.innerHTML = '🔇';
+            musicButton.innerHTML = '&#127925;'; // Music Off
             musicButton.style.borderColor = 'var(--wedding-gold)';
             musicButton.style.color = 'var(--wedding-gold)';
         }
@@ -125,18 +89,38 @@ function createMusicButton() {
     document.body.appendChild(musicButton);
 }
 
+// === FUNGSI ANIMASI GSAP ===
+function initScrollAnimations() {
+    gsap.registerPlugin(ScrollTrigger);
 
-// === FUNGSI-FUNGSI LAINNYA (COUNTDOWN, RSVP, DLL) ===
+    gsap.utils.toArray('.content-section').forEach(section => {
+        const elements = section.querySelectorAll('.animated-element');
+        
+        gsap.fromTo(elements, 
+            { opacity: 0, y: 50 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none',
+                }
+            }
+        );
+    });
+}
 
 function startCountdown() {
     const weddingDate = new Date('2025-09-24T07:00:00+08:00');
     const els = {
-        d: document.getElementById('days'),
-        h: document.getElementById('hours'),
-        m: document.getElementById('minutes'),
-        s: document.getElementById('seconds')
+        d: document.getElementById('days'), h: document.getElementById('hours'),
+        m: document.getElementById('minutes'), s: document.getElementById('seconds')
     };
-    if (!els.d || !els.h || !els.m || !els.s) return;
+    if (!els.d) return;
 
     const update = () => {
         const distance = weddingDate.getTime() - Date.now();
@@ -153,6 +137,8 @@ function startCountdown() {
     update();
     countdownInterval = setInterval(update, 1000);
 }
+
+// --- Sisa fungsi (RSVP, copy, etc.) tetap sama ---
 
 async function handleRsvpSubmission() {
     const inputs = {
@@ -247,7 +233,6 @@ async function loadGuestMessages() {
     }
 }
 
-// === FUNGSI BANTU (HELPERS) ===
 function copyAccount(accountNumber) {
     copyToClipboard(accountNumber, 'Nomor rekening berhasil disalin!');
 }
@@ -258,7 +243,7 @@ function openMaps() {
 
 function saveTheDate() {
     const event = {
-        title: 'Pernikahan Suriansyah & Sonia Agustina Oemar',
+        title: 'Pernikahan Suriansyah & Sonia',
         start: '2025-09-24T07:00:00+08:00', end: '2025-09-24T17:00:00+08:00',
         description: 'Acara Pernikahan Suriansyah & Sonia Agustina Oemar.',
         location: 'Masjid Jabal Rahmah Mandin & Rumah Mempelai Wanita'
@@ -268,29 +253,24 @@ function saveTheDate() {
     const blob = new Blob([ics], { type: 'text/calendar' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = 'pernikahan_suriansyah_sonia.ics';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    a.href = url; a.download = 'pernikahan_suriansyah_sonia.ics';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
     URL.revokeObjectURL(url);
     showNotification('File kalender (.ics) telah diunduh.');
 }
 
-
 function shareInvitation() {
     const shareData = {
         title: 'Undangan Pernikahan | Suriansyah & Sonia',
-        text: 'Dengan penuh syukur, kami mengundang Anda untuk menghadiri pernikahan kami, Suriansyah & Sonia.',
+        text: 'Dengan penuh syukur, kami mengundang Anda untuk menghadiri pernikahan kami.',
         url: window.location.href
     };
     if (navigator.share) {
         navigator.share(shareData).catch(console.error);
     } else {
-        copyToClipboard(shareData.text + '\n' + shareData.url, 'Link undangan disalin ke clipboard!');
+        copyToClipboard(shareData.text + '\n' + shareData.url, 'Link undangan disalin!');
     }
 }
-
 
 function showNotification(message) {
     document.querySelectorAll('.notification').forEach(n => n.remove());
@@ -313,9 +293,7 @@ function showNotification(message) {
 function copyToClipboard(text, successMessage) {
     navigator.clipboard.writeText(text).then(() => {
         showNotification(successMessage || 'Teks berhasil disalin!');
-    }).catch(err => {
-        showNotification('Gagal menyalin ❌');
-    });
+    }).catch(() => showNotification('Gagal menyalin.'));
 }
 
 function escapeHtml(unsafe) {
@@ -323,6 +301,31 @@ function escapeHtml(unsafe) {
     return String(unsafe).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
+// Inisialisasi Aplikasi
+document.addEventListener('DOMContentLoaded', () => {
+    backgroundMusic = document.getElementById('backgroundMusic');
+    document.getElementById('openInvitationBtn')?.addEventListener('click', openInvitation);
+    document.getElementById('saveDateBtn')?.addEventListener('click', saveTheDate);
+    document.getElementById('shareBtn')?.addEventListener('click', shareInvitation);
+    document.getElementById('openMapsBtn')?.addEventListener('click', openMaps);
+    document.getElementById('submitRsvpBtn')?.addEventListener('click', handleRsvpSubmission);
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => copyAccount(e.target.dataset.account));
+    });
+    startCountdown();
+    createMusicButton();
+    // Animasi awal untuk landing page
+    gsap.from('.landing-page .animated-element', {
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        stagger: 0.25,
+        delay: 0.5,
+        ease: 'power3.out'
+    });
+});
+
+// Kontrol musik saat video Youtube diputar
 window.onYouTubeIframeAPIReady = function() {
     ytPlayer = new YT.Player('weddingVideo', {
         events: { 'onStateChange': onPlayerStateChange }
@@ -335,11 +338,10 @@ function onPlayerStateChange(event) {
     if (isVideoPlaying) {
         backgroundMusic.pause();
     } else {
-        if (musicButton && musicButton.classList.contains('playing')) {
+         if (musicButton && musicButton.classList.contains('playing')) {
              if (backgroundMusic.paused) {
                  backgroundMusic.play().catch(e => {});
              }
         }
     }
 }
-
