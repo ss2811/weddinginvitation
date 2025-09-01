@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Wedding Invitation - Suriansyah & Sonia Agustina Oemar</title>
-    
+
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Favicon (Fixes 404 error) -->
+
+    <!-- Favicon (inline SVG to avoid extra request) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💍</text></svg>">
 
-    <!-- External Stylesheet -->
+    <!-- External stylesheet -->
     <link rel="stylesheet" href="style.css">
 
     <!-- Lottie Player & GSAP for Animations -->
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 </head>
 <body>
     <!-- Audio Background Music -->
@@ -28,11 +28,19 @@
     </audio>
 
     <!-- Halaman Pembuka (Landing Page) -->
-    <div class="landing-page" id="landingPage">
-        <div class="lottie-overlay">
-            <!-- UPDATED LOTTIE URL FROM GITHUB -->
-            <lottie-player src="https://gist.githubusercontent.com/Big-Silver/f6244f7678505501ba2665b6d51821cb/raw/f1155b9e735d6e245c6198f98d415b026e11894a/Lottie_Animation_feedback.json" background="transparent" speed="1" loop autoplay></lottie-player>
+    <div class="landing-page" id="landingPage" role="region" aria-label="Halaman pembuka undangan">
+        <div class="lottie-overlay" aria-hidden="true">
+            <!-- Opening Lottie (valid LottieFiles CDN) -->
+            <lottie-player
+                src="https://assets2.lottiefiles.com/packages/lf20_GbabwrUY2k.json"
+                background="transparent"
+                speed="1"
+                loop
+                autoplay
+                style="width:100%;height:100%;">
+            </lottie-player>
         </div>
+
         <div class="session-content">
             <div class="invitation-title">
                 <h1 class="shimmer-text animated-element">Wedding Invitation</h1>
@@ -40,23 +48,30 @@
                 <h2 class="shimmer-text couple-names animated-element">Suriansyah & Sonia</h2>
                 <p class="wedding-date shimmer-text animated-element">24 September 2025</p>
             </div>
-            <button class="btn btn--primary open-invitation animated-element" id="openInvitationBtn">
+            <button class="btn btn--primary open-invitation animated-element" id="openInvitationBtn" aria-label="Buka undangan">
                 Buka Undangan
             </button>
         </div>
     </div>
 
     <!-- Konten Utama Undangan -->
-    <main class="main-content" id="mainContent">
+    <main class="main-content" id="mainContent" aria-live="polite">
         
         <section class="content-section" id="countdown">
-            <div class="lottie-bg">
-                 <!-- UPDATED LOTTIE URL FROM GITHUB -->
-                <lottie-player src="https://raw.githubusercontent.com/a-type/Lottie-Player-for-Web/master/Example/animations/19-particles.json" background="transparent" speed="0.5" loop autoplay></lottie-player>
+            <div class="lottie-bg" aria-hidden="true">
+                <!-- Countdown particles (LottieFiles CDN) -->
+                <lottie-player
+                    src="https://assets7.lottiefiles.com/packages/lf20_Yc2PU8DdfX.json"
+                    background="transparent"
+                    speed="0.5"
+                    loop
+                    autoplay
+                    style="width:100%;height:100%;">
+                </lottie-player>
             </div>
             <div class="session-content">
                 <h2 class="animated-element">Menuju Hari Bahagia</h2>
-                <div class="countdown-container animated-element">
+                <div class="countdown-container animated-element" role="timer" aria-label="Countdown sampai hari pernikahan">
                     <div class="countdown-item"><span id="days">00</span><label>Hari</label></div>
                     <div class="countdown-item"><span id="hours">00</span><label>Jam</label></div>
                     <div class="countdown-item"><span id="minutes">00</span><label>Menit</label></div>
@@ -70,10 +85,17 @@
         </section>
 
         <section class="content-section" id="bismillah">
-             <div class="lottie-bg">
-                  <!-- UPDATED LOTTIE URL FROM GITHUB -->
-                 <lottie-player src="https://raw.githubusercontent.com/LottieFiles/lottie-react/master/example/animations/animation-w1920-h1920.json" background="transparent" speed="1" loop autoplay></lottie-player>
-             </div>
+            <div class="lottie-bg" aria-hidden="true">
+                <!-- Bismillah / spiritual Lottie -->
+                <lottie-player
+                    src="https://assets2.lottiefiles.com/packages/lf20_i9mxcD.json"
+                    background="transparent"
+                    speed="1"
+                    loop
+                    autoplay
+                    style="width:100%;height:100%;">
+                </lottie-player>
+            </div>
             <div class="session-content">
                 <div class="bismillah-section">
                     <h2 class="arabic-text shimmer-text animated-element">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</h2>
@@ -87,9 +109,16 @@
         </section>
 
         <section class="content-section" id="couple">
-            <div class="lottie-bg">
-                 <!-- UPDATED LOTTIE URL FROM GITHUB -->
-                <lottie-player src="https://raw.githubusercontent.com/a-type/Lottie-Player-for-Web/master/Example/animations/11-hearts.json" background="transparent" speed="1" loop autoplay></lottie-player>
+            <div class="lottie-bg" aria-hidden="true">
+                <!-- Hearts / romantic Lottie -->
+                <lottie-player
+                    src="https://assets10.lottiefiles.com/packages/lf20_K0864uP6eC.json"
+                    background="transparent"
+                    speed="1"
+                    loop
+                    autoplay
+                    style="width:100%;height:100%;">
+                </lottie-player>
             </div>
             <div class="session-content">
                 <p class="invitation-text animated-element">
@@ -130,9 +159,9 @@
             <div class="session-content">
                 <h2 class="animated-element">RSVP & Ucapan</h2>
                 <div class="rsvp-form animated-element">
-                    <div class="form-group"><label class="form-label">Nama Lengkap</label><input type="text" class="form-control" id="guestName" placeholder="Masukkan nama Anda"></div>
-                    <div class="form-group"><label class="form-label">Ucapan & Doa</label><textarea class="form-control" id="guestMessage" rows="4" placeholder="Tulis ucapan dan doa untuk kami"></textarea></div>
-                    <div class="form-group"><label class="form-label">Konfirmasi Kehadiran</label><select class="form-control" id="attendance"><option value="">Pilih konfirmasi...</option><option value="hadir">Insya Allah, Akan Hadir</option><option value="tidak_hadir">Maaf, Tidak Dapat Hadir</option></select></div>
+                    <div class="form-group"><label class="form-label" for="guestName">Nama Lengkap</label><input type="text" class="form-control" id="guestName" placeholder="Masukkan nama Anda"></div>
+                    <div class="form-group"><label class="form-label" for="guestMessage">Ucapan & Doa</label><textarea class="form-control" id="guestMessage" rows="4" placeholder="Tulis ucapan dan doa untuk kami"></textarea></div>
+                    <div class="form-group"><label class="form-label" for="attendance">Konfirmasi Kehadiran</label><select class="form-control" id="attendance"><option value="">Pilih konfirmasi...</option><option value="hadir">Insya Allah, Akan Hadir</option><option value="tidak_hadir">Maaf, Tidak Dapat Hadir</option></select></div>
                     <div class="action-buttons"><button type="button" id="submitRsvpBtn" class="btn btn--primary">Kirim Ucapan</button></div>
                 </div>
             </div>
@@ -157,9 +186,16 @@
         </section>
 
         <section class="content-section" id="thankyou">
-            <div class="lottie-bg">
-                 <!-- UPDATED LOTTIE URL FROM GITHUB -->
-                <lottie-player src="https://raw.githubusercontent.com/a-type/Lottie-Player-for-Web/master/Example/animations/18-confetti.json" background="transparent" speed="1" loop autoplay></lottie-player>
+            <div class="lottie-bg" aria-hidden="true">
+                <!-- Confetti / thank you Lottie -->
+                <lottie-player
+                    src="https://assets2.lottiefiles.com/packages/lf20_touohxv0.json"
+                    background="transparent"
+                    speed="1"
+                    loop
+                    autoplay
+                    style="width:100%;height:100%;">
+                </lottie-player>
             </div>
             <div class="session-content">
                 <h2 class="shimmer-text animated-element">Terima Kasih</h2>
@@ -180,8 +216,69 @@
         
     </main>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- YouTube iframe API (untuk kontrol video) -->
+    <script src="https://www.youtube.com/iframe_api" defer></script>
+
+    <!-- Fallback checker: jika Lottie JSON gagal, ganti dengan placeholder image -->
+    <script>
+    // Cek semua lottie-player; jika src JSON gagal load, ganti dengan fallback (gambar statis)
+    async function checkLottiePlayers(timeoutMs = 7000) {
+      const players = Array.from(document.querySelectorAll('lottie-player'));
+      for (const p of players) {
+        const src = p.getAttribute('src') || p.getAttribute('data-src');
+        if (!src) continue;
+        try {
+          const controller = new AbortController();
+          const id = setTimeout(() => controller.abort(), timeoutMs);
+          const res = await fetch(src, { method: 'GET', signal: controller.signal, cache: 'no-store' });
+          clearTimeout(id);
+          if (!res.ok) {
+            console.warn('[LottieChecker] Bad response for', src, res.status);
+            replaceWithFallback(p, src);
+          } else {
+            // Optionally: quick validation length
+            const txt = await res.text();
+            if (!txt || txt.length < 40) replaceWithFallback(p, src);
+          }
+        } catch (err) {
+          console.warn('[LottieChecker] Error loading', src, err && err.message ? err.message : err);
+          replaceWithFallback(p, src);
+        }
+      }
+    }
+
+    function replaceWithFallback(playerEl, originalSrc) {
+      if (playerEl.dataset.fallbackApplied) return;
+      playerEl.dataset.fallbackApplied = '1';
+      const fallbackImg = document.createElement('img');
+      fallbackImg.alt = 'Animation unavailable';
+      fallbackImg.loading = 'lazy';
+      fallbackImg.src = 'https://via.placeholder.com/1200x600?text=Animation+Unavailable';
+      fallbackImg.style.width = playerEl.style.width || '100%';
+      fallbackImg.style.height = playerEl.style.height || 'auto';
+      fallbackImg.style.objectFit = 'cover';
+      const note = document.createElement('small');
+      note.textContent = 'Animasi tidak tersedia — menggunakan fallback.';
+      note.style.display = 'block';
+      note.style.textAlign = 'center';
+      note.style.marginTop = '6px';
+      note.style.color = '#ddd';
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lottie-fallback';
+      wrapper.appendChild(fallbackImg);
+      wrapper.appendChild(note);
+      playerEl.replaceWith(wrapper);
+      console.error('[LottieChecker] Replaced broken Lottie src:', originalSrc);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => checkLottiePlayers());
+    } else {
+      checkLottiePlayers();
+    }
+    </script>
+
+    <!-- App (user's JS) -->
     <script type="module" src="app.js"></script>
 </body>
 </html>
-
