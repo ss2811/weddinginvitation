@@ -2,272 +2,534 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Invitation - Suriansyah & Sonia Agustina Oemar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Undangan Pernikahan | Suriansyah & Sonia Agustina Oemar</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Library GSAP untuk animasi yang lebih canggih -->
+    <link rel="stylesheet" href="advanced-effects.css">
+    
+    <!-- GSAP for Advanced Animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <!-- Font Awesome untuk ikon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Latar Belakang Animasi Partikel -->
-    <div id="particle-container"></div>
-
-    <!-- Audio Background Music -->
-    <audio id="backgroundMusic" loop>
-        <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/backgroundmusic.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Halaman Sampul (Cover) -->
-    <section class="session session-0 active" id="session0">
-         <!-- Video Latar Belakang untuk Cover -->
-        <video autoplay muted loop playsinline class="background-video">
-            <source src="https://github.com/ss2811/weddinginvitation/raw/main/backgroundvideo.mp4" type="video/mp4">
-        </video>
-        <div class="session-content">
-            <div class="invitation-title">
-                <h1 class="shimmer-text">Wedding Invitation</h1>
-                <h2 class="shimmer-text couple-names">of</h2>
-                <h2 class="shimmer-text couple-names">Suriansyah & Sonia Agustina Oemar</h2>
-                <p class="wedding-date shimmer-text">24 September 2025</p>
+    <!-- Cover Page -->
+    <div id="cover-page" class="cover-page active">
+        <div class="cover-video-container">
+            <video autoplay muted loop playsinline class="cover-video">
+                <source src="https://assets.inviee.id/heritage/Bugis-Motion-HD.mp4" type="video/mp4">
+            </video>
+            <div class="cover-overlay"></div>
+        </div>
+        
+        <div class="cover-content">
+            <div class="cover-invitation-text">
+                <h1 class="shimmer-text">The Wedding of</h1>
+                <div class="couple-names-cover">
+                    <h2 class="bride-name">Suriansyah</h2>
+                    <div class="ampersand">&</div>
+                    <h2 class="groom-name">Sonia Agustina Oemar</h2>
+                </div>
+                <div class="wedding-date-cover">24 . 09 . 2025</div>
             </div>
-            <button class="btn btn--primary open-invitation" id="openInvitationBtn">
-                Buka Undangan
+            
+            <div class="guest-info">
+                <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
+                <h3 id="guest-name" class="guest-name-display">Nama Tamu</h3>
+                <p class="apology-text">*Mohon maaf apabila ada kesalahan penulisan nama/gelar</p>
+            </div>
+            
+            <button id="open-invitation-btn" class="open-invitation-btn">
+                <i class="fas fa-leaf"></i>
+                <span>Buka Undangan</span>
             </button>
         </div>
-    </section>
+        
+        <!-- Animated Birds/Particles -->
+        <div class="flying-elements">
+            <div class="bird bird-1"></div>
+            <div class="bird bird-2"></div>
+            <div class="bird bird-3"></div>
+        </div>
+    </div>
 
-    <!-- Wrapper untuk Konten Utama yang Dapat di-scroll -->
-    <div class="main-content-wrapper hidden">
-        <section class="session session-1" id="session1">
-            <div class="session-content">
-                <h2>Menuju Hari Bahagia</h2>
-                <div class="countdown-container">
-                    <div class="countdown-item">
-                        <span id="days">00</span>
-                        <label>Hari</label>
-                    </div>
-                    <div class="countdown-item">
-                        <span id="hours">00</span>
-                        <label>Jam</label>
-                    </div>
-                    <div class="countdown-item">
-                        <span id="minutes">00</span>
-                        <label>Menit</label>
-                    </div>
-                    <div class="countdown-item">
-                        <span id="seconds">00</span>
-                        <label>Detik</label>
-                    </div>
-                </div>
-                <div class="action-buttons">
-                    <button class="btn btn--primary" id="saveDateBtn"><i class="far fa-calendar-alt"></i> Simpan di Kalender</button>
-                    <button class="btn btn--outline" id="shareBtn">Bagikan Undangan</button>
-                </div>
-            </div>
-        </section>
+    <!-- Main Content -->
+    <div id="main-content" class="main-content hidden">
+        <!-- Background Video -->
+        <div class="main-video-container">
+            <video autoplay muted loop playsinline class="main-video">
+                <source src="https://assets.inviee.id/heritage/Bugis-Motion-HD.mp4" type="video/mp4">
+            </video>
+        </div>
 
-        <section class="session session-2" id="session2">
-            <div class="session-content">
+        <!-- Section 1: Bismillah & Intro -->
+        <section id="session1" class="session session-1">
+            <div class="session-content reveal-element">
                 <div class="bismillah-section">
-                    <h2 class="arabic-text shimmer-text">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</h2>
-                    <p class="translation">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</p>
-                    <blockquote class="quran-verse" id="quran-verse-typewriter">
-                    </blockquote>
+                    <div class="arabic-text">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+                    <div class="translation">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</div>
+                    
+                    <div class="intro-text">
+                        <div class="couple-names-main">
+                            <div class="name-letter">S</div>
+                            <div class="ampersand-main">&</div>
+                            <div class="name-letter">S</div>
+                        </div>
+                        
+                        <div class="quran-verse" id="quran-verse">
+                            <p>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."</p>
+                            <cite>- QS. Ar-Rum : 21 -</cite>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="session session-3" id="session3">
-            <div class="session-content">
-                <div class="invitation-content">
-                    <p class="greeting">Yth. Nama Tamu</p>
-                    <p class="invitation-text">
-                        Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i 
-                        untuk menghadiri dan memberikan doa restu pada acara pernikahan kami:
-                    </p>
+        <!-- Section 2: Couple Introduction -->
+        <section id="session2" class="session session-2">
+            <div class="session-content reveal-element">
+                <div class="couple-intro">
+                    <div class="section-title">
+                        <img src="https://hi.inviee.id/wp-content/uploads/2024/12/BUGIS-ICON.webp" alt="Wedding Icon" class="section-icon">
+                        <h2>We Are Getting Married!</h2>
+                        <p>Maha Suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan. Ya Allah semoga ridho-Mu tercurah mengiringi pernikahan kami:</p>
+                    </div>
+                    
                     <div class="couple-photos">
                         <div class="photo-container">
                             <div class="photo-frame">
-                                <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/groom.jpeg" alt="Suriansyah" class="couple-photo">
+                                <img src="https://via.placeholder.com/200x200/E6BF84/000000?text=S" alt="Suriansyah" class="couple-photo">
                             </div>
-                            <h3 class="shimmer-text">Suriansyah, S. Kep., Ners</h3>
+                            <h3>Suriansyah</h3>
+                            <p class="full-name">Suriansyah, S. Kep., Ners</p>
+                            <p class="family-info">Putra dari<br>Bapak [Nama Ayah] & Ibu [Nama Ibu]</p>
+                            <a href="https://instagram.com/username" class="social-link" target="_blank">
+                                <i class="fab fa-instagram"></i> @username
+                            </a>
                         </div>
-                        <div class="couple-divider">
-    			            <span class="shimmer-text">&</span>
-			            </div>
+                        
+                        <div class="couple-divider">&</div>
+                        
                         <div class="photo-container">
                             <div class="photo-frame">
-                                <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/bride.jpeg" alt="Sonia Agustina Oemar" class="couple-photo">
+                                <img src="https://via.placeholder.com/200x200/F4C2C2/000000?text=S" alt="Sonia" class="couple-photo">
                             </div>
-                            <h3 class="shimmer-text">Sonia Agustina Oemar, S.Farm</h3>
+                            <h3>Sonia</h3>
+                            <p class="full-name">Sonia Agustina Oemar, S.Farm</p>
+                            <p class="family-info">Putri dari<br>Bapak [Nama Ayah] & Ibu [Nama Ibu]</p>
+                            <a href="https://instagram.com/username" class="social-link" target="_blank">
+                                <i class="fab fa-instagram"></i> @username
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="session session-4" id="session4">
-            <div class="session-content">
-                <h2 class="shimmer-text">Detail Acara</h2>
+        <!-- Section 3: Save The Date & Countdown -->
+        <section id="session3" class="session session-3">
+            <div class="session-content reveal-element">
+                <!-- Photo Slideshow Background -->
+                <div class="photo-slideshow">
+                    <div class="slideshow-container">
+                        <div class="slide active">
+                            <img src="https://via.placeholder.com/800x600/E6BF84/000000?text=Photo+1" alt="Wedding Photo 1">
+                        </div>
+                        <div class="slide">
+                            <img src="https://via.placeholder.com/800x600/F4C2C2/000000?text=Photo+2" alt="Wedding Photo 2">
+                        </div>
+                        <div class="slide">
+                            <img src="https://via.placeholder.com/800x600/20c997/000000?text=Photo+3" alt="Wedding Photo 3">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="save-date-content">
+                    <img src="https://hi.inviee.id/wp-content/uploads/2024/12/BUGIS-ICON.webp" alt="Wedding Icon" class="section-icon">
+                    <h2>Save The Date</h2>
+                    
+                    <div class="countdown-container">
+                        <div class="countdown-item">
+                            <span id="days">00</span>
+                            <label>Hari</label>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="hours">00</span>
+                            <label>Jam</label>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="minutes">00</span>
+                            <label>Menit</label>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="seconds">00</span>
+                            <label>Detik</label>
+                        </div>
+                    </div>
+                    
+                    <p>Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:</p>
+                    
+                    <button id="save-date-btn" class="btn btn--primary">
+                        <i class="far fa-bookmark"></i>
+                        Add to Calendar
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Event Details -->
+        <section id="session4" class="session session-4">
+            <div class="session-content reveal-element">
                 <div class="event-details">
-                    <div class="event-item">
+                    <div class="event-item advanced-card">
+                        <img src="https://hi.inviee.id/wp-content/uploads/2024/12/BUGIS-ICON.webp" alt="Wedding Icon" class="section-icon">
                         <h3>Akad Nikah</h3>
                         <div class="event-info">
-                            <p><strong>Waktu:</strong> 07:00 - 08:00 WITA</p>
-                            <p><strong>Tempat:</strong> Masjid Jabal Rahmah Mandin</p>
+                            <p><strong>Kamis</strong></p>
+                            <p><strong>24 September 2025</strong></p>
+                            <p><strong>07:00 - 08:00 WITA</strong></p>
+                            <div class="location-info">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <p><strong>Masjid Jabal Rahmah Mandin</strong></p>
+                                    <p>Alamat lengkap masjid</p>
+                                </div>
+                            </div>
+                            <button class="btn btn--outline" onclick="openMaps('Masjid Jabal Rahmah Mandin')">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Google Maps
+                            </button>
                         </div>
                     </div>
-                    <div class="event-item">
+                    
+                    <div class="event-item advanced-card">
+                        <img src="https://hi.inviee.id/wp-content/uploads/2024/12/BUGIS-ICON.webp" alt="Wedding Icon" class="section-icon">
                         <h3>Resepsi</h3>
                         <div class="event-info">
-                            <p><strong>Waktu:</strong> 08:00 WITA - Selesai</p>
-                            <p><strong>Tempat:</strong> Rumah Mempelai Wanita<br>Samping Masjid Jabal Rahmah Mandin</p>
+                            <p><strong>Kamis</strong></p>
+                            <p><strong>24 September 2025</strong></p>
+                            <p><strong>08:00 WITA - Selesai</strong></p>
+                            <div class="location-info">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <p><strong>Rumah Mempelai Wanita</strong></p>
+                                    <p>Samping Masjid Jabal Rahmah Mandin</p>
+                                </div>
+                            </div>
+                            <button class="btn btn--outline" onclick="openMaps('Rumah Mempelai Wanita')">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Google Maps
+                            </button>
                         </div>
                     </div>
                 </div>
-                <button class="btn btn--primary" id="openMapsBtn">
-                    <i class="fas fa-map-marker-alt"></i> Buka Peta Lokasi
-                </button>
             </div>
         </section>
 
-        <section class="session session-5" id="session5">
-            <div class="session-content">
-                <h2>Galeri & Video Pre-Wedding</h2>
-                <div class="photo-gallery">
-                    <div class="gallery-item">
-                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri1.jpeg" alt="Galeri 1">
+        <!-- Section 5: Live Streaming -->
+        <section id="session5" class="session session-5">
+            <div class="session-content reveal-element">
+                <div class="streaming-section advanced-card">
+                    <h2>Live Streaming</h2>
+                    <p>Temui kami secara virtual untuk menyaksikan acara pernikahan kami melalui tautan di bawah ini:</p>
+                    
+                    <div class="streaming-buttons">
+                        <a href="https://instagram.com" target="_blank" class="btn btn--primary">
+                            <i class="fab fa-instagram"></i>
+                            Instagram
+                        </a>
+                        <a href="https://youtube.com" target="_blank" class="btn btn--primary">
+                            <i class="fab fa-youtube"></i>
+                            YouTube
+                        </a>
                     </div>
-                    <div class="gallery-item">
-                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri2.jpeg" alt="Galeri 2">
-                    </div>
-                    <div class="gallery-item">
-                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri3.jpeg" alt="Galeri 3">
-                    </div>
-                     <div class="gallery-item">
-                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri4.jpeg" alt="Galeri 4">
-                    </div>
-                    <div class="gallery-item">
-                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri5.jpeg" alt="Galeri 5">
-                    </div>
-                    <div class="gallery-item">
-                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri6.jpeg" alt="Galeri 6">
-                    </div>
-                </div>
-                <div class="video-container">
-                    <iframe id="weddingVideo" 
-                            src="https://www.youtube.com/embed/xXRjeURBYAE?si=42mew4CteNsfwwQF&enablejsapi=1" 
-                            title="Wedding Video"
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                    </iframe>
                 </div>
             </div>
         </section>
 
-        <section class="session session-6" id="session6">
-    	    <div class="session-content">
-        	<h2>RSVP & Ucapan</h2>
-        	<div class="rsvp-form"> 
-            	    <div class="form-group">
-                	<label class="form-label">Nama Lengkap</label>
-                	<input type="text" class="form-control" id="guestName" placeholder="Masukkan nama Anda">
-            	    </div>
-            	    <div class="form-group">
-                	<label class="form-label">Ucapan & Doa</label>
-                	<textarea class="form-control" id="guestMessage" rows="4" placeholder="Tulis ucapan dan doa untuk kami"></textarea>
-            	    </div>
-            	    <div class="form-group">
-                	<label class="form-label">Konfirmasi Kehadiran</label>
-                	<select class="form-control" id="attendance">
-                    	    <option value="">Pilih konfirmasi...</option>
-                            <option value="hadir">Insya Allah, Akan Hadir</option>
-                    	    <option value="tidak_hadir">Maaf, Tidak Dapat Hadir</option>
-                	</select>
-            	    </div>
-            	    <div class="action-buttons">
-                	<button type="button" id="submitRsvpBtn" class="btn btn--primary">
-                    	    Kirim Ucapan
-                	</button>
-            	    </div>
-        	</div>
-    	    </div>
-	    </section>
-
-        <section class="session session-7" id="session7">
-            <div class="session-content">
-                <h2>Kado Cashless</h2>
-                <p class="gift-text">
-                    Doa restu dari Bapak/Ibu/Saudara/i merupakan karunia yang sangat berarti bagi kami. 
-                    Dan jika ingin memberikan kado, dapat melalui rekening berikut:
-                </p>
-                <div class="bank-accounts">
-                    <div class="bank-item">
-                        <h3>Bank Mandiri</h3>
-                        <div class="account-info">
-                            <span class="account-number">1410001081983</span>
-                            <button type="button" class="copy-btn" data-account="1410001081983"><i class="far fa-copy"></i> Salin</button>
+        <!-- Section 6: Wedding Gift -->
+        <section id="session6" class="session session-6">
+            <div class="session-content reveal-element">
+                <div class="gift-section">
+                    <h2>Wedding Gift</h2>
+                    <p class="gift-text">Tanpa mengurangi rasa hormat, bagi Bapak/Ibu/Saudara/i yang ingin memberikan tanda kasih untuk kami, dapat melalui:</p>
+                    
+                    <button id="show-gift-btn" class="btn btn--primary">
+                        <i class="fas fa-gift"></i>
+                        KLIK DI SINI
+                    </button>
+                    
+                    <button id="hide-gift-btn" class="btn btn--outline hidden">
+                        <i class="far fa-eye-slash"></i>
+                        SEMBUNYIKAN
+                    </button>
+                    
+                    <div id="gift-details" class="gift-details hidden">
+                        <div class="bank-accounts">
+                            <div class="bank-item advanced-card">
+                                <div class="bank-logo">
+                                    <img src="https://app.inviee.id/wp-content/uploads/2023/03/BCA.png" alt="Bank BCA">
+                                </div>
+                                <h3>Sonia Agustina Oemar</h3>
+                                <div class="account-info">
+                                    <span class="account-number">1234567890</span>
+                                    <button class="copy-btn" data-account="1234567890">
+                                        <i class="far fa-copy"></i>
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="bank-item advanced-card">
+                                <div class="bank-logo">
+                                    <img src="https://app.inviee.id/wp-content/uploads/2023/03/bni.png" alt="Bank BNI">
+                                </div>
+                                <h3>Sonia Agustina Oemar</h3>
+                                <div class="account-info">
+                                    <span class="account-number">0987654321</span>
+                                    <button class="copy-btn" data-account="0987654321">
+                                        <i class="far fa-copy"></i>
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="bank-item advanced-card">
+                                <div class="gift-address">
+                                    <h3>SEND GIFT</h3>
+                                    <p>a.n. Sonia Agustina Oemar<br>
+                                    Samping Masjid Jabal Rahmah Mandin<br>
+                                    Kota, Provinsi</p>
+                                    <button class="copy-btn" data-account="Sonia Agustina Oemar, Samping Masjid Jabal Rahmah Mandin">
+                                        <i class="far fa-copy"></i>
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <p class="account-name">a.n. Sonia Agustina Oemar</p>
-                    </div>
-                    <div class="bank-item">
-                        <h3>Bank BPD Kalsel</h3>
-                        <div class="account-info">
-                            <span class="account-number">3202963349</span>
-                            <button type="button" class="copy-btn" data-account="3202963349"><i class="far fa-copy"></i> Salin</button>
+                        
+                        <!-- WhatsApp Confirmation Form -->
+                        <div class="confirmation-form">
+                            <h3>Konfirmasi Transfer</h3>
+                            <form id="transfer-form">
+                                <input type="text" placeholder="Nama Anda" required class="enhanced-form-control">
+                                <input type="text" placeholder="Transfer ke (BCA/BNI/Mandiri)" required class="enhanced-form-control">
+                                <button type="submit" class="btn btn--primary">
+                                    Konfirmasi via WhatsApp
+                                </button>
+                            </form>
                         </div>
-                        <p class="account-name">a.n. Sonia Agustina Oemar</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="session session-8" id="session8">
-            <div class="session-content">
-                <h2>Ucapan & Doa</h2>
-                <div class="messages-container" id="messagesContainer">
-                    <p id="noMessages" class="no-messages">Belum ada ucapan dari tamu</p>
+        <!-- Section 7: Gallery Video -->
+        <section id="session7" class="session session-7">
+            <div class="session-content reveal-element">
+                <div class="gallery-section">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/Ynj_L5TCyws?controls=1&autoplay=1&mute=1&loop=1" 
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    
+                    <h2>Our Gallery</h2>
+                    
+                    <div class="photo-gallery">
+                        <div class="gallery-grid">
+                            <div class="gallery-item" data-aos="fade-up">
+                                <img src="https://via.placeholder.com/300x400/E6BF84/000000?text=Photo+1" alt="Wedding Photo">
+                            </div>
+                            <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+                                <img src="https://via.placeholder.com/300x400/F4C2C2/000000?text=Photo+2" alt="Wedding Photo">
+                            </div>
+                            <div class="gallery-item" data-aos="fade-up" data-aos-delay="400">
+                                <img src="https://via.placeholder.com/300x200/20c997/000000?text=Photo+3" alt="Wedding Photo">
+                            </div>
+                            <div class="gallery-item" data-aos="fade-up" data-aos-delay="600">
+                                <img src="https://via.placeholder.com/300x300/E6BF84/000000?text=Photo+4" alt="Wedding Photo">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="session session-9" id="session9">
-            <div class="session-content">
-                <h2 class="shimmer-text">Terima Kasih</h2>
-                <div class="thank-you-content">
-                    <p>
-                        Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga 
-                        apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu 
-                        kepada kedua mempelai.
-                    </p>
-                    <p>
-                        Atas kehadiran dan doa restu dari Bapak/Ibu/Saudara/i, 
-                        kami mengucapkan terima kasih.
-                    </p>
-                    <div class="signature">
-                        <p><strong>Suriansyah & Sonia Agustina Oemar</strong></p>
+        <!-- Section 8: Love Story -->
+        <section id="session8" class="session session-8">
+            <div class="session-content reveal-element">
+                <div class="love-story">
+                    <h2>Love Story</h2>
+                    
+                    <div class="story-timeline">
+                        <div class="story-item" data-aos="fade-right">
+                            <img src="https://via.placeholder.com/600x400/E6BF84/000000?text=First+Meet" alt="First Meeting">
+                            <div class="story-content">
+                                <h3>Perkenalan</h3>
+                                <span class="story-date">15 Februari 2020</span>
+                                <p>Kami bertemu di tempat kerja. Pada saat itu, aku adalah karyawan yang ada di tempat magang dia. Akhirnya aku beranikan diri untuk menyatakan cinta padanya. Dari situlah hubungan kami dimulai.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="story-item" data-aos="fade-left">
+                            <img src="https://via.placeholder.com/600x400/F4C2C2/000000?text=Proposal" alt="Proposal">
+                            <div class="story-content">
+                                <h3>Lamaran</h3>
+                                <span class="story-date">13 September 2023</span>
+                                <p>Setelah begitu banyak melewati banyak proses dan rintangan dalam hubungan, akhirnya aku memutuskan untuk melamar dia pada tanggal 13 September 2023. Kami pun tidak menyangka bahwa cerita pertemuan ini menjadi penuh makna.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="story-item" data-aos="fade-right">
+                            <img src="https://via.placeholder.com/600x400/20c997/000000?text=Wedding" alt="Wedding">
+                            <div class="story-content">
+                                <h3>Pernikahan</h3>
+                                <span class="story-date">24 September 2025</span>
+                                <p>Pada tanggal 24 September 2025, kami melangsungkan Akad Nikah & Resepsi dengan sederhana dan penuh hikmat. Dengan semua doa restu dari keluarga dan teman-teman, aku dan pasangan telah siap untuk menempuh hidup bersama dan menjalankan ibadah paling indah ini.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: RSVP & Wishes -->
+        <section id="session9" class="session session-9">
+            <div class="session-content reveal-element">
+                <div class="rsvp-section">
+                    <h2>Wishes</h2>
+                    <p>Ucapan Selamat, Doa & Konfirmasi Kehadiran</p>
+                    
+                    <div class="rsvp-form">
+                        <form id="rsvp-form" class="advanced-card">
+                            <div class="form-group">
+                                <input type="text" id="guest-name" placeholder="Nama Anda" required class="enhanced-form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <select id="attendance" required class="enhanced-form-control">
+                                    <option value="">Konfirmasi Kehadiran</option>
+                                    <option value="hadir">Hadir</option>
+                                    <option value="tidak-hadir">Tidak Hadir</option>
+                                    <option value="masih-ragu">Masih Ragu</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <select id="guest-count" required class="enhanced-form-control">
+                                    <option value="">Jumlah Tamu</option>
+                                    <option value="1">1 orang</option>
+                                    <option value="2">2 orang</option>
+                                    <option value="3">3 orang</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <textarea id="guest-message" placeholder="Tulis ucapan dan doa untuk kami..." required class="enhanced-form-control" rows="4"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn--primary">
+                                <i class="fas fa-paper-plane"></i>
+                                Kirim Ucapan
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="messages-container">
+                        <h3>Ucapan & Doa</h3>
+                        <div id="messages-list" class="messages-list">
+                            <!-- Messages will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 10: Thank You -->
+        <section id="session10" class="session session-10">
+            <div class="session-content reveal-element">
+                <div class="thank-you-section">
+                    <h1>Suriansyah & Sonia Agustina Oemar</h1>
+                    
+                    <div class="thank-you-content">
+                        <p>Suatu kebahagiaan & kehormatan bagi kami,<br>
+                        apabila Bapak/Ibu/Saudara/i, berkenan hadir<br>
+                        dan memberikan do'a restu kepada kami</p>
+                    </div>
+                    
+                    <div class="credits">
+                        <a href="https://www.inviee.id" target="_blank">
+                            <img src="https://hi.inviee.id/wp-content/uploads/2024/12/logo-inviee-pth.webp" alt="Inviee.id">
+                        </a>
+                        <p>Designed with ❤️ by Inviee.id</p>
+                        <p>Copyright © 2025 INVIEE ID - All Rights Reserved.<br>
+                        Whatsapp : (+62) 858-4261-4010 | Instagram : @inviee.id<br>
+                        Email : framery.id@gmail.com</p>
+                        
+                        <div class="social-links">
+                            <a href="https://api.whatsapp.com/send?phone=6285842614010" target="_blank">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="https://www.instagram.com/inviee.id" target="_blank">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://www.inviee.id" target="_blank">
+                                <i class="fas fa-link"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="music-credit">
+                            <a href="https://hi.inviee.id/music-library/" target="_blank">
+                                <i class="fas fa-music"></i>
+                                Alosi Ripolo Dua voc Ifah Zaenal Alwi – Lagu Bugis
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- Lightbox Modal -->
-    <div id="lightbox-modal" class="hidden">
-        <span class="lightbox-close">&times;</span>
-        <img class="lightbox-content" id="lightbox-img">
-        <a class="lightbox-prev">&#10094;</a>
-        <a class="lightbox-next">&#10095;</a>
+    <!-- Audio Controls -->
+    <div class="audio-controls">
+        <button id="audio-toggle" class="audio-btn">
+            <i class="fas fa-compact-disc" id="audio-icon"></i>
+        </button>
+        <audio id="wedding-audio" loop>
+            <source src="https://assets.inviee.id/Lagu-Bugis-Alosi-Ripolo-Dua-voc-Ifah-Zaenal-Alwi.mp3" type="audio/mpeg">
+        </audio>
     </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Enhanced Particles -->
+    <div id="particle-container" class="particle-container"></div>
+
+    <!-- Lottie Animations -->
+    <div class="lottie-container">
+        <div id="lottie-1" class="lottie-element"></div>
+        <div id="lottie-2" class="lottie-element"></div>
+    </div>
+
+    <!-- Copy Notification -->
+    <div id="copy-notification" class="copy-notification">
+        Berhasil disalin!
+    </div>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress"></div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script type="module" src="app.js"></script>
 </body>
 </html>
-
