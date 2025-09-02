@@ -1252,3 +1252,59 @@ window.WeddingInvitation = {
     createCelebrationBurst,
     showNotificationEnhanced
 };
+
+// ===== SAFE AUDIO REBIND (permanent) =====
+(function(){
+  function safeGetAudio() {
+    return document.getElementById('wedding-audio')
+      || document.getElementById('backgroundMusic')
+      || document.querySelector('audio');
+  }
+
+  function updateAudioButtonVisual(btn, isPlaying) {
+    if (!btn) return;
+    const icon = btn.querySelector('i') || btn;
+    if (isPlaying) {
+      btn.classList.add('is-playing');
+      icon.classList.remove('fa-compact-disc');
+      icon.classList.add('fa-volume-up');
+      btn.setAttribute('aria-pressed','true');
+    } else {
+      btn.classList.remove('is-playing');
+      icon.classList.remove('fa-volume-up');
+      icon.classList.add('fa-compact-disc');
+      btn.setAttribute('aria-pressed','false');
+    }
+  }
+
+  function safeHandler(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const audio = safeGetAudio();
+    if (!audio) {
+      console.warn('Audio element not found (safeHandler).');
+      return;
+    }
+    const isPaused = (typeof audio.paused !== 'undefined') ? audio.paused : true;
+    if (isPaused) {
+      const p = audio.play && audio.play();
+      if (p && typeof p.catch === 'function') p.catch(err => console.warn('play() blocked', err));
+      updateAudioButtonVisual(this, true);
+    } else {
+      try { audio.pause(); } catch(e) { console.warn(e); }
+      updateAudioButtonVisual(this, false);
+    }
+  }
+
+  function rebindAudioButton() {
+    const old = document.getElementById('audio-toggle') || document.querySelector('.audio-btn') || document.querySelector('.music-toggle-btn');
+    if (!old) return;
+    const clone = old.cloneNode(true);
+    old.parentNode.replaceChild(clone, old);
+    clone.addEventListener('click', safeHandler);
+    const audio = safeGetAudio();
+    updateAudioButtonVisual(clone, audio && !audio.paused);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', rebindAudioButton);
+  else rebindAudioButton();
+})();
