@@ -671,4 +671,544 @@ function prepareSectionAnimation(sessionNumber) {
 }
 
 function triggerSectionAnimations(sessionNumber) {
-    cons
+    const session = document.getElementById(`session${sessionNumber}`);
+    if (!session) return;
+    
+    const content = session.querySelector('.session-content');
+    if (!content) return;
+    
+    // Animate in all child elements
+    gsap.fromTo(content.children, {
+        opacity: 0,
+        y: 30,
+        scale: 0.95
+    }, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "back.out(1.7)",
+        delay: 0.3
+    });
+    
+    // Special animations for specific sessions
+    switch(sessionNumber) {
+        case 0:
+            animateWelcomeSection();
+            break;
+        case 1:
+            animateCountdownSection();
+            break;
+        case 2:
+            animateBismillahSection();
+            break;
+        case 3:
+            animateCoupleSection();
+            break;
+        default:
+            animateGenericSection(sessionNumber);
+    }
+}
+
+function animateWelcomeSection() {
+    const title = document.querySelector('.invitation-title h1');
+    const names = document.querySelector('.couple-names');
+    const date = document.querySelector('.wedding-date');
+    
+    if (title) {
+        gsap.fromTo(title, {
+            scale: 0.5,
+            opacity: 0
+        }, {
+            scale: 1,
+            opacity: 1,
+            duration: 1.2,
+            ease: "elastic.out(1, 0.5)",
+            delay: 0.5
+        });
+    }
+    
+    if (names) {
+        gsap.fromTo(names.children || [names], {
+            x: -100,
+            opacity: 0
+        }, {
+            x: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "back.out(1.7)",
+            delay: 1
+        });
+    }
+    
+    if (date) {
+        gsap.fromTo(date, {
+            y: 50,
+            opacity: 0
+        }, {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "bounce.out",
+            delay: 1.5
+        });
+    }
+}
+
+function animateCountdownSection() {
+    const countdownItems = document.querySelectorAll('.countdown-item');
+    
+    countdownItems.forEach((item, index) => {
+        gsap.fromTo(item, {
+            rotateY: 180,
+            opacity: 0
+        }, {
+            rotateY: 0,
+            opacity: 1,
+            duration: 0.8,
+            delay: index * 0.2 + 0.5,
+            ease: "back.out(1.7)"
+        });
+    });
+}
+
+function animateBismillahSection() {
+    const arabicText = document.querySelector('.arabic-text');
+    const translation = document.querySelector('.translation');
+    
+    if (arabicText) {
+        gsap.fromTo(arabicText, {
+            opacity: 0,
+            scale: 0.8
+        }, {
+            opacity: 1,
+            scale: 1,
+            duration: 1.5,
+            ease: "power2.out",
+            delay: 0.5
+        });
+    }
+    
+    if (translation) {
+        gsap.fromTo(translation, {
+            y: 30,
+            opacity: 0
+        }, {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power2.out",
+            delay: 1.2
+        });
+    }
+}
+
+function animateCoupleSection() {
+    const photos = document.querySelectorAll('.photo-frame');
+    const divider = document.querySelector('.couple-divider');
+    
+    photos.forEach((photo, index) => {
+        gsap.fromTo(photo, {
+            scale: 0,
+            rotation: 180
+        }, {
+            scale: 1,
+            rotation: 0,
+            duration: 1,
+            delay: index * 0.3 + 0.5,
+            ease: "back.out(1.7)"
+        });
+    });
+    
+    if (divider) {
+        gsap.fromTo(divider, {
+            scale: 0,
+            rotation: 360
+        }, {
+            scale: 1,
+            rotation: 0,
+            duration: 0.8,
+            delay: 0.8,
+            ease: "elastic.out(1, 0.5)"
+        });
+    }
+}
+
+function animateGenericSection(sessionNumber) {
+    const session = document.getElementById(`session${sessionNumber}`);
+    if (!session) return;
+    
+    const elements = session.querySelectorAll('h2, h3, p, .btn, .form-group');
+    
+    gsap.fromTo(elements, {
+        opacity: 0,
+        x: gsap.utils.random(-50, 50),
+        y: gsap.utils.random(20, 40)
+    }, {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out",
+        delay: 0.3
+    });
+}
+
+// ==========================================
+// ENHANCED DOTS NAVIGATION
+// ==========================================
+
+function setupDotsNavigation() {
+    const dots = document.querySelectorAll('.dot');
+    
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            if (index !== currentSession && !isTransitioning) {
+                const direction = index > currentSession ? 'left' : 'right';
+                navigateToSession(index, direction);
+            }
+        });
+        
+        // Add hover effects
+        dot.addEventListener('mouseenter', () => {
+            if (index !== currentSession) {
+                gsap.to(dot, {
+                    scale: 1.3,
+                    duration: 0.3,
+                    ease: "back.out(1.7)"
+                });
+            }
+        });
+        
+        dot.addEventListener('mouseleave', () => {
+            if (index !== currentSession) {
+                gsap.to(dot, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "back.out(1.7)"
+                });
+            }
+        });
+    });
+}
+
+function updateDotsNavigation() {
+    const dots = document.querySelectorAll('.dot');
+    
+    dots.forEach((dot, index) => {
+        if (index === currentSession) {
+            dot.classList.add('active');
+            gsap.to(dot, {
+                scale: 1.4,
+                duration: 0.4,
+                ease: "back.out(1.7)"
+            });
+        } else {
+            dot.classList.remove('active');
+            gsap.to(dot, {
+                scale: 1,
+                duration: 0.3,
+                ease: "back.out(1.7)"
+            });
+        }
+    });
+}
+
+// ==========================================
+// ENHANCED MUSIC SYSTEM
+// ==========================================
+
+function showMusicEnableButton() {
+    if (document.querySelector('.music-toggle-btn')) return;
+    
+    const musicButton = document.createElement('button');
+    musicButton.innerHTML = 'ðŸ”‡';
+    musicButton.className = 'btn music-toggle-btn';
+    musicButton.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1001;
+        background: rgba(230, 191, 132, 0.2);
+        backdrop-filter: blur(10px);
+        color: var(--wedding-gold);
+        border: 2px solid var(--wedding-gold);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    `;
+    
+    musicButton.addEventListener('click', () => {
+        if (backgroundMusic.paused) {
+            backgroundMusic.play();
+            musicButton.innerHTML = 'ðŸŽµ';
+            gsap.to(musicButton, {
+                rotation: 360,
+                duration: 0.5,
+                ease: "back.out(1.7)"
+            });
+        } else {
+            backgroundMusic.pause();
+            musicButton.innerHTML = 'ðŸ”‡';
+            gsap.to(musicButton, {
+                rotation: -360,
+                duration: 0.5,
+                ease: "back.out(1.7)"
+            });
+        }
+    });
+    
+    // Floating animation
+    gsap.to(musicButton, {
+        y: -10,
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+    });
+    
+    document.body.appendChild(musicButton);
+}
+
+// ==========================================
+// TYPEWRITER EFFECTS
+// ==========================================
+
+function runQuranTypewriter() {
+    const targetElement = document.getElementById('quran-verse-typewriter');
+    if (targetElement && !targetElement.classList.contains('typed')) {
+        const quranText = `"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."`;
+        const citation = `\n\nQS. Ar-Rum: 21`;
+        
+        targetElement.innerHTML = '';
+        typeWriter(targetElement, quranText + citation);
+        targetElement.classList.add('typed');
+    }
+}
+
+function typeWriter(element, text, speed = 50) {
+    let i = 0;
+    element.innerHTML = '';
+    
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    
+    type();
+}
+
+// ==========================================
+// LOADING ANIMATION
+// ==========================================
+
+function addLoadingAnimation() {
+    // Create loading overlay
+    const loader = document.createElement('div');
+    loader.id = 'loading-overlay';
+    loader.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--wedding-black);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    `;
+    
+    loader.innerHTML = `
+        <div class="loader-hearts">
+            <div class="heart">â™¥</div>
+            <div class="heart">â™¥</div>
+            <div class="heart">â™¥</div>
+        </div>
+        <div class="loader-text">Loading...</div>
+    `;
+    
+    document.body.appendChild(loader);
+    
+    // Animate hearts
+    const hearts = loader.querySelectorAll('.heart');
+    hearts.forEach((heart, index) => {
+        heart.style.cssText = `
+            font-size: 2rem;
+            color: var(--wedding-gold);
+            margin: 0 10px;
+            opacity: 0.3;
+        `;
+        
+        gsap.to(heart, {
+            opacity: 1,
+            scale: 1.2,
+            duration: 0.6,
+            repeat: -1,
+            yoyo: true,
+            delay: index * 0.2,
+            ease: "power2.inOut"
+        });
+    });
+    
+    // Remove loader after delay
+    setTimeout(() => {
+        gsap.to(loader, {
+            opacity: 0,
+            duration: 1,
+            onComplete: () => loader.remove()
+        });
+    }, 3000);
+}
+
+// ==========================================
+// UTILITY FUNCTIONS
+// ==========================================
+
+function showSession(sessionNumber) {
+    document.querySelectorAll('.session').forEach((session, index) => {
+        if (index === sessionNumber) {
+            session.classList.remove('hidden');
+            session.classList.add('active');
+        } else {
+            session.classList.remove('active');
+            session.classList.add('hidden');
+        }
+    });
+    
+    updateDotsNavigation();
+    currentSession = sessionNumber;
+}
+
+function setupActionButtons() {
+    document.getElementById('openInvitationBtn')?.addEventListener('click', openInvitation);
+    document.getElementById('saveDateBtn')?.addEventListener('click', saveTheDate);
+    document.getElementById('shareBtn')?.addEventListener('click', shareInvitation);
+    document.getElementById('openMapsBtn')?.addEventListener('click', openMaps);
+    document.getElementById('submitRsvpBtn')?.addEventListener('click', handleRsvpSubmission);
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => copyAccount(e.target.dataset.account));
+    });
+}
+
+function startCountdown() {
+    try {
+        if (typeof countdownInterval !== 'undefined' && countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+        }
+        
+        const weddingDate = new Date('2025-09-24T07:00:00+08:00');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        
+        if (!daysEl || !hoursEl || !minutesEl || !secondsEl) {
+            const observer = new MutationObserver((mutations, obs) => {
+                if (document.getElementById('days')) {
+                    obs.disconnect();
+                    startCountdown();
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+            return;
+        }
+        
+        function update() {
+            const now = Date.now();
+            const distance = weddingDate.getTime() - now;
+            
+            if (distance <= 0) {
+                daysEl.textContent = '00';
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                }
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            daysEl.textContent = String(days).padStart(2, '0');
+            hoursEl.textContent = String(hours).padStart(2, '0');
+            minutesEl.textContent = String(minutes).padStart(2, '0');
+            secondsEl.textContent = String(seconds).padStart(2, '0');
+        }
+        
+        update();
+        countdownInterval = setInterval(update, 1000);
+    } catch (err) {
+        console.error('[countdown] error saat memulai:', err);
+    }
+}
+
+function openInvitation() {
+    navigateToSession(1, 'left');
+    playBackgroundMusic();
+}
+
+function playBackgroundMusic() {
+    if (backgroundMusic) {
+        backgroundMusic.play().catch(error => {
+            console.log('Auto-play dicegah:', error);
+        });
+    }
+}
+
+async function saveTheDate() {
+    const event = {
+        title: 'Pernikahan Suriansyah & Sonia Agustina Oemar',
+        start: '2025-09-24T07:00:00+08:00',
+        end: '2025-09-24T17:00:00+08:00',
+        description: 'Acara Pernikahan Suriansyah & Sonia Agustina Oemar. \n\nJangan lupa hadir dan memberikan doa restu.',
+        location: 'Masjid Jabal Rahmah Mandin & Rumah Mempelai Wanita'
+    };
+    
+    console.log('Save the date functionality');
+}
+
+async function shareInvitation() {
+    const shareText = 'Assalamualaikum Wr. Wb.\nDengan penuh syukur kepada Allah SWT, kami mengundang Bapak/Ibu/Saudara(i) menghadiri pernikahan Suriansyah & Sonia. Barakallahu lakuma wa baraka \'alaikuma.';
+    console.log('Share invitation functionality');
+}
+
+function handleRsvpSubmission() {
+    console.log('RSVP submission functionality');
+}
+
+function loadGuestMessages() {
+    console.log('Load guest messages functionality');
+}
+
+function copyAccount(account) {
+    console.log('Copy account functionality');
+}
+
+function showNotification(message) {
+    console.log('Notification:', message);
+}
+
+function openMaps() {
+    console.log('Open maps functionality');
+}
