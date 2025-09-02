@@ -1651,3 +1651,51 @@ window.WeddingInvitation = {
   }
 
 })();
+
+
+// ====== RUNTIME IMAGE SRC FIXER ======
+// Fixes malformed placeholder URLs like "000000?text=Photo+1" that cause ERR_NAME_NOT_RESOLVED.
+// Strategy: when an <img> src looks like a hostname-less token containing '?text=', replace it
+// with a safe via.placeholder.com URL (800x600) carrying the same text parameter.
+// Also add an onerror fallback to local placeholder.
+
+(function() {
+  function isLikelyBadSrc(src) {
+    if (!src) return false;
+    // If src starts with 'http' it's ok. If it contains '/' or '.' it's likely ok.
+    if (/^https?:\/\//i.test(src)) return false;
+    if (src.indexOf('/') !== -1 || src.indexOf('.') !== -1) return false;
+    // If it contains '?text=' it's one of the malformed patterns we've seen.
+    if (src.indexOf('?text=') !== -1) return true;
+    return false;
+  }
+
+  function normalizeImages() {
+    document.querySelectorAll('img').forEach(img => {
+      try {
+        const s = img.getAttribute('src') || '';
+        if (isLikelyBadSrc(s)) {
+          // extract text param
+          const q = s.split('?text=')[1] || '';
+          const text = decodeURIComponent(q.replace(/\+/g, ' ')) || 'Photo';
+          // build safe placeholder (size heuristic)
+          const newSrc = 'https://via.placeholder.com/800x600?text=' + encodeURIComponent(text);
+          img.src = newSrc;
+        }
+        // ensure a robust onerror fallback (if placeholder also fails)
+        img.addEventListener('error', function() {
+          if (!this.dataset._fallback) {
+            this.dataset._fallback = '1';
+            try { this.src = '/assets/placeholder.jpg'; } catch (e) { /* ignore */ }
+          }
+        }, { once: true });
+      } catch (e) { console.warn('normalizeImages error', e); }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', normalizeImages);
+  } else {
+    normalizeImages();
+  }
+})();
