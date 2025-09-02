@@ -6,32 +6,70 @@
     <title>Wedding Invitation - Suriansyah & Sonia Agustina Oemar</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Library GSAP untuk animasi yang lebih canggih -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+    <!-- Latar Belakang Animasi Partikel -->
     <div id="particle-container"></div>
 
+    <!-- Audio Background Music -->
     <audio id="backgroundMusic" loop>
         <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/backgroundmusic.mp3" type="audio/mpeg">
     </audio>
 
-    <section class="session session-0 active" id="session0">
-        <div class="session-content">
-            <div class="invitation-title">
-                <h1 class="shimmer-text">Wedding Invitation</h1>
-                <h2 class="shimmer-text couple-names">of</h2>
-                <h2 class="shimmer-text couple-names">Suriansyah & Sonia Agustina Oemar</h2>
-                <p class="wedding-date shimmer-text">24 September 2025</p>
+    <!-- Navigation Dots (Right Side) -->
+    <div class="nav-dots">
+        <div class="dot active" data-session="0"></div>
+        <div class="dot" data-session="1"></div>
+        <div class="dot" data-session="2"></div>
+        <div class="dot" data-session="3"></div>
+        <div class="dot" data-session="4"></div>
+        <div class="dot" data-session="5"></div>
+        <div class="dot" data-session="6"></div>
+        <div class="dot" data-session="7"></div>
+        <div class="dot" data-session="8"></div>
+        <div class="dot" data-session="9"></div>
+    </div>
+
+    <!-- Arrow Navigation -->
+    <div class="nav-arrows">
+        <button class="arrow-btn arrow-up" id="prevBtn">
+            <span>↑</span>
+            <small>Previous</small>
+        </button>
+        <button class="arrow-btn arrow-down" id="nextBtn">
+            <span>↓</span>
+            <small>Next</small>
+        </button>
+    </div>
+
+    <!-- Sessions Container -->
+    <div class="sessions-container">
+        
+        <!-- Session 0: Landing -->
+        <section class="session session-0 active" id="session0">
+             <!-- Video Latar Belakang -->
+            <video autoplay muted loop playsinline class="background-video">
+                <source src="https://github.com/ss2811/weddinginvitation/raw/main/backgroundvideo.mp4" type="video/mp4">
+            </video>
+            <div class="session-content">
+                <div class="invitation-title">
+                    <h1 class="shimmer-text">Wedding Invitation</h1>
+                    <h2 class="shimmer-text couple-names">of</h2>
+                    <h2 class="shimmer-text couple-names">Ancah & Sonia</h2>
+                    <p class="wedding-date shimmer-text">24 September 2025</p>
+                </div>
+                <button class="btn btn--primary open-invitation" id="openInvitationBtn">
+                    Buka Undangan
+                </button>
             </div>
-            <button class="btn btn--primary open-invitation" id="openInvitationBtn">
-                Buka Undangan
-            </button>
-        </div>
-    </section>
+        </section>
 
-    <div class="main-content-wrapper hidden">
-
-        <section class="session session-1" id="session1">
+        <!-- Session 1: Countdown -->
+        <section class="session session-1 hidden" id="session1">
             <div class="session-content">
                 <h2>Menuju Hari Bahagia</h2>
                 <div class="countdown-container">
@@ -53,29 +91,31 @@
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="btn btn--primary" id="saveDateBtn">Save The Date</button>
+                    <button class="btn btn--primary" id="saveDateBtn"><i class="far fa-calendar-alt"></i> Simpan di Kalender</button>
                     <button class="btn btn--outline" id="shareBtn">Bagikan Undangan</button>
                 </div>
             </div>
         </section>
 
-        <section class="session session-2" id="session2">
+        <!-- Session 2: Bismillah -->
+        <section class="session session-2 hidden" id="session2">
             <div class="session-content">
                 <div class="bismillah-section">
                     <h2 class="arabic-text shimmer-text">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</h2>
                     <p class="translation">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</p>
                     <blockquote class="quran-verse" id="quran-verse-typewriter">
-                        </blockquote>
+                    </blockquote>
                 </div>
             </div>
         </section>
 
-        <section class="session session-3" id="session3">
+        <!-- Session 3: Invitation -->
+        <section class="session session-3 hidden" id="session3">
             <div class="session-content">
                 <div class="invitation-content">
                     <p class="greeting">Yth. Nama Tamu</p>
                     <p class="invitation-text">
-                        Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i
+                        Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i 
                         untuk menghadiri dan memberikan doa restu pada acara pernikahan kami:
                     </p>
                     <div class="couple-photos">
@@ -86,8 +126,8 @@
                             <h3 class="shimmer-text">Suriansyah, S. Kep., Ners</h3>
                         </div>
                         <div class="couple-divider">
-                            <span class="shimmer-text">&</span>
-                        </div>
+    			            <span class="shimmer-text">&</span>
+			            </div>
                         <div class="photo-container">
                             <div class="photo-frame">
                                 <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/bride.jpeg" alt="Sonia Agustina Oemar" class="couple-photo">
@@ -99,7 +139,8 @@
             </div>
         </section>
 
-        <section class="session session-4" id="session4">
+        <!-- Session 4: Event Details -->
+        <section class="session session-4 hidden" id="session4">
             <div class="session-content">
                 <h2 class="shimmer-text">Detail Acara</h2>
                 <div class="event-details">
@@ -119,45 +160,84 @@
                     </div>
                 </div>
                 <button class="btn btn--primary" id="openMapsBtn">
-                    📍 Buka Peta Lokasi
+                    <i class="fas fa-map-marker-alt"></i> Buka Peta Lokasi
                 </button>
             </div>
         </section>
 
-        <section class="session session-5" id="session5">
+         <!-- Session 5: Gallery -->
+        <section class="session session-5 hidden" id="session5">
             <div class="session-content">
-                <h2>RSVP & Ucapan</h2>
-                <div class="rsvp-form">
-                    <div class="form-group">
-                        <label class="form-label">Nama Lengkap</label>
-                        <input type="text" class="form-control" id="guestName" placeholder="Masukkan nama Anda">
+                <h2>Galeri & Video Pre-Wedding</h2>
+                <div class="photo-gallery">
+                    <div class="gallery-item">
+                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri1.jpeg" alt="Galeri 1">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Ucapan & Doa</label>
-                        <textarea class="form-control" id="guestMessage" rows="4" placeholder="Tulis ucapan dan doa untuk kami"></textarea>
+                    <div class="gallery-item">
+                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri2.jpeg" alt="Galeri 2">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Konfirmasi Kehadiran</label>
-                        <select class="form-control" id="attendance">
-                            <option value="">Pilih konfirmasi...</option>
-                            <option value="hadir">Insya Allah, Akan Hadir</option>
-                            <option value="tidak_hadir">Maaf, Tidak Dapat Hadir</option>
-                        </select>
+                    <div class="gallery-item">
+                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri3.jpeg" alt="Galeri 3">
                     </div>
-                    <div class="action-buttons">
-                        <button type="button" id="submitRsvpBtn" class="btn btn--primary">
-                            Kirim Ucapan
-                        </button>
+                     <div class="gallery-item">
+                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri4.jpeg" alt="Galeri 4">
                     </div>
+                    <div class="gallery-item">
+                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri5.jpeg" alt="Galeri 5">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/galeri6.jpeg" alt="Galeri 6">
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe id="weddingVideo" 
+                            src="https://www.youtube.com/embed/xXRjeURBYAE?si=42mew4CteNsfwwQF&enablejsapi=1" 
+                            title="Wedding Video"
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                    </iframe>
                 </div>
             </div>
         </section>
 
-        <section class="session session-6" id="session6">
+        <!-- Session 6: RSVP -->
+        <section class="session session-6 hidden" id="session6">
+    	    <div class="session-content">
+        	<h2>RSVP & Ucapan</h2>
+        	<div class="rsvp-form"> 
+            	    <div class="form-group">
+                	<label class="form-label">Nama Lengkap</label>
+                	<input type="text" class="form-control" id="guestName" placeholder="Masukkan nama Anda">
+            	    </div>
+            	    <div class="form-group">
+                	<label class="form-label">Ucapan & Doa</label>
+                	<textarea class="form-control" id="guestMessage" rows="4" placeholder="Tulis ucapan dan doa untuk kami"></textarea>
+            	    </div>
+            	    <div class="form-group">
+                	<label class="form-label">Konfirmasi Kehadiran</label>
+                	<select class="form-control" id="attendance">
+                    	    <option value="">Pilih konfirmasi...</option>
+                            <option value="hadir">Insya Allah, Akan Hadir</option>
+                    	    <option value="tidak_hadir">Maaf, Tidak Dapat Hadir</option>
+                	</select>
+            	    </div>
+            	    <div class="action-buttons">
+                	<button type="button" id="submitRsvpBtn" class="btn btn--primary">
+                    	    Kirim Ucapan
+                	</button>
+            	    </div>
+        	</div>
+    	    </div>
+	    </section>
+
+        <!-- Session 7: Cashless Gift -->
+        <section class="session session-7 hidden" id="session7">
             <div class="session-content">
                 <h2>Kado Cashless</h2>
                 <p class="gift-text">
-                    Doa restu dari Bapak/Ibu/Saudara/i merupakan karunia yang sangat berarti bagi kami.
+                    Doa restu dari Bapak/Ibu/Saudara/i merupakan karunia yang sangat berarti bagi kami. 
                     Dan jika ingin memberikan kado, dapat melalui rekening berikut:
                 </p>
                 <div class="bank-accounts">
@@ -165,7 +245,7 @@
                         <h3>Bank Mandiri</h3>
                         <div class="account-info">
                             <span class="account-number">1410001081983</span>
-                            <button type="button" class="copy-btn" data-account="1410001081983">📋 Salin</button>
+                            <button type="button" class="copy-btn" data-account="1410001081983"><i class="far fa-copy"></i> Salin</button>
                         </div>
                         <p class="account-name">a.n. Sonia Agustina Oemar</p>
                     </div>
@@ -173,7 +253,7 @@
                         <h3>Bank BPD Kalsel</h3>
                         <div class="account-info">
                             <span class="account-number">3202963349</span>
-                            <button type="button" class="copy-btn" data-account="3202963349">📋 Salin</button>
+                            <button type="button" class="copy-btn" data-account="3202963349"><i class="far fa-copy"></i> Salin</button>
                         </div>
                         <p class="account-name">a.n. Sonia Agustina Oemar</p>
                     </div>
@@ -181,7 +261,8 @@
             </div>
         </section>
 
-        <section class="session session-7" id="session7">
+        <!-- Session 8: Guest Messages -->
+        <section class="session session-8 hidden" id="session8">
             <div class="session-content">
                 <h2>Ucapan & Doa</h2>
                 <div class="messages-container" id="messagesContainer">
@@ -190,17 +271,18 @@
             </div>
         </section>
 
-        <section class="session session-8" id="session8">
+        <!-- Session 9: Thank You -->
+        <section class="session session-9 hidden" id="session9">
             <div class="session-content">
                 <h2 class="shimmer-text">Terima Kasih</h2>
                 <div class="thank-you-content">
                     <p>
-                        Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga
-                        apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu
+                        Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga 
+                        apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu 
                         kepada kedua mempelai.
                     </p>
                     <p>
-                        Atas kehadiran dan doa restu dari Bapak/Ibu/Saudara/i,
+                        Atas kehadiran dan doa restu dari Bapak/Ibu/Saudara/i, 
                         kami mengucapkan terima kasih.
                     </p>
                     <div class="signature">
@@ -210,23 +292,17 @@
             </div>
         </section>
 
-        <section class="session session-9" id="session9">
-            <div class="session-content">
-                <h2>Galeri</h2>
-                <div class="video-container">
-                    <iframe id="weddingVideo"
-                            src="https://www.youtube.com/embed/xXRjeURBYAE?si=42mew4CteNsfwwQF&enablejsapi=1"
-                            title="Wedding Video"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                    </iframe>
-                </div>
-            </div>
-        </section>
+    </div>
+    
+    <!-- Lightbox Modal -->
+    <div id="lightbox-modal" class="hidden">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <a class="lightbox-prev">&#10094;</a>
+        <a class="lightbox-next">&#10095;</a>
+    </div>
 
-    </div><script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script type="module" src="app.js"></script>
 </body>
 </html>
