@@ -3,100 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Pernikahan | Suriansyah & Sonia Agustina Oemar</title>
-    <meta name="description" content="Undangan Pernikahan Suriansyah & Sonia Agustina Oemar - 24 September 2025">
+    <title>Wedding Invitation | Suriansyah & Sonia Agustina Oemar</title>
     
-    <!-- Enhanced CSS -->
-    <link rel="stylesheet" href="enhanced-style.css">
+    <!-- Enhanced Meta Tags -->
+    <meta name="description" content="Undangan pernikahan Suriansyah & Sonia Agustina Oemar - 24 September 2025">
+    <meta name="keywords" content="wedding, invitation, pernikahan, undangan">
+    <meta name="author" content="Suriansyah & Sonia">
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Dancing+Script:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Wedding Invitation | Suriansyah & Sonia">
+    <meta property="og:description" content="Undangan pernikahan Suriansyah & Sonia Agustina Oemar - 24 September 2025">
+    <meta property="og:image" content="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/pemisah.jpeg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap">https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP CDN for enhanced animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
     
     <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='20' font-size='20'>💐</text></svg>">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Undangan Pernikahan | Suriansyah & Sonia">
-    <meta property="og:description" content="Dengan penuh syukur, kami mengundang Anda pada acara pernikahan kami - 24 September 2025">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="">
-    
-    <!-- Prevent zoom on mobile -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
 </head>
 <body>
     <!-- Enhanced Particle Container -->
-    <div id="particle-container"></div>
+    <div id="particle-container" aria-hidden="true"></div>
     
     <!-- Background Music -->
-    <audio id="backgroundMusic" loop preload="auto">
-        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/mpeg">
+    <audio id="backgroundMusic" loop preload="metadata">
+        <source src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundmusic.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-
-    <!-- Enhanced Navigation Dots -->
-    <div class="nav-dots">
-        <div class="dot active" data-session="0" title="Pembuka"></div>
-        <div class="dot" data-session="1" title="Countdown"></div>
-        <div class="dot" data-session="2" title="Bismillah"></div>
-        <div class="dot" data-session="3" title="Mempelai"></div>
-        <div class="dot" data-session="4" title="Akad Nikah"></div>
-        <div class="dot" data-session="5" title="Resepsi"></div>
-        <div class="dot" data-session="6" title="RSVP"></div>
-        <div class="dot" data-session="7" title="Ucapan"></div>
-        <div class="dot" data-session="8" title="Amplop"></div>
-        <div class="dot" data-session="9" title="Penutup"></div>
-    </div>
-
-    <!-- Enhanced Arrow Navigation -->
-    <div class="nav-arrows">
-        <button class="arrow-btn" id="prevBtn">
-            <span>↑</span>
-            <small>Prev</small>
-        </button>
-        <button class="arrow-btn" id="nextBtn">
-            <span>↓</span>
-            <small>Next</small>
-        </button>
-    </div>
-
-    <!-- Enhanced Sessions Container -->
-    <div class="sessions-container">
+    
+    <!-- Main Sessions Container -->
+    <div class="sessions-container" role="main">
         
-        <!-- Session 0: Landing Page -->
-        <div class="session session-0 active" id="session0">
-            <div class="session-content">
+        <!-- Session 0: Welcome/Landing -->
+        <section id="session0" class="session session-0 active" data-session="0">
+            <div class="session-content fade-in">
                 <div class="invitation-title">
-                    <p class="shimmer-text">Undangan Pernikahan</p>
-                    <h1 class="shimmer-text">24 September 2025</h1>
+                    <h1 class="shimmer-text">Wedding Invitation</h1>
+                    <div class="couple-names shimmer-text">Suriansyah <span class="couple-divider">&</span> Sonia Agustina Oemar</div>
+                    <div class="wedding-date">24 September 2025</div>
                 </div>
-                
-                <div class="arabic-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</div>
-                <p class="translation">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</p>
                 
                 <div class="greeting">
-                    <p><strong>Yth. Nama Tamu</strong></p>
+                    <p>Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</p>
                 </div>
                 
-                <p class="invitation-text">
-                    Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri dan memberikan doa restu pada acara pernikahan kami:
-                </p>
-                
-                <div class="couple-names shimmer-text">Suriansyah & Sonia Agustina Oemar</div>
-                <div class="wedding-date">24 September 2025</div>
+                <div class="guest-name">
+                    <h3>Yth. <span id="guestNameDisplay">Nama Tamu</span></h3>
+                </div>
                 
                 <div class="action-buttons">
-                    <button class="btn btn--primary" id="openInvitationBtn">
-                        Buka Undangan
+                    <button id="openInvitationBtn" class="btn btn--primary">
+                        <span>Buka Undangan</span>
                     </button>
                 </div>
             </div>
-        </div>
-
+        </section>
         <!-- Session 1: Countdown -->
-        <div class="session session-1 hidden" id="session1">
+        <section id="session1" class="session session-1 hidden" data-session="1">
             <div class="session-content">
-                <h2 class="shimmer-text">Menuju Hari Bahagia</h2>
+                <h2 class="shimmer-text">Save The Date</h2>
                 
                 <div class="countdown-container">
                     <div class="countdown-item">
@@ -117,134 +93,100 @@
                     </div>
                 </div>
                 
-                <p>Sampai hari istimewa kami tiba</p>
+                <p>Menuju hari bahagia kami</p>
                 
                 <div class="action-buttons">
-                    <button class="btn btn--primary" id="saveDateBtn">
-                        📅 Simpan Tanggal
+                    <button id="saveDateBtn" class="btn btn--outline">
+                        <span>📅 Simpan Tanggal</span>
+                    </button>
+                    <button id="shareBtn" class="btn btn--primary">
+                        <span>📤 Bagikan</span>
                     </button>
                 </div>
             </div>
-        </div>
-
+        </section>
         <!-- Session 2: Bismillah & Quran Verse -->
-        <div class="session session-2 hidden" id="session2">
+        <section id="session2" class="session session-2 hidden" data-session="2">
             <div class="session-content">
-                <div class="arabic-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</div>
-                <p class="translation">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</p>
+                <div class="arabic-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                <div class="translation">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</div>
                 
-                <div class="quran-verse" id="quran-verse-typewriter">
-                    Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.
+                <div class="quran-verse">
+                    <div id="quran-verse-typewriter">
+                        "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."
+                    </div>
                     <cite>QS. Ar-Rum: 21</cite>
                 </div>
             </div>
-        </div>
-
+        </section>
         <!-- Session 3: Couple Introduction -->
-        <div class="session session-3 hidden" id="session3">
+        <section id="session3" class="session session-3 hidden" data-session="3">
             <div class="session-content">
-                <h2 class="shimmer-text">Mempelai</h2>
+                <h2 class="shimmer-text">Assalamu'alaikum Wr. Wb.</h2>
+                
+                <div class="greeting">
+                    Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri dan memberikan doa restu pada acara pernikahan kami:
+                </div>
                 
                 <div class="couple-photos">
                     <div class="photo-container">
                         <div class="photo-frame">
-                            <img src="https://via.placeholder.com/200x200/E6BF84/FFFFFF?text=Groom" alt="Suriansyah" class="couple-photo">
+                            <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/cowok.jpeg" 
+                                 alt="Suriansyah" class="couple-photo">
                         </div>
                         <h3>Suriansyah</h3>
-                        <p>Putra dari<br>Bapak [Nama Ayah] & Ibu [Nama Ibu]</p>
+                        <p>Putra dari<br>Bapak & Ibu</p>
                     </div>
                     
                     <div class="couple-divider">&</div>
                     
                     <div class="photo-container">
                         <div class="photo-frame">
-                            <img src="https://via.placeholder.com/200x200/F4C2C2/FFFFFF?text=Bride" alt="Sonia Agustina Oemar" class="couple-photo">
+                            <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/main/cewek.jpeg" 
+                                 alt="Sonia Agustina Oemar" class="couple-photo">
                         </div>
                         <h3>Sonia Agustina Oemar</h3>
-                        <p>Putri dari<br>Bapak [Nama Ayah] & Ibu [Nama Ibu]</p>
+                        <p>Putri dari<br>Bapak & Ibu</p>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Session 4: Akad Nikah -->
-        <div class="session session-4 hidden" id="session4">
+        </section>
+        <!-- Session 4: Event Details -->
+        <section id="session4" class="session session-4 hidden" data-session="4">
             <div class="session-content">
-                <h2 class="shimmer-text">Akad Nikah</h2>
+                <h2 class="shimmer-text">Detail Acara</h2>
                 
                 <div class="event-details">
                     <div class="event-item">
-                        <h3>📅 Hari & Tanggal</h3>
+                        <h3>Akad Nikah</h3>
                         <div class="event-info">
-                            <p><strong>Kamis, 24 September 2025</strong></p>
+                            <p><strong>Waktu:</strong> 07:00 - 08:00 WITA</p>
+                            <p><strong>Tempat:</strong> Masjid Jabal Rahmah Mandin</p>
                         </div>
                     </div>
                     
                     <div class="event-item">
-                        <h3>🕰️ Waktu</h3>
+                        <h3>Resepsi</h3>
                         <div class="event-info">
-                            <p><strong>07:00 - 08:00 WITA</strong></p>
-                        </div>
-                    </div>
-                    
-                    <div class="event-item">
-                        <h3>📍 Tempat</h3>
-                        <div class="event-info">
-                            <p><strong>Masjid Jabal Rahmah Mandin</strong></p>
+                            <p><strong>Waktu:</strong> 08:00 WITA - Selesai</p>
+                            <p><strong>Tempat:</strong> Rumah Mempelai Wanita</p>
+                            <p><strong>Alamat:</strong> Samping Masjid Jabal Rahmah Mandin</p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="action-buttons">
-                    <button class="btn btn--primary" id="openMapsBtn">
-                        📍 Lihat Lokasi
+                    <button id="openMapsBtn" class="btn btn--primary">
+                        <span>📍 Buka Peta</span>
                     </button>
                 </div>
             </div>
-        </div>
-
-        <!-- Session 5: Resepsi -->
-        <div class="session session-5 hidden" id="session5">
+        </section>
+        <!-- Session 5: RSVP -->
+        <section id="session5" class="session session-5 hidden" data-session="5">
             <div class="session-content">
-                <h2 class="shimmer-text">Resepsi</h2>
-                
-                <div class="event-details">
-                    <div class="event-item">
-                        <h3>📅 Hari & Tanggal</h3>
-                        <div class="event-info">
-                            <p><strong>Kamis, 24 September 2025</strong></p>
-                        </div>
-                    </div>
-                    
-                    <div class="event-item">
-                        <h3>🕰️ Waktu</h3>
-                        <div class="event-info">
-                            <p><strong>08:00 WITA - Selesai</strong></p>
-                        </div>
-                    </div>
-                    
-                    <div class="event-item">
-                        <h3>📍 Tempat</h3>
-                        <div class="event-info">
-                            <p><strong>Rumah Mempelai Wanita</strong></p>
-                            <p>Samping Masjid Jabal Rahmah Mandin</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="action-buttons">
-                    <button class="btn btn--primary" id="shareBtn">
-                        📤 Bagikan Undangan
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Session 6: RSVP -->
-        <div class="session session-6 hidden" id="session6">
-            <div class="session-content">
-                <h2 class="shimmer-text">Konfirmasi Kehadiran</h2>
-                <p>Doa restu dari Bapak/Ibu/Saudara/i merupakan karunia yang sangat berarti bagi kami.</p>
+                <h2 class="shimmer-text">RSVP</h2>
+                <p>Konfirmasi kehadiran Anda</p>
                 
                 <form class="rsvp-form">
                     <div class="form-group">
@@ -253,133 +195,182 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="guestMessage" class="form-label">Ucapan & Doa</label>
-                        <textarea id="guestMessage" class="form-control" rows="4" placeholder="Berikan ucapan dan doa untuk kami..." required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
                         <label for="attendance" class="form-label">Konfirmasi Kehadiran</label>
                         <select id="attendance" class="form-control" required>
-                            <option value="">Pilih konfirmasi kehadiran</option>
-                            <option value="Hadir">✅ Akan Hadir</option>
-                            <option value="Tidak Hadir">❌ Tidak Dapat Hadir</option>
-                            <option value="Belum Pasti">⏳ Belum Pasti</option>
+                            <option value="">Pilih konfirmasi</option>
+                            <option value="hadir">✅ Akan Hadir</option>
+                            <option value="tidak_hadir">❌ Tidak Dapat Hadir</option>
+                            <option value="mungkin">🤔 Masih Ragu</option>
                         </select>
                     </div>
                     
+                    <div class="form-group">
+                        <label for="guestMessage" class="form-label">Ucapan & Doa</label>
+                        <textarea id="guestMessage" class="form-control" rows="4" 
+                                  placeholder="Berikan ucapan dan doa untuk kedua mempelai" required></textarea>
+                    </div>
+                    
                     <div class="action-buttons">
-                        <button type="button" class="btn btn--primary" id="submitRsvpBtn">
-                            💌 Kirim Ucapan
+                        <button type="button" id="submitRsvpBtn" class="btn btn--primary">
+                            <span>Kirim RSVP</span>
                         </button>
                     </div>
                 </form>
             </div>
-        </div>
-
-        <!-- Session 7: Guest Messages -->
-        <div class="session session-7 hidden" id="session7">
+        </section>
+        <!-- Session 6: Wedding Gift -->
+        <section id="session6" class="session session-6 hidden" data-session="6">
             <div class="session-content">
-                <h2 class="shimmer-text">Ucapan Tamu</h2>
-                <p>Terima kasih atas doa dan ucapan yang telah diberikan</p>
+                <h2 class="shimmer-text">Wedding Gift</h2>
                 
-                <div class="messages-container" id="guestMessages">
-                    <div class="no-messages">Belum ada ucapan dari tamu</div>
+                <div class="gift-text">
+                    <p>Doa restu dari Bapak/Ibu/Saudara/i merupakan karunia yang sangat berarti bagi kami. Dan jika ingin memberikan kado, dapat melalui rekening berikut:</p>
                 </div>
-            </div>
-        </div>
-
-        <!-- Session 8: Wedding Gift -->
-        <div class="session session-8 hidden" id="session8">
-            <div class="session-content">
-                <h2 class="shimmer-text">Amplop Digital</h2>
-                
-                <p class="gift-text">
-                    Doa restu dari Bapak/Ibu/Saudara/i merupakan karunia yang sangat berarti bagi kami. Dan jika ingin memberikan kado, dapat melalui rekening berikut:
-                </p>
                 
                 <div class="bank-accounts">
                     <div class="bank-item">
-                        <h3>🏦 Bank BCA</h3>
+                        <h3>Bank BRI</h3>
                         <div class="account-info">
-                            <div>
-                                <div class="account-number">1234567890</div>
-                                <div class="account-name">a.n. Sonia Agustina Oemar</div>
-                            </div>
-                            <button class="copy-btn" data-account="1234567890">Salin</button>
+                            <span class="account-number">1234567890</span>
+                            <button class="copy-btn" data-account="1234567890">Copy</button>
                         </div>
+                        <div class="account-name">a.n. Sonia Agustina Oemar</div>
                     </div>
                     
                     <div class="bank-item">
-                        <h3>🏦 Bank Mandiri</h3>
+                        <h3>Bank Mandiri</h3>
                         <div class="account-info">
-                            <div>
-                                <div class="account-number">0987654321</div>
-                                <div class="account-name">a.n. Sonia Agustina Oemar</div>
-                            </div>
-                            <button class="copy-btn" data-account="0987654321">Salin</button>
+                            <span class="account-number">0987654321</span>
+                            <button class="copy-btn" data-account="0987654321">Copy</button>
                         </div>
+                        <div class="account-name">a.n. Sonia Agustina Oemar</div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Session 9: Thank You -->
-        <div class="session session-9 hidden" id="session9">
+        </section>
+        <!-- Session 7: Guest Messages -->
+        <section id="session7" class="session session-7 hidden" data-session="7">
             <div class="session-content">
-                <div class="thank-you-content">
-                    <h2 class="shimmer-text">Terima Kasih</h2>
-                    
-                    <p>
-                        Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai.
-                    </p>
-                    
-                    <p>
-                        Atas kehadiran dan doa restu dari Bapak/Ibu/Saudara/i, kami mengucapkan terima kasih.
-                    </p>
-                    
-                    <div class="signature">
-                        <p><strong>Wassalamu'alaikum Wr. Wb.</strong></p>
-                        <br>
-                        <p class="shimmer-text"><strong>Suriansyah & Sonia Agustina Oemar</strong></p>
+                <h2 class="shimmer-text">Ucapan & Doa</h2>
+                
+                <div class="messages-container" id="messagesContainer">
+                    <div class="no-messages">
+                        Belum ada ucapan dari tamu
                     </div>
                 </div>
+            </div>
+        </section>
+        <!-- Session 8: Gallery/Video -->
+        <section id="session8" class="session session-8 hidden" data-session="8">
+            <div class="session-content">
+                <h2 class="shimmer-text">Our Story</h2>
                 
-                <!-- Enhanced Video Container -->
                 <div class="video-container">
-                    <iframe 
-                        src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&autoplay=0&mute=1&loop=1&playlist=dQw4w9WgXcQ" 
-                        title="Wedding Video"
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
+                    <iframe id="wedding-video" 
+                            src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                            title="Wedding Video" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
                     </iframe>
                 </div>
+                
+                <p>Video perjalanan cinta kami</p>
+            </div>
+        </section>
+        <!-- Session 9: Thank You -->
+        <section id="session9" class="session session-9 hidden" data-session="9">
+            <div class="session-content">
+                <h2 class="shimmer-text">Terima Kasih</h2>
+                
+                <div class="thank-you-content">
+                    <p>Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai.</p>
+                    
+                    <p>Atas kehadiran dan doa restu dari Bapak/Ibu/Saudara/i, kami mengucapkan terima kasih.</p>
+                </div>
+                
+                <div class="signature">
+                    <h3 class="shimmer-text">Suriansyah & Sonia Agustina Oemar</h3>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- Enhanced Navigation Dots -->
+    <nav class="nav-dots" role="navigation" aria-label="Navigasi Sesi">
+        <button class="dot active" data-session="0" aria-label="Sesi 1: Pembuka"></button>
+        <button class="dot" data-session="1" aria-label="Sesi 2: Countdown"></button>
+        <button class="dot" data-session="2" aria-label="Sesi 3: Bismillah"></button>
+        <button class="dot" data-session="3" aria-label="Sesi 4: Pasangan"></button>
+        <button class="dot" data-session="4" aria-label="Sesi 5: Detail Acara"></button>
+        <button class="dot" data-session="5" aria-label="Sesi 6: RSVP"></button>
+        <button class="dot" data-session="6" aria-label="Sesi 7: Hadiah"></button>
+        <button class="dot" data-session="7" aria-label="Sesi 8: Ucapan"></button>
+        <button class="dot" data-session="8" aria-label="Sesi 9: Video"></button>
+        <button class="dot" data-session="9" aria-label="Sesi 10: Terima Kasih"></button>
+    </nav>
+    <!-- Privacy Modal for Guest Messages -->
+    <div id="privacy-popup-container" class="hidden" role="dialog" aria-labelledby="privacy-title" aria-describedby="privacy-description">
+        <div class="popup-overlay"></div>
+        <div class="popup-box">
+            <h3 id="privacy-title">Privasi Ucapan</h3>
+            <p id="privacy-description">Apakah Anda ingin ucapan ini ditampilkan?</p>
+            <div class="popup-buttons">
+                <button id="privacy-yes" class="btn btn--primary">Ya, Tampilkan</button>
+                <button id="privacy-no" class="btn btn--outline">Tidak, Privat</button>
             </div>
         </div>
-        
     </div>
-
+    <!-- Swipe Instruction Overlay (for first visit) -->
+    <div id="swipe-instruction" class="hidden" role="dialog" aria-labelledby="swipe-title">
+        <div class="popup-overlay"></div>
+        <div class="popup-box">
+            <h3 id="swipe-title">Cara Navigasi</h3>
+            <p>• Geser kiri/kanan atau atas/bawah untuk berpindah halaman</p>
+            <p>• Klik titik navigasi di samping untuk langsung ke halaman tertentu</p>
+            <p>• Gunakan keyboard arrow keys untuk navigasi desktop</p>
+            <div class="popup-buttons">
+                <button id="got-it-btn" class="btn btn--primary">Mengerti</button>
+            </div>
+        </div>
+    </div>
     <!-- Enhanced JavaScript -->
-    <script type="module" src="enhanced-app.js"></script>
+    <script type="module" src="app.js"></script>
     
-    <!-- Performance Monitoring -->
+    <!-- Service Worker Registration for PWA -->
     <script>
-        // Simple performance monitoring
-        window.addEventListener('load', () => {
-            console.log('Wedding invitation loaded successfully');
-            const loadTime = performance.now();
-            console.log(`Load time: ${loadTime.toFixed(2)}ms`);
-        });
-        
-        // Error handling
-        window.addEventListener('error', (e) => {
-            console.error('Error occurred:', e.error);
-        });
-        
-        // Unhandled promise rejection handling
-        window.addEventListener('unhandledrejection', (e) => {
-            console.error('Unhandled promise rejection:', e.reason);
-        });
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(function(registrationError) {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Pernikahan Suriansyah & Sonia Agustina Oemar",
+        "description": "Undangan pernikahan Suriansyah & Sonia Agustina Oemar",
+        "startDate": "2025-09-24T07:00:00+08:00",
+        "endDate": "2025-09-24T17:00:00+08:00",
+        "location": {
+            "@type": "Place",
+            "name": "Masjid Jabal Rahmah Mandin",
+            "address": "Samping Masjid Jabal Rahmah Mandin"
+        },
+        "organizer": {
+            "@type": "Person",
+            "name": "Suriansyah & Sonia Agustina Oemar"
+        },
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled"
+    }
     </script>
 </body>
 </html>
