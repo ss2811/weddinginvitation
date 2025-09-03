@@ -234,7 +234,6 @@ body.no-scroll {
   background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
 
   /* Memastikan gambar memenuhi kotak */
-  background-size: cover;
   background-position: center;
 }
 
@@ -511,3 +510,4 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
     transform: scale(1);
   }
 }
+
