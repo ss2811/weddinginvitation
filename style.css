@@ -231,11 +231,13 @@ body.no-scroll {
 
 .session-0 .session-content {
   /* Menambahkan gambar Anda dengan lapisan gelap untuk kontras */
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
+  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
 
   /* Memastikan gambar memenuhi kotak */
+  background-size: contain;
   background-position: center;
-  background-size: cover;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(10px)
 }
 
 
@@ -511,5 +513,3 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
     transform: scale(1);
   }
 }
-
-
