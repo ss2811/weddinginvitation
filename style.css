@@ -231,13 +231,13 @@ body.no-scroll {
 
 .session-0 .session-content {
   /* Menambahkan gambar Anda dengan lapisan gelap untuk kontras */
-  background-image: linear-gradient(rgba(0,0,0,calc(var(--session-content-alpha) + 0.08)),
-                    rgba(0,0,0,calc(var(--session-content-alpha) + 0.08))), url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
+  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
 
   /* Memastikan gambar memenuhi kotak */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-blend-mode: overlay;
   display: flex;
   flex-direction: column;
   justify-content: flex-end; /* Ini akan mendorong tulisan ke bagian bawah box */
@@ -520,4 +520,3 @@ t
     transform: scale(1);
   }
 }
-
