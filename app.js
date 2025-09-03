@@ -250,29 +250,57 @@ function openInvitation() {
   const session0 = document.getElementById('session0');
   const videoSection = document.getElementById('session-video');
   const mainContent = document.querySelector('.main-content-wrapper');
-
-  // 1. Fade out sesi 0
   if (session0) {
     session0.classList.add('fade-out');
     setTimeout(() => {
       session0.classList.add('hidden');
-      // 2. Tampilkan background video
       if (videoSection) {
         videoSection.classList.remove('hidden');
         videoSection.style.opacity = 1;
+        const video = videoSection.querySelector('video');
+        if (video) {
+          video.currentTime = 0;
+          video.play();
 
-        // 3. Sembunyikan video setelah durasi (misal 5 detik)
-        setTimeout(() => {
-          videoSection.style.opacity = 0;
-          setTimeout(() => {
-            videoSection.classList.add('hidden');
-            if (mainContent) mainContent.classList.remove('hidden');
-          }, 700); // fading
-        }, 5000); // durasi video tampil
+          // Setelah video berakhir, tampilkan instruksi swipe/tombol manual
+          video.addEventListener('ended', () => {
+            // Tampilkan instruksi manual di section video, misal:
+            let nextBtn = document.createElement('button');
+            nextBtn.textContent = 'Geser atau klik untuk melanjutkan';
+            nextBtn.className = 'btn-next-content'; // styling sesuai kebutuhan
+
+            // Tambahkan listener swipe/mouse/klik
+            nextBtn.addEventListener('click', () => {
+              videoSection.style.opacity = 0;
+              setTimeout(() => {
+                videoSection.classList.add('hidden');
+                if (mainContent) mainContent.classList.remove('hidden');
+              }, 700);
+            });
+
+            // Optional: Swipe gesture (untuk mobile)
+            let touchStartY = null;
+            videoSection.addEventListener('touchstart', e => {
+              touchStartY = e.touches[0].clientY;
+            });
+            videoSection.addEventListener('touchend', e => {
+              let touchEndY = e.changedTouches[0].clientY;
+              if (touchStartY - touchEndY > 50) { // geser ke atas > 50px
+                videoSection.style.opacity = 0;
+                setTimeout(() => {
+                  videoSection.classList.add('hidden');
+                  if (mainContent) mainContent.classList.remove('hidden');
+                }, 700);
+              }
+            });
+
+            videoSection.appendChild(nextBtn);
+          });
+        }
       } else if (mainContent) {
         mainContent.classList.remove('hidden');
       }
-    }, 600); // Fade dari sesi 0
+    }, 600);
   }
   document.body.classList.remove('no-scroll');
   playBackgroundMusic();
