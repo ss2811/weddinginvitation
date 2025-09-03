@@ -238,7 +238,6 @@ body.no-scroll {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-blend-mode: overlay;
   display: flex;
   flex-direction: column;
   justify-content: flex-end; /* Ini akan mendorong tulisan ke bagian bawah box */
@@ -521,3 +520,4 @@ t
     transform: scale(1);
   }
 }
+
