@@ -247,23 +247,37 @@ function showMusicEnableButton() {
 
 // Session 0: Landing
 function openInvitation() {
-    const session0 = document.getElementById('session0');
-    const mainContent = document.querySelector('.main-content-wrapper');
+  const session0 = document.getElementById('session0');
+  const videoSection = document.getElementById('session-video');
+  const mainContent = document.querySelector('.main-content-wrapper');
 
-    if (session0) {
-        session0.classList.add('fade-out');
+  // 1. Fade out sesi 0
+  if (session0) {
+    session0.classList.add('fade-out');
+    setTimeout(() => {
+      session0.classList.add('hidden');
+      // 2. Tampilkan background video
+      if (videoSection) {
+        videoSection.classList.remove('hidden');
+        videoSection.style.opacity = 1;
+
+        // 3. Sembunyikan video setelah durasi (misal 5 detik)
         setTimeout(() => {
-            session0.classList.add('hidden'); // Menggunakan display: none
-        }, 600); // Sesuaikan dengan durasi transisi di CSS
-    }
-    
-    if (mainContent) {
+          videoSection.style.opacity = 0;
+          setTimeout(() => {
+            videoSection.classList.add('hidden');
+            if (mainContent) mainContent.classList.remove('hidden');
+          }, 700); // fading
+        }, 5000); // durasi video tampil
+      } else if (mainContent) {
         mainContent.classList.remove('hidden');
-    }
-
-    document.body.classList.remove('no-scroll');
-    playBackgroundMusic();
+      }
+    }, 600); // Fade dari sesi 0
+  }
+  document.body.classList.remove('no-scroll');
+  playBackgroundMusic();
 }
+
 
 // Session 1: Countdown
 function startCountdown() {
