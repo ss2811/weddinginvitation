@@ -231,12 +231,14 @@ body.no-scroll {
 
 .session-0 .session-content {
   /* Menambahkan gambar Anda dengan lapisan gelap untuk kontras */
-  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
+  background-image: linear-gradient(rgba(0,0,0,calc(var(--session-content-alpha) + 0.08)),
+                    rgba(0,0,0,calc(var(--session-content-alpha) + 0.08))), url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
 
   /* Memastikan gambar memenuhi kotak */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-blend-mode: overlay;
   display: flex;
   flex-direction: column;
   justify-content: flex-end; /* Ini akan mendorong tulisan ke bagian bawah box */
@@ -301,10 +303,10 @@ h3 { font-size: var(--font-size-2xl); color: var(--wedding-gold); }
 p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16); }
 
 /* Session 0 Specific Styles */
-.invitation-title { min-height: 250px; display: flex; flex-direction: column; justify-content: center;}
-.invitation-title h1 { font-size: 3.5rem; margin-bottom: var(--space-8); }
-.couple-names { font-size: 2.5rem; margin-bottom: var(--space-8); }
-.wedding-date { font-size: 1.5rem; font-weight: 600; color: var(--wedding-gold); margin-bottom: var(--space-32); }
+.invitation-title { min-height: 250px; display: flex; flex-direction: column; justify-content: center; color: var(--wedding-white); text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); }
+.invitation-title h1 { font-size: 3.5rem; margin-bottom: var(--space-8); color: var(--wedding-white); text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); }
+.couple-names { font-size: 2.5rem; margin-bottom: var(--space-8); color: var(--wedding-white); text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); }
+.wedding-date { font-size: 1.5rem; font-weight: 600; margin-bottom: var(--space-32); color: var(--wedding-white); text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); }
 
 /* Countdown Styles */
 .countdown-container {
@@ -455,7 +457,7 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
   align-items: center;
   justify-content: center;
 }
-
+t
 .popup-overlay {
   position: absolute;
   top: 0;
