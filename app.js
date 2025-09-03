@@ -250,37 +250,34 @@ function openInvitation() {
   const session0 = document.getElementById('session0');
   const videoSection = document.getElementById('session-video');
   const mainContent = document.querySelector('.main-content-wrapper');
-  // Fade out sesi 0
+
+  // 1. Fade out sesi 0
   if (session0) {
     session0.classList.add('fade-out');
     setTimeout(() => {
       session0.classList.add('hidden');
-      // Tampilkan section video
+      // 2. Tampilkan background video
       if (videoSection) {
         videoSection.classList.remove('hidden');
         videoSection.style.opacity = 1;
-        // Ambil elemen video di dalam section
-        const video = videoSection.querySelector('video');
-        if (video) {
-          video.currentTime = 0; // mulai dari awal jika mau
-          video.play(); // mulai putar video
-          // Transisi ke konten utama hanya setelah video berakhir
-          video.addEventListener('ended', () => {
-            videoSection.style.opacity = 0;
-            setTimeout(() => {
-              videoSection.classList.add('hidden');
-              if (mainContent) mainContent.classList.remove('hidden');
-            }, 700); // Fade out
-          });
-        }
+
+        // 3. Sembunyikan video setelah durasi (misal 5 detik)
+        setTimeout(() => {
+          videoSection.style.opacity = 0;
+          setTimeout(() => {
+            videoSection.classList.add('hidden');
+            if (mainContent) mainContent.classList.remove('hidden');
+          }, 700); // fading
+        }, 15000); // durasi video tampil
       } else if (mainContent) {
         mainContent.classList.remove('hidden');
       }
-    }, 600);
+    }, 600); // Fade dari sesi 0
   }
   document.body.classList.remove('no-scroll');
   playBackgroundMusic();
 }
+
 
 // Session 1: Countdown
 function startCountdown() {
