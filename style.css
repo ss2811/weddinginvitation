@@ -235,6 +235,7 @@ body.no-scroll {
 
   /* Memastikan gambar memenuhi kotak */
   background-position: center;
+  background-size: cover;
 }
 
 
@@ -510,4 +511,5 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
     transform: scale(1);
   }
 }
+
 
