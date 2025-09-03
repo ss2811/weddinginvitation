@@ -230,9 +230,12 @@ body.no-scroll {
 }
 
 .session-0 .session-content {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(15px);
-  border-color: var(--wedding-gold);
+  /* Menambahkan gambar Anda dengan lapisan gelap untuk kontras */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
+
+  /* Memastikan gambar memenuhi kotak */
+  background-size: cover;
+  background-position: center;
 }
 
 
