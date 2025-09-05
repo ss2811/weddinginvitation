@@ -220,8 +220,8 @@ body.no-scroll {
 
   /* Properti baru untuk border dengan gambar bunga */
   border-style: solid;
-  border-width: 25px; /* Anda bisa menyesuaikan ketebalan bingkai di sini */
-  border-image-source: url('https://i.ibb.co/3k5JqB4/gold-flower-border.png'); /* URL gambar bingkai bunga */
+  border-width: 13px; /* Anda bisa menyesuaikan ketebalan bingkai di sini */
+  border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy.png'); /* URL gambar bingkai bunga */
   border-image-slice: 40; /* Angka ini memotong gambar di 40px dari setiap sisi untuk membuat sudut */
   border-image-repeat: round; /* 'round' memastikan pola bunga tidak terpotong di tengah */
   
@@ -256,7 +256,7 @@ body.no-scroll {
   padding-bottom: var(--space-32);
   
   /* Khusus untuk session-0, kita gunakan border gambar yang berbeda agar sesuai amplop */
-  border-image-source: url('https://i.ibb.co/bJCmnSg/gold-floral-frame-clipart-transparent-background-free-png.png');
+  border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy.png');
   border-image-slice: 100; /* Disesuaikan untuk gambar ini */
 }
 
@@ -556,3 +556,4 @@ t
     transform: scale(1);
   }
 }
+
