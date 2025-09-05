@@ -221,7 +221,7 @@ body.no-scroll {
   /* Properti baru untuk border dengan gambar bunga */
   border-style: solid;
   border-width: 30px; /* Sedikit lebih tebal agar terlihat jelas */
-  border-image-source: url('https://i.imgur.com/BTJ9T4v.png'); /* URL gambar baru yang lebih stabil */
+  border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy.png'); /* URL gambar baru yang lebih stabil */
   border-image-slice: 40; /* Memotong gambar di 40px dari setiap sisi untuk membuat sudut */
   border-image-repeat: round; /* 'round' membuat pola berulang tanpa terpotong */
   
@@ -257,7 +257,7 @@ body.no-scroll {
   padding-bottom: var(--space-32);
 
   /* --- PERBAIKAN: BORDER BUNGA untuk Amplop --- */
-  border-image-source: url('https://i.imgur.com/sSgS3yv.png'); /* URL baru untuk bingkai amplop */
+  border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy.png'); /* URL baru untuk bingkai amplop */
   border-image-slice: 100; /* Disesuaikan untuk gambar bingkai ini */
   border-width: 40px; /* Disesuaikan agar bingkai terlihat bagus */
 }
@@ -558,4 +558,5 @@ t
     transform: scale(1);
   }
 }
+
 
