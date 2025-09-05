@@ -36,14 +36,24 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initApp() {
-    document.body.classList.add('no-scroll');
-    backgroundMusic = document.getElementById('backgroundMusic');
-    setupActionButtons();
-    startCountdown();
-    loadGuestMessages();
-    showMusicEnableButton();
-    createBackgroundParticles();
-    setupScrollAnimations();
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('Service Worker terdaftar dengan scope:', registration.scope);
+      })
+      .catch(error => {
+        console.error('Pendaftaran Service Worker gagal:', error);
+      });
+  }
+
+  document.body.classList.add('no-scroll');
+  backgroundMusic = document.getElementById('backgroundMusic');
+  setupActionButtons();
+  startCountdown();
+  loadGuestMessages();
+  showMusicEnableButton();
+  createBackgroundParticles();
+  setupScrollAnimations();
 }
 
 
