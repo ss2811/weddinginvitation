@@ -207,13 +207,19 @@ body.no-scroll {
 }
 
 .session-content {
-  position: relative;
+  border-width: 16px; /* tebal border */
+  border-style: solid;
+  border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy.png'); /* gambar pola strip bunga bergantian */
+  border-image-slice: 16; /* sesuaikan dengan border-width */
+  border-image-repeat: round; /* membuat gambar pola berulang sepanjang border */
+  border-image-outset: 0;
+  border-image-width: 16px;
   border-radius: var(--radius-lg);
   padding: var(--space-32);
   text-align: center;
   max-width: 600px;
   width: 100%;
-  border: none; /* nonaktifkan border jika pakai pseudo border */
+  position: relative;
   backdrop-filter: blur(10px);
   z-index: 900;
   opacity: 0;
@@ -221,29 +227,6 @@ body.no-scroll {
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
-/* Gambar bunga pertama di pseudo ::before */
-
-.session-content::before {
-  content: "";
-  position: absolute;
-  top: -8px; bottom: -8px; left: -8px; right: -8px;
-  background: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy.png') repeat;
-  border-radius: calc(var(--radius-lg) + 8px);
-  pointer-events: none;
-  z-index: -2;
-}
-
-/* Gambar bunga kedua di pseudo ::after */
-
-.session-content::after {
-  content: "";
-  position: absolute;
-  top: -4px; bottom: -4px; left: -4px; right: -4px;
-  background: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/sakura.png') repeat;
-  border-radius: calc(var(--radius-lg) + 4px);
-  pointer-events: none;
-  z-index: -1;
-}
 
 
 .session.active .session-content,
