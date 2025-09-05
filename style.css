@@ -207,31 +207,20 @@ body.no-scroll {
 }
 
 .session-content {
+  background: rgba(0, 0, 0, 0.6);
   border-radius: var(--radius-lg);
   padding: var(--space-32);
   text-align: center;
   max-width: 600px;
   width: 100%;
   position: relative;
-  
-  /* --- PERBAIKAN: BORDER BUNGA --- */
-  /* Fallback border jika gambar gagal dimuat */
-  border: 2px solid var(--wedding-pink); 
-
-  /* Properti baru untuk border dengan gambar bunga */
-  border-style: solid;
-  border-width: 30px; /* Sedikit lebih tebal agar terlihat jelas */
-  border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy.png'); /* URL gambar baru yang lebih stabil */
-  border-image-slice: 40; /* Memotong gambar di 40px dari setiap sisi untuk membuat sudut */
-  border-image-repeat: round; /* 'round' membuat pola berulang tanpa terpotong */
-  
+  border: 2px solid var(--wedding-gold);
   backdrop-filter: blur(10px);
   z-index: 900;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
-
 
 .session.active .session-content,
 .main-content-wrapper .session .session-content {
@@ -242,7 +231,7 @@ body.no-scroll {
 
 .session-0 .session-content {
   /* Menambahkan gambar Anda dengan lapisan gelap untuk kontras */
-  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.png');
+  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
 
   /* Memastikan gambar memenuhi kotak */
   background-size: cover;
@@ -255,11 +244,7 @@ body.no-scroll {
   
   /* (Opsional) Beri sedikit padding bawah agar tidak terlalu mepet */
   padding-bottom: var(--space-32);
-
-  /* --- PERBAIKAN: BORDER BUNGA untuk Amplop --- */
-  border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy.png'); /* URL baru untuk bingkai amplop */
-  border-image-slice: 100; /* Disesuaikan untuk gambar bingkai ini */
-  border-width: 40px; /* Disesuaikan agar bingkai terlihat bagus */
+  
 }
 
 
@@ -558,6 +543,3 @@ t
     transform: scale(1);
   }
 }
-
-
-
