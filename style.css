@@ -214,16 +214,16 @@ body.no-scroll {
   width: 100%;
   position: relative;
   
-  /* --- PERUBAHAN: BORDER BUNGA --- */
-  /* Baris border yang lama dinonaktifkan */
-  /* border: 2px solid var(--wedding-pink); */
+  /* --- PERBAIKAN: BORDER BUNGA --- */
+  /* Fallback border jika gambar gagal dimuat */
+  border: 2px solid var(--wedding-pink); 
 
   /* Properti baru untuk border dengan gambar bunga */
   border-style: solid;
-  border-width: 13px; /* Anda bisa menyesuaikan ketebalan bingkai di sini */
-  border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy.png'); /* URL gambar bingkai bunga */
-  border-image-slice: 40; /* Angka ini memotong gambar di 40px dari setiap sisi untuk membuat sudut */
-  border-image-repeat: round; /* 'round' memastikan pola bunga tidak terpotong di tengah */
+  border-width: 30px; /* Sedikit lebih tebal agar terlihat jelas */
+  border-image-source: url('https://i.imgur.com/BTJ9T4v.png'); /* URL gambar baru yang lebih stabil */
+  border-image-slice: 40; /* Memotong gambar di 40px dari setiap sisi untuk membuat sudut */
+  border-image-repeat: round; /* 'round' membuat pola berulang tanpa terpotong */
   
   backdrop-filter: blur(10px);
   z-index: 900;
@@ -231,6 +231,7 @@ body.no-scroll {
   transform: translateY(20px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
+
 
 .session.active .session-content,
 .main-content-wrapper .session .session-content {
@@ -254,10 +255,11 @@ body.no-scroll {
   
   /* (Opsional) Beri sedikit padding bawah agar tidak terlalu mepet */
   padding-bottom: var(--space-32);
-  
-  /* Khusus untuk session-0, kita gunakan border gambar yang berbeda agar sesuai amplop */
-  border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy.png');
-  border-image-slice: 100; /* Disesuaikan untuk gambar ini */
+
+  /* --- PERBAIKAN: BORDER BUNGA untuk Amplop --- */
+  border-image-source: url('https://i.imgur.com/sSgS3yv.png'); /* URL baru untuk bingkai amplop */
+  border-image-slice: 100; /* Disesuaikan untuk gambar bingkai ini */
+  border-width: 40px; /* Disesuaikan agar bingkai terlihat bagus */
 }
 
 
