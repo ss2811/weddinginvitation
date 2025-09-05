@@ -32,28 +32,30 @@ try {
 
 // Initialize application when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // --- PENAMBAHAN: Service Worker Registration ---
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+        .then(registration => {
+            console.log('Service Worker berhasil didaftarkan dengan scope:', registration.scope);
+        }).catch(error => {
+            console.error('Pendaftaran Service Worker gagal:', error);
+        });
+    }
+    // --- AKHIR PENAMBAHAN ---
+
     initApp();
 });
 
-function initApp() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('Service Worker terdaftar dengan scope:', registration.scope);
-      })
-      .catch(error => {
-        console.error('Pendaftaran Service Worker gagal:', error);
-      });
-  }
 
-  document.body.classList.add('no-scroll');
-  backgroundMusic = document.getElementById('backgroundMusic');
-  setupActionButtons();
-  startCountdown();
-  loadGuestMessages();
-  showMusicEnableButton();
-  createBackgroundParticles();
-  setupScrollAnimations();
+function initApp() {
+    document.body.classList.add('no-scroll');
+    backgroundMusic = document.getElementById('backgroundMusic');
+    setupActionButtons();
+    startCountdown();
+    loadGuestMessages();
+    showMusicEnableButton();
+    createBackgroundParticles();
+    setupScrollAnimations();
 }
 
 
@@ -595,3 +597,4 @@ function copyToClipboard(text, successMessage) {
 window.addEventListener('beforeunload', () => {
     if (countdownInterval) clearInterval(countdownInterval);
 });
+
