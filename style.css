@@ -207,27 +207,30 @@ body.no-scroll {
 }
 
 .session-content {
-  border-width: 16px; /* tebal border */
-  border-style: solid;
-  border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/daisy.png'); /* gambar pola strip bunga bergantian */
-  border-image-slice: 16; /* sesuaikan dengan border-width */
-  border-image-repeat: round; /* membuat gambar pola berulang sepanjang border */
-  border-image-outset: 0;
-  border-image-width: 16px;
   border-radius: var(--radius-lg);
   padding: var(--space-32);
   text-align: center;
   max-width: 600px;
   width: 100%;
   position: relative;
+  
+  /* --- PERUBAHAN: BORDER BUNGA --- */
+  /* Baris border yang lama dinonaktifkan */
+  /* border: 2px solid var(--wedding-pink); */
+
+  /* Properti baru untuk border dengan gambar bunga */
+  border-style: solid;
+  border-width: 25px; /* Anda bisa menyesuaikan ketebalan bingkai di sini */
+  border-image-source: url('https://i.ibb.co/3k5JqB4/gold-flower-border.png'); /* URL gambar bingkai bunga */
+  border-image-slice: 40; /* Angka ini memotong gambar di 40px dari setiap sisi untuk membuat sudut */
+  border-image-repeat: round; /* 'round' memastikan pola bunga tidak terpotong di tengah */
+  
   backdrop-filter: blur(10px);
   z-index: 900;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
-
-
 
 .session.active .session-content,
 .main-content-wrapper .session .session-content {
@@ -238,7 +241,7 @@ body.no-scroll {
 
 .session-0 .session-content {
   /* Menambahkan gambar Anda dengan lapisan gelap untuk kontras */
-  background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),  url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
+  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
 
   /* Memastikan gambar memenuhi kotak */
   background-size: cover;
@@ -252,6 +255,9 @@ body.no-scroll {
   /* (Opsional) Beri sedikit padding bawah agar tidak terlalu mepet */
   padding-bottom: var(--space-32);
   
+  /* Khusus untuk session-0, kita gunakan border gambar yang berbeda agar sesuai amplop */
+  border-image-source: url('https://i.ibb.co/bJCmnSg/gold-floral-frame-clipart-transparent-background-free-png.png');
+  border-image-slice: 100; /* Disesuaikan untuk gambar ini */
 }
 
 
