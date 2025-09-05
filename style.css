@@ -208,7 +208,7 @@ body.no-scroll {
 
 .session-content {
   background: rgba(0, 0, 0, 0.6);
-  border-radius: var(--radius-lg);
+  clip-path: polygon(10% 10%, 90% 10%, 90% 90%, 10% 80%);
   padding: var(--space-32);
   text-align: center;
   max-width: 600px;
