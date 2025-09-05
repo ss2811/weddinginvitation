@@ -242,7 +242,7 @@ body.no-scroll {
 
 .session-0 .session-content {
   /* Menambahkan gambar Anda dengan lapisan gelap untuk kontras */
-  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
+  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.png');
 
   /* Memastikan gambar memenuhi kotak */
   background-size: cover;
@@ -558,5 +558,6 @@ t
     transform: scale(1);
   }
 }
+
 
 
