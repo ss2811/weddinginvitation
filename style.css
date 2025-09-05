@@ -214,7 +214,7 @@ body.no-scroll {
   max-width: 600px;
   width: 100%;
   position: relative;
-  border: 2px solid var(--wedding-gold);
+  border: none;
   backdrop-filter: blur(10px);
   z-index: 900;
   opacity: 0;
