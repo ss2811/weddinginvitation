@@ -153,6 +153,35 @@ body.no-scroll {
     opacity: 0; /* Mulai dengan transparan, dianimasikan oleh GSAP */
 }
 
+/* --- PENAMBAHAN BARU: Style untuk Kontainer Lirik --- */
+#lyrics-container {
+    position: fixed;
+    bottom: 80px; /* Di atas tombol musik */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 800px;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: var(--radius-full);
+    color: var(--wedding-gold);
+    text-align: center;
+    font-family: var(--font-family-special);
+    font-size: 1.4rem;
+    text-shadow: 1px 1px 2px var(--wedding-black);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    pointer-events: none; /* Agar tidak menghalangi klik */
+    transform: translateX(-50%) translateY(20px);
+}
+
+#lyrics-container.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+
 /* Individual Session Styling */
 .session {
   width: 100%;
@@ -446,6 +475,10 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  #lyrics-container {
+      font-size: 1.1rem;
+      bottom: 70px;
+  }
   .session { padding: var(--space-16); }
   .session-content { padding: var(--space-20); max-width: 100%; max-height: none; }
   .countdown-container { grid-template-columns: repeat(2, 1fr); gap: var(--space-12); }
@@ -479,7 +512,7 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
   align-items: center;
   justify-content: center;
 }
-t
+
 .popup-overlay {
   position: absolute;
   top: 0;
