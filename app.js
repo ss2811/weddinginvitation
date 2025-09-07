@@ -10,6 +10,46 @@ let countdownInterval;
 let isVideoPlaying = false;
 let ytPlayer;
 
+// --- PENAMBAHAN BARU: Variabel untuk Lirik ---
+// Data lirik lagu "Barakallahu Lakuma" by Maher Zain
+const lyricsData = [
+    { time: 17.5, text: "We're here on this special day" },
+    { time: 20.5, text: "Our hearts are full of pleasure" },
+    { time: 24, text: "A day that brings the two of you close together" },
+    { time: 28.5, text: "We're gathered here to celebrate" },
+    { time: 31.5, text: "A moment you'll always treasure" },
+    { time: 35, text: "We ask Allah to make your love last forever" },
+    { time: 41, text: "Let's raise our hands and make a du'a" },
+    { time: 45, text: "Like the Prophet taught us" },
+    { time: 48, text: "And with one voice let's all say, say, say" },
+    { time: 52, text: "Barakallahu lakuma wa baraka alikuma" },
+    { time: 59, text: "Wa jama'a bainakuma fii khair" },
+    { time: 66, text: "Barakallahu lakuma wa baraka alikuma" },
+    { time: 73, text: "Wa jama'a bainakuma fii khair" },
+    { time: 80, text: "From now you'll share all your chores" },
+    { time: 83, text: "Together you'll spend your days" },
+    { time: 86.5, text: "And with Allah's guidance you'll find your way" },
+    { time: 133, text: "Barakallahu lakuma wa baraka alikuma" },
+    { time: 140, text: "Wa jama'a bainakuma fii khair" },
+    { time: 147, text: "Barakallahu lakuma wa baraka alikuma" },
+    { time: 154, text: "Wa jama'a bainakuma fii khair" },
+    { time: 161, text: "We wish you all the best" },
+    { time: 164.5, text: "A life full of love and happiness" },
+    { time: 168, text: "May Allah bless you with lots of children" },
+    { time: 172.5, text: "That bring you joy and laughter" },
+    { time: 175, text: "And may your love grow stronger every day" },
+    { time: 179, text: "Looking at you, holding hands" },
+    { time: 182, text: "In front of us you stand" },
+    { time: 185.5, text: "May Allah bless this special day" },
+    { time: 202, text: "Barakallahu lakuma wa baraka alikuma" },
+    { time: 209, text: "Wa jama'a bainakuma fii khair" },
+    { time: 216, text: "Barakallahu lakuma wa baraka alikuma" },
+    { time: 223, text: "Wa jama'a bainakuma fii khair" },
+    { time: 229, text: "Barakallah..." }
+];
+let currentLyricIndex = -1;
+
+
 // Konfigurasi Firebase Anda
 const firebaseConfig = {
   apiKey: "AIzaSyAbT55NRUO49GQnhN-Uf_yONSpTQBJUgqU",
@@ -32,17 +72,6 @@ try {
 
 // Initialize application when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // --- PENAMBAHAN: Service Worker Registration ---
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-        .then(registration => {
-            console.log('Service Worker berhasil didaftarkan dengan scope:', registration.scope);
-        }).catch(error => {
-            console.error('Pendaftaran Service Worker gagal:', error);
-        });
-    }
-    // --- AKHIR PENAMBAHAN ---
-
     initApp();
 });
 
@@ -56,6 +85,7 @@ function initApp() {
     showMusicEnableButton();
     createBackgroundParticles();
     setupScrollAnimations();
+    setupLyrics(); // --- PENAMBAHAN BARU: Memanggil fungsi setup lirik
 }
 
 
@@ -210,6 +240,52 @@ function setupScrollAnimations() {
 }
 
 
+// --- FUNGSI BARU: Untuk Lirik ---
+/**
+ * Menyiapkan event listener untuk sinkronisasi lirik.
+ */
+function setupLyrics() {
+    if (backgroundMusic) {
+        backgroundMusic.addEventListener('timeupdate', updateLyrics);
+    }
+}
+
+/**
+ * Memperbarui lirik yang ditampilkan berdasarkan waktu musik saat ini.
+ */
+function updateLyrics() {
+    const currentTime = backgroundMusic.currentTime;
+    let newLyricIndex = -1;
+
+    // Cari indeks lirik yang sesuai dengan waktu saat ini
+    for (let i = 0; i < lyricsData.length; i++) {
+        if (currentTime >= lyricsData[i].time) {
+            newLyricIndex = i;
+        } else {
+            break; // Berhenti karena array sudah diurutkan berdasarkan waktu
+        }
+    }
+
+    // Hanya perbarui DOM jika baris lirik berubah
+    if (newLyricIndex !== currentLyricIndex) {
+        currentLyricIndex = newLyricIndex;
+        const lyricsContainer = document.getElementById('lyrics-container');
+        if (lyricsContainer) {
+            if (currentLyricIndex !== -1) {
+                // Animasi fade out, ganti teks, lalu fade in
+                lyricsContainer.style.opacity = '0';
+                setTimeout(() => {
+                    lyricsContainer.textContent = lyricsData[currentLyricIndex].text;
+                    lyricsContainer.style.opacity = '1';
+                }, 250);
+            } else {
+                lyricsContainer.textContent = ''; // Kosongkan jika tidak ada lirik
+            }
+        }
+    }
+}
+
+
 // Audio Functions
 function playBackgroundMusic() {
     if (backgroundMusic) {
@@ -262,6 +338,7 @@ function openInvitation() {
   const session0 = document.getElementById('session0');
   const videoSection = document.getElementById('session-video');
   const mainContent = document.querySelector('.main-content-wrapper');
+  const lyricsContainer = document.getElementById('lyrics-container'); // Ambil kontainer lirik
 
   // 1. Fade out sesi 0
   if (session0) {
@@ -279,10 +356,12 @@ function openInvitation() {
           setTimeout(() => {
             videoSection.classList.add('hidden');
             if (mainContent) mainContent.classList.remove('hidden');
+            if (lyricsContainer) lyricsContainer.classList.add('visible'); // --- PENAMBAHAN BARU: Tampilkan lirik
           }, 700); // fading
         }, 15000); // durasi video tampil
-      } else if (mainContent) {
-        mainContent.classList.remove('hidden');
+      } else {
+        if (mainContent) mainContent.classList.remove('hidden');
+        if (lyricsContainer) lyricsContainer.classList.add('visible'); // --- PENAMBAHAN BARU: Tampilkan lirik
       }
     }, 600); // Fade dari sesi 0
   }
@@ -597,4 +676,3 @@ function copyToClipboard(text, successMessage) {
 window.addEventListener('beforeunload', () => {
     if (countdownInterval) clearInterval(countdownInterval);
 });
-
