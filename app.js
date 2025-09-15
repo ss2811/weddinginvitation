@@ -10,7 +10,6 @@ let countdownInterval;
 let isVideoPlaying = false;
 let ytPlayer;
 
-// --- PENAMBAHAN BARU: Variabel untuk Lirik ---
 // Data lirik lagu "Barakallahu Lakuma" by Maher Zain
 const lyricsData = [
     { time: 10, text: "Di kening kebahagiaanku dan pikiranku" },
@@ -46,7 +45,7 @@ const lyricsData = [
     { time: 154, text: "Semoga Allah Mencurahkan Rahmat-Nya Kepadamu" },
     { time: 158, text: "Keturunan yang berkembang indah di semesta yang terus bergerak" },
 ];
-let currentLyricIndex = -1;
+let currentLyricIndex = -1; // Melacak lirik yang sudah ditampilkan
 
 
 // Konfigurasi Firebase Anda
@@ -84,15 +83,15 @@ function initApp() {
     showMusicEnableButton();
     createBackgroundParticles();
     setupScrollAnimations();
-    setupLyrics(); // --- PENAMBAHAN BARU: Memanggil fungsi setup lirik
+    setupLyrics(); // Memanggil setup untuk lirik berjalan
 }
 
 
-// --- FUNGSI ANIMASI BARU ---
+// --- FUNGSI ANIMASI PARTIKEL BUNGA ---
 
 /**
  * Membuat partikel bunga (sakura & daisy) yang berjatuhan di latar belakang.
- * Menggunakan GSAP untuk animasi yang lebih halus dan kontrol yang lebih baik.
+ * Fungsi ini memastikan bunga selalu ada di semua sesi.
  */
 function createBackgroundParticles() {
     const container = document.getElementById('particle-container');
@@ -124,7 +123,6 @@ function createBackgroundParticles() {
 
 /**
  * Menganimasikan satu partikel secara acak dan berulang.
- * @param {HTMLElement} particle - Elemen partikel yang akan dianimasikan.
  */
 function animateParticle(particle) {
     gsap.set(particle, {
@@ -169,9 +167,6 @@ function animateParticle(particle) {
 
 /**
  * Fungsi untuk efek mengetik (typewriter).
- * @param {string} selector - Selector CSS untuk elemen target.
- * @param {string} text - Teks yang akan diketik.
- * @param {Function} onComplete - Callback setelah selesai.
  */
 function typeWriter(selector, text, onComplete) {
     const element = document.querySelector(selector);
@@ -239,48 +234,52 @@ function setupScrollAnimations() {
 }
 
 
-// --- FUNGSI BARU: Untuk Lirik ---
+// --- FUNGSI BARU UNTUK LIRIK BERJALAN DARI ATAS ---
 /**
  * Menyiapkan event listener untuk sinkronisasi lirik.
  */
 function setupLyrics() {
     if (backgroundMusic) {
-        backgroundMusic.addEventListener('timeupdate', updateLyrics);
+        backgroundMusic.addEventListener('timeupdate', updateScrollingLyrics);
     }
 }
 
 /**
- * Memperbarui lirik yang ditampilkan berdasarkan waktu musik saat ini.
+ * Memperbarui lirik berdasarkan waktu musik dan menganimasikannya.
  */
-function updateLyrics() {
+function updateScrollingLyrics() {
     const currentTime = backgroundMusic.currentTime;
-    let newLyricIndex = -1;
+    const lyricsContainer = document.getElementById('lyrics-container');
+    if (!lyricsContainer) return;
 
-    // Cari indeks lirik yang sesuai dengan waktu saat ini
+    let nextLyricIndex = -1;
     for (let i = 0; i < lyricsData.length; i++) {
         if (currentTime >= lyricsData[i].time) {
-            newLyricIndex = i;
+            nextLyricIndex = i;
         } else {
-            break; // Berhenti karena array sudah diurutkan berdasarkan waktu
+            break;
         }
     }
 
-    // Hanya perbarui DOM jika baris lirik berubah
-    if (newLyricIndex !== currentLyricIndex) {
-        currentLyricIndex = newLyricIndex;
-        const lyricsContainer = document.getElementById('lyrics-container');
-        if (lyricsContainer) {
-            if (currentLyricIndex !== -1) {
-                // Animasi fade out, ganti teks, lalu fade in
-                lyricsContainer.style.opacity = '0';
-                setTimeout(() => {
-                    lyricsContainer.textContent = lyricsData[currentLyricIndex].text;
-                    lyricsContainer.style.opacity = '1';
-                }, 250);
-            } else {
-                lyricsContainer.textContent = ''; // Kosongkan jika tidak ada lirik
+    if (nextLyricIndex > currentLyricIndex) {
+        currentLyricIndex = nextLyricIndex;
+        
+        const lyricElement = document.createElement('div');
+        lyricElement.className = 'lyric-line';
+        lyricElement.textContent = lyricsData[currentLyricIndex].text;
+        lyricsContainer.appendChild(lyricElement);
+
+        gsap.fromTo(lyricElement,
+            { top: '-10vh', opacity: 1, x: '-50%' },
+            {
+                top: '110vh',
+                duration: 15, // Durasi lirik melintasi layar
+                ease: 'none',
+                onComplete: () => {
+                    lyricElement.remove();
+                }
             }
-        }
+        );
     }
 }
 
@@ -332,38 +331,37 @@ function showMusicEnableButton() {
     document.body.appendChild(musicButton);
 }
 
-// Session 0: Landing
+// --- FUNGSI openInvitation YANG DIMODIFIKASI ---
 function openInvitation() {
   const session0 = document.getElementById('session0');
   const videoSection = document.getElementById('session-video');
+  const backgroundVideo = document.getElementById('backgroundVideo');
   const mainContent = document.querySelector('.main-content-wrapper');
-  const lyricsContainer = document.getElementById('lyrics-container'); // Ambil kontainer lirik
 
-  // 1. Fade out sesi 0
   if (session0) {
     session0.classList.add('fade-out');
     setTimeout(() => {
       session0.classList.add('hidden');
-      // 2. Tampilkan background video
-      if (videoSection) {
-        videoSection.classList.remove('hidden');
-        videoSection.style.opacity = 1;
-
-        // 3. Sembunyikan video setelah durasi (misal 5 detik)
-        setTimeout(() => {
-          videoSection.style.opacity = 0;
-          setTimeout(() => {
-            videoSection.classList.add('hidden');
-            if (mainContent) mainContent.classList.remove('hidden');
-            if (lyricsContainer) lyricsContainer.classList.add('visible'); // --- PENAMBAHAN BARU: Tampilkan lirik
-          }, 700); // fading
-        }, 15000); // durasi video tampil
-      } else {
-        if (mainContent) mainContent.classList.remove('hidden');
-        if (lyricsContainer) lyricsContainer.classList.add('visible'); // --- PENAMBAHAN BARU: Tampilkan lirik
-      }
-    }, 600); // Fade dari sesi 0
+    }, 600);
   }
+
+  if (videoSection && backgroundVideo) {
+    videoSection.classList.remove('hidden');
+    backgroundVideo.play();
+
+    // DENGARKAN SAAT VIDEO SELESAI, LALU TAMPILKAN KONTEN
+    backgroundVideo.addEventListener('ended', () => {
+        if (mainContent) {
+            mainContent.classList.remove('hidden');
+        }
+        // VIDEO TETAP ADA, TAPI PINDAH KE BELAKANG KONTEN
+        videoSection.style.zIndex = '1'; 
+    }, { once: true }); // Listener ini hanya akan berjalan sekali
+  } else {
+    // Fallback jika video gagal dimuat
+    if (mainContent) mainContent.classList.remove('hidden');
+  }
+
   document.body.classList.remove('no-scroll');
   playBackgroundMusic();
 }
