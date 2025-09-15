@@ -129,7 +129,6 @@ body {
 body {
   background: var(--wedding-black);
   color: var(--wedding-white);
-  overflow-x: hidden; /* Mencegah scroll horizontal */
 }
 
 body.no-scroll {
@@ -143,7 +142,7 @@ body.no-scroll {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* DIMODIFIKASI: Di belakang konten utama */
+    z-index: 2; /* Di atas background sesi, di bawah konten */
     pointer-events: none;
 }
 
@@ -154,14 +153,14 @@ body.no-scroll {
     opacity: 0; /* Mulai dengan transparan, dianimasikan oleh GSAP */
 }
 
-/* --- PENAMBAHAN BARU: Style untuk Kontainer Lirik --- */
+/* --- PERBAIKAN: Style untuk Kontainer Lirik --- */
 #lyrics-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* DIMODIFIKASI: Di belakang konten utama, sama seperti partikel */
+    z-index: 3; /* PERBAIKAN: Agar terlihat di atas partikel bunga */
     pointer-events: none; /* Agar tidak bisa diklik */
     overflow: hidden; /* Pastikan lirik tidak keluar dari layar */
 }
@@ -173,14 +172,16 @@ body.no-scroll {
     width: 90%;
     max-width: 800px;
     padding: 10px 20px;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     border-radius: var(--radius-full);
     color: var(--wedding-gold);
     text-align: center;
     font-family: var(--font-family-special);
-    font-size: 1.6rem;
+    font-size: 1.8rem; /* Sedikit diperbesar agar lebih terbaca */
     text-shadow: 1px 1px 3px var(--wedding-black);
     white-space: nowrap; /* Mencegah lirik patah baris */
+    -webkit-text-stroke: 0.5px var(--wedding-black); /* Menambah outline tipis */
+    text-stroke: 0.5px var(--wedding-black);
 }
 
 /* Individual Session Styling */
@@ -192,22 +193,12 @@ body.no-scroll {
   justify-content: center;
   padding: var(--space-20);
   box-sizing: border-box;
+  background-size: cover; /* Diubah agar gambar tidak terlalu zoom */
+  background-position: center;
+  background-repeat: no-repeat;
   position: relative;
-  overflow: hidden; /* Mencegah background pseudo-element keluar */
+  z-index: 1; /* Di lapisan paling bawah */
 }
-
-/* Pseudo-element untuk background agar bisa di-layer di belakang */
-.session::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-size: 120%; /* Diperbesar untuk efek Ken Burns */
-    background-position: center;
-    background-repeat: no-repeat;
-    animation: kenburns 40s ease-in-out infinite alternate;
-    z-index: -2; /* Di paling belakang, di belakang partikel & lirik */
-}
-
 
 .session-0.active {
     opacity: 1;
@@ -223,41 +214,43 @@ body.no-scroll {
 /* --- ANIMASI BARU: Latar Belakang Bergerak (Ken Burns) --- */
 @keyframes kenburns {
     0% {
-        background-size: 120%;
+        background-size: 100%;
         background-position: 50% 50%;
     }
     100% {
-        background-size: 130%;
+        background-size: 110%;
         background-position: 40% 60%;
     }
 }
 
-/* Session Backgrounds with Animation */
-.session-0::before {
+/* --- PERUBAHAN: Latar Belakang Berbeda untuk Setiap Sesi --- */
+/* GANTI URL BACKGROUND SESI 0 DI SINI */
+.session-0 {
   background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundbiru.jpeg');
+  animation: kenburns 40s ease-in-out infinite alternate;
+  position: fixed; /* Membuat session-0 tetap di atas */
+  top: 0;
+  left: 0;
 }
 
-/* --- PERUBAHAN: Latar belakang unik untuk setiap sesi --- */
-/* Anda bisa mengganti URL ini dengan foto prewedding Anda */
-.session-1::before { background-image: url('https://placehold.co/1200x800/332d2d/f4c2c2?text=Foto+Prewedding+1'); }
-.session-2::before { background-image: url('https://placehold.co/1200x800/2d3331/e6bf84?text=Foto+Prewedding+2'); }
-.session-3::before { background-image: url('https://placehold.co/1200x800/332d2d/f4c2c2?text=Foto+Prewedding+3'); }
-.session-4::before { background-image: url('https://placehold.co/1200x800/2d3331/e6bf84?text=Foto+Prewedding+4'); }
-.session-5::before { background-image: url('https://placehold.co/1200x800/332d2d/f4c2c2?text=Foto+Prewedding+5'); }
-.session-6::before { background-image: url('https://placehold.co/1200x800/2d3331/e6bf84?text=Foto+Prewedding+6'); }
-.session-7::before { background-image: url('https://placehold.co/1200x800/332d2d/f4c2c2?text=Foto+Prewedding+7'); }
-.session-8::before { background-image: url('https://placehold.co/1200x800/2d3331/e6bf84?text=Foto+Prewedding+8'); }
-.session-9::before { background-image: url('https://placehold.co/1200x800/332d2d/f4c2c2?text=Foto+Prewedding+9'); }
+/* Ganti URL background di bawah ini dengan foto-foto prewedding Anda */
+#session1 { background-image: url('https://images.unsplash.com/photo-1523438885227-12a97a4aa8e2?q=80&w=1974&auto=format&fit=crop'); animation: kenburns 40s ease-in-out infinite alternate; }
+#session2 { background-image: url('https://images.unsplash.com/photo-1519741497674-6114d1863552?q=80&w=2070&auto=format&fit=crop'); animation: kenburns 40s ease-in-out infinite alternate; }
+#session3 { background-image: url('https://images.unsplash.com/photo-1542042161-d1912aed0521?q=80&w=2070&auto=format&fit=crop'); animation: kenburns 40s ease-in-out infinite alternate; }
+#session4 { background-image: url('https://images.unsplash.com/photo-1525962898597-c453b05d10a2?q=80&w=2070&auto=format&fit=crop'); animation: kenburns 40s ease-in-out infinite alternate; }
+#session5 { background-image: url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=2070&auto=format&fit=crop'); animation: kenburns 40s ease-in-out infinite alternate; }
+#session6 { background-image: url('https://images.unsplash.com/photo-1515934751635-481eff042b81?q=80&w=2070&auto=format&fit=crop'); animation: kenburns 40s ease-in-out infinite alternate; }
+#session7 { background-image: url('https://images.unsplash.com/photo-1529333169339-7e3b4abe4485?q=80&w=1955&auto=format&fit=crop'); animation: kenburns 40s ease-in-out infinite alternate; }
+#session8 { background-image: url('https://images.unsplash.com/photo-1511285560931-3473517d9313?q=80&w=2070&auto=format&fit=crop'); animation: kenburns 40s ease-in-out infinite alternate; }
+#session9 { background-image: url('https://images.unsplash.com/photo-1510076857177-7470076d4098?q=80&w=2072&auto=format&fit=crop'); animation: kenburns 40s ease-in-out infinite alternate; }
 
 
 .session-content {
   background: rgba(0, 0, 0, 0.6);
   border-radius: var(--radius-lg);
-  padding: var(--space-32);
   text-align: center;
   max-width: 600px;
   width: 100%;
-  border: 2px solid var(--wedding-gold);
   backdrop-filter: blur(10px);
   z-index: 10;
   opacity: 0;
@@ -269,39 +262,31 @@ body.no-scroll {
               0 0 30px 10px rgba(244, 194, 194, 0.2), /* Cahaya pink lembut */
               inset 0 0 10px rgba(230, 191, 132, 0.2); /* Cahaya ke dalam */
 
-  /* DEKORASI BUNGA */
-  position: relative; /* Diperlukan untuk pseudo-elements */
+  /* --- PERUBAHAN: Border Bunga Sakura & Daisy --- */
+  padding: 25px; /* Disesuaikan dengan lebar border */
+  border: 15px solid transparent;
+  border-image-slice: 25;
+  border-image-width: 15px;
+  border-image-repeat: round;
+  /* Menggunakan dua gambar untuk border, daisy di atas/bawah, sakura di kiri/kanan */
+  border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/sakura.png');
+  position: relative;
 }
 
-/* --- PERUBAHAN: Dekorasi bunga di sudut yang baru --- */
-.session-content::before,
-.session-content::after {
+/* Menambahkan border daisy menggunakan pseudo-element */
+.session-content::before {
     content: '';
     position: absolute;
-    background-repeat: no-repeat;
-    z-index: 11; /* Di atas kotak konten */
-    opacity: 0.9;
-}
-
-/* Kanan Atas: Daisy & Sakura berdampingan */
-.session-content::before {
-    width: 65px; /* Lebar untuk menampung 2 bunga */
-    height: 35px;
-    background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/daisy.png'), url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/sakura.png');
-    background-size: 30px, 35px; /* Ukuran masing-masing bunga (daisy, sakura) */
-    background-position: top left, top right; /* Posisi masing-masing */
-    top: -17px; /* Setengah tinggi */
-    right: -20px;
-}
-
-/* Kiri Bawah: Bunga Daisy */
-.session-content::after {
-    width: 35px; /* Ukuran bunga */
-    height: 35px;
-    background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/daisy.png');
-    background-size: contain;
-    bottom: -17px;
-    left: -20px;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    border: 15px solid transparent;
+    border-image-slice: 25;
+    border-image-width: 15px;
+    border-image-repeat: round;
+    border-image-source: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/daisy.png');
+    pointer-events: none; /* Agar tidak mengganggu klik */
 }
 
 
@@ -322,6 +307,11 @@ body.no-scroll {
   flex-direction: column;
   justify-content: flex-end;
   padding-bottom: var(--space-32);
+  border-image: none; /* Hapus border bunga khusus untuk amplop */
+  border: 2px solid var(--wedding-gold);
+}
+.session-0 .session-content::before {
+    display: none; /* Hapus juga pseudo-element border */
 }
 
 /* EFEK Shimmer */
@@ -488,13 +478,40 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
 /* Hidden class */
 .hidden { display: none !important; }
 
-/* Main Content Wrapper for Scrolling */
+/* --- PERUBAHAN: Pengaturan Lapisan (z-index) --- */
 .main-content-wrapper {
     overflow-y: auto;
     height: 100vh;
     scroll-behavior: smooth;
     position: relative;
-    z-index: 5;
+    z-index: 5; /* Di atas partikel, lirik, dan video background */
+}
+.session-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease-in-out;
+  z-index: 20; /* Awalnya di paling depan */
+}
+.session-video.video-finished {
+    z-index: 1; /* Pindah ke lapisan paling belakang setelah selesai */
+    opacity: 0.5; /* Sedikit redup agar tidak terlalu mengganggu */
+}
+.session-video video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  opacity: 0.95;
+}
+.session-video.hidden {
+  display: none !important;
 }
 
 /* Mobile Responsive */
@@ -517,7 +534,14 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
 }
 
 @media (max-width: 480px) {
-  .session-content { padding: var(--space-16); }
+  .session-content { 
+      padding: 15px; 
+      border-width: 10px;
+  }
+  .session-content::before {
+      top: -10px; left: -10px; right: -10px; bottom: -10px;
+      border-width: 10px;
+  }
   .countdown-container { grid-template-columns: repeat(2, 1fr); }
   .invitation-title h1 { font-size: 2rem; }
   .couple-names { font-size: 1.5rem; }
