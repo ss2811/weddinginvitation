@@ -9,10 +9,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
-    <!-- Container untuk partikel salju/bunga -->
+    <!-- Container untuk partikel bunga daisy dan sakura yang akan selalu ada -->
     <div id="particle-container"></div>
 
-    <!-- Container untuk lirik yang akan disinkronkan -->
+    <!-- Container untuk lirik yang akan berjalan dari atas ke bawah -->
     <div id="lyrics-container"></div>
 
     <audio id="backgroundMusic" loop>
@@ -32,14 +32,15 @@
             </button>
         </div>
     </section>
+    
     <section id="session-video" class="session-video hidden">
-      <video id="backgroundVideo" autoplay muted playsinline loop>
+      <!-- Atribut 'loop' dihapus agar video hanya diputar sekali -->
+      <video id="backgroundVideo" autoplay muted playsinline>
         <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/Sonia%20&%20Ancah.mp4" type="video/mp4" />
       </video>
     </section>
-    <div class="main-content-wrapper hidden">
-        
 
+    <div class="main-content-wrapper hidden">
         <section class="session session-1" id="session1">
             <div class="session-content">
                 <h2>Menuju Hari Bahagia</h2>
@@ -61,6 +62,14 @@
                         <label>Detik</label>
                     </div>
                 </div>
+
+                <!-- ANDA BISA MENARUH FOTO DI TENGAH SESI INI -->
+                <div class="photo-placeholder">
+                    <!-- Ganti elemen <p> di bawah dengan tag <img> untuk foto Anda -->
+                    <!-- Contoh: <img src="path/ke/foto_anda.jpg" alt="Foto Prewedding"> -->
+                    <p>Tempat untuk foto prewedding Anda</p>
+                </div>
+
                 <div class="action-buttons">
                     <button class="btn btn--primary" id="saveDateBtn">Save The Date</button>
                     <button class="btn btn--outline" id="shareBtn">Bagikan Undangan</button>
