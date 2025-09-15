@@ -129,6 +129,7 @@ body {
 body {
   background: var(--wedding-black);
   color: var(--wedding-white);
+  overflow-x: hidden; /* Mencegah scroll horizontal */
 }
 
 body.no-scroll {
@@ -142,7 +143,7 @@ body.no-scroll {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2; /* Di belakang konten, di depan background video */
+    z-index: -1; /* DIMODIFIKASI: Di belakang konten utama */
     pointer-events: none;
 }
 
@@ -160,7 +161,7 @@ body.no-scroll {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Sesuai permintaan, di belakang semua elemen */
+    z-index: -1; /* DIMODIFIKASI: Di belakang konten utama, sama seperti partikel */
     pointer-events: none; /* Agar tidak bisa diklik */
     overflow: hidden; /* Pastikan lirik tidak keluar dari layar */
 }
@@ -191,12 +192,22 @@ body.no-scroll {
   justify-content: center;
   padding: var(--space-20);
   box-sizing: border-box;
-  background-size: 120%; /* Diperbesar untuk efek Ken Burns */
-  background-position: center;
-  background-repeat: no-repeat;
   position: relative;
-  z-index: 10;
+  overflow: hidden; /* Mencegah background pseudo-element keluar */
 }
+
+/* Pseudo-element untuk background agar bisa di-layer di belakang */
+.session::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: 120%; /* Diperbesar untuk efek Ken Burns */
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: kenburns 40s ease-in-out infinite alternate;
+    z-index: -2; /* Di paling belakang, di belakang partikel & lirik */
+}
+
 
 .session-0.active {
     opacity: 1;
@@ -222,21 +233,22 @@ body.no-scroll {
 }
 
 /* Session Backgrounds with Animation */
-/* GANTI URL BACKGROUND SESI 0 DI SINI */
-.session-0 {
+.session-0::before {
   background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundbiru.jpeg');
-  animation: kenburns 40s ease-in-out infinite alternate;
-  position: fixed; /* Membuat session-0 tetap di atas */
-  top: 0;
-  left: 0;
 }
 
-/* GANTI URL BACKGROUND UNTUK SEMUA SESI LAINNYA DI SINI */
-.session-1, .session-2, .session-3, .session-4,
-.session-5, .session-6, .session-7, .session-8, .session-9 {
-  background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundhitam.jpeg');
-  animation: kenburns 40s ease-in-out infinite alternate;
-}
+/* --- PERUBAHAN: Latar belakang unik untuk setiap sesi --- */
+/* Anda bisa mengganti URL ini dengan foto prewedding Anda */
+.session-1::before { background-image: url('https://placehold.co/1200x800/332d2d/f4c2c2?text=Foto+Prewedding+1'); }
+.session-2::before { background-image: url('https://placehold.co/1200x800/2d3331/e6bf84?text=Foto+Prewedding+2'); }
+.session-3::before { background-image: url('https://placehold.co/1200x800/332d2d/f4c2c2?text=Foto+Prewedding+3'); }
+.session-4::before { background-image: url('https://placehold.co/1200x800/2d3331/e6bf84?text=Foto+Prewedding+4'); }
+.session-5::before { background-image: url('https://placehold.co/1200x800/332d2d/f4c2c2?text=Foto+Prewedding+5'); }
+.session-6::before { background-image: url('https://placehold.co/1200x800/2d3331/e6bf84?text=Foto+Prewedding+6'); }
+.session-7::before { background-image: url('https://placehold.co/1200x800/332d2d/f4c2c2?text=Foto+Prewedding+7'); }
+.session-8::before { background-image: url('https://placehold.co/1200x800/2d3331/e6bf84?text=Foto+Prewedding+8'); }
+.session-9::before { background-image: url('https://placehold.co/1200x800/332d2d/f4c2c2?text=Foto+Prewedding+9'); }
+
 
 .session-content {
   background: rgba(0, 0, 0, 0.6);
@@ -247,7 +259,7 @@ body.no-scroll {
   width: 100%;
   border: 2px solid var(--wedding-gold);
   backdrop-filter: blur(10px);
-  z-index: 900;
+  z-index: 10;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
@@ -261,31 +273,37 @@ body.no-scroll {
   position: relative; /* Diperlukan untuk pseudo-elements */
 }
 
-/* Dekorasi bunga di sudut */
+/* --- PERUBAHAN: Dekorasi bunga di sudut yang baru --- */
 .session-content::before,
 .session-content::after {
     content: '';
     position: absolute;
-    width: 80px; /* Ukuran bunga */
-    height: 80px;
-    background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/sakura.png'); /* Menggunakan gambar sakura */
-    background-size: contain;
     background-repeat: no-repeat;
-    z-index: 1;
-    opacity: 0.8;
+    z-index: 11; /* Di atas kotak konten */
+    opacity: 0.9;
 }
 
+/* Kanan Atas: Daisy & Sakura berdampingan */
 .session-content::before {
-    top: -40px; /* Setengah ukuran bunga */
-    left: -40px;
-    transform: rotate(-45deg);
+    width: 65px; /* Lebar untuk menampung 2 bunga */
+    height: 35px;
+    background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/daisy.png'), url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/sakura.png');
+    background-size: 30px, 35px; /* Ukuran masing-masing bunga (daisy, sakura) */
+    background-position: top left, top right; /* Posisi masing-masing */
+    top: -17px; /* Setengah tinggi */
+    right: -20px;
 }
 
+/* Kiri Bawah: Bunga Daisy */
 .session-content::after {
-    bottom: -40px;
-    right: -40px;
-    transform: rotate(135deg);
+    width: 35px; /* Ukuran bunga */
+    height: 35px;
+    background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/daisy.png');
+    background-size: contain;
+    bottom: -17px;
+    left: -20px;
 }
+
 
 .session.active .session-content,
 .main-content-wrapper .session .session-content {
@@ -304,32 +322,6 @@ body.no-scroll {
   flex-direction: column;
   justify-content: flex-end;
   padding-bottom: var(--space-32);
-}
-
-/* Placeholder Foto di Sesi 1 */
-.photo-placeholder {
-    width: 80%;
-    max-width: 300px;
-    height: auto;
-    aspect-ratio: 4 / 5;
-    margin: var(--space-24) auto;
-    border: 3px dashed var(--wedding-gold);
-    border-radius: var(--radius-lg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-.photo-placeholder p {
-    color: var(--wedding-gray);
-    font-style: italic;
-}
-.photo-placeholder img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: var(--radius-md);
 }
 
 /* EFEK Shimmer */
@@ -503,29 +495,6 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
     scroll-behavior: smooth;
     position: relative;
     z-index: 5;
-}
-.session-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #000;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: z-index 1s ease-in-out;
-  z-index: 20; /* Awalnya di paling depan */
-}
-.session-video video {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  opacity: 0.95;
-}
-.session-video.hidden {
-  display: none !important;
 }
 
 /* Mobile Responsive */
