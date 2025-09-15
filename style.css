@@ -142,7 +142,7 @@ body.no-scroll {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; /* Di belakang konten, di depan background hitam */
+    z-index: 2; /* Di belakang konten, di depan background video */
     pointer-events: none;
 }
 
@@ -156,9 +156,19 @@ body.no-scroll {
 /* --- PENAMBAHAN BARU: Style untuk Kontainer Lirik --- */
 #lyrics-container {
     position: fixed;
-    bottom: 80px; /* Di atas tombol musik */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Sesuai permintaan, di belakang semua elemen */
+    pointer-events: none; /* Agar tidak bisa diklik */
+    overflow: hidden; /* Pastikan lirik tidak keluar dari layar */
+}
+
+.lyric-line {
+    position: absolute;
     left: 50%;
-    transform: translateX(-50%);
+    /* transform diatur oleh GSAP */
     width: 90%;
     max-width: 800px;
     padding: 10px 20px;
@@ -167,20 +177,10 @@ body.no-scroll {
     color: var(--wedding-gold);
     text-align: center;
     font-family: var(--font-family-special);
-    font-size: 1.4rem;
-    text-shadow: 1px 1px 2px var(--wedding-black);
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-    pointer-events: none; /* Agar tidak menghalangi klik */
-    transform: translateX(-50%) translateY(20px);
+    font-size: 1.6rem;
+    text-shadow: 1px 1px 3px var(--wedding-black);
+    white-space: nowrap; /* Mencegah lirik patah baris */
 }
-
-#lyrics-container.visible {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
 
 /* Individual Session Styling */
 .session {
@@ -194,6 +194,7 @@ body.no-scroll {
   background-size: 120%; /* Diperbesar untuk efek Ken Burns */
   background-position: center;
   background-repeat: no-repeat;
+  position: relative;
   z-index: 10;
 }
 
@@ -221,6 +222,7 @@ body.no-scroll {
 }
 
 /* Session Backgrounds with Animation */
+/* GANTI URL BACKGROUND SESI 0 DI SINI */
 .session-0 {
   background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundbiru.jpeg');
   animation: kenburns 40s ease-in-out infinite alternate;
@@ -229,6 +231,7 @@ body.no-scroll {
   left: 0;
 }
 
+/* GANTI URL BACKGROUND UNTUK SEMUA SESI LAINNYA DI SINI */
 .session-1, .session-2, .session-3, .session-4,
 .session-5, .session-6, .session-7, .session-8, .session-9 {
   background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/backgroundhitam.jpeg');
@@ -242,13 +245,46 @@ body.no-scroll {
   text-align: center;
   max-width: 600px;
   width: 100%;
-  position: relative;
   border: 2px solid var(--wedding-gold);
   backdrop-filter: blur(10px);
   z-index: 900;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  
+  /* EFEK BERKILAU BARU */
+  box-shadow: 0 0 15px 5px rgba(230, 191, 132, 0.4), /* Cahaya emas lembut */
+              0 0 30px 10px rgba(244, 194, 194, 0.2), /* Cahaya pink lembut */
+              inset 0 0 10px rgba(230, 191, 132, 0.2); /* Cahaya ke dalam */
+
+  /* DEKORASI BUNGA */
+  position: relative; /* Diperlukan untuk pseudo-elements */
+}
+
+/* Dekorasi bunga di sudut */
+.session-content::before,
+.session-content::after {
+    content: '';
+    position: absolute;
+    width: 80px; /* Ukuran bunga */
+    height: 80px;
+    background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/sakura.png'); /* Menggunakan gambar sakura */
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+.session-content::before {
+    top: -40px; /* Setengah ukuran bunga */
+    left: -40px;
+    transform: rotate(-45deg);
+}
+
+.session-content::after {
+    bottom: -40px;
+    right: -40px;
+    transform: rotate(135deg);
 }
 
 .session.active .session-content,
@@ -259,23 +295,42 @@ body.no-scroll {
 }
 
 .session-0 .session-content {
-  /* Menambahkan gambar Anda dengan lapisan gelap untuk kontras */
   background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/envelope.jpg');
-
-  /* Memastikan gambar memenuhi kotak */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-blend-mode: overlay;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Ini akan mendorong tulisan ke bagian bawah box */
-  
-  /* (Opsional) Beri sedikit padding bawah agar tidak terlalu mepet */
+  justify-content: flex-end;
   padding-bottom: var(--space-32);
-  
 }
 
+/* Placeholder Foto di Sesi 1 */
+.photo-placeholder {
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    margin: var(--space-24) auto;
+    border: 3px dashed var(--wedding-gold);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.photo-placeholder p {
+    color: var(--wedding-gray);
+    font-style: italic;
+}
+.photo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+}
 
 /* EFEK Shimmer */
 .shimmer-text {
@@ -451,7 +506,6 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
 }
 .session-video {
   position: fixed;
-  z-index: 20;
   top: 0;
   left: 0;
   width: 100vw;
@@ -461,7 +515,8 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1);
+  transition: z-index 1s ease-in-out;
+  z-index: 20; /* Awalnya di paling depan */
 }
 .session-video video {
   width: 100vw;
@@ -475,9 +530,8 @@ p { color: var(--wedding-gray); line-height: 1.6; margin-bottom: var(--space-16)
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  #lyrics-container {
-      font-size: 1.1rem;
-      bottom: 70px;
+  .lyric-line {
+      font-size: 1.2rem;
   }
   .session { padding: var(--space-16); }
   .session-content { padding: var(--space-20); max-width: 100%; max-height: none; }
