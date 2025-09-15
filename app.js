@@ -334,10 +334,8 @@ function showMusicEnableButton() {
 // --- FUNGSI openInvitation YANG DIMODIFIKASI ---
 function openInvitation() {
   const session0 = document.getElementById('session0');
-  const videoSection = document.getElementById('session-video');
-  const backgroundVideo = document.getElementById('backgroundVideo');
-  const mainContent = document.querySelector('.main-content-wrapper');
-
+  
+  // Menghilangkan layar pembuka dengan efek fade out
   if (session0) {
     session0.classList.add('fade-out');
     setTimeout(() => {
@@ -345,23 +343,7 @@ function openInvitation() {
     }, 600);
   }
 
-  if (videoSection && backgroundVideo) {
-    videoSection.classList.remove('hidden');
-    backgroundVideo.play();
-
-    // DENGARKAN SAAT VIDEO SELESAI, LALU TAMPILKAN KONTEN
-    backgroundVideo.addEventListener('ended', () => {
-        if (mainContent) {
-            mainContent.classList.remove('hidden');
-        }
-        // VIDEO TETAP ADA, TAPI PINDAH KE BELAKANG KONTEN
-        videoSection.style.zIndex = '1'; 
-    }, { once: true }); // Listener ini hanya akan berjalan sekali
-  } else {
-    // Fallback jika video gagal dimuat
-    if (mainContent) mainContent.classList.remove('hidden');
-  }
-
+  // Konten utama sudah terlihat, jadi hanya perlu mengaktifkan scroll dan musik
   document.body.classList.remove('no-scroll');
   playBackgroundMusic();
 }
