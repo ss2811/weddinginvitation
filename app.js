@@ -1,16 +1,16 @@
 // Wedding Invitation JavaScript - Animated & Scrollable Version
 
-// Menggunakan import dari URL CDN Firebase karena ini adalah modul ES
+// PENTING: Menggunakan import dari URL CDN Firebase karena ini adalah modul ES
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, orderBy, query, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Variabel global
+// Global variables
 let backgroundMusic;
 let countdownInterval;
 let isVideoPlaying = false;
 let ytPlayer;
 
-// Data lirik lagu
+// Data lirik lagu "Barakallahu Lakuma" by Maher Zain
 const lyricsData = [
     { time: 10, text: "Di kening kebahagiaanku dan pikiranku" },
     { time: 15, text: "Huruf-huruf mengalir dengan rindu dan bunga-bunga" },
@@ -45,7 +45,8 @@ const lyricsData = [
     { time: 154, text: "Semoga Allah Mencurahkan Rahmat-Nya Kepadamu" },
     { time: 158, text: "Keturunan yang berkembang indah di semesta yang terus bergerak" },
 ];
-let currentLyricIndex = -1; 
+let currentLyricIndex = -1; // Melacak lirik yang sudah ditampilkan
+
 
 // Konfigurasi Firebase Anda
 const firebaseConfig = {
@@ -67,70 +68,125 @@ try {
     console.error("Firebase initialization failed:", error);
 }
 
-document.addEventListener('DOMContentLoaded', initApp);
+// Initialize application when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initApp();
+});
+
 
 function initApp() {
     document.body.classList.add('no-scroll');
     backgroundMusic = document.getElementById('backgroundMusic');
-    
-    const videoSection = document.getElementById('session-video');
-    if(videoSection) videoSection.style.opacity = '0';
-
     setupActionButtons();
     startCountdown();
     loadGuestMessages();
     showMusicEnableButton();
     createBackgroundParticles();
-    setupGenericScrollAnimations();
-    setupLyrics();
+    setupScrollAnimations();
+    setupLyrics(); // Memanggil setup untuk lirik berjalan
 }
 
+
 // --- FUNGSI ANIMASI PARTIKEL BUNGA ---
+
+/**
+ * Membuat partikel bunga (sakura & daisy) yang berjatuhan di latar belakang.
+ * Fungsi ini memastikan bunga selalu ada di semua sesi.
+ */
 function createBackgroundParticles() {
     const container = document.getElementById('particle-container');
     if (!container) return;
+
     const daisyImgUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/main/daisy.png';
     const sakuraImgUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/main/sakura.png';
-    const particleTypes = [ { url: daisyImgUrl, count: 15 }, { url: sakuraImgUrl, count: 20 } ];
+
+    const particleTypes = [
+        { url: daisyImgUrl, count: 15 }, // Jumlah daisy
+        { url: sakuraImgUrl, count: 20 }  // Jumlah sakura
+    ];
+
     particleTypes.forEach(type => {
         for (let i = 0; i < type.count; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
             particle.style.backgroundImage = `url(${type.url})`;
-            const size = Math.random() * 25 + 15;
+            
+            const size = Math.random() * 25 + 15; // Ukuran antara 15px - 40px
             particle.style.width = `${size}px`;
             particle.style.height = `${size}px`;
+
             container.appendChild(particle);
             animateParticle(particle);
         }
     });
 }
+
+/**
+ * Menganimasikan satu partikel secara acak dan berulang.
+ */
 function animateParticle(particle) {
-    gsap.set(particle, { x: Math.random() * window.innerWidth, y: -100, rotation: Math.random() * 360, opacity: 0 });
+    gsap.set(particle, {
+        x: Math.random() * window.innerWidth,
+        y: -100,
+        rotation: Math.random() * 360,
+        opacity: 0
+    });
+
     const duration = Math.random() * 15 + 10;
     const delay = Math.random() * 10;
+
     const tl = gsap.timeline({
         delay: delay,
         repeat: -1,
-        onRepeat: () => { gsap.set(particle, { x: Math.random() * window.innerWidth, y: -100, opacity: 0 }); }
+        onRepeat: () => {
+            gsap.set(particle, {
+                x: Math.random() * window.innerWidth,
+                y: -100,
+                opacity: 0
+            });
+        }
     });
-    tl.to(particle, { opacity: Math.random() * 0.5 + 0.3, duration: 2 }, 0)
-    .to(particle, { y: window.innerHeight + 100, ease: "none", duration: duration }, 0)
-    .to(particle, { x: "+=" + (Math.random() * 200 - 100), rotation: "+=" + (Math.random() * 720 - 360), ease: "sine.inOut", duration: duration }, 0);
+
+    tl.to(particle, {
+        opacity: Math.random() * 0.5 + 0.3,
+        duration: 2
+    }, 0)
+    .to(particle, {
+        y: window.innerHeight + 100,
+        ease: "none",
+        duration: duration
+    }, 0)
+    .to(particle, {
+        x: "+=" + (Math.random() * 200 - 100),
+        rotation: "+=" + (Math.random() * 720 - 360),
+        ease: "sine.inOut",
+        duration: duration
+    }, 0);
 }
 
-// Efek mengetik (typewriter)
+
+/**
+ * Fungsi untuk efek mengetik (typewriter).
+ */
 function typeWriter(selector, text, onComplete) {
     const element = document.querySelector(selector);
     if (!element) return;
+
     element.innerHTML = '';
     let i = 0;
     function type() {
         if (i < text.length) {
-            element.innerHTML += text.charAt(i); i++;
+            element.innerHTML += text.charAt(i);
+            i++;
             setTimeout(type, 50);
-        } else if (onComplete) onComplete();
+        } else {
+            const cursor = element.querySelector('.typing-cursor');
+            if (cursor) cursor.remove();
+            if (onComplete) onComplete();
+        }
     }
+    
+    element.innerHTML = '<span class="typing-cursor"></span>';
     type();
 }
 
@@ -145,156 +201,226 @@ function setupActionButtons() {
     });
 }
 
-// --- Setup Animasi Scroll Generik ---
-function setupGenericScrollAnimations() {
-    const animatedElements = document.querySelectorAll('.animate-on-scroll');
-    if (!animatedElements.length) return;
-
-    const typewriterObserver = new IntersectionObserver((entries) => {
+/**
+ * Menggunakan Intersection Observer untuk memicu animasi saat elemen masuk ke viewport.
+ */
+function setupScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const targetElement = document.getElementById('quran-verse-typewriter');
-                if (targetElement && !targetElement.classList.contains('typed')) {
-                    const quranText = `"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang..."`;
-                    const citation = `<cite>QS. Ar-Rum: 21</cite>`;
-                    typeWriter('#quran-verse-typewriter', quranText, () => {
-                        targetElement.innerHTML += citation;
-                    });
-                    targetElement.classList.add('typed');
-                    typewriterObserver.unobserve(entry.target);
+                // Memicu typewriter untuk Ayat Suci
+                if (entry.target.id === 'session2') {
+                    const targetElement = document.getElementById('quran-verse-typewriter');
+                    if (targetElement && !targetElement.classList.contains('typed')) {
+                        const quranText = `"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."`;
+                        const citation = `<cite>QS. Ar-Rum: 21</cite>`;
+                        
+                        targetElement.innerHTML = '';
+                        typeWriter('#quran-verse-typewriter', quranText, () => {
+                            targetElement.innerHTML += citation;
+                        });
+                        targetElement.classList.add('typed');
+                        observer.unobserve(entry.target); // Berhenti mengamati setelah animasi berjalan
+                    }
                 }
             }
         });
-    }, { threshold: 0.5 });
-    
+    }, { threshold: 0.5 }); // Memicu saat 50% elemen terlihat
+
     const session2 = document.getElementById('session2');
-    if (session2) typewriterObserver.observe(session2);
-
-    const generalObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('in-view');
-                generalObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.2 });
-
-    animatedElements.forEach(el => generalObserver.observe(el));
+    if (session2) {
+        observer.observe(session2);
+    }
 }
 
 
-// --- Lirik Berjalan ---
+// --- FUNGSI BARU UNTUK LIRIK BERJALAN DARI ATAS ---
+/**
+ * Menyiapkan event listener untuk sinkronisasi lirik.
+ */
 function setupLyrics() {
     if (backgroundMusic) {
         backgroundMusic.addEventListener('timeupdate', updateScrollingLyrics);
     }
 }
+
+/**
+ * Memperbarui lirik berdasarkan waktu musik dan menganimasikannya.
+ */
 function updateScrollingLyrics() {
     const currentTime = backgroundMusic.currentTime;
     const lyricsContainer = document.getElementById('lyrics-container');
     if (!lyricsContainer) return;
+
     let nextLyricIndex = -1;
     for (let i = 0; i < lyricsData.length; i++) {
-        if (currentTime >= lyricsData[i].time) { nextLyricIndex = i; } else { break; }
+        if (currentTime >= lyricsData[i].time) {
+            nextLyricIndex = i;
+        } else {
+            break;
+        }
     }
+
     if (nextLyricIndex > currentLyricIndex) {
         currentLyricIndex = nextLyricIndex;
+        
         const lyricElement = document.createElement('div');
         lyricElement.className = 'lyric-line';
         lyricElement.textContent = lyricsData[currentLyricIndex].text;
         lyricsContainer.appendChild(lyricElement);
+
         gsap.fromTo(lyricElement,
             { top: '-10vh', opacity: 1, x: '-50%' },
-            { top: '110vh', duration: 15, ease: 'none', onComplete: () => lyricElement.remove() }
+            {
+                top: '110vh',
+                duration: 15, // Durasi lirik melintasi layar
+                ease: 'none',
+                onComplete: () => {
+                    lyricElement.remove();
+                }
+            }
         );
     }
 }
 
-// Fungsi Audio
+
+// Audio Functions
 function playBackgroundMusic() {
-    backgroundMusic?.play().catch(e => console.log('Auto-play dicegah:', e));
+    if (backgroundMusic) {
+        backgroundMusic.play().catch(error => {
+            console.log('Auto-play dicegah:', error);
+        });
+    }
 }
+
 function pauseBackgroundMusic() {
     backgroundMusic?.pause();
 }
+
 function resumeBackgroundMusic() {
     if (backgroundMusic?.paused && !isVideoPlaying) {
-        backgroundMusic.play().catch(e => console.log('Gagal melanjutkan musik:', e));
+        backgroundMusic.play().catch(error => console.log('Gagal melanjutkan musik:', error));
     }
 }
+
 function showMusicEnableButton() {
+    if (document.querySelector('.music-toggle-btn')) return;
+    
     const musicButton = document.createElement('button');
-    musicButton.innerHTML = '🔇'; musicButton.className = 'btn music-toggle-btn';
-    musicButton.style.cssText = `position: fixed; bottom: 20px; right: 20px; z-index: 1001; background: var(--wedding-primary); color: var(--wedding-bg); border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2);`;
+    musicButton.innerHTML = '🔇';
+    musicButton.className = 'btn music-toggle-btn';
+    musicButton.style.cssText = `
+        position: fixed; bottom: 20px; right: 20px; z-index: 1001;
+        background: var(--wedding-gold);
+        color: var(--wedding-black); border: none;
+        width: 45px; height: 45px; border-radius: 50%; font-size: 20px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    `;
+    
     musicButton.addEventListener('click', () => {
-        if (backgroundMusic.paused) { backgroundMusic.play(); musicButton.innerHTML = '🎵'; } 
-        else { backgroundMusic.pause(); musicButton.innerHTML = '🔇'; }
+        if (backgroundMusic.paused) {
+            backgroundMusic.play();
+            musicButton.innerHTML = '🎵';
+        } else {
+            backgroundMusic.pause();
+            musicButton.innerHTML = '🔇';
+        }
     });
     document.body.appendChild(musicButton);
 }
 
-// REPLACE the old openInvitation function with this new one
+// --- FUNGSI openInvitation YANG DIPERBAIKI ---
 function openInvitation() {
   const session0 = document.getElementById('session0');
   const videoSection = document.getElementById('session-video');
   const backgroundVideo = document.getElementById('backgroundVideo');
   const mainContent = document.querySelector('.main-content-wrapper');
 
-  // 1. Fade out the initial envelope/cover
   if (session0) {
     session0.classList.add('fade-out');
     setTimeout(() => {
       session0.classList.add('hidden');
-    }, 600); // Hides it after the fade-out animation
+    }, 600);
   }
 
-  // 2. Show the main content and start the video simultaneously
-  if (videoSection && backgroundVideo && mainContent) {
-    videoSection.classList.remove('hidden'); // Make video container visible
-    mainContent.classList.remove('hidden');   // **KEY CHANGE**: Make main content visible now
-    
+  if (videoSection && backgroundVideo) {
+    videoSection.classList.remove('hidden');
+    videoSection.style.pointerEvents = 'auto'; // Aktifkan interaksi saat video tampil
     backgroundVideo.play();
 
-    // 3. When the video finishes, move it to the background using the existing CSS class
+    // DENGARKAN SAAT VIDEO SELESEI, LALU TAMPILKAN KONTEN
     backgroundVideo.addEventListener('ended', () => {
-        videoSection.classList.add('video-finished');
-    }, { once: true }); // This listener will only run once
-
+        if (mainContent) {
+            mainContent.classList.remove('hidden');
+        }
+        // VIDEO TETAP ADA, TAPI PINDAH KE BELAKANG KONTEN
+        videoSection.style.zIndex = '1'; 
+        videoSection.style.pointerEvents = 'none'; // Matikan interaksi setelah video selesai
+    }, { once: true }); // Listener ini hanya akan berjalan sekali
   } else {
-    // Fallback: If the video elements don't exist, just show the content
+    // Fallback jika video gagal dimuat
     if (mainContent) mainContent.classList.remove('hidden');
   }
 
-  // 4. Enable page scrolling and play the background music
   document.body.classList.remove('no-scroll');
   playBackgroundMusic();
 }
 
 
-// Hitung Mundur
+// Session 1: Countdown
 function startCountdown() {
-    const weddingDate = new Date('2025-09-24T07:00:00+08:00');
-    const els = {
-        d: document.getElementById('days'), h: document.getElementById('hours'),
-        m: document.getElementById('minutes'), s: document.getElementById('seconds')
-    };
-    if (!els.d || !els.h || !els.m || !els.s) return;
-    function update() {
-        const distance = weddingDate.getTime() - Date.now();
-        if (distance <= 0) {
-            Object.values(els).forEach(el => el.textContent = '00');
-            clearInterval(countdownInterval); return;
+    try {
+        if (typeof countdownInterval !== 'undefined' && countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
         }
-        els.d.textContent = String(Math.floor(distance / 86400000)).padStart(2, '0');
-        els.h.textContent = String(Math.floor((distance % 86400000) / 3600000)).padStart(2, '0');
-        els.m.textContent = String(Math.floor((distance % 3600000) / 60000)).padStart(2, '0');
-        els.s.textContent = String(Math.floor((distance % 60000) / 1000)).padStart(2, '0');
+
+        const weddingDate = new Date('2025-09-24T07:00:00+08:00');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        
+        if (!daysEl || !hoursEl || !minutesEl || !secondsEl) {
+            return;
+        }
+
+        function update() {
+            const now = Date.now();
+            const distance = weddingDate.getTime() - now;
+
+            if (distance <= 0) {
+                daysEl.textContent = '00';
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                }
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            daysEl.textContent = String(days).padStart(2, '0');
+            hoursEl.textContent = String(hours).padStart(2, '0');
+            minutesEl.textContent = String(minutes).padStart(2, '0');
+            secondsEl.textContent = String(seconds).padStart(2, '0');
+        }
+
+        update();
+        countdownInterval = setInterval(update, 1000);
+    } catch (err) {
+        console.error('[countdown] error saat memulai:', err);
     }
-    update();
-    countdownInterval = setInterval(update, 1000);
 }
 
-// Fungsi lainnya
 async function saveTheDate() {
     const event = {
         title: 'Pernikahan Suriansyah & Sonia Agustina Oemar',
@@ -309,13 +435,29 @@ async function saveTheDate() {
         return `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}T${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}${pad(date.getUTCSeconds())}Z`;
     };
 
-    const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Wedding Invitation//EN\nBEGIN:VEVENT\nUID:${Date.now()}@wedding.com\nDTSTAMP:${toUTC(new Date().toISOString())}\nDTSTART;TZID=Asia/Makassar:${toUTC(event.start)}\nDTEND;TZID=Asia/Makassar:${toUTC(event.end)}\nSUMMARY:${event.title}\nDESCRIPTION:${event.description}\nLOCATION:${event.location}\nEND:VEVENT\nEND:VCALENDAR`;
+    const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Wedding Invitation//EN
+BEGIN:VEVENT
+UID:${Date.now()}@wedding.com
+DTSTAMP:${toUTC(new Date().toISOString())}
+DTSTART;TZID=Asia/Makassar:${toUTC(event.start)}
+DTEND;TZID=Asia/Makassar:${toUTC(event.end)}
+SUMMARY:${event.title}
+DESCRIPTION:${event.description}
+LOCATION:${event.location}
+END:VEVENT
+END:VCALENDAR`;
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
     const file = new File([blob], 'wedding_invitation.ics', { type: 'text/calendar' });
 
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
-            await navigator.share({ files: [file], title: event.title, text: 'Simpan tanggal pernikahan kami.' });
+            await navigator.share({
+                files: [file],
+                title: event.title,
+                text: 'Simpan tanggal pernikahan kami di kalender Anda.'
+            });
             showNotification('Pilih aplikasi Kalender untuk menyimpan acara.');
             return;
         } catch (error) {
@@ -331,14 +473,16 @@ async function saveTheDate() {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(link.href);
-        showNotification('File kalender (.ics) telah diunduh.');
+        showNotification('File kalender (.ics) telah diunduh. Silakan buka file tersebut.');
     } catch (error) {
-        showNotification('Gagal membuat file kalender.');
+        console.error('Gagal membuat link unduhan:', error);
+        showNotification('Gagal membuat file kalender. Silakan coba lagi.');
     }
 }
 
 async function shareInvitation() {
-    const shareText = 'Assalamualaikum Wr. Wb.\nDengan penuh syukur, kami mengundang Anda menghadiri pernikahan Suriansyah & Sonia.';
+    const shareText = 'Assalamualaikum Wr. Wb.\nDengan penuh syukur kepada Allah SWT, kami mengundang Bapak/Ibu/Saudara(i) menghadiri pernikahan Suriansyah & Sonia. Barakallahu lakuma wa baraka ‘alaikuma.';
+    const shareTitle = 'Undangan Pernikahan | Suriansyah & Sonia';
     const shareUrl = window.location.href;
     copyToClipboard(`${shareText}\n\n${shareUrl}`, 'Teks undangan disalin ke clipboard.');
 }
@@ -352,7 +496,7 @@ async function handleRsvpSubmission() {
   const attendance = attendanceInput.value;
 
   if (!name || !message || !attendance) {
-    showNotification('Mohon lengkapi semua kolom!');
+    showNotification('Mohon lengkapi nama, ucapan, dan konfirmasi kehadiran! ⚠️');
     return;
   }
 
@@ -365,18 +509,21 @@ async function handleRsvpSubmission() {
     nameInput.value = '';
     messageInput.value = '';
     attendanceInput.selectedIndex = 0;
-    loadGuestMessages();
+    loadGuestMessages(); // Muat ulang pesan setelah berhasil submit
   }
 }
 
 async function submitMessageToFirebase(name, message, attendance, isPublic) {
   if (!db) {
-    showNotification("Gagal menyimpan: Database error.");
+    showNotification("Gagal menyimpan ucapan: Database error.");
     return false;
   }
   try {
     await addDoc(collection(db, "messages"), {
-      name: name, message: message, attendance: attendance, isPublic: isPublic,
+      name: name,
+      message: message,
+      attendance: attendance,
+      isPublic: isPublic,
       timestamp: serverTimestamp()
     });
     return true;
@@ -396,7 +543,7 @@ function showPrivacyPopup() {
       <div class="popup-overlay"></div>
       <div class="popup-box">
         <h3>Tampilkan Ucapan?</h3>
-        <p>Apakah ucapan ini boleh ditampilkan secara publik?</p>
+        <p>Apakah Anda ingin ucapan ini ditampilkan secara publik di halaman undangan?</p>
         <div class="popup-buttons">
           <button id="btn-public" class="btn">Tampilkan</button>
           <button id="btn-private" class="btn">Simpan Pribadi</button>
@@ -413,30 +560,36 @@ function showPrivacyPopup() {
 }
 
 function copyAccount(accountNumber) {
-    copyToClipboard(accountNumber, 'Nomor rekening berhasil disalin!');
+    copyToClipboard(accountNumber, 'Nomor rekening berhasil disalin! 📋');
 }
 
 function openMaps() {
     const mapsUrl = 'https://maps.app.goo.gl/3Vv4uWq5aYvK3bH28';
     window.open(mapsUrl, '_blank');
+    showNotification('Membuka lokasi di Google Maps...');
 }
 
 function escapeHtml(unsafe) {
   if (unsafe == null) return '';
   return String(unsafe)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 async function loadGuestMessages() {
   const container = document.getElementById('messagesContainer');
   if (!container) return;
+
   container.innerHTML = '<p class="no-messages">Memuat ucapan...</p>';
 
   try {
     if (typeof db === 'undefined' || !db) throw new Error('Database belum diinisialisasi.');
     
-    const messagesQuery = query(collection(db, 'messages'), where('isPublic', '==', true), orderBy('timestamp', 'desc'));
+    const messagesRef = collection(db, 'messages');
+    const messagesQuery = query(messagesRef, where('isPublic', '==', true), orderBy('timestamp', 'desc'));
     const querySnapshot = await getDocs(messagesQuery);
 
     if (querySnapshot.empty) {
@@ -444,7 +597,7 @@ async function loadGuestMessages() {
       return;
     }
     
-    container.innerHTML = querySnapshot.docs.map(doc => {
+    const messagesHtml = querySnapshot.docs.map(doc => {
       const msg = doc.data();
       const attendanceText = msg.attendance === 'hadir' ? 'Akan Hadir' : 'Tidak Hadir';
       return `
@@ -454,24 +607,17 @@ async function loadGuestMessages() {
         </div>
       `;
     }).join('');
+    container.innerHTML = messagesHtml;
   } catch (error) {
-    console.error('Error memuat pesan:', error);
-    container.innerHTML = '<p class="no-messages">Gagal memuat ucapan.</p>';
+    console.error('Error loading messages:', error);
+    container.innerHTML = '<p class="no-messages">Gagal memuat ucapan. Coba beberapa saat lagi.</p>';
   }
 }
 
-// Interaksi dengan Video YouTube
 window.onYouTubeIframeAPIReady = function() {
   ytPlayer = new YT.Player('weddingVideo', {
-    events: { 
-      'onReady': onPlayerReady,
-      'onStateChange': onPlayerStateChange 
-    }
+    events: { 'onStateChange': onPlayerStateChange }
   });
-}
-
-function onPlayerReady(event) {
-  event.target.mute();
 }
 
 function onPlayerStateChange(event) {
@@ -492,8 +638,8 @@ function showNotification(message) {
     notification.textContent = message;
     notification.className = 'notification';
     notification.style.cssText = `
-        position: fixed; top: 20px; right: 20px; background: var(--wedding-primary);
-        color: var(--wedding-bg);
+        position: fixed; top: 20px; right: 20px; background: var(--wedding-gold);
+        color: var(--wedding-black);
         padding: 1rem 1.5rem; border-radius: 0.5rem;
         z-index: 1003; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         animation: slideIn 0.3s ease-out forwards;
@@ -516,11 +662,16 @@ function showNotification(message) {
         setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
+
 function copyToClipboard(text, successMessage) {
     navigator.clipboard.writeText(text).then(() => {
         showNotification(successMessage || 'Teks berhasil disalin!');
     }).catch(err => {
+        console.error('Gagal menyalin:', err);
         showNotification('Gagal menyalin ❌');
     });
 }
 
+window.addEventListener('beforeunload', () => {
+    if (countdownInterval) clearInterval(countdownInterval);
+});
