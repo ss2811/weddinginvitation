@@ -42,15 +42,19 @@ try {
     console.error("Firebase initialization failed:", error);
 }
 
+// Pastikan initApp selalu terdaftar dan dijalankan setelah DOM siap
 document.addEventListener('DOMContentLoaded', initApp);
 
 function initApp() {
     document.body.classList.add('no-scroll');
     backgroundMusic = document.getElementById('backgroundMusic');
     
-    // Sembunyikan video pembuka di awal agar tidak flash
+    // Sembunyikan video pembuka di awal dan nonaktifkan interaksi mouse
     const videoSection = document.getElementById('session-video');
-    if(videoSection) videoSection.style.opacity = '0';
+    if (videoSection) {
+      videoSection.style.opacity = '0';
+      videoSection.style.pointerEvents = 'none'; // <--- FIX: Mencegah overlay memblokir klik
+    }
 
     setupActionButtons();
     startCountdown();
@@ -226,6 +230,7 @@ function openInvitation() {
   
   if (videoSection && backgroundVideo) {
     videoSection.style.opacity = '1';
+    videoSection.style.pointerEvents = 'auto'; // <--- FIX: Aktifkan kembali interaksi saat video diputar
     backgroundVideo.currentTime = 0;
     backgroundVideo.play();
 
