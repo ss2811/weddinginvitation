@@ -233,51 +233,41 @@ function showMusicEnableButton() {
     document.body.appendChild(musicButton);
 }
 
-// --- PERBAIKAN FINAL: Fungsi Buka Undangan ---
+// REPLACE the old openInvitation function with this new one
 function openInvitation() {
-    const session0 = document.getElementById('session0');
-    const videoSection = document.getElementById('session-video');
-    const backgroundVideo = document.getElementById('backgroundVideo');
-    const mainContent = document.querySelector('.main-content-wrapper');
+  const session0 = document.getElementById('session0');
+  const videoSection = document.getElementById('session-video');
+  const backgroundVideo = document.getElementById('backgroundVideo');
+  const mainContent = document.querySelector('.main-content-wrapper');
 
-    // Fungsi untuk transisi ke konten utama, memastikan hanya berjalan sekali
-    const transitionToMainContent = () => {
-        if (!mainContent || mainContent.classList.contains('is-visible')) return;
+  // 1. Fade out the initial envelope/cover
+  if (session0) {
+    session0.classList.add('fade-out');
+    setTimeout(() => {
+      session0.classList.add('hidden');
+    }, 600); // Hides it after the fade-out animation
+  }
 
-        mainContent.classList.remove('hidden');
-        mainContent.classList.add('is-visible');
-        document.body.classList.remove('no-scroll');
-        videoSection?.classList.add('video-finished');
-        
-        // Putar musik latar setelah transisi dimulai
-        playBackgroundMusic();
-    };
+  // 2. Show the main content and start the video simultaneously
+  if (videoSection && backgroundVideo && mainContent) {
+    videoSection.classList.remove('hidden'); // Make video container visible
+    mainContent.classList.remove('hidden');   // **KEY CHANGE**: Make main content visible now
+    
+    backgroundVideo.play();
 
-    // 1. Sembunyikan layar pembuka
-    session0?.classList.add('fade-out');
+    // 3. When the video finishes, move it to the background using the existing CSS class
+    backgroundVideo.addEventListener('ended', () => {
+        videoSection.classList.add('video-finished');
+    }, { once: true }); // This listener will only run once
 
-    // 2. Coba putar video
-    if (videoSection && backgroundVideo) {
-        videoSection.style.opacity = '1';
-        backgroundVideo.currentTime = 0;
+  } else {
+    // Fallback: If the video elements don't exist, just show the content
+    if (mainContent) mainContent.classList.remove('hidden');
+  }
 
-        const playPromise = backgroundVideo.play();
-
-        if (playPromise !== undefined) {
-            playPromise.then(() => {
-                // Jika video berhasil diputar, tunggu hingga selesai
-                backgroundVideo.addEventListener('ended', transitionToMainContent, { once: true });
-            }).catch(error => {
-                // Jika gagal (autoplay diblokir), langsung transisi
-                console.error("Gagal memutar video, langsung tampilkan konten.", error);
-                transitionToMainContent();
-            });
-        }
-    } else {
-        // Jika tidak ada video, langsung transisi
-        console.log("Elemen video tidak ditemukan, langsung tampilkan konten.");
-        transitionToMainContent();
-    }
+  // 4. Enable page scrolling and play the background music
+  document.body.classList.remove('no-scroll');
+  playBackgroundMusic();
 }
 
 
