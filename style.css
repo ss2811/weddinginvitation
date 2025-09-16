@@ -3,38 +3,17 @@
   /* Primitive Color Tokens */
   --color-white: rgba(255, 255, 255, 1);
   --color-black: rgba(0, 0, 0, 1);
-  --color-cream-50: rgba(252, 252, 249, 1);
-  --color-cream-100: rgba(255, 255, 253, 1);
-  --color-gray-200: rgba(245, 245, 245, 1);
-  --color-gray-300: rgba(167, 169, 169, 1);
-  --color-gray-400: rgba(119, 124, 124, 1);
-  --color-slate-500: rgba(98, 108, 113, 1);
-  --color-brown-600: rgba(94, 82, 64, 1);
-  --color-charcoal-700: rgba(31, 33, 33, 1);
-  --color-charcoal-800: rgba(38, 40, 40, 1);
-  --color-slate-900: rgba(19, 52, 59, 1);
-  --color-teal-300: rgba(50, 184, 198, 1);
-  --color-teal-400: rgba(45, 166, 178, 1);
-  --color-teal-500: rgba(33, 128, 141, 1);
-  --color-teal-600: rgba(29, 116, 128, 1);
-  --color-teal-700: rgba(26, 104, 115, 1);
-  --color-teal-800: rgba(41, 150, 161, 1);
-  --color-red-400: rgba(255, 84, 89, 1);
-  --color-red-500: rgba(192, 21, 47, 1);
-  --color-orange-400: rgba(230, 129, 97, 1);
-  --color-orange-500: rgba(168, 75, 47, 1);
-
-  /* --- PALET WARNA TEMA BARU --- */
-  /* Disesuaikan dari foto yang Anda berikan */
-  --wedding-bg: #283747; /* Biru dongker gelap dari jeans */
-  --wedding-text-main: #FDFEFE; /* Putih/sangat terang */
-  --wedding-text-accent: #E5E7E9; /* Abu-abu terang dari jaket */
-  --wedding-primary: #A9CCE3; /* Biru muda dari sepatu */
-  --wedding-primary-hover: #85C1E9; /* Biru muda lebih cerah */
-  --wedding-glass-bg: rgba(240, 242, 245, 0.1); /* Latar belakang kaca */
-  --wedding-border-color: rgba(169, 204, 227, 0.4); /* Warna border transparan */
-  --wedding-shimmer-1: #EBF5FB;
-  --wedding-shimmer-2: #A9CCE3;
+  
+  /* --- PALET WARNA TEMA EMAS & GELAP BARU --- */
+  --wedding-bg: #2c2c2c; /* Abu-abu sangat gelap */
+  --wedding-text-main: #FDFDFD; /* Putih Gading */
+  --wedding-text-accent: #E0E0E0; /* Abu-abu terang */
+  --wedding-primary: #D4AF37; /* Emas */
+  --wedding-primary-hover: #E0C56E; /* Emas Terang */
+  --wedding-glass-bg: rgba(0, 0, 0, 0.25); /* Latar belakang kaca lebih gelap */
+  --wedding-border-color: rgba(212, 175, 55, 0.5); /* Warna border emas transparan */
+  --wedding-shimmer-1: #FFFFFF;
+  --wedding-shimmer-2: #D4AF37;
 
   /* Typography */
   --font-family-base: "Playfair Display", serif;
@@ -95,17 +74,34 @@ body.no-scroll {
   box-sizing: inherit;
 }
 
-/* --- ANIMASI SAAT SCROLL --- */
+/* --- ANIMASI BARU SAAT SCROLL --- */
 .animate-on-scroll {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .animate-on-scroll.in-view {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Efek animasi delay bertingkat */
+.animate-on-scroll.delay-1 { transition-delay: 0.2s; }
+.animate-on-scroll.delay-2 { transition-delay: 0.4s; }
+.animate-on-scroll.delay-3 { transition-delay: 0.6s; }
+
+/* Animasi khusus untuk foto */
+.photo-frame {
+    transform: scale(0.9);
+    opacity: 0;
+    transition: opacity 1s ease, transform 1s ease;
+}
+.photo-frame.in-view {
+    transform: scale(1);
+    opacity: 1;
+}
+
 
 /* --- Latar Belakang Partikel --- */
 #particle-container {
@@ -125,7 +121,7 @@ body.no-scroll {
     opacity: 0;
 }
 
-/* --- PERUBAHAN: Style untuk Kontainer Lirik --- */
+/* --- Style untuk Kontainer Lirik --- */
 #lyrics-container {
     position: fixed;
     top: 0;
@@ -143,14 +139,14 @@ body.no-scroll {
     width: 90%;
     max-width: 800px;
     padding: 10px 20px;
-    background: transparent; /* Latar belakang dihapus */
+    background: transparent;
     border-radius: 0;
     color: var(--wedding-text-accent);
     text-align: center;
     font-family: var(--font-family-special);
     font-size: 2rem; 
-    font-weight: 700; /* Ditebalkan */
-    font-style: normal; /* Tidak miring */
+    font-weight: 700;
+    font-style: normal;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
     white-space: nowrap; 
 }
@@ -164,20 +160,16 @@ body.no-scroll {
   justify-content: center;
   padding: var(--space-20);
   box-sizing: border-box;
-  /* Pastikan ukuran background 853x1280 agar optimal di mobile */
-  /* CSS ini akan membuat gambar full screen */
   background-size: cover; 
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* Efek parallax */
+  background-attachment: fixed;
   position: relative;
   z-index: 1; 
 }
 
-/* --- PERUBAHAN: Latar Belakang Berbeda untuk Setiap Sesi --- */
-/* GANTI URL BACKGROUND DI BAWAH INI DENGAN FOTO PREWEDDING ANDA */
-/* Rekomendasi ukuran: 853 x 1280 piksel */
-#session0 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.jpg'); }
+/* Latar Belakang Berbeda untuk Setiap Sesi */
+#session0 { background-image: url('background0.jpg'); }
 #session1 { background-image: url('https://images.unsplash.com/photo-1523438885227-12a97a4aa8e2?q=80&w=1974&auto=format&fit=crop'); }
 #session2 { background-image: url('https://images.unsplash.com/photo-1519741497674-6114d1863552?q=80&w=2070&auto=format&fit=crop'); }
 #session3 { background-image: url('https://images.unsplash.com/photo-1542042161-d1912aed0521?q=80&w=2070&auto=format&fit=crop'); }
@@ -186,7 +178,6 @@ body.no-scroll {
 #session6 { background-image: url('https://images.unsplash.com/photo-1515934751635-481eff042b81?q=80&w=2070&auto=format&fit=crop'); }
 #session7 { background-image: url('https://images.unsplash.com/photo-1529333169339-7e3b4abe4485?q=80&w=1955&auto=format&fit=crop'); }
 #session8 { background-image: url('https://images.unsplash.com/photo-1511285560931-3473517d9313?q=80&w=2070&auto=format&fit=crop'); }
-/* Latar belakang untuk sesi slider dan galeri dibuat transparan agar menyatu */
 #gallery-slider-section { background-image: none; background-color: var(--wedding-bg);}
 #session9 { background-image: none; background-color: var(--wedding-bg); padding: 0;}
 
@@ -203,21 +194,15 @@ body.no-scroll {
   border: 2px solid var(--wedding-border-color);
   transition: border-radius 0.5s ease-in-out;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  
-  /* GANTI URL BACKGROUND DI BAWAH JIKA INGIN BOX MEMILIKI GAMBAR */
-  /* background-image: url('URL_FOTO_ANDA_DISINI');
-  background-size: cover;
-  background-position: center;
-  */
 }
 
-/* --- PERUBAHAN: Bentuk Box Konten yang Berbeda --- */
+/* Bentuk Box Konten */
 .shape-1 { border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; }
 .shape-2 { border-radius: 37% 63% 46% 54% / 55% 52% 48% 45%; }
 .shape-3 { border-radius: 40% 60% 60% 40% / 70% 50% 50% 30%; }
 .shape-4 { border-radius: 50%; } /* Lingkaran */
 
-/* --- PERUBAHAN: Sesi 0 (Buka Undangan) --- */
+/* Sesi 0 (Buka Undangan) */
 .session-0 {
   position: fixed;
   top: 0;
@@ -276,11 +261,19 @@ h2 { font-size: var(--font-size-3xl); font-family: var(--font-family-special); }
 h3 { font-size: var(--font-size-2xl); color: var(--wedding-text-accent); }
 p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--space-16); }
 
-/* Spesifik Sesi 0 */
-.invitation-title { min-height: 250px; display: flex; flex-direction: column; justify-content: center; color: var(--wedding-text-main); text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); }
+/* --- PERUBAHAN: Spesifik Sesi 0 --- */
+.invitation-title { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-start; /* Pindahkan ke atas */
+    padding-top: 15vh; /* Beri jarak dari atas */
+    color: var(--wedding-text-main); 
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    height: 60vh; /* Tentukan tinggi agar tombol tidak terlalu naik */
+}
 .invitation-title h1 { font-size: 3.5rem; }
-.couple-names { font-size: 2.5rem; }
-.wedding-date { font-size: 1.5rem; font-weight: 600; margin-bottom: var(--space-32); }
+.couple-names { font-size: 2.5rem; min-height: 40px; }
+.wedding-date { font-size: 1.5rem; font-weight: 600; min-height: 25px; }
 
 /* Hitung Mundur */
 .countdown-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-12); margin: var(--space-32) 0; }
@@ -329,7 +322,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .message-name { color: var(--wedding-primary); }
 .message-text { color: var(--wedding-text-accent); }
 
-/* --- PERUBAHAN: Sesi Video --- */
+/* Sesi Video */
 .main-content-wrapper { overflow-y: auto; height: 100vh; scroll-behavior: smooth; position: relative; z-index: 5; }
 .session-video {
   position: fixed; top: 0; left: 0;
@@ -339,22 +332,32 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   transition: opacity 1s ease-in-out;
   z-index: 20;
 }
-/* Setelah video selesai, akan menghilang secara perlahan */
 .session-video.video-finished {
     opacity: 0;
-    pointer-events: none; /* Tidak bisa diklik */
-    z-index: -1; /* Pindah ke lapisan paling belakang */
+    pointer-events: none;
+    z-index: -1;
 }
 .session-video video { width: 100vw; height: 100vh; object-fit: cover; }
 
 /* Tombol Aksi */
 .btn { padding: var(--space-12) var(--space-24); border-radius: var(--radius-base); font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; border: none; }
 .btn--primary { background: var(--wedding-primary); color: var(--wedding-bg); }
-.btn--primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(169, 204, 227, 0.4); background: var(--wedding-primary-hover); }
+.btn--primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); background: var(--wedding-primary-hover); }
 .btn--outline { background: transparent; color: var(--wedding-text-main); border: 2px solid var(--wedding-primary); }
 .btn--outline:hover { background: var(--wedding-primary); color: var(--wedding-bg); }
 
-/* --- SESI BARU: GALERI FOTO AUTO-SLIDE --- */
+/* --- Tombol Musik dengan Ikon SVG --- */
+.music-toggle-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--wedding-bg);
+    transition: transform 0.3s ease;
+}
+.music-toggle-btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* GALERI FOTO AUTO-SLIDE */
 #gallery-slider-section {
     padding: 0;
     overflow: hidden;
@@ -371,7 +374,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 .slider-track {
     display: flex;
-    /* Lebar slide (300px) * Jumlah slide (12) */
     width: calc(300px * 12);
     animation: scroll 60s linear infinite;
 }
@@ -386,14 +388,21 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     object-fit: cover;
     border-radius: var(--radius-lg);
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    /* Animasi untuk gambar galeri */
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 1s ease, transform 1s ease;
+}
+.slide.in-view img {
+    opacity: 1;
+    transform: scale(1);
 }
 @keyframes scroll {
     0% { transform: translateX(0); }
-    /* Lebar slide (300px) * Setengah jumlah slide (6) */
     100% { transform: translateX(calc(-300px * 6)); } 
 }
 
-/* --- PERUBAHAN: SESI 9 (Galeri Video Full Width) --- */
+/* SESI 9 (Galeri Video Full Width) */
 #session9 {
     height: 100vh;
     padding: 0;
@@ -413,7 +422,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     position: relative;
     width: 100%;
     height: 100%;
-    padding-bottom: 0; /* Override */
+    padding-bottom: 0;
     border-radius: 0;
     overflow: hidden;
     border: none;
