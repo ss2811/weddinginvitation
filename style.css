@@ -221,7 +221,8 @@ body.no-scroll {
   backdrop-filter: none;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* Pindahkan grup konten ke atas */
+  padding-top: 20vh; /* Atur jarak dari atas layar */
   align-items: center;
   height: 100vh;
 }
@@ -265,11 +266,11 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .invitation-title { 
     display: flex; 
     flex-direction: column; 
-    justify-content: flex-start; /* Pindahkan ke atas */
-    padding-top: 15vh; /* Beri jarak dari atas */
+    justify-content: center; /* Pusatkan teks di dalam bloknya sendiri */
+    align-items: center;
     color: var(--wedding-text-main); 
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-    height: 60vh; /* Tentukan tinggi agar tombol tidak terlalu naik */
+    margin-bottom: 5vh; /* Beri jarak ke tombol di bawahnya */
 }
 .invitation-title h1 { font-size: 3.5rem; }
 .couple-names { font-size: 2.5rem; min-height: 40px; }
