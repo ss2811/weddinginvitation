@@ -233,41 +233,53 @@ function showMusicEnableButton() {
     document.body.appendChild(musicButton);
 }
 
-// --- PERBAIKAN: Fungsi Buka Undangan yang Lebih Andal ---
+// --- PERBAIKAN FINAL: Fungsi Buka Undangan ---
 function openInvitation() {
-  const session0 = document.getElementById('session0');
-  const videoSection = document.getElementById('session-video');
-  const backgroundVideo = document.getElementById('backgroundVideo');
-  const mainContent = document.querySelector('.main-content-wrapper');
+    const session0 = document.getElementById('session0');
+    const videoSection = document.getElementById('session-video');
+    const backgroundVideo = document.getElementById('backgroundVideo');
+    const mainContent = document.querySelector('.main-content-wrapper');
 
-  const showMainContent = () => {
-      mainContent?.classList.remove('hidden');
-      document.body.classList.remove('no-scroll');
-      videoSection?.classList.add('video-finished');
-  };
+    // Fungsi untuk transisi ke konten utama, memastikan hanya berjalan sekali
+    const transitionToMainContent = () => {
+        if (!mainContent || mainContent.classList.contains('is-visible')) return;
 
-  session0?.classList.add('fade-out');
-  playBackgroundMusic();
+        mainContent.classList.remove('hidden');
+        mainContent.classList.add('is-visible');
+        document.body.classList.remove('no-scroll');
+        videoSection?.classList.add('video-finished');
+        
+        // Putar musik latar setelah transisi dimulai
+        playBackgroundMusic();
+    };
 
-  if (videoSection && backgroundVideo) {
-    videoSection.style.opacity = '1';
-    backgroundVideo.currentTime = 0;
-    
-    const playPromise = backgroundVideo.play();
+    // 1. Sembunyikan layar pembuka
+    session0?.classList.add('fade-out');
 
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        backgroundVideo.addEventListener('ended', showMainContent, { once: true });
-      }).catch(error => {
-        console.error("Gagal memutar video pembuka, langsung tampilkan konten.", error);
-        showMainContent();
-      });
+    // 2. Coba putar video
+    if (videoSection && backgroundVideo) {
+        videoSection.style.opacity = '1';
+        backgroundVideo.currentTime = 0;
+
+        const playPromise = backgroundVideo.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                // Jika video berhasil diputar, tunggu hingga selesai
+                backgroundVideo.addEventListener('ended', transitionToMainContent, { once: true });
+            }).catch(error => {
+                // Jika gagal (autoplay diblokir), langsung transisi
+                console.error("Gagal memutar video, langsung tampilkan konten.", error);
+                transitionToMainContent();
+            });
+        }
+    } else {
+        // Jika tidak ada video, langsung transisi
+        console.log("Elemen video tidak ditemukan, langsung tampilkan konten.");
+        transitionToMainContent();
     }
-  } else {
-    console.log("Elemen video tidak ditemukan, langsung tampilkan konten.");
-    showMainContent();
-  }
 }
+
 
 // Hitung Mundur
 function startCountdown() {
@@ -489,10 +501,29 @@ function showNotification(message) {
     const notification = document.createElement('div');
     notification.textContent = message;
     notification.className = 'notification';
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background: var(--wedding-primary);
+        color: var(--wedding-bg);
+        padding: 1rem 1.5rem; border-radius: 0.5rem;
+        z-index: 1003; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        animation: slideIn 0.3s ease-out forwards;
+        max-width: 300px;
+        word-wrap: break-word;
+    `;
+    const styleId = 'notification-styles';
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+            @keyframes slideIn { from { transform: translateX(110%); } to { transform: translateX(0); } }
+            @keyframes slideOut { from { transform: translateX(0); } to { transform: translateX(110%); } }
+        `;
+        document.head.appendChild(style);
+    }
     document.body.appendChild(notification);
     setTimeout(() => {
-        notification.classList.add('fade-out');
-        setTimeout(() => notification.remove(), 500);
+        notification.style.animation = 'slideOut 0.3s ease-out forwards';
+        setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
 function copyToClipboard(text, successMessage) {
