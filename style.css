@@ -177,7 +177,7 @@ body.no-scroll {
 /* --- PERUBAHAN: Latar Belakang Berbeda untuk Setiap Sesi --- */
 /* GANTI URL BACKGROUND DI BAWAH INI DENGAN FOTO PREWEDDING ANDA */
 /* Rekomendasi ukuran: 853 x 1280 piksel */
-#session0 { background-image: url('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1980&auto=format&fit=crop'); }
+#session0 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.jpg'); }
 #session1 { background-image: url('https://images.unsplash.com/photo-1523438885227-12a97a4aa8e2?q=80&w=1974&auto=format&fit=crop'); }
 #session2 { background-image: url('https://images.unsplash.com/photo-1519741497674-6114d1863552?q=80&w=2070&auto=format&fit=crop'); }
 #session3 { background-image: url('https://images.unsplash.com/photo-1542042161-d1912aed0521?q=80&w=2070&auto=format&fit=crop'); }
