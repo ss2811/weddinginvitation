@@ -2,7 +2,7 @@
 
 // Menggunakan import dari URL CDN Firebase karena ini adalah modul ES
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, orderBy, query, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Variabel global
 let backgroundMusic;
@@ -18,7 +18,6 @@ const lyricsData = [
     { time: 24, text: "Menceritakan keindahan dengan melodi dan lagu" },
     { time: 28, text: "Ah, pengantin cahaya; mahkota bulan purnama menampakkannya" },
     { time: 34, text: "Sebagai bintang yang memancar cahaya demi cahaya" },
-    // ... (lirik lainnya tetap sama)
 ];
 let currentLyricIndex = -1; 
 
@@ -49,11 +48,10 @@ function initApp() {
     document.body.classList.add('no-scroll');
     backgroundMusic = document.getElementById('backgroundMusic');
     
-    // Sembunyikan video pembuka di awal dan nonaktifkan interaksi mouse
     const videoSection = document.getElementById('session-video');
     if (videoSection) {
       videoSection.style.opacity = '0';
-      videoSection.style.pointerEvents = 'none'; // <--- FIX: Mencegah overlay memblokir klik
+      videoSection.style.pointerEvents = 'none';
     }
 
     setupActionButtons();
@@ -61,13 +59,12 @@ function initApp() {
     loadGuestMessages();
     showMusicEnableButton();
     createBackgroundParticles();
-    setupGenericScrollAnimations(); // Setup animasi untuk semua elemen
+    setupGenericScrollAnimations();
     setupLyrics();
 }
 
 // --- FUNGSI ANIMASI PARTIKEL BUNGA ---
 function createBackgroundParticles() {
-    // ... (fungsi ini tidak diubah, tetap sama)
     const container = document.getElementById('particle-container');
     if (!container) return;
     const daisyImgUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/main/daisy.png';
@@ -87,7 +84,6 @@ function createBackgroundParticles() {
     });
 }
 function animateParticle(particle) {
-    // ... (fungsi ini tidak diubah, tetap sama)
     gsap.set(particle, { x: Math.random() * window.innerWidth, y: -100, rotation: Math.random() * 360, opacity: 0 });
     const duration = Math.random() * 15 + 10;
     const delay = Math.random() * 10;
@@ -127,12 +123,11 @@ function setupActionButtons() {
     });
 }
 
-// --- PERUBAHAN: Setup Animasi Scroll Generik ---
+// --- Setup Animasi Scroll Generik ---
 function setupGenericScrollAnimations() {
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     if (!animatedElements.length) return;
 
-    // Observer untuk ayat suci yang diketik
     const typewriterObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -153,7 +148,6 @@ function setupGenericScrollAnimations() {
     const session2 = document.getElementById('session2');
     if (session2) typewriterObserver.observe(session2);
 
-    // Observer untuk animasi fade-in-up umum
     const generalObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -174,7 +168,6 @@ function setupLyrics() {
     }
 }
 function updateScrollingLyrics() {
-    // ... (fungsi ini tidak diubah, tetap sama)
     const currentTime = backgroundMusic.currentTime;
     const lyricsContainer = document.getElementById('lyrics-container');
     if (!lyricsContainer) return;
@@ -208,7 +201,6 @@ function resumeBackgroundMusic() {
     }
 }
 function showMusicEnableButton() {
-    // ... (fungsi ini tidak diubah, tetap sama)
     const musicButton = document.createElement('button');
     musicButton.innerHTML = '🔇'; musicButton.className = 'btn music-toggle-btn';
     musicButton.style.cssText = `position: fixed; bottom: 20px; right: 20px; z-index: 1001; background: var(--wedding-primary); color: var(--wedding-bg); border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2);`;
@@ -219,7 +211,7 @@ function showMusicEnableButton() {
     document.body.appendChild(musicButton);
 }
 
-// --- PERUBAHAN: Fungsi Buka Undangan ---
+// --- Fungsi Buka Undangan ---
 function openInvitation() {
   const session0 = document.getElementById('session0');
   const videoSection = document.getElementById('session-video');
@@ -230,18 +222,16 @@ function openInvitation() {
   
   if (videoSection && backgroundVideo) {
     videoSection.style.opacity = '1';
-    videoSection.style.pointerEvents = 'auto'; // <--- FIX: Aktifkan kembali interaksi saat video diputar
+    videoSection.style.pointerEvents = 'auto';
     backgroundVideo.currentTime = 0;
     backgroundVideo.play();
 
     backgroundVideo.addEventListener('ended', () => {
         mainContent?.classList.remove('hidden');
         document.body.classList.remove('no-scroll');
-        // Video tidak di-hidden, hanya dibuat menghilang secara visual
         videoSection.classList.add('video-finished');
     }, { once: true });
   } else {
-    // Fallback jika video tidak ada
     mainContent?.classList.remove('hidden');
     document.body.classList.remove('no-scroll');
   }
@@ -251,7 +241,6 @@ function openInvitation() {
 
 // Hitung Mundur
 function startCountdown() {
-    // ... (fungsi ini tidak diubah, tetap sama)
     const weddingDate = new Date('2025-09-24T07:00:00+08:00');
     const els = {
         d: document.getElementById('days'), h: document.getElementById('hours'),
@@ -273,30 +262,167 @@ function startCountdown() {
     countdownInterval = setInterval(update, 1000);
 }
 
-// Fungsi lainnya (Save Date, Share, RSVP, dll.)
-async function saveTheDate() { /* ... tidak berubah ... */ }
-async function shareInvitation() { /* ... tidak berubah ... */ }
-async function handleRsvpSubmission() { /* ... tidak berubah ... */ }
-async function submitMessageToFirebase(name, message, attendance, isPublic) { /* ... tidak berubah ... */ }
-function showPrivacyPopup() { /* ... tidak berubah ... */ }
-function copyAccount(accountNumber) { /* ... tidak berubah ... */ }
-function openMaps() { /* ... tidak berubah ... */ }
-function escapeHtml(unsafe) { /* ... tidak berubah ... */ }
-async function loadGuestMessages() { /* ... tidak berubah ... */ }
+// --- FUNGSI UTAMA TOMBOL-TOMBOL ---
 
-// --- PERUBAHAN: Interaksi dengan Video YouTube ---
+function saveTheDate() {
+    const event = {
+        title: "Pernikahan Suriansyah & Sonia",
+        startDate: "2025-09-24",
+        startTime: "07:00",
+        endDate: "2025-09-24",
+        endTime: "17:00",
+        location: "Masjid Jabal Rahmah Mandin, Banjarmasin",
+        description: "Acara Pernikahan Suriansyah & Sonia Agustina Oemar"
+    };
+    const content = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "BEGIN:VEVENT",
+        `URL:${document.location.href}`,
+        `DTSTART:${event.startDate.replace(/-/g, "")}T${event.startTime.replace(/:/g, "")}00`,
+        `DTEND:${event.endDate.replace(/-/g, "")}T${event.endTime.replace(/:/g, "")}00`,
+        `SUMMARY:${event.title}`,
+        `DESCRIPTION:${event.description}`,
+        `LOCATION:${event.location}`,
+        "END:VEVENT",
+        "END:VCALENDAR"
+    ].join("\n");
+    const blob = new Blob([content], { type: "text/calendar;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "pernikahan-sonia-ancah.ics";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showNotification("Kalender telah diunduh!");
+}
+
+async function shareInvitation() {
+    const shareData = {
+        title: 'Undangan Pernikahan: Sonia & Ancah',
+        text: 'Kami mengundang Anda untuk menghadiri hari bahagia kami.',
+        url: window.location.href
+    };
+    try {
+        if (navigator.share) {
+            await navigator.share(shareData);
+        } else {
+            throw new Error('Web Share API not supported');
+        }
+    } catch (err) {
+        copyToClipboard(window.location.href, 'Link undangan berhasil disalin!');
+    }
+}
+
+async function handleRsvpSubmission() {
+    const nameEl = document.getElementById('guestName');
+    const messageEl = document.getElementById('guestMessage');
+    const attendanceEl = document.getElementById('attendance');
+
+    const name = nameEl.value.trim();
+    const message = messageEl.value.trim();
+    const attendance = attendanceEl.value;
+
+    if (!name) {
+        showNotification("Mohon isi nama Anda.");
+        return;
+    }
+    if (!attendance) {
+        showNotification("Mohon pilih konfirmasi kehadiran.");
+        return;
+    }
+
+    try {
+        await submitMessageToFirebase(name, message, attendance);
+        showNotification("Terima kasih atas ucapan dan konfirmasinya!");
+        nameEl.value = '';
+        messageEl.value = '';
+        attendanceEl.value = '';
+        loadGuestMessages();
+    } catch (error) {
+        console.error("Error submitting RSVP:", error);
+        showNotification("Maaf, terjadi kesalahan saat mengirim ucapan.");
+    }
+}
+
+async function submitMessageToFirebase(name, message, attendance) {
+    if (!db) {
+        console.error("Firestore is not initialized.");
+        return;
+    }
+    await addDoc(collection(db, "guestbook"), {
+        name: name,
+        message: message,
+        attendance: attendance,
+        timestamp: serverTimestamp()
+    });
+}
+
+function copyAccount(accountNumber) {
+    copyToClipboard(accountNumber, `Nomor rekening ${accountNumber} berhasil disalin!`);
+}
+
+function openMaps() {
+    const locationQuery = "Masjid Jabal Rahmah Mandin";
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationQuery)}`;
+    window.open(url, '_blank');
+}
+
+function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+}
+
+async function loadGuestMessages() {
+    const container = document.getElementById('messagesContainer');
+    const noMessagesEl = document.getElementById('noMessages');
+    if (!container || !db) return;
+
+    try {
+        const q = query(collection(db, "guestbook"), orderBy("timestamp", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        container.innerHTML = ''; // Kosongkan kontainer
+        if (querySnapshot.empty) {
+            container.appendChild(noMessagesEl);
+            noMessagesEl.style.display = 'block';
+        } else {
+            noMessagesEl.style.display = 'none';
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const attendanceStatus = data.attendance === 'hadir' ? 'Hadir' : 'Tidak Hadir';
+                const messageItem = `
+                    <div class="message-item">
+                        <p class="message-name">${escapeHtml(data.name)} <span style="font-size: 0.8em; color: #aaa;">(${attendanceStatus})</span></p>
+                        <p class="message-text">${escapeHtml(data.message) || '<i>Tidak ada pesan.</i>'}</p>
+                    </div>
+                `;
+                container.innerHTML += messageItem;
+            });
+        }
+    } catch (error) {
+        console.error("Error loading messages: ", error);
+        container.innerHTML = '<p>Gagal memuat ucapan.</p>';
+    }
+}
+
+
+// --- INTERAKSI VIDEO YOUTUBE ---
 window.onYouTubeIframeAPIReady = function() {
   ytPlayer = new YT.Player('weddingVideo', {
     events: { 
-      'onReady': onPlayerReady, // Event saat player siap
+      'onReady': onPlayerReady,
       'onStateChange': onPlayerStateChange 
     }
   });
 }
 
-// Fungsi ini akan dipanggil saat player siap
 function onPlayerReady(event) {
-  event.target.mute(); // Langsung buat video tanpa suara
+  event.target.mute();
 }
 
 function onPlayerStateChange(event) {
@@ -305,13 +431,73 @@ function onPlayerStateChange(event) {
     isVideoPlaying = true;
   } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
     isVideoPlaying = false;
-    // Beri jeda sedikit sebelum melanjutkan musik
     setTimeout(() => {
         if (!isVideoPlaying) resumeBackgroundMusic();
     }, 500);
   }
 }
 
-// Fungsi Notifikasi
-function showNotification(message) { /* ... tidak berubah ... */ }
-function copyToClipboard(text, successMessage) { /* ... tidak berubah ... */ }
+// --- FUNGSI NOTIFIKASI & UTILITAS ---
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--wedding-primary);
+        color: var(--wedding-bg);
+        padding: 12px 20px;
+        border-radius: 8px;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.3s ease, bottom 0.3s ease;
+        font-family: var(--font-family-base);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    `;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.bottom = '90px';
+    }, 10);
+
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.bottom = '80px';
+        setTimeout(() => document.body.removeChild(notification), 300);
+    }, 3000);
+}
+
+function copyToClipboard(text, successMessage) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            showNotification(successMessage);
+        }).catch(err => {
+            console.error('Failed to copy using navigator: ', err);
+            fallbackCopyTextToClipboard(text, successMessage);
+        });
+    } else {
+        fallbackCopyTextToClipboard(text, successMessage);
+    }
+}
+
+function fallbackCopyTextToClipboard(text, successMessage) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed"; 
+    textArea.style.top = "-9999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+        document.execCommand('copy');
+        showNotification(successMessage);
+    } catch (err) {
+        console.error('Fallback copy failed: ', err);
+        showNotification('Gagal menyalin teks.');
+    }
+    document.body.removeChild(textArea);
+}
+
