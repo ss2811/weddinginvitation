@@ -9,10 +9,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
-    <!-- Container untuk partikel bunga yang akan selalu ada -->
+    <!-- Container untuk partikel bunga daisy dan sakura yang akan selalu ada -->
     <div id="particle-container"></div>
 
-    <!-- Container untuk lirik lagu -->
+    <!-- Container untuk lirik yang akan berjalan dari atas ke bawah -->
     <div id="lyrics-container"></div>
 
     <audio id="backgroundMusic" loop>
@@ -20,32 +20,31 @@
     </audio>
 
     <section class="session session-0 active" id="session0">
-        <!-- Konten di sesi ini tidak lagi memiliki box/bingkai -->
         <div class="session-content">
-            <div class="invitation-title animate-on-scroll">
+            <div class="invitation-title">
                 <h1 class="shimmer-text">Wedding Invitation</h1>
                 <h2 class="shimmer-text couple-names">of</h2>
                 <h2 class="shimmer-text couple-names">Sonia & Ancah</h2>
                 <p class="wedding-date shimmer-text">24 September 2025</p>
             </div>
-            <button class="btn btn--primary open-invitation animate-on-scroll" id="openInvitationBtn">
+            <button class="btn btn--primary open-invitation" id="openInvitationBtn">
                 Buka Undangan
             </button>
         </div>
     </section>
     
-    <!-- Sesi video pembuka -->
-    <section id="session-video" class="session-video">
-      <video id="backgroundVideo" muted playsinline>
+    <section id="session-video" class="session-video hidden">
+      <!-- Atribut 'loop' dihapus agar video hanya diputar sekali -->
+      <video id="backgroundVideo" autoplay muted playsinline>
         <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/Sonia%20&%20Ancah.mp4" type="video/mp4" />
       </video>
     </section>
 
     <div class="main-content-wrapper hidden">
-        <section class="session" id="session1">
-            <div class="session-content shape-1">
-                <h2 class="animate-on-scroll">Menuju Hari Bahagia</h2>
-                <div class="countdown-container animate-on-scroll">
+        <section class="session session-1" id="session1">
+            <div class="session-content">
+                <h2>Menuju Hari Bahagia</h2>
+                <div class="countdown-container">
                     <div class="countdown-item">
                         <span id="days">00</span>
                         <label>Hari</label>
@@ -63,33 +62,41 @@
                         <label>Detik</label>
                     </div>
                 </div>
-                <div class="action-buttons animate-on-scroll">
+
+                <!-- ANDA BISA MENARUH FOTO DI TENGAH SESI INI -->
+                <div class="photo-placeholder">
+                    <!-- Ganti elemen <p> di bawah dengan tag <img> untuk foto Anda -->
+                    <!-- Contoh: <img src="path/ke/foto_anda.jpg" alt="Foto Prewedding"> -->
+                    <p>Tempat untuk foto prewedding Anda</p>
+                </div>
+
+                <div class="action-buttons">
                     <button class="btn btn--primary" id="saveDateBtn">Save The Date</button>
                     <button class="btn btn--outline" id="shareBtn">Bagikan Undangan</button>
                 </div>
             </div>
         </section>
 
-        <section class="session" id="session2">
-            <div class="session-content shape-2">
+        <section class="session session-2" id="session2">
+            <div class="session-content">
                 <div class="bismillah-section">
-                    <h2 class="arabic-text shimmer-text animate-on-scroll">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</h2>
-                    <p class="translation animate-on-scroll">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</p>
-                    <blockquote class="quran-verse animate-on-scroll" id="quran-verse-typewriter">
+                    <h2 class="arabic-text shimmer-text">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</h2>
+                    <p class="translation">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</p>
+                    <blockquote class="quran-verse" id="quran-verse-typewriter">
                         </blockquote>
                 </div>
             </div>
         </section>
 
-        <section class="session" id="session3">
-            <div class="session-content shape-3">
+        <section class="session session-3" id="session3">
+            <div class="session-content">
                 <div class="invitation-content">
-                    <p class="greeting animate-on-scroll">Yth. Nama Tamu</p>
-                    <p class="invitation-text animate-on-scroll">
+                    <p class="greeting">Yth. Nama Tamu</p>
+                    <p class="invitation-text">
                         Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i
                         untuk menghadiri dan memberikan doa restu pada acara pernikahan kami:
                     </p>
-                    <div class="couple-photos animate-on-scroll">
+                    <div class="couple-photos">
                         <div class="photo-container">
                             <div class="photo-frame">
                                 <img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/groom.jpeg" alt="Suriansyah" class="couple-photo">
@@ -110,10 +117,10 @@
             </div>
         </section>
 
-        <section class="session" id="session4">
-            <div class="session-content shape-4">
-                <h2 class="shimmer-text animate-on-scroll">Detail Acara</h2>
-                <div class="event-details animate-on-scroll">
+        <section class="session session-4" id="session4">
+            <div class="session-content">
+                <h2 class="shimmer-text">Detail Acara</h2>
+                <div class="event-details">
                     <div class="event-item">
                         <h3>Akad Nikah</h3>
                         <div class="event-info">
@@ -129,16 +136,16 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn--primary animate-on-scroll" id="openMapsBtn">
+                <button class="btn btn--primary" id="openMapsBtn">
                     📍 Buka Peta Lokasi
                 </button>
             </div>
         </section>
 
-        <section class="session" id="session5">
-            <div class="session-content shape-1">
-                <h2 class="animate-on-scroll">RSVP & Ucapan</h2>
-                <div class="rsvp-form animate-on-scroll">
+        <section class="session session-5" id="session5">
+            <div class="session-content">
+                <h2>RSVP & Ucapan</h2>
+                <div class="rsvp-form">
                     <div class="form-group">
                         <label class="form-label">Nama Lengkap</label>
                         <input type="text" class="form-control" id="guestName" placeholder="Masukkan nama Anda">
@@ -164,14 +171,14 @@
             </div>
         </section>
 
-        <section class="session" id="session6">
-            <div class="session-content shape-2">
-                <h2 class="animate-on-scroll">Kado Digital</h2>
-                <p class="gift-text animate-on-scroll">
+        <section class="session session-6" id="session6">
+            <div class="session-content">
+                <h2>Kado Cashless</h2>
+                <p class="gift-text">
                     Doa restu dari Bapak/Ibu/Saudara/i merupakan karunia yang sangat berarti bagi kami.
                     Dan jika ingin memberikan kado, dapat melalui rekening berikut:
                 </p>
-                <div class="bank-accounts animate-on-scroll">
+                <div class="bank-accounts">
                     <div class="bank-item">
                         <h3>Bank Mandiri</h3>
                         <div class="account-info">
@@ -192,41 +199,19 @@
             </div>
         </section>
 
-        <section class="session" id="session7">
-            <div class="session-content shape-3">
-                <h2 class="animate-on-scroll">Ucapan & Doa</h2>
-                <div class="messages-container animate-on-scroll" id="messagesContainer">
+        <section class="session session-7" id="session7">
+            <div class="session-content">
+                <h2>Ucapan & Doa</h2>
+                <div class="messages-container" id="messagesContainer">
                     <p id="noMessages" class="no-messages">Belum ada ucapan dari tamu</p>
                 </div>
             </div>
         </section>
-        
-        <!-- SESI BARU: Galeri Foto Auto-Slide -->
-        <section class="session" id="gallery-slider-section">
-            <div class="slider-container">
-                <div class="slider-track">
-                    <!-- Ganti 'URL_FOTO' dengan link foto prewedding Anda -->
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1523438885227-12a97a4aa8e2?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 1"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1519741497674-6114d1863552?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 2"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1542042161-d1912aed0521?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 3"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1525962898597-c453b05d10a2?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 4"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 5"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1515934751635-481eff042b81?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 6"></div>
-                    <!-- Duplikat untuk efek looping yang mulus -->
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1523438885227-12a97a4aa8e2?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 1"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1519741497674-6114d1863552?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 2"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1542042161-d1912aed0521?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 3"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1525962898597-c453b05d10a2?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 4"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 5"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1515934751635-481eff042b81?q=80&w=800&auto=format&fit=crop" alt="Foto Prewedding 6"></div>
-                </div>
-            </div>
-        </section>
 
-        <section class="session" id="session8">
-            <div class="session-content shape-4">
-                <h2 class="shimmer-text animate-on-scroll">Terima Kasih</h2>
-                <div class="thank-you-content animate-on-scroll">
+        <section class="session session-8" id="session8">
+            <div class="session-content">
+                <h2 class="shimmer-text">Terima Kasih</h2>
+                <div class="thank-you-content">
                     <p>
                         Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga
                         apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu
@@ -243,9 +228,9 @@
             </div>
         </section>
 
-        <!-- SESI 9: Full-width dan video tanpa suara -->
-        <section class="session" id="session9">
+        <section class="session session-9" id="session9">
             <div class="session-content">
+                <h2>Galeri</h2>
                 <div class="video-container">
                     <iframe id="weddingVideo"
                             src="https://www.youtube.com/embed/xXRjeURBYAE?si=42mew4CteNsfwwQF&enablejsapi=1"
@@ -259,8 +244,7 @@
             </div>
         </section>
 
-    </div>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    </div><script src="https://www.youtube.com/iframe_api"></script>
     <script type="module" src="app.js"></script>
 </body>
 </html>
