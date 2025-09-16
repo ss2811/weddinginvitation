@@ -342,7 +342,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* Setelah video selesai, akan menghilang secara perlahan */
 .session-video.video-finished {
     opacity: 0;
-    pointer-events: none; /* Tidak bisa diklik */
+     /* Tidak bisa diklik */
     z-index: -1; /* Pindah ke lapisan paling belakang */
 }
 .session-video video { width: 100vw; height: 100vh; object-fit: cover; }
@@ -433,3 +433,4 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   .countdown-container { grid-template-columns: repeat(2, 1fr); }
   .couple-photos { flex-direction: column; gap: var(--space-14); }
 }
+
