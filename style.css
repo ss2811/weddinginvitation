@@ -169,7 +169,7 @@ body.no-scroll {
 }
 
 /* Latar Belakang Berbeda untuk Setiap Sesi */
-#session0 { background-image: url('background0.jpg'); }
+#session0 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.jpg'); }
 #session1 { background-image: url('https://images.unsplash.com/photo-1523438885227-12a97a4aa8e2?q=80&w=1974&auto=format&fit=crop'); }
 #session2 { background-image: url('https://images.unsplash.com/photo-1519741497674-6114d1863552?q=80&w=2070&auto=format&fit=crop'); }
 #session3 { background-image: url('https://images.unsplash.com/photo-1542042161-d1912aed0521?q=80&w=2070&auto=format&fit=crop'); }
@@ -442,3 +442,4 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   .countdown-container { grid-template-columns: repeat(2, 1fr); }
   .couple-photos { flex-direction: column; gap: var(--space-14); }
 }
+
