@@ -132,9 +132,6 @@ function setupGenericScrollAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('in-view');
-            } else {
-                // Opsi: hapus kelas agar animasi bisa berulang saat scroll ke atas
-                // entry.target.classList.remove('in-view');
             }
         });
     }, { threshold: 0.1 });
@@ -183,7 +180,7 @@ function resumeBackgroundMusic() {
     }
 }
 
-// --- PERUBAHAN: Placeholder Ikon Suara (PNG) ---
+// --- Placeholder Ikon Suara (PNG) ---
 function showMusicEnableButton() {
     const musicButton = document.createElement('button');
     musicButton.className = 'btn music-toggle-btn';
@@ -225,7 +222,6 @@ function openInvitation() {
 
   session0?.classList.add('fade-out');
   
-  // Tunda pemutaran video agar fade-out session0 terlihat
   setTimeout(() => {
     if (videoSection && backgroundVideo) {
       videoSection.style.opacity = '1';
@@ -242,7 +238,7 @@ function openInvitation() {
       mainContent?.classList.remove('hidden');
       document.body.classList.remove('no-scroll');
     }
-  }, 500); // 500ms delay
+  }, 500);
 
   playBackgroundMusic();
 }
