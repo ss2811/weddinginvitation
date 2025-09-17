@@ -118,26 +118,32 @@ body.no-scroll {
   justify-content: center;
   padding: var(--space-20);
   box-sizing: border-box;
-  background-size: cover; 
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
   position: relative;
-  /* Membuat stacking context agar z-index anak elemen berfungsi */
-  isolation: isolate;
+  isolation: isolate; /* Membuat stacking context agar z-index anak elemen berfungsi */
+}
+
+/* PERUBAHAN: Latar belakang dipindah ke pseudo-element */
+.session::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efek parallax */
+    z-index: -2; /* Di belakang partikel */
 }
 
 /* Latar Belakang Sesi */
-#session0 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp'); }
-#session1 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp'); }
-#session2 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp'); }
-#session3 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background3.webp'); }
-#session4 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp'); }
-#session5 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp'); }
-#session6 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp'); }
-#session7 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background7.webp'); }
-#session8 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp'); }
-#gallery-slider-section, #session9 { background-image: none; background-color: var(--wedding-bg);}
+#session0::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp'); }
+#session1::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp'); }
+#session2::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp'); }
+#session3::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background3.webp'); }
+#session4::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp'); }
+#session5::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp'); }
+#session6::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp'); }
+#session7::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background7.webp'); }
+#session8::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp'); }
+#gallery-slider-section::before, #session9::before { background-image: none; background-color: var(--wedding-bg);}
 
 /* --- PERUBAHAN: Desain Box Konten Baru --- */
 .session-content {
@@ -201,7 +207,7 @@ body.no-scroll {
 .corner-deco.bottom-right {
     bottom: -20px; right: -20px;
     background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/main/sakura.png');
-    transform: rotate(180deg);
+    transform: scaleY(-1) scaleX(-1);
 }
 
 
@@ -216,7 +222,11 @@ body.no-scroll {
   background: transparent; border: none; box-shadow: none; backdrop-filter: none;
   display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh;
 }
-.session-0 .session-content::before { display: none; }
+/* Menghilangkan border berkilau & bunga di sesi pembuka */
+.session-0 .session-content::before,
+.session-0 .corner-deco { 
+    display: none; 
+}
 
 /* Efek Shimmer (Kilau) */
 .shimmer-text {
@@ -333,6 +343,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* SESI 9 (Galeri Video Full Width) */
 #session9 { height: 100vh; padding: 0; }
 #session9 .session-content { max-width: 100%; width: 100%; height: 100%; padding: 0; border-radius: 0; border: none; background: transparent; box-shadow: none; backdrop-filter: none; }
+#session9 .session-content::before, #session9 .corner-deco { display: none; }
 #session9 .video-container { position: relative; width: 100%; height: 100%; border-radius: 0; overflow: hidden; border: none; }
 #session9 .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
