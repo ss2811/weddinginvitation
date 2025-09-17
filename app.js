@@ -203,17 +203,31 @@ function resumeBackgroundMusic() {
     }
 }
 
-// --- PERUBAHAN: Ikon sound diperbaiki menggunakan SVG ---
+// --- PERUBAHAN: Ikon sound disiapkan untuk diisi GIF ---
 function showMusicEnableButton() {
     const musicButton = document.createElement('button');
     
-    const playIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: block;"><path d="M8 5v14l11-7z"></path></svg>`;
-    const pauseIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: block;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>`;
-
-    musicButton.innerHTML = playIconSVG;
+    // --- GANTI URL GIF DI SINI ---
+    // Ganti URL placeholder ini dengan link ke file GIF Anda
+    const musicOnGifUrl = 'URL_GIF_MUSIK_MENYALA.gif'; 
+    const musicOffGifUrl = 'URL_GIF_MUSIK_MATI.gif';
+    
+    const musicIcon = document.createElement('img');
+    musicIcon.src = musicOffGifUrl; // Kondisi awal, musik diasumsikan mati
+    musicIcon.alt = 'Ikon Kontrol Musik';
+    musicIcon.style.cssText = `width: 100%; height: 100%; object-fit: cover;`;
+    
+    musicButton.appendChild(musicIcon);
     musicButton.className = 'btn music-toggle-btn';
     musicButton.setAttribute('aria-label', 'Play atau Pause Musik');
-    musicButton.style.cssText = `position: fixed; bottom: 20px; right: 20px; z-index: 1001; background: var(--wedding-primary); color: var(--wedding-bg); border: none; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s ease-out;`;
+    musicButton.style.cssText = `
+        position: fixed; bottom: 20px; right: 20px; z-index: 1001; 
+        background: var(--wedding-primary); color: var(--wedding-bg); 
+        border: none; width: 50px; height: 50px; border-radius: 50%; 
+        display: flex; align-items: center; justify-content: center; 
+        cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.3); 
+        transition: transform 0.2s ease-out; padding: 10px;
+    `;
     
     musicButton.addEventListener('mouseover', () => { musicButton.style.transform = 'scale(1.1)'; });
     musicButton.addEventListener('mouseout', () => { musicButton.style.transform = 'scale(1)'; });
@@ -227,10 +241,10 @@ function showMusicEnableButton() {
     });
     
     backgroundMusic.addEventListener('play', () => {
-        musicButton.innerHTML = pauseIconSVG;
+        musicIcon.src = musicOnGifUrl;
     });
     backgroundMusic.addEventListener('pause', () => {
-        musicButton.innerHTML = playIconSVG;
+        musicIcon.src = musicOffGifUrl;
     });
 
     document.body.appendChild(musicButton);
@@ -526,4 +540,3 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
-
