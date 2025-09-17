@@ -122,7 +122,7 @@ body.no-scroll {
   /* Properti yang dipindahkan ke sini */
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* Efek parallax */
+  background-attachment: scroll; /* Efek parallax */
 }
 
 /* KOSONGKAN ATAU HAPUS BLOK .session::before */
