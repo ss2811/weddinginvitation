@@ -285,7 +285,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Ukuran khusus untuk teks ayat di Sesi 2 */
 #session2 .quran-verse {
-  font-size: 0.7rem;
+  font-size: 0.4rem;
   line-height: 1.5;
   text-align: center; /* DITAMBAHKAN: Membuat teks rata tengah */
 }
@@ -305,7 +305,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     font-style: italic; 
     text-align: justify; 
 }
-.quran-verse cite { display: block; margin-top: var(--space-16); font-size: 0.7rem; font-weight: 600; text-align: right; }
+.quran-verse cite { display: block; margin-top: var(--space-16); font-size: 0.4rem; font-weight: 600; text-align: right; }
 
 /* Foto Pasangan */
 .couple-photos { display: flex; align-items: center; justify-content: center; gap: var(--space-32); margin: var(--space-32) 0; }
@@ -409,7 +409,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Ukuran font khusus untuk Sesi 3 */
 #session3 p {
-  font-size: 0.7rem; /* Ukuran paragraf diperkecil */
+  font-size: 0.4rem; /* Ukuran paragraf diperkecil */
 }
 
 #session3 h3 {
@@ -419,6 +419,12 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 #session3 .couple-divider {
   font-size: 28px; /* DITAMBAHKAN: Ukuran simbol '&' diperkecil */
 }
+
 #session8 p {
-  font-size: 0.7rem;
+  font-size: 0.4rem;
 }
+
+#session6 p {
+  font-size: 0.4rem;
+}
+
