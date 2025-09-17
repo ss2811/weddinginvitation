@@ -13,6 +13,10 @@
   --wedding-border-color: rgba(169, 204, 227, 0.4);
   --wedding-shimmer-1: #000000;
   --wedding-shimmer-2: #A9CCE3;
+  --color-sakura-pink: #FFB7C5;
+  --color-gold: #FFD700;
+  --color-daisy: #FFFACD; /* Kuning pucat seperti bunga daisy */
+  --color-white: #FFFFFF;
 
   /* Typography */
   --font-family-base: "Playfair Display", serif;
@@ -173,9 +177,15 @@ body.no-scroll {
     z-index: -1;
     margin: -1px; /* Disesuaikan agar pas dengan border 1px */
     border-radius: inherit; /* Mengikuti lengkungan induknya */
-    background: linear-gradient(120deg, var(--wedding-primary), var(--wedding-text-main), var(--wedding-primary));
+    background: linear-gradient(120deg, 
+        var(--color-sakura-pink), 
+        var(--color-gold), 
+        var(--color-daisy), 
+        var(--color-white), 
+        var(--color-sakura-pink)
+    );
     background-size: 300% 300%;
-    animation: glow 3s linear infinite;
+    animation: glow 8s linear infinite;
 }
 @keyframes glow {
     0% { background-position: 0% 50%; }
