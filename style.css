@@ -26,14 +26,17 @@
 
   /* --- PALET WARNA TEMA BARU --- */
   --wedding-bg: #283747;
-  --wedding-text-main: #FFFFFF; /* PERUBAHAN: Dibuat putih solid */
+  --wedding-text-main: #FFFFFF; 
   --wedding-text-accent: #E5E7E9;
-  --wedding-primary: #A9CCE3;
+  --wedding-primary: #A9CCE3; /* Biru Muda */
   --wedding-primary-hover: #85C1E9;
   --wedding-glass-bg: rgba(240, 242, 245, 0.1);
   --wedding-border-color: rgba(169, 204, 227, 0.4);
-  --wedding-shimmer-1: #EBF5FB;
-  --wedding-shimmer-2: #A9CCE3;
+  /* PERUBAHAN: Warna shimmer diubah ke Gold, Biru Muda, dan Hitam */
+  --wedding-gold: #D4AF37;
+  --wedding-shimmer-blue: #A9CCE3;
+  --wedding-shimmer-black: #000000;
+
 
   /* Typography */
   --font-family-base: "Playfair Display", serif;
@@ -106,14 +109,14 @@ body.no-scroll {
   transform: translateY(0);
 }
 
-/* --- Latar Belakang Partikel --- */
+/* --- PERUBAHAN: Latar Belakang Partikel & Lirik dipindah ke belakang --- */
 #particle-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1000; /* PERUBAHAN: Efek bunga & lirik agar selalu di atas */
+    z-index: 2; /* Di belakang konten utama */
     pointer-events: none;
 }
 
@@ -124,14 +127,13 @@ body.no-scroll {
     opacity: 0;
 }
 
-/* --- PERUBAHAN: Style untuk Kontainer Lirik --- */
 #lyrics-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1001; /* PERUBAHAN: Efek bunga & lirik agar selalu di atas */
+    z-index: 3; /* Di belakang konten utama */
     pointer-events: none;
     overflow: hidden; 
 }
@@ -142,9 +144,10 @@ body.no-scroll {
     width: auto;
     max-width: 90%;
     padding: 10px 25px;
-    background: rgba(0, 0, 0, 0.3); /* PERUBAHAN: background tulisan tipis2 */
+    /* PERUBAHAN: Background lirik dihilangkan */
+    background: transparent;
     border-radius: var(--radius-full);
-    color: var(--wedding-text-main); /* PERUBAHAN: Warna tulisan dibuat putih */
+    color: var(--wedding-text-main);
     text-align: center;
     font-family: var(--font-family-special);
     font-size: 2rem; 
@@ -185,24 +188,32 @@ body.no-scroll {
 #session9 { background-image: none; background-color: var(--wedding-bg); padding: 0;}
 
 
-/* PERUBAHAN: Box konten dihapus secara visual */
+/* PERUBAHAN: Box konten diberi background tipis */
 .session-content {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.3); /* Latar belakang tipis */
   text-align: center;
   max-width: 600px;
   width: 100%;
-  backdrop-filter: none;
+  backdrop-filter: blur(5px); /* Efek glass */
   z-index: 10;
   padding: var(--space-32);
-  border: none;
-  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-/* Bentuk Box Konten yang Berbeda (dibiarkan jika diperlukan lagi) */
+/* Bentuk Box Konten yang Berbeda */
 .shape-1 { border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; }
 .shape-2 { border-radius: 37% 63% 46% 54% / 55% 52% 48% 45%; }
 .shape-3 { border-radius: 40% 60% 60% 40% / 70% 50% 50% 30%; }
 .shape-4 { border-radius: 50%; } /* Lingkaran */
+/* Untuk sesi pembuka, background tetap transparan */
+#session0 .session-content {
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+}
+
 
 /* Sesi 0 (Buka Undangan) */
 .session-0 {
@@ -224,15 +235,15 @@ body.no-scroll {
   height: 100vh;
 }
 
-/* Efek Shimmer (Kilau) */
+/* PERUBAHAN: Efek Shimmer (Kilau) disesuaikan warnanya */
 .shimmer-text {
   background: linear-gradient(
     60deg,
-    var(--wedding-shimmer-2) 0%,
-    var(--wedding-shimmer-1) 30%,
-    var(--wedding-text-main) 50%,
-    var(--wedding-shimmer-1) 70%,
-    var(--wedding-shimmer-2) 100%
+    var(--wedding-gold) 0%,
+    var(--wedding-shimmer-blue) 35%,
+    var(--wedding-shimmer-black) 50%,
+    var(--wedding-shimmer-blue) 65%,
+    var(--wedding-gold) 100%
   );
   background-size: 300% 300%;
   -webkit-background-clip: text;
@@ -248,7 +259,7 @@ body.no-scroll {
   100% { background-position: 0% 50%; }
 }
 
-/* PERUBAHAN: Tipografi diberi shadow agar mudah dibaca */
+/* Tipografi diberi shadow agar mudah dibaca */
 h1, h2, h3 {
   color: var(--wedding-text-main);
   margin-bottom: var(--space-16);
@@ -270,6 +281,14 @@ p {
 .couple-names { font-size: 2.5rem; }
 .wedding-date { font-size: 1.5rem; font-weight: 600; margin-bottom: var(--space-32); }
 
+/* PERUBAHAN: Diberi space antar tombol */
+#session1 .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-16);
+}
+
+
 /* Hitung Mundur */
 .countdown-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-12); margin: var(--space-32) 0; }
 .countdown-item { background: rgba(0,0,0,0.2); padding: var(--space-12); border-radius: var(--radius-lg); border: 2px solid var(--wedding-border-color); }
@@ -279,7 +298,14 @@ p {
 /* Ayat Suci */
 .arabic-text { font-family: var(--font-family-arabic); font-size: 2.5rem; color: var(--wedding-primary); margin-bottom: var(--space-20); direction: rtl; text-shadow: 0 0 10px var(--wedding-primary); }
 .translation { font-style: italic; color: var(--wedding-text-accent); font-size: 1.1rem; margin-bottom: var(--space-24); }
-.quran-verse { background: rgba(0,0,0, 0.3); padding: var(--space-20); border-radius: var(--radius-md); border-left: 4px solid var(--wedding-primary); font-style: italic; text-align: justify; }
+/* PERUBAHAN: Kotak pada ayat dihilangkan */
+.quran-verse { 
+    background: transparent;
+    padding: 0;
+    border: none;
+    font-style: italic; 
+    text-align: justify; 
+}
 .quran-verse cite { display: block; margin-top: var(--space-16); color: var(--wedding-text-accent); font-size: 0.9rem; font-weight: 600; text-align: right; }
 
 /* Foto Pasangan */
@@ -298,6 +324,11 @@ p {
 .event-item h3 { color: var(--wedding-primary); }
 .event-info strong { color: var(--wedding-text-accent); }
 .event-details { display: flex; flex-direction: column; gap: var(--space-24); margin: var(--space-32) 0; }
+
+/* PERUBAHAN: Tombol kirim ucapan diberi jarak ke bawah */
+#session5 .action-buttons {
+    margin-top: var(--space-32);
+}
 
 /* Form RSVP */
 .form-label { color: var(--wedding-primary); display: block; text-align: left; margin-bottom: 8px;}
@@ -359,7 +390,7 @@ p {
 .slider-track {
     display: flex;
     width: calc(300px * 12);
-    animation: scroll 30s linear infinite; /* PERUBAHAN: Dipercepat dari 60s */
+    animation: scroll 30s linear infinite;
 }
 .slide {
     height: 350px;
