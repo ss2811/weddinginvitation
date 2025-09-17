@@ -6,12 +6,12 @@
   
   /* --- PALET WARNA TEMA BARU --- */
   --wedding-bg: #283747;
-  --wedding-text-main: #FFFFFF;
-  --wedding-text-accent: #EBF5FB;
+  --wedding-text-main: #000000;
+  --wedding-text-accent: var(--wedding-primary);
   --wedding-primary: #A9CCE3;
   --wedding-primary-hover: #85C1E9;
   --wedding-border-color: rgba(169, 204, 227, 0.4);
-  --wedding-shimmer-1: #FFFFFF;
+  --wedding-shimmer-1: #000000;
   --wedding-shimmer-2: #A9CCE3;
 
   /* Typography */
@@ -145,7 +145,7 @@ body.no-scroll {
 /* --- PERUBAHAN: Desain Box Konten Baru --- */
 .session-content {
   background: rgba(40, 55, 71, 0.05); /* 92% transparan */
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(1px);
   text-align: center;
   max-width: 600px;
   width: 100%;
@@ -213,15 +213,15 @@ body.no-scroll {
     display: none; 
 }
 
-/* Efek Shimmer (Kilau) */
+/* Efek Shimmer DIUBAH menjadi Efek Denyut Warna */
 .shimmer-text {
-  background: linear-gradient(60deg, var(--wedding-shimmer-2) 0%, var(--wedding-shimmer-1) 50%, var(--wedding-shimmer-2) 100%);
-  background-size: 300% 300%;
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 4s ease-in-out infinite; font-weight: 700;
+  /* Hapus semua properti background-clip */
+  color: var(--wedding-text-main); /* Atur warna awal ke hitam */
+  font-weight: 700;
+  
+  /* Terapkan animasi baru */
+  animation: pulseColor 2s steps(1, end) infinite;
 }
-
 /* Tipografi */
 h1, h2, h3 { color: var(--wedding-text-main); margin-bottom: var(--space-16); text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
 h1 { font-size: var(--font-size-4xl); font-family: var(--font-family-special); }
@@ -350,3 +350,14 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   .corner-deco.bottom-left, .corner-deco.bottom-right { bottom: -10px; }
 }
 
+@keyframes pulseColor {
+  0% {
+    color: var(--wedding-text-main); /* Warna Hitam */
+  }
+  50% {
+    color: var(--wedding-primary); /* Warna Biru Muda */
+  }
+  100% {
+    color: var(--wedding-text-main); /* Kembali ke Warna Hitam */
+  }
+}
