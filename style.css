@@ -393,11 +393,24 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* GALERI FOTO AUTO-SLIDE */
 #gallery-slider-section { padding: 0; overflow: hidden; height: 50vh; min-height: 400px; }
 .slider-container { width: 100%; height: 100%; display: flex; align-items: center; -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); }
-.slider-track { display: flex; width: calc(300px * 12); animation: scroll 60s linear infinite; }
+.slider-track {
+  display: flex;
+  /* Lebar disesuaikan: 11 foto x 2 (duplikat) = 22 slide */
+  width: calc(300px * 22); 
+  /* Durasi dipercepat menjadi 60 detik */
+  animation: scroll 60s linear infinite;
+}
 .slide { height: 350px; width: 300px; padding: 15px; }
 .slide img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-@keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-300px * 6)); } }
-
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Transformasi disesuaikan: 11 foto x 300px */
+    transform: translateX(calc(-300px * 11));
+  }
+}
 /* SESI 9 (Galeri Video Full Width) */
 #session9 { height: 100vh; padding: 0; }
 #session9 .session-content { max-width: 100%; width: 100%; height: 100%; padding: 0; border-radius: 0; border: none; background: transparent; box-shadow: none; backdrop-filter: none; }
@@ -409,7 +422,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Ukuran font khusus untuk Sesi 3 */
 #session3 p {
-  font-size: 0.4rem; /* Ukuran paragraf diperkecil */
+  font-size: 0.6rem; /* Ukuran paragraf diperkecil */
 }
 
 #session3 h3 {
@@ -421,10 +434,10 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 #session8 p {
-  font-size: 0.4rem;
+  font-size: 0.5rem;
 }
 
 #session6 p {
-  font-size: 0.4rem;
+  font-size: 0.6rem;
 }
 
