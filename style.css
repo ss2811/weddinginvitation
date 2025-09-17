@@ -158,18 +158,6 @@ body.no-scroll {
   background-clip: padding-box;
 }
 
-/* Efek garis berkilau */
-.session-content::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-    z-index: -1;
-    margin: -2px;
-    border-radius: inherit;
-    background: linear-gradient(120deg, var(--wedding-primary), var(--wedding-text-main), var(--wedding-primary));
-    background-size: 300% 300%;
-    animation: glow 4s linear infinite;
-}
 
 @keyframes glow {
     0% { background-position: 0% 50%; }
