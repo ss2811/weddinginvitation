@@ -132,6 +132,9 @@ function setupGenericScrollAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('in-view');
+            } else {
+                // Opsi: hapus kelas agar animasi bisa berulang saat scroll ke atas
+                // entry.target.classList.remove('in-view');
             }
         });
     }, { threshold: 0.1 });
@@ -222,21 +225,24 @@ function openInvitation() {
 
   session0?.classList.add('fade-out');
   
-  if (videoSection && backgroundVideo) {
-    videoSection.style.opacity = '1';
-    videoSection.style.pointerEvents = 'auto';
-    backgroundVideo.currentTime = 0;
-    backgroundVideo.play();
+  // Tunda pemutaran video agar fade-out session0 terlihat
+  setTimeout(() => {
+    if (videoSection && backgroundVideo) {
+      videoSection.style.opacity = '1';
+      videoSection.style.pointerEvents = 'auto';
+      backgroundVideo.currentTime = 0;
+      backgroundVideo.play();
 
-    backgroundVideo.addEventListener('ended', () => {
-        mainContent?.classList.remove('hidden');
-        document.body.classList.remove('no-scroll');
-        videoSection.classList.add('video-finished');
-    }, { once: true });
-  } else {
-    mainContent?.classList.remove('hidden');
-    document.body.classList.remove('no-scroll');
-  }
+      backgroundVideo.addEventListener('ended', () => {
+          mainContent?.classList.remove('hidden');
+          document.body.classList.remove('no-scroll');
+          videoSection.classList.add('video-finished');
+      }, { once: true });
+    } else {
+      mainContent?.classList.remove('hidden');
+      document.body.classList.remove('no-scroll');
+    }
+  }, 500); // 500ms delay
 
   playBackgroundMusic();
 }
