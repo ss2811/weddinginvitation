@@ -119,35 +119,32 @@ body.no-scroll {
   padding: var(--space-20);
   box-sizing: border-box;
   position: relative;
-  isolation: isolate; /* Membuat stacking context agar z-index anak elemen berfungsi */
+  /* Properti yang dipindahkan ke sini */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Efek parallax */
 }
 
-/* PERUBAHAN: Latar belakang dipindah ke pseudo-element */
+/* KOSONGKAN ATAU HAPUS BLOK .session::before */
 .session::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed; /* Efek parallax */
-    z-index: -2; /* Di belakang partikel */
+    /* Blok ini tidak lagi dibutuhkan, hapus isinya atau seluruh blok */
 }
 
 /* Latar Belakang Sesi */
-#session0::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp'); }
-#session1::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp'); }
-#session2::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp'); }
-#session3::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background3.webp'); }
-#session4::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp'); }
-#session5::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp'); }
-#session6::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp'); }
-#session7::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background7.webp'); }
-#session8::before { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp'); }
-#gallery-slider-section::before, #session9::before { background-image: none; background-color: var(--wedding-bg);}
+#session0: { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp'); }
+#session1: { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp'); }
+#session2: { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp'); }
+#session3: { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background3.webp'); }
+#session4: { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp'); }
+#session5: { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp'); }
+#session6: { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp'); }
+#session7: { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background7.webp'); }
+#session8: { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp'); }
+#gallery-slider-section::before, #session9: { background-image: none; background-color: var(--wedding-bg);}
 
 /* --- PERUBAHAN: Desain Box Konten Baru --- */
 .session-content {
-  background: rgba(40, 55, 71, 0.01); /* 92% transparan */
+  background: rgba(40, 55, 71, 0.05); /* 92% transparan */
   backdrop-filter: blur(5px);
   text-align: center;
   max-width: 600px;
