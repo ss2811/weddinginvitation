@@ -82,7 +82,7 @@ body.no-scroll {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1; /* Sesuai permintaan, akan berada di belakang semua konten */
+    z-index: 2; /* Sesuai permintaan, akan berada di belakang semua konten */
 }
 
 .particle {
@@ -119,6 +119,7 @@ body.no-scroll {
   padding: var(--space-20);
   box-sizing: border-box;
   position: relative;
+  z-index: 1;
   /* Properti yang dipindahkan ke sini */
   background-size: cover;
   background-position: center;
@@ -304,7 +305,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .message-item { background: rgba(0,0,0, 0.2); padding: var(--space-16); border-radius: var(--radius-xl); margin-bottom: var(--space-16); border-left: 3px solid var(--wedding-primary); text-align: left; }
 
 /* Sesi Video */
-.main-content-wrapper { overflow-y: auto; height: 100vh; scroll-behavior: smooth; position: relative; z-index: 5; background-color: transparent; }
+.main-content-wrapper { overflow-y: auto; height: 100vh; scroll-behavior: smooth; background-color: transparent; }
 .session-video {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000;
   display: flex; align-items: center; justify-content: center;
