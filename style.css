@@ -19,7 +19,7 @@
   --color-white: #FFFFFF;
 
   /* Typography */
-  --font-family-base: "Romanesco", cursive;
+  --font-family-base: "Vast Shadow", serif;
   --font-family-special: "Dancing Script", cursive;
   --font-family-arabic: "Amiri", serif;
   --font-size-base: 28px;
@@ -257,9 +257,9 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Spesifik Sesi 0 */
 .invitation-title { min-height: 250px; display: flex; flex-direction: column; justify-content: center; }
-.invitation-title h1 { font-size: 3.5rem; }
+.invitation-title h1 { font-size: 3rem; }
 .couple-names { font-size: 2.5rem; }
-.wedding-date { font-size: 1.5rem; font-weight: 600; margin-bottom: var(--space-32); }
+.wedding-date { font-size: 2.2rem; font-weight: 600; margin-bottom: var(--space-32); }
 
 /* PERUBAHAN: Spasi antar tombol */
 #session1 .action-buttons {
@@ -334,10 +334,16 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .btn--outline { background: transparent; color: var(--wedding-text-main); border: 2px solid var(--wedding-primary); }
 .btn--outline:hover { background: var(--wedding-primary); color: var(--wedding-bg); }
 
+/* Ukuran khusus untuk tombol buka undangan */
+#openInvitationBtn {
+  padding: 16px 36px; /* Padding diperbesar */
+  font-size: 1.1rem;   /* Ukuran font diperbesar */
+}
+
 /* Tombol Musik (Placeholder PNG) */
 .music-toggle-btn {
     position: fixed; bottom: 20px; right: 20px; z-index: 1001; 
-    background: transparent; border: none; width: 50px; height: 50px; 
+    background: transparent; border: none; width: 75px; height: 75px; 
     padding: 0; cursor: pointer; transition: transform 0.2s ease-out;
 }
 .music-toggle-btn:hover { transform: scale(1.1); }
