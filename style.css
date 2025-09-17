@@ -26,17 +26,16 @@
 
   /* --- PALET WARNA TEMA BARU --- */
   --wedding-bg: #283747;
-  --wedding-text-main: #FFFFFF; 
-  --wedding-text-accent: #E5E7E9;
+  /* PERUBAHAN: Warna teks utama dan aksen diubah */
+  --wedding-text-main: #FFFFFF;
+  --wedding-text-accent: #EBF5FB; /* Biru sangat muda / Off-white */
   --wedding-primary: #A9CCE3; /* Biru Muda */
   --wedding-primary-hover: #85C1E9;
   --wedding-glass-bg: rgba(240, 242, 245, 0.1);
   --wedding-border-color: rgba(169, 204, 227, 0.4);
-  /* PERUBAHAN: Warna shimmer diubah ke Gold, Biru Muda, dan Hitam */
-  --wedding-gold: #D4AF37;
-  --wedding-shimmer-blue: #A9CCE3;
-  --wedding-shimmer-black: #000000;
-
+  /* PERUBAHAN: Shimmer disederhanakan menjadi putih dan biru muda */
+  --wedding-shimmer-1: #FFFFFF;
+  --wedding-shimmer-2: #A9CCE3;
 
   /* Typography */
   --font-family-base: "Playfair Display", serif;
@@ -109,15 +108,18 @@ body.no-scroll {
   transform: translateY(0);
 }
 
-/* --- PERUBAHAN: Latar Belakang Partikel & Lirik dipindah ke belakang --- */
-#particle-container {
+/* PERUBAHAN: Penyesuaian Z-Index */
+#particle-container, #lyrics-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2; /* Di belakang konten utama */
+    z-index: 2; /* Di belakang konten utama, di depan background sesi */
     pointer-events: none;
+}
+#lyrics-container {
+    overflow: hidden; 
 }
 
 .particle {
@@ -127,24 +129,12 @@ body.no-scroll {
     opacity: 0;
 }
 
-#lyrics-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 3; /* Di belakang konten utama */
-    pointer-events: none;
-    overflow: hidden; 
-}
-
 .lyric-line {
     position: absolute;
     left: 50%;
     width: auto;
     max-width: 90%;
     padding: 10px 25px;
-    /* PERUBAHAN: Background lirik dihilangkan */
     background: transparent;
     border-radius: var(--radius-full);
     color: var(--wedding-text-main);
@@ -171,7 +161,7 @@ body.no-scroll {
   background-repeat: no-repeat;
   background-attachment: fixed;
   position: relative;
-  z-index: 1; 
+  z-index: 1; /* Lapisan paling dasar untuk setiap sesi */
 }
 
 /* Latar Belakang Berbeda untuk Setiap Sesi */
@@ -188,30 +178,52 @@ body.no-scroll {
 #session9 { background-image: none; background-color: var(--wedding-bg); padding: 0;}
 
 
-/* PERUBAHAN: Box konten diberi background tipis */
+/* PERUBAHAN: Box konten dibuat lebih estetik */
 .session-content {
-  background: rgba(0, 0, 0, 0.3); /* Latar belakang tipis */
+  background: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(19, 27, 35, 0.37);
   text-align: center;
   max-width: 600px;
   width: 100%;
-  backdrop-filter: blur(5px); /* Efek glass */
-  z-index: 10;
+  z-index: 10; /* Konten di atas segalanya */
   padding: var(--space-32);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  position: relative;
+  overflow: hidden;
 }
+.session-content::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: inherit; /* Mengikuti bentuk parent */
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+  -webkit-mask:
+     linear-gradient(#fff 0 0) content-box,
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
 
 /* Bentuk Box Konten yang Berbeda */
 .shape-1 { border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; }
 .shape-2 { border-radius: 37% 63% 46% 54% / 55% 52% 48% 45%; }
 .shape-3 { border-radius: 40% 60% 60% 40% / 70% 50% 50% 30%; }
 .shape-4 { border-radius: 50%; } /* Lingkaran */
+
 /* Untuk sesi pembuka, background tetap transparan */
 #session0 .session-content {
     background: transparent;
     backdrop-filter: none;
     border: none;
     box-shadow: none;
+}
+#session0 .session-content::before {
+    display: none; /* Sembunyikan border glowing */
 }
 
 
@@ -239,11 +251,9 @@ body.no-scroll {
 .shimmer-text {
   background: linear-gradient(
     60deg,
-    var(--wedding-gold) 0%,
-    var(--wedding-shimmer-blue) 35%,
-    var(--wedding-shimmer-black) 50%,
-    var(--wedding-shimmer-blue) 65%,
-    var(--wedding-gold) 100%
+    var(--wedding-shimmer-2) 0%,
+    var(--wedding-shimmer-1) 50%,
+    var(--wedding-shimmer-2) 100%
   );
   background-size: 300% 300%;
   -webkit-background-clip: text;
@@ -259,15 +269,20 @@ body.no-scroll {
   100% { background-position: 0% 50%; }
 }
 
-/* Tipografi diberi shadow agar mudah dibaca */
-h1, h2, h3 {
+/* PERUBAHAN: Warna tipografi disesuaikan */
+h1, h2 {
   color: var(--wedding-text-main);
+  margin-bottom: var(--space-16);
+  text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.8);
+}
+h3 {
+  color: var(--wedding-primary); /* Biru muda sebagai aksen */
   margin-bottom: var(--space-16);
   text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.8);
 }
 h1 { font-size: var(--font-size-4xl); font-family: var(--font-family-special); }
 h2 { font-size: var(--font-size-3xl); font-family: var(--font-family-special); }
-h3 { font-size: var(--font-size-2xl); color: var(--wedding-text-accent); }
+h3 { font-size: var(--font-size-2xl); }
 p { 
   color: var(--wedding-text-accent); 
   line-height: 1.6; 
@@ -281,13 +296,11 @@ p {
 .couple-names { font-size: 2.5rem; }
 .wedding-date { font-size: 1.5rem; font-weight: 600; margin-bottom: var(--space-32); }
 
-/* PERUBAHAN: Diberi space antar tombol */
 #session1 .action-buttons {
     display: flex;
     justify-content: center;
     gap: var(--space-16);
 }
-
 
 /* Hitung Mundur */
 .countdown-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-12); margin: var(--space-32) 0; }
@@ -298,7 +311,6 @@ p {
 /* Ayat Suci */
 .arabic-text { font-family: var(--font-family-arabic); font-size: 2.5rem; color: var(--wedding-primary); margin-bottom: var(--space-20); direction: rtl; text-shadow: 0 0 10px var(--wedding-primary); }
 .translation { font-style: italic; color: var(--wedding-text-accent); font-size: 1.1rem; margin-bottom: var(--space-24); }
-/* PERUBAHAN: Kotak pada ayat dihilangkan */
 .quran-verse { 
     background: transparent;
     padding: 0;
@@ -321,11 +333,9 @@ p {
 
 /* Detail Acara */
 .event-item { background: rgba(0,0,0,0.2); padding: var(--space-24); border-radius: var(--radius-lg); border: 1px solid var(--wedding-border-color); }
-.event-item h3 { color: var(--wedding-primary); }
 .event-info strong { color: var(--wedding-text-accent); }
 .event-details { display: flex; flex-direction: column; gap: var(--space-24); margin: var(--space-32) 0; }
 
-/* PERUBAHAN: Tombol kirim ucapan diberi jarak ke bawah */
 #session5 .action-buttons {
     margin-top: var(--space-32);
 }
@@ -445,3 +455,4 @@ p {
   .countdown-container { grid-template-columns: repeat(2, 1fr); }
   .couple-photos { flex-direction: column; gap: var(--space-14); }
 }
+
