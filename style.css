@@ -283,6 +283,13 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     gap: var(--space-16);
 }
 
+/* Ukuran khusus untuk teks ayat di Sesi 2 */
+#session2 .quran-verse {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center; /* DITAMBAHKAN: Membuat teks rata tengah */
+}
+
 /* Hitung Mundur */
 .countdown-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-12); margin: var(--space-32) 0; }
 .countdown-item { background: transparent; padding: var(--space-12); border-radius: var(--radius-xl); border: 2px solid var(--wedding-border-color); }
@@ -405,10 +412,3 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   .corner-deco.bottom-left, .corner-deco.bottom-right { bottom: -10px; }
 }
 */
-
-/* Ukuran khusus untuk teks ayat di Sesi 2 */
-#session2 .quran-verse {
-  font-size: 0.9rem;
-  line-height: 1.5;
-  text-align: center; /* DITAMBAHKAN: Membuat teks rata tengah */
-}
