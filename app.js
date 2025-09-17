@@ -47,7 +47,9 @@ document.addEventListener('DOMContentLoaded', initApp);
 function initApp() {
     document.body.classList.add('no-scroll');
     backgroundMusic = document.getElementById('backgroundMusic');
-    
+    typeWriter('#couple-names-typewriter', 'Ancah & Sonia', () => {
+    typeWriter('#wedding-date-typewriter', '24 September 2025');
+    });
     const videoSection = document.getElementById('session-video');
     if (videoSection) {
       videoSection.style.opacity = '0';
@@ -524,3 +526,4 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
+
