@@ -200,40 +200,40 @@ function resumeBackgroundMusic() {
         backgroundMusic.play().catch(e => console.log('Gagal melanjutkan musik:', e));
     }
 }
+
+// --- PERUBAHAN: Ikon sound diperbaiki menggunakan SVG ---
 function showMusicEnableButton() {
     const musicButton = document.createElement('button');
-    musicButton.className = 'btn music-toggle-btn';
-
-    const pausedIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
-    const playingIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07" class="wave-1"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14" class="wave-2"></path></svg>`;
     
-    musicButton.innerHTML = pausedIcon;
+    const playIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: block;"><path d="M8 5v14l11-7z"></path></svg>`;
+    const pauseIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: block;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>`;
 
+    musicButton.innerHTML = playIconSVG;
+    musicButton.className = 'btn music-toggle-btn';
+    musicButton.setAttribute('aria-label', 'Play atau Pause Musik');
+    musicButton.style.cssText = `position: fixed; bottom: 20px; right: 20px; z-index: 1001; background: var(--wedding-primary); color: var(--wedding-bg); border: none; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s ease-out;`;
+    
+    musicButton.addEventListener('mouseover', () => { musicButton.style.transform = 'scale(1.1)'; });
+    musicButton.addEventListener('mouseout', () => { musicButton.style.transform = 'scale(1)'; });
+    
     musicButton.addEventListener('click', () => {
-        if (backgroundMusic.paused) {
+        if (backgroundMusic.paused) { 
             backgroundMusic.play();
-            musicButton.innerHTML = playingIcon;
-            musicButton.classList.add('playing');
-        } else {
+        } else { 
             backgroundMusic.pause();
-            musicButton.innerHTML = pausedIcon;
-            musicButton.classList.remove('playing');
         }
     });
-
-    // Sinkronisasi ikon saat lagu dimulai oleh 'Buka Undangan'
+    
     backgroundMusic.addEventListener('play', () => {
-        musicButton.innerHTML = playingIcon;
-        musicButton.classList.add('playing');
+        musicButton.innerHTML = pauseIconSVG;
     });
-
     backgroundMusic.addEventListener('pause', () => {
-        musicButton.innerHTML = pausedIcon;
-        musicButton.classList.remove('playing');
+        musicButton.innerHTML = playIconSVG;
     });
 
     document.body.appendChild(musicButton);
 }
+
 
 // --- Fungsi Buka Undangan ---
 function openInvitation() {
