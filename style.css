@@ -122,7 +122,7 @@ body.no-scroll {
   /* Properti yang dipindahkan ke sini */
   background-size: cover;
   background-position: center;
-  background-attachment: scroll; /* Efek parallax */
+  background-attachment: Fixed; /* Efek parallax */
 }
 
 /* KOSONGKAN ATAU HAPUS BLOK .session::before */
@@ -144,21 +144,39 @@ body.no-scroll {
 
 /* --- PERUBAHAN: Desain Box Konten Baru --- */
 .session-content {
-  background: rgba(40, 55, 71, 0.05); /* 92% transparan */
-  backdrop-filter: blur(1px);
+  /* Latar belakang sangat transparan untuk efek kaca */
+  background: rgba(40, 55, 71, 0.1); 
+  
+  /* Efek blur pada background di belakangnya */
+  backdrop-filter: blur(3px);
+  
   text-align: center;
   max-width: 600px;
   width: 100%;
   z-index: 10;
   padding: var(--space-32);
   position: relative;
-  border: 2px solid transparent;
-  border-radius: var(--radius-xl); /* Sudut lebih membulat */
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  
+  /* Garis tepi tipis untuk mempertegas efek kaca */
+  border: 1px solid var(--wedding-border-color); 
+  
+  border-radius: var(--radius-xl); 
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
   background-clip: padding-box;
 }
 
-
+/* Efek garis berkilau DIAKTIFKAN KEMBALI */
+.session-content::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: -1;
+    margin: -1px; /* Disesuaikan agar pas dengan border 1px */
+    border-radius: inherit; /* Mengikuti lengkungan induknya */
+    background: linear-gradient(120deg, var(--wedding-primary), var(--wedding-text-main), var(--wedding-primary));
+    background-size: 300% 300%;
+    animation: glow 3s linear infinite;
+}
 @keyframes glow {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
