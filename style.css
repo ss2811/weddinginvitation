@@ -285,7 +285,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Ukuran khusus untuk teks ayat di Sesi 2 */
 #session2 .quran-verse {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   line-height: 1.5;
   text-align: center; /* DITAMBAHKAN: Membuat teks rata tengah */
 }
@@ -305,7 +305,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     font-style: italic; 
     text-align: justify; 
 }
-.quran-verse cite { display: block; margin-top: var(--space-16); font-size: 0.9rem; font-weight: 600; text-align: right; }
+.quran-verse cite { display: block; margin-top: var(--space-16); font-size: 0.7rem; font-weight: 600; text-align: right; }
 
 /* Foto Pasangan */
 .couple-photos { display: flex; align-items: center; justify-content: center; gap: var(--space-32); margin: var(--space-32) 0; }
@@ -341,7 +341,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   color: var(--wedding-bg);
   border: none;
   padding: 10px 20px; /* DIUBAH: Padding diperbesar */
-  font-size: 14px;     /* DITAMBAHKAN: Ukuran font diatur */
+  font-size: 24px;     /* DITAMBAHKAN: Ukuran font diatur */
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
@@ -409,16 +409,16 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Ukuran font khusus untuk Sesi 3 */
 #session3 p {
-  font-size: 28px; /* Ukuran paragraf diperkecil */
+  font-size: 0.7rem; /* Ukuran paragraf diperkecil */
 }
 
 #session3 h3 {
-  font-size: 28px; /* Ukuran nama mempelai (shimmer text) diperkecil */
+  font-size: 26px; /* Ukuran nama mempelai (shimmer text) diperkecil */
 }
 
 #session3 .couple-divider {
   font-size: 28px; /* DITAMBAHKAN: Ukuran simbol '&' diperkecil */
 }
 #session8 p {
-  font-size: 28px;
+  font-size: 0.7rem;
 }
