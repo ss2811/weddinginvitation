@@ -186,8 +186,8 @@ function showMusicEnableButton() {
     musicButton.className = 'btn music-toggle-btn';
 
     // --- SILAKAN ISI URL PNG ANDA DI SINI ---
-    const musicOnPngUrl = 'URL_PNG_MUSIK_MENYALA.png'; // Ganti dengan URL PNG Anda
-    const musicOffPngUrl = 'URL_PNG_MUSIK_MATI.png';  // Ganti dengan URL PNG Anda
+    const musicOnPngUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/main/on.png'; // CONTOH
+    const musicOffPngUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/main/off.png';  // CONTOH
     
     const musicIcon = document.createElement('img');
     musicIcon.src = musicOffPngUrl; // Kondisi awal, musik mati
