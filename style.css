@@ -336,7 +336,16 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* Kado Digital */
 .bank-item { background: transparent; padding: var(--space-20); border-radius: var(--radius-xl); border: 1px solid var(--wedding-border-color); }
 .account-number { font-weight: 600; }
-.copy-btn { background: var(--wedding-primary); color: var(--wedding-bg); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+.copy-btn {
+  background: var(--wedding-primary);
+  color: var(--wedding-bg);
+  border: none;
+  padding: 10px 20px; /* DIUBAH: Padding diperbesar */
+  font-size: 14px;     /* DITAMBAHKAN: Ukuran font diatur */
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 .copy-btn:hover { background: var(--wedding-primary-hover); transform: scale(1.05); }
 
 /* Ucapan Tamu */
@@ -400,11 +409,16 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Ukuran font khusus untuk Sesi 3 */
 #session3 p {
-  font-size: 14px; /* Ukuran paragraf diperkecil */
+  font-size: 28px; /* Ukuran paragraf diperkecil */
 }
 
 #session3 h3 {
-  font-size: 14px; /* Ukuran nama mempelai (shimmer text) diperkecil */
+  font-size: 28px; /* Ukuran nama mempelai (shimmer text) diperkecil */
 }
 
-
+#session3 .couple-divider {
+  font-size: 28px; /* DITAMBAHKAN: Ukuran simbol '&' diperkecil */
+}
+#session8 p {
+  font-size: 28px;
+}
