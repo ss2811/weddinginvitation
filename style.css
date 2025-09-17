@@ -178,14 +178,12 @@ body.no-scroll {
     margin: -1px; /* Disesuaikan agar pas dengan border 1px */
     border-radius: inherit; /* Mengikuti lengkungan induknya */
     background: linear-gradient(120deg, 
-        var(--color-sakura-pink), 
-        var(--color-gold), 
-        var(--color-daisy), 
+        var(--color-sakura-pink),  
         var(--color-white), 
         var(--color-sakura-pink)
     );
     background-size: 300% 300%;
-    animation: glow 8s linear infinite;
+    animation: glow 4s linear infinite;
 }
 @keyframes glow {
     0% { background-position: 0% 50%; }
