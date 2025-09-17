@@ -7,10 +7,9 @@
   /* --- PALET WARNA TEMA BARU --- */
   --wedding-bg: #283747;
   --wedding-text-main: #FFFFFF;
-  --wedding-text-accent: #EBF5FB; /* Biru sangat muda / Off-white */
-  --wedding-primary: #A9CCE3; /* Biru Muda */
+  --wedding-text-accent: #EBF5FB;
+  --wedding-primary: #A9CCE3;
   --wedding-primary-hover: #85C1E9;
-  --wedding-glass-bg: rgba(240, 242, 245, 0.1);
   --wedding-border-color: rgba(169, 204, 227, 0.4);
   /* Shimmer disederhanakan menjadi putih dan biru muda */
   --wedding-shimmer-1: #FFFFFF;
@@ -35,7 +34,7 @@
   --space-32: 32px;
 
   /* Border Radius */
-  --radius-lg: 12px;
+  --radius-xl: 24px; /* PERUBAHAN: Sudut lebih membulat */
 }
 
 /* Base styles */
@@ -65,19 +64,19 @@ body.no-scroll {
   box-sizing: inherit;
 }
 
-/* --- ANIMASI SAAT SCROLL --- */
+/* Animasi Scroll */
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .animate-on-scroll.in-view {
   opacity: 1;
   transform: translateY(0);
 }
 
 /* --- PERBAIKAN Z-INDEX EFEK BUNGA & LIRIK --- */
+/* Ditempatkan di lapisan atas agar terlihat di atas video pembuka */
 #particle-container, #lyrics-container {
     position: fixed;
     top: 0;
@@ -86,8 +85,8 @@ body.no-scroll {
     height: 100%;
     pointer-events: none;
 }
-#particle-container { z-index: 6; }
-#lyrics-container { z-index: 7; overflow: hidden; }
+#particle-container { z-index: 21; }
+#lyrics-container { z-index: 22; overflow: hidden; }
 
 .particle {
     position: absolute;
@@ -99,9 +98,10 @@ body.no-scroll {
 .lyric-line {
     position: absolute;
     left: 50%;
-    width: 90%;
-    max-width: 800px;
-    padding: 10px 20px;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 90%;
+    padding: 10px 25px;
     background: transparent;
     color: var(--wedding-text-accent);
     text-align: center;
@@ -129,7 +129,7 @@ body.no-scroll {
   z-index: 1; 
 }
 
-/* Latar Belakang Berbeda untuk Setiap Sesi */
+/* Latar Belakang Sesi */
 #session0 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp'); }
 #session1 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp'); }
 #session2 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp'); }
@@ -139,24 +139,22 @@ body.no-scroll {
 #session6 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp'); }
 #session7 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background7.webp'); }
 #session8 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp'); }
-#gallery-slider-section { background-image: none; background-color: var(--wedding-bg);}
-#session9 { background-image: none; background-color: var(--wedding-bg); padding: 0;}
-
+#gallery-slider-section, #session9 { background-image: none; background-color: var(--wedding-bg);}
 
 /* --- PERUBAHAN: Desain Box Konten Baru --- */
 .session-content {
-  background: rgba(40, 55, 71, 0.75); /* Warna background disamakan dengan tema */
-  backdrop-filter: blur(10px);
+  background: rgba(40, 55, 71, 0.3); /* Sangat transparan */
+  backdrop-filter: blur(5px);
   text-align: center;
   max-width: 600px;
   width: 100%;
   z-index: 10;
   padding: var(--space-32);
   position: relative;
-  border: 2px solid transparent; /* Border dibuat transparan untuk efek glow */
-  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  border-radius: var(--radius-xl); /* Sudut lebih membulat */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  background-clip: padding-box; /* Penting untuk efek border */
+  background-clip: padding-box;
 }
 
 /* Efek garis berkilau */
@@ -165,7 +163,7 @@ body.no-scroll {
     position: absolute;
     top: 0; right: 0; bottom: 0; left: 0;
     z-index: -1;
-    margin: -2px; /* Harus sama dengan lebar border */
+    margin: -2px;
     border-radius: inherit;
     background: linear-gradient(120deg, var(--wedding-primary), var(--wedding-text-main), var(--wedding-primary));
     background-size: 300% 300%;
@@ -209,224 +207,116 @@ body.no-scroll {
 
 /* Sesi 0 (Buka Undangan) */
 .session-0 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  opacity: 1;
-  transition: opacity 0.6s ease-out;
+  position: fixed; top: 0; left: 0; opacity: 1; transition: opacity 0.6s ease-out;
 }
 .session-0.fade-out {
-    opacity: 0;
-    pointer-events: none;
+    opacity: 0; pointer-events: none;
 }
 .session-0 .session-content {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  backdrop-filter: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  background: transparent; border: none; box-shadow: none; backdrop-filter: none;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh;
 }
-/* Hilangkan efek border glow pada sesi pembuka */
-.session-0 .session-content::before {
-    display: none;
-}
-
+.session-0 .session-content::before { display: none; }
 
 /* Efek Shimmer (Kilau) */
 .shimmer-text {
-  background: linear-gradient(
-    60deg,
-    var(--wedding-shimmer-2) 0%,
-    var(--wedding-shimmer-1) 50%,
-    var(--wedding-shimmer-2) 100%
-  );
+  background: linear-gradient(60deg, var(--wedding-shimmer-2) 0%, var(--wedding-shimmer-1) 50%, var(--wedding-shimmer-2) 100%);
   background-size: 300% 300%;
-  -webkit-background-clip: text;
-  background-clip: text;
+  -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shimmer 4s ease-in-out infinite;
-  font-weight: 700;
+  animation: shimmer 4s ease-in-out infinite; font-weight: 700;
 }
 
 /* Tipografi */
-h1, h2, h3 {
-  color: var(--wedding-text-main);
-  margin-bottom: var(--space-16);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
+h1, h2, h3 { color: var(--wedding-text-main); margin-bottom: var(--space-16); text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
 h1 { font-size: var(--font-size-4xl); font-family: var(--font-family-special); }
 h2 { font-size: var(--font-size-3xl); font-family: var(--font-family-special); }
 h3 { font-size: var(--font-size-2xl); color: var(--wedding-primary); }
 p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--space-16); }
 
 /* Spesifik Sesi 0 */
-.invitation-title { min-height: 250px; display: flex; flex-direction: column; justify-content: center; color: var(--wedding-text-main); text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); }
+.invitation-title { min-height: 250px; display: flex; flex-direction: column; justify-content: center; }
 .invitation-title h1 { font-size: 3.5rem; }
 .couple-names { font-size: 2.5rem; }
 .wedding-date { font-size: 1.5rem; font-weight: 600; margin-bottom: var(--space-32); }
 
 /* Hitung Mundur */
 .countdown-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-12); margin: var(--space-32) 0; }
-.countdown-item { background: transparent; padding: var(--space-12); border-radius: var(--radius-lg); border: 2px solid var(--wedding-border-color); }
+.countdown-item { background: transparent; padding: var(--space-12); border-radius: var(--radius-xl); border: 2px solid var(--wedding-border-color); }
 .countdown-item span { display: block; font-size: 2.2rem; font-weight: 700; color: var(--wedding-primary); }
-.countdown-item label { color: var(--wedding-text-accent); font-size: 0.7rem; text-transform: uppercase; }
+.countdown-item label { font-size: 0.7rem; text-transform: uppercase; }
 
 /* Ayat Suci */
 .arabic-text { font-family: var(--font-family-arabic); font-size: 2.5rem; color: var(--wedding-primary); margin-bottom: var(--space-20); direction: rtl; }
-.translation { font-style: italic; color: var(--wedding-text-accent); font-size: 1.1rem; margin-bottom: var(--space-24); }
-.quran-verse { background: rgba(0,0,0, 0.2); padding: var(--space-20); border-radius: var(--radius-lg); border-left: 4px solid var(--wedding-primary); font-style: italic; text-align: justify; }
-.quran-verse cite { display: block; margin-top: var(--space-16); color: var(--wedding-text-accent); font-size: 0.9rem; font-weight: 600; text-align: right; }
+.quran-verse { background: rgba(0,0,0, 0.2); padding: var(--space-20); border-radius: var(--radius-xl); border-left: 4px solid var(--wedding-primary); font-style: italic; text-align: justify; }
+.quran-verse cite { display: block; margin-top: var(--space-16); font-size: 0.9rem; font-weight: 600; text-align: right; }
 
 /* Foto Pasangan */
 .couple-photos { display: flex; align-items: center; justify-content: center; gap: var(--space-32); margin: var(--space-32) 0; }
 .photo-frame {
-    width: 120px; height: 120px; border-radius: 50%;
-    border: 4px solid var(--wedding-primary);
-    padding: 4px; background: var(--wedding-glass-bg);
-    margin: 0 auto var(--space-16); overflow: hidden;
+    width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--wedding-primary);
+    padding: 4px; margin: 0 auto var(--space-16); overflow: hidden;
 }
 .couple-photo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 .couple-divider { font-family: var(--font-family-special); font-size: 2rem; color: var(--wedding-primary); }
 
 /* Detail Acara */
-.event-item { background: transparent; padding: var(--space-24); border-radius: var(--radius-lg); border: 1px solid var(--wedding-border-color); }
-.event-info strong { color: var(--wedding-text-accent); }
+.event-item { background: transparent; padding: var(--space-24); border-radius: var(--radius-xl); border: 1px solid var(--wedding-border-color); }
 .event-details { display: flex; flex-direction: column; gap: var(--space-24); margin: var(--space-32) 0; }
 
 /* Form RSVP */
-.form-label { color: var(--wedding-primary); }
-.form-control { background: var(--wedding-glass-bg); border: 2px solid var(--wedding-border-color); color: var(--wedding-text-main); border-radius: var(--radius-lg); padding: var(--space-12); width: 100%; }
-.form-control:focus { border-color: var(--wedding-primary); outline: none; background: rgba(255, 255, 255, 0.15); }
-.form-control::placeholder { color: rgba(255, 255, 255, 0.6); }
+.form-control { background: rgba(0,0,0,0.2); border: 2px solid var(--wedding-border-color); color: var(--wedding-text-main); border-radius: var(--radius-xl); padding: var(--space-12); width: 100%; }
+.form-control:focus { border-color: var(--wedding-primary); outline: none; background: rgba(0,0,0, 0.3); }
 
 /* Kado Digital */
-.bank-item { background: transparent; padding: var(--space-20); border-radius: var(--radius-lg); border: 1px solid var(--wedding-border-color); }
-.account-number { color: var(--wedding-primary); font-weight: 600; }
+.bank-item { background: transparent; padding: var(--space-20); border-radius: var(--radius-xl); border: 1px solid var(--wedding-border-color); }
+.account-number { font-weight: 600; }
 .copy-btn { background: var(--wedding-primary); color: var(--wedding-bg); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
 .copy-btn:hover { background: var(--wedding-primary-hover); transform: scale(1.05); }
 
 /* Ucapan Tamu */
 .messages-container { max-height: 400px; overflow-y: auto; padding-right: 10px; }
-.message-item { background: rgba(0,0,0, 0.2); padding: var(--space-16); border-radius: var(--radius-lg); margin-bottom: var(--space-16); border-left: 3px solid var(--wedding-primary); text-align: left; }
-.message-name { color: var(--wedding-primary); }
-.message-text { color: var(--wedding-text-accent); }
+.message-item { background: rgba(0,0,0, 0.2); padding: var(--space-16); border-radius: var(--radius-xl); margin-bottom: var(--space-16); border-left: 3px solid var(--wedding-primary); text-align: left; }
 
 /* Sesi Video */
 .main-content-wrapper { overflow-y: auto; height: 100vh; scroll-behavior: smooth; position: relative; z-index: 5; }
 .session-video {
-  position: fixed; top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: #000;
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000;
   display: flex; align-items: center; justify-content: center;
-  transition: opacity 1s ease-in-out;
-  z-index: 20;
+  transition: opacity 1s ease-in-out; z-index: 20;
 }
-.session-video.video-finished {
-    opacity: 0;
-    pointer-events: none;
-    z-index: -1;
-}
+.session-video.video-finished { opacity: 0; pointer-events: none; z-index: -1; }
 .session-video video { width: 100vw; height: 100vh; object-fit: cover; }
 
 /* Tombol Aksi */
-.btn { padding: var(--space-12) var(--space-24); border-radius: var(--radius-lg); font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; border: none; }
+.btn { padding: var(--space-12) var(--space-24); border-radius: var(--radius-xl); font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; border: none; }
 .btn--primary { background: var(--wedding-primary); color: var(--wedding-bg); }
 .btn--primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(169, 204, 227, 0.4); background: var(--wedding-primary-hover); }
 .btn--outline { background: transparent; color: var(--wedding-text-main); border: 2px solid var(--wedding-primary); }
 .btn--outline:hover { background: var(--wedding-primary); color: var(--wedding-bg); }
 
-
 /* Tombol Musik (Placeholder PNG) */
 .music-toggle-btn {
     position: fixed; bottom: 20px; right: 20px; z-index: 1001; 
-    background: transparent;
-    border: none; 
-    width: 50px; 
-    height: 50px; 
-    padding: 0;
-    cursor: pointer; 
-    transition: transform 0.2s ease-out;
+    background: transparent; border: none; width: 50px; height: 50px; 
+    padding: 0; cursor: pointer; transition: transform 0.2s ease-out;
 }
-.music-toggle-btn:hover {
-    transform: scale(1.1);
-}
-.music-toggle-btn img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
+.music-toggle-btn:hover { transform: scale(1.1); }
+.music-toggle-btn img { width: 100%; height: 100%; object-fit: contain; }
 
 /* GALERI FOTO AUTO-SLIDE */
-#gallery-slider-section {
-    padding: 0;
-    overflow: hidden;
-    height: 50vh;
-    min-height: 400px;
-}
-.slider-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
-    mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
-}
-.slider-track {
-    display: flex;
-    width: calc(300px * 12);
-    animation: scroll 60s linear infinite;
-}
-.slide {
-    height: 350px;
-    width: 300px;
-    padding: 15px;
-}
-.slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: var(--radius-lg);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-@keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-300px * 6)); } 
-}
+#gallery-slider-section { padding: 0; overflow: hidden; height: 50vh; min-height: 400px; }
+.slider-container { width: 100%; height: 100%; display: flex; align-items: center; -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); }
+.slider-track { display: flex; width: calc(300px * 12); animation: scroll 60s linear infinite; }
+.slide { height: 350px; width: 300px; padding: 15px; }
+.slide img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+@keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-300px * 6)); } }
 
 /* SESI 9 (Galeri Video Full Width) */
-#session9 {
-    height: 100vh;
-    padding: 0;
-}
-#session9 .session-content {
-    max-width: 100%;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    border-radius: 0;
-    border: none;
-    background: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
-}
-#session9 .video-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    padding-bottom: 0;
-    border-radius: 0;
-    overflow: hidden;
-    border: none;
-}
-#session9 .video-container iframe {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-}
-
+#session9 { height: 100vh; padding: 0; }
+#session9 .session-content { max-width: 100%; width: 100%; height: 100%; padding: 0; border-radius: 0; border: none; background: transparent; box-shadow: none; backdrop-filter: none; }
+#session9 .video-container { position: relative; width: 100%; height: 100%; border-radius: 0; overflow: hidden; border: none; }
+#session9 .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
 .hidden { display: none !important; }
 
@@ -434,16 +324,15 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 @media (max-width: 768px) {
   .lyric-line { font-size: 1.2rem; }
   .session { padding: var(--space-16); }
-  .session-content { padding: var(--space-20); max-width: 100%; }
+  .session-content { padding: var(--space-20); }
   .countdown-container { grid-template-columns: repeat(2, 1fr); }
   .couple-photos { flex-direction: column; gap: var(--space-16); }
   .invitation-title h1 { font-size: 2.8rem; }
   .couple-names { font-size: 2.2rem; }
   .arabic-text { font-size: 2rem; }
   .corner-deco { width: 40px; height: 40px; top: -10px; }
-  .corner-deco.top-left { left: -10px; }
-  .corner-deco.top-right { right: -10px; }
-  .corner-deco.bottom-left { bottom: -10px; left: -10px; }
-  .corner-deco.bottom-right { bottom: -10px; right: -10px; }
+  .corner-deco.top-left, .corner-deco.bottom-left { left: -10px; }
+  .corner-deco.top-right, .corner-deco.bottom-right { right: -10px; }
+  .corner-deco.bottom-left, .corner-deco.bottom-right { bottom: -10px; }
 }
 
