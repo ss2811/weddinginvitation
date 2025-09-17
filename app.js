@@ -47,9 +47,7 @@ document.addEventListener('DOMContentLoaded', initApp);
 function initApp() {
     document.body.classList.add('no-scroll');
     backgroundMusic = document.getElementById('backgroundMusic');
-    typeWriter('#couple-names-typewriter', 'Ancah & Sonia', () => {
-    typeWriter('#wedding-date-typewriter', '24 September 2025');
-    });
+    
     const videoSection = document.getElementById('session-video');
     if (videoSection) {
       videoSection.style.opacity = '0';
@@ -130,34 +128,13 @@ function setupGenericScrollAnimations() {
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     if (!animatedElements.length) return;
 
-    const typewriterObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const targetElement = document.getElementById('quran-verse-typewriter');
-                if (targetElement && !targetElement.classList.contains('typed')) {
-                    const quranText = `"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang..."`;
-                    const citation = `<cite>QS. Ar-Rum: 21</cite>`;
-                    typeWriter('#quran-verse-typewriter', quranText, () => {
-                        targetElement.innerHTML += citation;
-                    });
-                    targetElement.classList.add('typed');
-                    typewriterObserver.unobserve(entry.target);
-                }
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    const session2 = document.getElementById('session2');
-    if (session2) typewriterObserver.observe(session2);
-
     const generalObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('in-view');
-                generalObserver.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.1 });
 
     animatedElements.forEach(el => generalObserver.observe(el));
 }
@@ -203,32 +180,20 @@ function resumeBackgroundMusic() {
     }
 }
 
-// --- PERUBAHAN: Ikon sound diisi dengan GIF ---
+// --- PERUBAHAN: Placeholder Ikon Suara (PNG) ---
 function showMusicEnableButton() {
     const musicButton = document.createElement('button');
-    
-    const musicOnGifUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/volume.gif'; 
-    const musicOffGifUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/no-audio.gif';
+    musicButton.className = 'btn music-toggle-btn';
+
+    // --- SILAKAN ISI URL PNG ANDA DI SINI ---
+    const musicOnPngUrl = 'URL_PNG_MUSIK_MENYALA.png'; // Ganti dengan URL PNG Anda
+    const musicOffPngUrl = 'URL_PNG_MUSIK_MATI.png';  // Ganti dengan URL PNG Anda
     
     const musicIcon = document.createElement('img');
-    musicIcon.src = musicOffGifUrl; // Kondisi awal, musik mati
+    musicIcon.src = musicOffPngUrl; // Kondisi awal, musik mati
     musicIcon.alt = 'Ikon Kontrol Musik';
-    musicIcon.style.cssText = `width: 100%; height: 100%; object-fit: cover;`;
     
     musicButton.appendChild(musicIcon);
-    musicButton.className = 'btn music-toggle-btn';
-    musicButton.setAttribute('aria-label', 'Play atau Pause Musik');
-    musicButton.style.cssText = `
-        position: fixed; bottom: 20px; right: 20px; z-index: 1001; 
-        background: transparent;
-        border: none; width: 50px; height: 50px; border-radius: 50%; 
-        display: flex; align-items: center; justify-content: center; 
-        cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.3); 
-        transition: transform 0.2s ease-out; padding: 0;
-    `;
-    
-    musicButton.addEventListener('mouseover', () => { musicButton.style.transform = 'scale(1.1)'; });
-    musicButton.addEventListener('mouseout', () => { musicButton.style.transform = 'scale(1)'; });
     
     musicButton.addEventListener('click', () => {
         if (backgroundMusic.paused) { 
@@ -239,15 +204,14 @@ function showMusicEnableButton() {
     });
     
     backgroundMusic.addEventListener('play', () => {
-        musicIcon.src = musicOnGifUrl;
+        musicIcon.src = musicOnPngUrl;
     });
     backgroundMusic.addEventListener('pause', () => {
-        musicIcon.src = musicOffGifUrl;
+        musicIcon.src = musicOffPngUrl;
     });
 
     document.body.appendChild(musicButton);
 }
-
 
 // --- Fungsi Buka Undangan ---
 function openInvitation() {
@@ -426,7 +390,6 @@ async function loadGuestMessages() {
         
         container.innerHTML = ''; // Kosongkan kontainer
         if (querySnapshot.empty) {
-            container.appendChild(noMessagesEl);
             noMessagesEl.style.display = 'block';
         } else {
             noMessagesEl.style.display = 'none';
