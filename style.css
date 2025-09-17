@@ -19,7 +19,7 @@
   --color-white: #FFFFFF;
 
   /* Typography */
-  --font-family-base: "Playfair Display", serif;
+  --font-family-base: "Romanesco", cursive;
   --font-family-special: "Dancing Script", cursive;
   --font-family-arabic: "Amiri", serif;
   --font-size-base: 28px;
@@ -390,4 +390,3 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     color: var(--wedding-text-main); /* Kembali ke Warna Hitam */
   }
 }
-
