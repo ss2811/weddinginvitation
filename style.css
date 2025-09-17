@@ -361,6 +361,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .hidden { display: none !important; }
 
 /* Mobile Responsive */
+/*
 @media (max-width: 768px) {
   .lyric-line { font-size: 1.2rem; }
   .session { padding: var(--space-16); }
@@ -375,7 +376,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   .corner-deco.top-right, .corner-deco.bottom-right { right: -10px; }
   .corner-deco.bottom-left, .corner-deco.bottom-right { bottom: -10px; }
 }
-
+*/
 @keyframes pulseColor {
   0% {
     color: var(--wedding-text-main); /* Warna Hitam */
