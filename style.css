@@ -361,11 +361,12 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .hidden { display: none !important; }
 
 /* Mobile Responsive */
-/*
+
 @media (max-width: 768px) {
   .lyric-line { font-size: 1.2rem; }
   .session { padding: var(--space-16); }
-  .session-content { padding: var(--space-20); width: 75%; max-width: 400px; }
+  .session-content { padding: var(--space-20); width: 90%; max-width: 500; max-height: 80vh; /* Maksimal 80% dari tinggi layar */
+  overflow-y: auto; /* Tampilkan scrollbar jika konten lebih tinggi */ }
   .countdown-container { grid-template-columns: repeat(2, 1fr); }
   .couple-photos { flex-direction: column; gap: var(--space-16); }
   .invitation-title h1 { font-size: 2.8rem; }
@@ -376,7 +377,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   .corner-deco.top-right, .corner-deco.bottom-right { right: -10px; }
   .corner-deco.bottom-left, .corner-deco.bottom-right { bottom: -10px; }
 }
-*/
+
 @keyframes pulseColor {
   0% {
     color: var(--wedding-text-main); /* Warna Hitam */
