@@ -22,12 +22,12 @@
   --font-family-base: "Playfair Display", serif;
   --font-family-special: "Dancing Script", cursive;
   --font-family-arabic: "Amiri", serif;
-  --font-size-base: 14px;
-  --font-size-lg: 16px;
-  --font-size-xl: 18px;
-  --font-size-2xl: 20px;
-  --font-size-3xl: 24px;
-  --font-size-4xl: 30px;
+  --font-size-base: 19px;
+  --font-size-lg: 21px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 27px;
+  --font-size-3xl: 32px;
+  --font-size-4xl: 40px;
 
   /* Spacing */
   --space-12: 12px;
@@ -155,7 +155,7 @@ body.no-scroll {
   backdrop-filter: blur(3px);
   
   text-align: center;
-  max-width: 600px;
+  max-width: 800px;
   width: 100%;
   z-index: 10;
   padding: var(--space-32);
@@ -361,7 +361,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .hidden { display: none !important; }
 
 /* Mobile Responsive */
-
+/*
 @media (max-width: 768px) {
   .lyric-line { font-size: 1.2rem; }
   .session { padding: var(--space-16); }
@@ -377,6 +377,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   .corner-deco.top-right, .corner-deco.bottom-right { right: -10px; }
   .corner-deco.bottom-left, .corner-deco.bottom-right { bottom: -10px; }
 }
+*/
 
 @keyframes pulseColor {
   0% {
