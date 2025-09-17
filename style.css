@@ -177,15 +177,15 @@ body.no-scroll {
 /* --- PERUBAHAN: Latar Belakang Berbeda untuk Setiap Sesi --- */
 /* GANTI URL BACKGROUND DI BAWAH INI DENGAN FOTO PREWEDDING ANDA */
 /* Rekomendasi ukuran: 853 x 1280 piksel */
-#session0 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.jpg'); }
-#session1 { background-image: url('https://images.unsplash.com/photo-1523438885227-12a97a4aa8e2?q=80&w=1974&auto=format&fit=crop'); }
-#session2 { background-image: url('https://images.unsplash.com/photo-1519741497674-6114d1863552?q=80&w=2070&auto=format&fit=crop'); }
-#session3 { background-image: url('https://images.unsplash.com/photo-1542042161-d1912aed0521?q=80&w=2070&auto=format&fit=crop'); }
-#session4 { background-image: url('https://images.unsplash.com/photo-1525962898597-c453b05d10a2?q=80&w=2070&auto=format&fit=crop'); }
-#session5 { background-image: url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=2070&auto=format&fit=crop'); }
-#session6 { background-image: url('https://images.unsplash.com/photo-1515934751635-481eff042b81?q=80&w=2070&auto=format&fit=crop'); }
-#session7 { background-image: url('https://images.unsplash.com/photo-1529333169339-7e3b4abe4485?q=80&w=1955&auto=format&fit=crop'); }
-#session8 { background-image: url('https://images.unsplash.com/photo-1511285560931-3473517d9313?q=80&w=2070&auto=format&fit=crop'); }
+#session0 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp'); }
+#session1 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp'); }
+#session2 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp'); }
+#session3 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background3.webp'); }
+#session4 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp'); }
+#session5 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp'); }
+#session6 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp'); }
+#session7 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background7.webp'); }
+#session8 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp'); }
 /* Latar belakang untuk sesi slider dan galeri dibuat transparan agar menyatu */
 #gallery-slider-section { background-image: none; background-color: var(--wedding-bg);}
 #session9 { background-image: none; background-color: var(--wedding-bg); padding: 0;}
@@ -203,6 +203,7 @@ body.no-scroll {
   border: 2px solid var(--wedding-border-color);
   transition: border-radius 0.5s ease-in-out;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  word-break: break-word; /* Mencegah teks meluber */
   
   /* GANTI URL BACKGROUND DI BAWAH JIKA INGIN BOX MEMILIKI GAMBAR */
   /* background-image: url('URL_FOTO_ANDA_DISINI');
@@ -239,6 +240,17 @@ body.no-scroll {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  padding-bottom: 15vh; /* Mendorong konten ke atas */
+  box-sizing: border-box; /* Memastikan padding tidak menambah tinggi */
+}
+
+/* Menghapus box pada sesi ayat dan kado digital */
+#session2 .session-content,
+#session6 .session-content {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
 }
 
 /* Efek Shimmer (Kilau) */
@@ -354,6 +366,42 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .btn--outline { background: transparent; color: var(--wedding-text-main); border: 2px solid var(--wedding-primary); }
 .btn--outline:hover { background: var(--wedding-primary); color: var(--wedding-bg); }
 
+
+/* --- Tombol Musik Animatif --- */
+.music-toggle-btn {
+    position: fixed; bottom: 20px; right: 20px; z-index: 1001; 
+    background: var(--wedding-primary); color: var(--wedding-bg); 
+    border: none; width: 50px; height: 50px; border-radius: 50%; 
+    font-size: 20px; display: flex; align-items: center; 
+    justify-content: center; cursor: pointer; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+}
+.music-toggle-btn:hover {
+    background-color: var(--wedding-primary-hover);
+}
+.music-toggle-btn svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--wedding-bg);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+.music-toggle-btn.playing .wave-1 {
+    animation: pulse 1.5s infinite ease-in-out;
+}
+.music-toggle-btn.playing .wave-2 {
+    animation: pulse 1.5s infinite ease-in-out 0.3s;
+}
+@keyframes pulse {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+
 /* --- SESI BARU: GALERI FOTO AUTO-SLIDE --- */
 #gallery-slider-section {
     padding: 0;
@@ -432,4 +480,9 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   .session-content { padding: var(--space-20); max-width: 100%; }
   .countdown-container { grid-template-columns: repeat(2, 1fr); }
   .couple-photos { flex-direction: column; gap: var(--space-14); }
+  
+  /* Menyesuaikan ukuran font agar tidak meluber */
+  .invitation-title h1 { font-size: 2.8rem; }
+  .couple-names { font-size: 2.2rem; }
+  .arabic-text { font-size: 2rem; }
 }
