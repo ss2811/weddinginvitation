@@ -7,7 +7,7 @@
   /* --- PALET WARNA TEMA BARU --- */
   --wedding-bg: #283747;
   --wedding-text-main: #000000;
-  --wedding-text-accent: var(--wedding-primary);
+  --wedding-text-accent: var(--wedding-text-main);
   --wedding-primary: #A9CCE3;
   --wedding-primary-hover: #85C1E9;
   --wedding-border-color: rgba(169, 204, 227, 0.4);
@@ -131,8 +131,8 @@ body.no-scroll {
 }
 
 /* Latar Belakang Sesi */
-#session0 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp'); }
-#session1 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp'); }
+#session0 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp'); }
+#session1 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp'); }
 #session2 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp'); }
 #session3 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background3.webp'); }
 #session4 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp'); }
@@ -227,7 +227,7 @@ h1, h2, h3 { color: var(--wedding-text-main); margin-bottom: var(--space-16); te
 h1 { font-size: var(--font-size-4xl); font-family: var(--font-family-special); }
 h2 { font-size: var(--font-size-3xl); font-family: var(--font-family-special); }
 h3 { font-size: var(--font-size-2xl); color: var(--wedding-primary); }
-p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--space-16); }
+p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--space-16); font-weight: 600; }
 
 /* Spesifik Sesi 0 */
 .invitation-title { min-height: 250px; display: flex; flex-direction: column; justify-content: center; }
@@ -311,7 +311,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* Tombol Musik (Placeholder PNG) */
 .music-toggle-btn {
     position: fixed; bottom: 20px; right: 20px; z-index: 1001; 
-    background: transparent; border: none; width: 50px; height: 50px; 
+    background: transparent; border: none; width: 25px; height: 25px; 
     padding: 0; cursor: pointer; transition: transform 0.2s ease-out;
 }
 .music-toggle-btn:hover { transform: scale(1.1); }
