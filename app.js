@@ -203,17 +203,15 @@ function resumeBackgroundMusic() {
     }
 }
 
-// --- PERUBAHAN: Ikon sound disiapkan untuk diisi GIF ---
+// --- PERUBAHAN: Ikon sound diisi dengan GIF ---
 function showMusicEnableButton() {
     const musicButton = document.createElement('button');
     
-    // --- GANTI URL GIF DI SINI ---
-    // Ganti URL placeholder ini dengan link ke file GIF Anda
-    const musicOnGifUrl = 'URL_GIF_MUSIK_MENYALA.gif'; 
-    const musicOffGifUrl = 'URL_GIF_MUSIK_MATI.gif';
+    const musicOnGifUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/volume.gif'; 
+    const musicOffGifUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/no-audio.gif';
     
     const musicIcon = document.createElement('img');
-    musicIcon.src = musicOffGifUrl; // Kondisi awal, musik diasumsikan mati
+    musicIcon.src = musicOffGifUrl; // Kondisi awal, musik mati
     musicIcon.alt = 'Ikon Kontrol Musik';
     musicIcon.style.cssText = `width: 100%; height: 100%; object-fit: cover;`;
     
@@ -222,11 +220,11 @@ function showMusicEnableButton() {
     musicButton.setAttribute('aria-label', 'Play atau Pause Musik');
     musicButton.style.cssText = `
         position: fixed; bottom: 20px; right: 20px; z-index: 1001; 
-        background: var(--wedding-primary); color: var(--wedding-bg); 
+        background: transparent;
         border: none; width: 50px; height: 50px; border-radius: 50%; 
         display: flex; align-items: center; justify-content: center; 
         cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.3); 
-        transition: transform 0.2s ease-out; padding: 10px;
+        transition: transform 0.2s ease-out; padding: 0;
     `;
     
     musicButton.addEventListener('mouseover', () => { musicButton.style.transform = 'scale(1.1)'; });
@@ -540,3 +538,4 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
+
