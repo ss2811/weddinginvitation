@@ -426,7 +426,7 @@ window.onYouTubeIframeAPIReady = function() {
     width: '640',
     
     // PENTING: Ganti 'YOUR_YOUTUBE_VIDEO_ID' dengan ID video YouTube Anda
-    videoId: 'xXRjeURBYAE', 
+    videoId: 'gjz_X_17YOc', 
     
     playerVars: {
       'autoplay': 1,        // Mainkan otomatis
@@ -439,7 +439,7 @@ window.onYouTubeIframeAPIReady = function() {
       'rel': 0,             // Jangan tampilkan video terkait
       
       // PENTING: Agar 'loop' berfungsi, 'playlist' harus diisi dengan videoId yang sama
-      'playlist': 'xXRjeURBYAE' 
+      'playlist': 'gjz_X_17YOc' 
     },
     events: { 
       'onReady': onPlayerReady,
