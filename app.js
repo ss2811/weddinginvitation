@@ -63,6 +63,26 @@ try {
     console.error("Firebase initialization failed:", error);
 }
 
+// app.js
+
+function handleVisibilityChange() {
+    // Pastikan variabel backgroundMusic sudah ada
+    if (!backgroundMusic) return;
+
+    // Jika halaman menjadi tidak terlihat (ditinggalkan)
+    if (document.visibilityState === 'hidden') {
+        backgroundMusic.pause();
+    } 
+    // (Opsional) Jika halaman kembali terlihat
+    else if (document.visibilityState === 'visible') {
+        // Cek apakah undangan sudah dibuka sebelum melanjutkan musik
+        const session0 = document.getElementById('session0');
+        if (session0 && session0.classList.contains('fade-out')) {
+             backgroundMusic.play().catch(e => console.log('Gagal melanjutkan musik:', e));
+        }
+    }
+}
+
 // Pastikan initApp selalu terdaftar dan dijalankan setelah DOM siap
 document.addEventListener('DOMContentLoaded', initApp);
 
@@ -83,6 +103,7 @@ function initApp() {
     createBackgroundParticles();
     setupGenericScrollAnimations();
     setupLyrics();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 }
 
 // --- FUNGSI ANIMASI PARTIKEL BUNGA ---
