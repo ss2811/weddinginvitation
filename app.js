@@ -42,7 +42,6 @@ const lyricsData = [
     { time: 156, text: "\"It's a love story, baby, just say, 'Yes'\"" },
     { time: 176, text: "'Cause we were both young when I first saw you" }
 ];
-let displayedLyricsIndexes = []; // Untuk mencatat lirik yang sudah muncul
 
 // Konfigurasi Firebase Anda
 const firebaseConfig = {
@@ -164,6 +163,10 @@ function setupGenericScrollAnimations() {
 
 
 // --- Lirik Berjalan ---
+// === BLOK KODE LIRIK BARU (Salin semua di bawah ini) ===
+
+let displayedLyricsIndexes = []; // Untuk mencatat lirik yang sudah muncul
+
 function setupLyrics() {
     if (backgroundMusic) {
         backgroundMusic.addEventListener('timeupdate', updateScrollingLyrics);
@@ -172,40 +175,50 @@ function setupLyrics() {
 
 function updateScrollingLyrics() {
     const currentTime = backgroundMusic.currentTime;
-    const lyricElement = document.querySelector('.lyric-line');
-    if (!lyricElement) return;
+    const container = document.getElementById('lyrics-container');
+    if (!container) return;
 
-    // Cari indeks lirik yang seharusnya tampil sekarang
-    let nextLyricIndex = -1;
-    for (let i = 0; i < lyricsData.length; i++) {
-        if (currentTime >= lyricsData[i].time) {
-            nextLyricIndex = i;
-        } else {
-            break;
+    // Jika lagu diulang dari awal, reset pelacak lirik
+    if (currentTime < 1) {
+        container.innerHTML = ''; 
+        displayedLyricsIndexes = [];
+    }
+
+    // Periksa setiap lirik di dalam data
+    lyricsData.forEach((lyric, index) => {
+        // Cek apakah waktunya sudah pas DAN lirik ini BELUM pernah ditampilkan
+        if (currentTime >= lyric.time && !displayedLyricsIndexes.includes(index)) {
+
+            // Tandai lirik ini sudah ditampilkan
+            displayedLyricsIndexes.push(index);
+
+            // 1. Buat elemen lirik baru
+            const lyricElement = document.createElement('div');
+            lyricElement.className = 'lyric-line';
+            lyricElement.textContent = lyric.text;
+
+            // 2. Tentukan posisi acak di layar
+            const randomTop = Math.random() * 80 + 10;
+            const randomLeft = Math.random() * 60 + 20;
+            lyricElement.style.top = `${randomTop}vh`;
+            lyricElement.style.left = `${randomLeft}vw`;
+            lyricElement.style.transform = 'translateX(-50%)';
+
+            // 3. Tambahkan lirik ke container
+            container.appendChild(lyricElement);
+
+            // 4. Animasikan: muncul, diam sejenak, lalu hilang dan hapus elemen
+            const tl = gsap.timeline({
+                onComplete: () => lyricElement.remove()
+            });
+
+            tl.to(lyricElement, { opacity: 1, duration: 1 })
+              .to(lyricElement, { opacity: 0, duration: 1 }, "+=5");
         }
-    }
-
-    // Jika indeks lirik berubah (lirik baru atau tidak ada lirik)
-    if (nextLyricIndex !== currentLyricIndex) {
-        currentLyricIndex = nextLyricIndex;
-        
-        // Tentukan teks baru (kosong jika tidak ada lirik)
-        const newText = (currentLyricIndex === -1) ? "" : lyricsData[currentLyricIndex].text;
-
-        // Animasikan: Fade out, ganti teks, lalu fade in
-        gsap.to(lyricElement, {
-            opacity: 0,
-            duration: 0.4,
-            onComplete: () => {
-                lyricElement.textContent = newText;
-                // Hanya fade in jika ada teks baru
-                if (newText) {
-                    gsap.to(lyricElement, { opacity: 1, duration: 0.4 });
-                }
-            }
-        });
-    }
+    });
 }
+
+// === AKHIR BLOK KODE LIRIK BARU ===
 
 // Fungsi Audio
 function playBackgroundMusic() {
