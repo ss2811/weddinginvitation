@@ -422,6 +422,25 @@ async function loadGuestMessages() {
 // --- INTERAKSI VIDEO YOUTUBE ---
 window.onYouTubeIframeAPIReady = function() {
   ytPlayer = new YT.Player('weddingVideo', {
+    height: '360',
+    width: '640',
+    
+    // PENTING: Ganti 'YOUR_YOUTUBE_VIDEO_ID' dengan ID video YouTube Anda
+    videoId: 'xXRjeURBYAE', 
+    
+    playerVars: {
+      'autoplay': 1,        // Mainkan otomatis
+      'controls': 0,        // Sembunyikan kontrol pemutar
+      'loop': 1,            // Ulangi video
+      'mute': 1,            // Harus di-mute agar autoplay berfungsi
+      'playsinline': 1,     // Penting untuk autoplay di mobile
+      'modestbranding': 1,  // Sembunyikan logo YouTube
+      'showinfo': 0,        // Sembunyikan judul video
+      'rel': 0,             // Jangan tampilkan video terkait
+      
+      // PENTING: Agar 'loop' berfungsi, 'playlist' harus diisi dengan videoId yang sama
+      'playlist': 'xXRjeURBYAE' 
+    },
     events: { 
       'onReady': onPlayerReady,
       'onStateChange': onPlayerStateChange 
@@ -431,6 +450,7 @@ window.onYouTubeIframeAPIReady = function() {
 
 function onPlayerReady(event) {
   event.target.mute();
+  event.target.playVideo();
 }
 
 function onPlayerStateChange(event) {
