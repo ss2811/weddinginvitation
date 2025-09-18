@@ -79,14 +79,24 @@ body.no-scroll {
 }
 
 /* --- PERUBAHAN: Z-INDEX EFEK BUNGA & LIRIK --- */
-#particle-container, #lyrics-container {
+#particle-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1; /* Sesuai permintaan, akan berada di belakang semua konten */
+    z-index: 1; /* Biarkan partikel bunga di belakang */
+}
+
+#lyrics-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000; /* UBAH INI: Pindahkan lirik ke lapisan paling atas */
 }
 
 .particle {
