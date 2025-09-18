@@ -219,7 +219,7 @@ function updateScrollingLyrics() {
             lyricElement.textContent = lyric.text;
 
             // 2. Tentukan posisi acak di layar
-            const randomTop = Math.random() * 80 + 10;
+            const randomTop = Math.random() * 65 + 15;
             const randomLeft = Math.random() * 60 + 20;
             lyricElement.style.top = `${randomTop}vh`;
             lyricElement.style.left = `${randomLeft}vw`;
