@@ -97,28 +97,24 @@ body.no-scroll {
 }
 
 /* style.css */
+/* style.css */
 .lyric-line {
-    /* Memposisikan lirik secara permanen di layar */
-    position: fixed;
-    bottom: 40px; /* Jarak dari bawah layar */
-    left: 50%;
-    transform: translateX(-50%); /* Posisi horizontal di tengah */
+    /* Mengatur posisi agar bisa ditempatkan di mana saja di dalam container */
+    position: absolute;
     
-    /* Mengatur agar awalnya tidak terlihat */
-    opacity: 0;
-
-    /* Gaya Teks */
-    width: 90%;
-    max-width: 800px;
+    /* Tampilan Lirik */
     padding: 10px 25px;
-    
-    color: var(--color-white); /* Ubah warna teks menjadi putih agar kontras */
-    text-align: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    color: var(--color-white);
     font-family: var(--font-family-special);
-    font-size: 2rem; 
+    font-size: 1.8rem;
     font-weight: 700;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
-    transition: opacity 0.4s ease-in-out; /* Animasi fade yang mulus */
+    white-space: nowrap;
+    
+    /* Awalnya tidak terlihat */
+    opacity: 0; 
 }
 
 /* Pengaturan Sesi */
@@ -479,10 +475,13 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   font-size: 28px; /* DITAMBAHKAN: Ukuran simbol '&' diperkecil */
 }
 
-/* ============================================= */
-/* ATURAN UMUM UNTUK SEMUA PARAGRAF DALAM SESI */
-/* ============================================= */
-.session p {
-  font-size: 0.6rem; /* Atur ukuran font standar untuk semua paragraf */
-  line-height: 1.2; /* Atur jarak antar baris yang konsisten */
+#session3 p {
+  font-size: 16px; /* Ukuran paragraf diperkecil */
 }
+
+#session8 p {
+  font-size: 0.5rem;
+}
+
+#session6 p {
+  font-size: 18px;
