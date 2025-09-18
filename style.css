@@ -422,7 +422,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Ukuran font khusus untuk Sesi 3 */
 #session3 p {
-  font-size: 0.6rem; /* Ukuran paragraf diperkecil */
+  font-size: 20px; /* Ukuran paragraf diperkecil */
 }
 
 #session3 h3 {
@@ -438,6 +438,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 #session6 p {
-  font-size: 0.6rem;
+  font-size: 28px;
 }
 
