@@ -432,15 +432,19 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 
-/* ===== GAYA BARU UNTUK PEMUTAR YOUTUBE ===== */
+/* ===== GAYA BARU UNTUK PEMUTAR YOUTUBE (DIPERBAIKI) ===== */
 .youtube-player-wrapper {
   position: relative;
-  width: 90%; /* Lebar relatif terhadap sesi */
-  max-width: 622px; /* Disesuaikan agar mirip ukuran total beberapa foto */
   
-  /* Menjaga rasio 16:9 */
+  /* DIUBAH: Lebar maksimum disesuaikan untuk video vertikal */
+  width: 90%; 
+  max-width: 310px; 
+
+  /* DIUBAH: Padding-bottom disesuaikan untuk rasio 9:16 (vertikal)
+    Kalkulasi: (16 / 9) * 100% = 177.78%
+  */
+  padding-bottom: 177.78%;
   height: 0;
-  padding-bottom: 50.6%; /* (9/16) * 90% = 50.625% */
 
   border-radius: var(--radius-xl);
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -455,7 +459,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   height: 100%;
   border: none;
 }
-
 
 .hidden { display: none !important; }
 
