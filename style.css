@@ -96,7 +96,7 @@ body.no-scroll {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1000; /* UBAH INI: Pindahkan lirik ke lapisan paling atas */
+    z-index: 1; /* UBAH INI: Pindahkan lirik ke lapisan paling atas */
 }
 
 .particle {
@@ -109,21 +109,19 @@ body.no-scroll {
 /* style.css */
 /* style.css */
 .lyric-line {
-    /* Mengatur posisi agar bisa ditempatkan di mana saja */
     position: absolute;
-
-    /* Tampilan Lirik */
     padding: 10px 25px;
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 8px;
     color: var(--color-white);
     font-family: var(--font-family-special);
     font-size: 1.8rem;
     font-weight: 700;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
-    white-space: nowrap;
-
-    /* Awalnya tidak terlihat */
+    
+    /* PERUBAHAN DI SINI */
+    white-space: normal; /* Izinkan teks turun ke baris baru */
+    max-width: 45vw;     /* Batasi lebar maksimum kotak lirik (45% dari lebar viewport) */
+    text-align: center;  /* Tambahkan ini agar teks tetap rata tengah jika ada 2 baris */
+    
     opacity: 0; 
 }
 
@@ -486,7 +484,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 #session3 p {
-  font-size: 16px; /* Ukuran paragraf diperkecil */
+  font-size: 15px; /* Ukuran paragraf diperkecil */
 }
 
 #session8 p {
