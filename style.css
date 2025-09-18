@@ -365,22 +365,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .message-item { background: rgba(0,0,0, 0.2); padding: var(--space-16); border-radius: var(--radius-xl); margin-bottom: var(--space-16); border-left: 3px solid var(--wedding-primary); text-align: left; }
 
 /* Sesi Video */
-.main-content-wrapper {
-    /* --- INI BAGIAN UTAMANYA --- */
-    max-width: 450px;       /* Atur lebar maksimum website (seperti lebar HP) */
-    min-height: 100vh;      /* Pastikan tingginya selalu setinggi layar */
-    margin: 0 auto;         /* Ini akan membuatnya otomatis berada di tengah layar */
-    
-    /* (Opsional) Tambahkan bayangan agar terlihat seperti perangkat sungguhan */
-    box-shadow: 0 0 25px rgba(0,0,0,0.4);
-
-    /* --- Properti yang sudah ada sebelumnya (tetap diperlukan) --- */
-    overflow-y: auto;
-    scroll-behavior: smooth;
-    position: relative; /* Penting agar z-index konten di dalamnya bekerja */
-    z-index: 5;         /* Pastikan konten utama di atas background */
-}
-
+.main-content-wrapper { overflow-y: auto; height: 100vh; scroll-behavior: smooth; background-color: transparent; }
 .session-video {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000;
   display: flex; align-items: center; justify-content: center;
@@ -508,3 +493,40 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 #session6 p {
   font-size: 18px;
+
+/* ============================================= */
+/* GAYA KHUSUS UNTUK TAMPILAN DESKTOP/LAPTOP */
+/* ============================================= */
+/* ============================================= */
+/* GAYA KHUSUS UNTUK TAMPILAN DESKTOP/LAPTOP */
+/* ============================================= */
+@media screen and (min-width: 768px) {
+
+  /* ==> TAMBAHKAN BLOK BARU INI <== */
+  body {
+    background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/backgroundhitam.jpeg'); /* <-- GANTI DENGAN URL GAMBAR ANDA */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Agar background diam saat di-scroll */
+  }
+  /* ================================= */
+
+  /* Membuat halaman pembuka menjadi potrait di tengah */
+  #session0 {
+    max-width: 768px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 1px solid rgba(169, 204, 227, 0.2);
+    border-right: 1px solid rgba(169, 204, 227, 0.2);
+  }
+
+  /* Membuat konten utama menjadi potrait di tengah */
+  .main-content-wrapper {
+    max-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  }
+
+}
