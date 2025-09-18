@@ -395,7 +395,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   padding: 40px 0; /* Memberi sedikit ruang vertikal */
   overflow: hidden;
   height: auto; /* DIUBAH: Tinggi menjadi otomatis */
-  min-height: 100vh; /* Pastikan sesi tetap setinggi layar */
   /* DITAMBAHKAN: Menggunakan flexbox untuk menata slider dan video */
   display: flex;
   flex-direction: column;
@@ -435,16 +434,12 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* ===== GAYA BARU UNTUK PEMUTAR YOUTUBE ===== */
 .youtube-player-wrapper {
   position: relative;
-  width: 90%; /* Lebar relatif terhadap sesi */
-  max-width: 622px; /* Disesuaikan agar mirip ukuran total beberapa foto */
-  
-  /* Menjaga rasio 16:9 */
+  width: 100%; /* <- UBAH MENJADI 100% */
+  /* max-width dihapus */
   height: 0;
-  padding-bottom: 50.6%; /* (9/16) * 90% = 50.625% */
-
-  border-radius: var(--radius-xl);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  overflow: hidden; /* Pastikan iframe tidak keluar dari border-radius */
+  padding-bottom: 56.25%; /* <- Disesuaikan untuk rasio 16:9 (9 / 16 * 100) */
+  /* border-radius dan box-shadow dihapus agar rapi */
+  overflow: hidden;
 }
 
 .youtube-player-wrapper iframe {
@@ -461,7 +456,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Ukuran font khusus untuk Sesi 3 */
 #session3 p {
-  font-size: 16px; /* Ukuran paragraf diperkecil */
+  font-size: 15px; /* Ukuran paragraf diperkecil */
 }
 
 #session3 h3 {
@@ -477,6 +472,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 #session6 p {
-  font-size: 16px;
+  font-size: 17px;
 }
 
