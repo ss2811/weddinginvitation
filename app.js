@@ -146,24 +146,41 @@ function setupLyrics() {
         backgroundMusic.addEventListener('timeupdate', updateScrollingLyrics);
     }
 }
+
 function updateScrollingLyrics() {
     const currentTime = backgroundMusic.currentTime;
-    const lyricsContainer = document.getElementById('lyrics-container');
-    if (!lyricsContainer) return;
+    const lyricElement = document.querySelector('.lyric-line');
+    if (!lyricElement) return;
+
+    // Cari indeks lirik yang seharusnya tampil sekarang
     let nextLyricIndex = -1;
     for (let i = 0; i < lyricsData.length; i++) {
-        if (currentTime >= lyricsData[i].time) { nextLyricIndex = i; } else { break; }
+        if (currentTime >= lyricsData[i].time) {
+            nextLyricIndex = i;
+        } else {
+            break;
+        }
     }
-    if (nextLyricIndex > currentLyricIndex) {
+
+    // Jika indeks lirik berubah (lirik baru atau tidak ada lirik)
+    if (nextLyricIndex !== currentLyricIndex) {
         currentLyricIndex = nextLyricIndex;
-        const lyricElement = document.createElement('div');
-        lyricElement.className = 'lyric-line';
-        lyricElement.textContent = lyricsData[currentLyricIndex].text;
-        lyricsContainer.appendChild(lyricElement);
-        gsap.fromTo(lyricElement,
-    	    { y: '-10vh', opacity: 1 }, /* Mulai dari atas layar */
-    	    { y: '110vh', duration: 18, ease: 'none', onComplete: () => lyricElement.remove() } /* Jatuh ke bawah layar */
-	);
+        
+        // Tentukan teks baru (kosong jika tidak ada lirik)
+        const newText = (currentLyricIndex === -1) ? "" : lyricsData[currentLyricIndex].text;
+
+        // Animasikan: Fade out, ganti teks, lalu fade in
+        gsap.to(lyricElement, {
+            opacity: 0,
+            duration: 0.4,
+            onComplete: () => {
+                lyricElement.textContent = newText;
+                // Hanya fade in jika ada teks baru
+                if (newText) {
+                    gsap.to(lyricElement, { opacity: 1, duration: 0.4 });
+                }
+            }
+        });
     }
 }
 
