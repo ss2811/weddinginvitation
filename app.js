@@ -42,7 +42,7 @@ const lyricsData = [
     { time: 156, text: "\"It's a love story, baby, just say, 'Yes'\"" },
     { time: 176, text: "'Cause we were both young when I first saw you" }
 ];
-let currentLyricIndex = -1; 
+let displayedLyricsIndexes = []; // Untuk mencatat lirik yang sudah muncul
 
 // Konfigurasi Firebase Anda
 const firebaseConfig = {
