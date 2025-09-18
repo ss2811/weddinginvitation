@@ -240,6 +240,11 @@ function openInvitation() {
     }
   }, 500);
 
+  // Memulai video YouTube secara otomatis (tanpa suara dan akan berulang)
+  if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+    ytPlayer.playVideo();
+  }
+
   playBackgroundMusic();
 }
 
