@@ -390,51 +390,63 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   font-size: 1.1rem;   /* Atur ukuran tulisan di dalam tombol */
 }
 
-/* GALERI FOTO AUTO-SLIDE */
+/* ▼▼▼ COPY-PASTE SELURUH BLOK DI BAWAH INI ▼▼▼ */
+
+/* CSS FINAL UNTUK SESI GALERI & VIDEO */
 #gallery-slider-section {
-  /* Mengubahnya menjadi session-content agar konsisten */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80px 20px; /* Memberi jarak atas-bawah dan kiri-kanan */
-  height: auto;       /* Tinggi otomatis mengikuti konten */
-  min-height: 100vh;  /* Tinggi minimal 1 layar penuh */
+  padding: 80px 20px;
+  height: auto;
+  min-height: 100vh;
   background-color: var(--wedding-bg);
-}
-.slider-container { width: 100%; height: 350px; display: flex; align-items: center; -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); }
-.slider-track {
-  display: flex;
-  /* Lebar disesuaikan: 11 foto x 2 (duplikat) = 22 slide */
-  width: calc(300px * 22); 
-  /* Durasi dipercepat menjadi 60 detik */
-  animation: scroll 60s linear infinite;
-}
-.slide { height: 350px; width: 300px; padding: 15px; }
-.slide img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    /* Transformasi disesuaikan: 11 foto x 300px */
-    transform: translateX(calc(-300px * 11));
-  }
+  /* Pastikan TIDAK ADA overflow: hidden di sini */
 }
 
-/* CSS BARU UNTUK VIDEO CONTAINER */
-.video-container {
+#gallery-slider-section .slider-container {
+  width: 100%;
+  height: 350px;
+  display: flex;
+  align-items: center;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+  overflow-x: hidden; /* INI untuk memperbaiki spasi di kanan */
+}
+
+#gallery-slider-section .slider-track {
+  display: flex;
+  width: calc(300px * 22);
+  animation: scroll 60s linear infinite;
+}
+
+#gallery-slider-section .slide {
+  height: 350px;
+  width: 300px;
+  padding: 15px;
+}
+
+#gallery-slider-section .slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+#gallery-slider-section .video-container {
   position: relative;
   width: 100%;
-  max-width: 800px; /* Lebar maksimum video */
+  max-width: 800px;
   padding-top: 56.25%; /* Rasio 16:9 */
-  margin-top: 40px; /* Jarak antara slider foto dan video */
+  margin-top: 40px;
   border-radius: var(--radius-xl);
   overflow: hidden;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
 }
 
-.video-container iframe {
+#gallery-slider-section .video-container iframe {
   position: absolute;
   top: 0;
   left: 0;
@@ -443,12 +455,21 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   border: none;
 }
 
+/* Keyframes untuk animasi scroll */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-300px * 11));
+  }
+}
 
 .hidden { display: none !important; }
 
 /* Ukuran font khusus untuk Sesi 3 */
 #session3 p {
-  font-size: 15px; /* Ukuran paragraf diperkecil */
+  font-size: 16px; /* Ukuran paragraf diperkecil */
 }
 
 #session3 h3 {
@@ -464,6 +485,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 #session6 p {
-  font-size: 17px;
+  font-size: 18px;
 }
 
