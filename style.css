@@ -391,12 +391,14 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 /* GALERI FOTO AUTO-SLIDE */
-#gallery-slider-section { 
-    padding: 5vh 0; /* Memberi sedikit jarak di atas dan bawah */
-    display: block; /* Memastikan section berperilaku sebagai blok */
-    min-height: auto; 
-    height: auto; /* Biarkan tinggi menyesuaikan konten */
-    background-color: var(--wedding-bg); /* Beri warna latar belakang */
+#gallery-slider-section { padding: 0; overflow: hidden; height: 50vh; min-height: 400px; }
+.slider-container { width: 100%; height: 50%; display: flex; align-items: center; -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); }
+.slider-track {
+  display: flex;
+  /* Lebar disesuaikan: 11 foto x 2 (duplikat) = 22 slide */
+  width: calc(300px * 22); 
+  /* Durasi dipercepat menjadi 60 detik */
+  animation: scroll 60s linear infinite;
 }
 .slide { height: 350px; width: 300px; padding: 15px; }
 .slide img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
@@ -432,11 +434,12 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     border: none; /* Menghilangkan border pada iframe */
 }
 
+
 .hidden { display: none !important; }
 
 /* Ukuran font khusus untuk Sesi 3 */
 #session3 p {
-  font-size: 18px; /* Ukuran paragraf diperkecil */
+  font-size: 16px; /* Ukuran paragraf diperkecil */
 }
 
 #session3 h3 {
@@ -452,6 +455,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 #session6 p {
-  font-size: 18px;
+  font-size: 16px;
 }
 
