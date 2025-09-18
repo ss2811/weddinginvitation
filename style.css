@@ -391,14 +391,12 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 /* GALERI FOTO AUTO-SLIDE */
-#gallery-slider-section { padding: 0; overflow: hidden; height: 50vh; min-height: 400px; }
-.slider-container { width: 100%; height: 100%; display: flex; align-items: center; -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); }
-.slider-track {
-  display: flex;
-  /* Lebar disesuaikan: 11 foto x 2 (duplikat) = 22 slide */
-  width: calc(300px * 22); 
-  /* Durasi dipercepat menjadi 60 detik */
-  animation: scroll 60s linear infinite;
+#gallery-slider-section { 
+    padding: 5vh 0; /* Memberi sedikit jarak di atas dan bawah */
+    display: block; /* Memastikan section berperilaku sebagai blok */
+    min-height: auto; 
+    height: auto; /* Biarkan tinggi menyesuaikan konten */
+    background-color: var(--wedding-bg); /* Beri warna latar belakang */
 }
 .slide { height: 350px; width: 300px; padding: 15px; }
 .slide img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
@@ -411,18 +409,34 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     transform: translateX(calc(-300px * 11));
   }
 }
-/* SESI 9 (Galeri Video Full Width) */
-#session9 { height: 100vh; padding: 0; }
-#session9 .session-content { max-width: 100%; width: 100%; height: 100%; padding: 0; border-radius: 0; border: none; background: transparent; box-shadow: none; backdrop-filter: none; }
-#session9 .session-content::before, #session9 .corner-deco { display: none; }
-#session9 .video-container { position: relative; width: 100%; height: 100%; border-radius: 0; overflow: hidden; border: none; }
-#session9 .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+/* --- CSS BARU UNTUK VIDEO DI DALAM GALERI --- */
+#gallery-slider-section .video-container {
+    position: relative;
+    width: 90%; /* Lebar video */
+    max-width: 800px; /* Lebar maksimum agar tidak terlalu besar di layar lebar */
+    margin: 60px auto 0 auto; /* Memberi jarak dari galeri foto di atasnya dan menengahkan */
+    padding-bottom: 56.25%; /* Ini adalah trik untuk rasio aspek 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: var(--radius-xl); /* Membuat sudut video membulat */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+#gallery-slider-section .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none; /* Menghilangkan border pada iframe */
+}
 
 .hidden { display: none !important; }
 
 /* Ukuran font khusus untuk Sesi 3 */
 #session3 p {
-  font-size: 20px; /* Ukuran paragraf diperkecil */
+  font-size: 18px; /* Ukuran paragraf diperkecil */
 }
 
 #session3 h3 {
@@ -438,6 +452,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 #session6 p {
-  font-size: 28px;
+  font-size: 18px;
 }
 
