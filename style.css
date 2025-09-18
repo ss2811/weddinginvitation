@@ -96,27 +96,30 @@ body.no-scroll {
     opacity: 0;
 }
 
+/* style.css */
 .lyric-line {
-    position: absolute;
-    /* Menempatkan lirik di sisi kanan layar */
-    right: 30px; 
-    left: auto;
-    transform: none;
+    /* Memposisikan lirik secara permanen di layar */
+    position: fixed;
+    bottom: 40px; /* Jarak dari bawah layar */
+    left: 50%;
+    transform: translateX(-50%); /* Posisi horizontal di tengah */
+    
+    /* Mengatur agar awalnya tidak terlihat */
+    opacity: 0;
 
-    /* MEMUTAR TEKS 90 DERAJAT */
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-
-    width: auto;
-    max-width: 90%;
-    padding: 25px 10px; /* Padding diubah untuk teks vertikal */
-    background: transparent;
-    color: var(--wedding-text-accent);
-    text-align: right; 
+    /* Gaya Teks */
+    width: 90%;
+    max-width: 800px;
+    padding: 10px 25px;
+    background-color: rgba(0, 0, 0, 0.4); /* Beri sedikit latar belakang agar mudah dibaca */
+    border-radius: 8px;
+    color: var(--color-white); /* Ubah warna teks menjadi putih agar kontras */
+    text-align: center;
     font-family: var(--font-family-special);
-    font-size: 1.8rem; /* Sedikit dikecilkan agar pas */
+    font-size: 2rem; 
     font-weight: 700;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+    transition: opacity 0.4s ease-in-out; /* Animasi fade yang mulus */
 }
 
 /* Pengaturan Sesi */
@@ -141,14 +144,14 @@ body.no-scroll {
 }
 
 /* Latar Belakang Sesi */
-#session0 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp'); }
+#session0 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp'); }
 #session1 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background9.webp'); }
 #session2 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp'); }
 #session3 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background3.webp'); }
 #session4 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp'); }
 #session5 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp'); }
-#session6 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp'); }
-#session7 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background7.webp'); }
+#session6 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp'); }
+#session7 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background10.webp'); }
 #session8 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp'); }
 #gallery-slider-section::before, #session9 { background-image: none; background-color: var(--wedding-bg);}
 
@@ -481,6 +484,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* ATURAN UMUM UNTUK SEMUA PARAGRAF DALAM SESI */
 /* ============================================= */
 .session p {
-  font-size: 1rem; /* Atur ukuran font standar untuk semua paragraf */
-  line-height: 1.6; /* Atur jarak antar baris yang konsisten */
+  font-size: 0.9rem; /* Atur ukuran font standar untuk semua paragraf */
+  line-height: 1.5; /* Atur jarak antar baris yang konsisten */
 }
