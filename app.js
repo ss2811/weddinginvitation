@@ -161,9 +161,9 @@ function updateScrollingLyrics() {
         lyricElement.textContent = lyricsData[currentLyricIndex].text;
         lyricsContainer.appendChild(lyricElement);
         gsap.fromTo(lyricElement,
-            { top: '-10vh', opacity: 1, x: '-50%' },
-            { top: '110vh', duration: 15, ease: 'none', onComplete: () => lyricElement.remove() }
-        );
+    	    { y: '-10vh', opacity: 1 }, /* Mulai dari atas layar */
+    	    { y: '110vh', duration: 18, ease: 'none', onComplete: () => lyricElement.remove() } /* Jatuh ke bawah layar */
+	);
     }
 }
 
