@@ -500,7 +500,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* ============================================= */
 /* GAYA KHUSUS UNTUK TAMPILAN DESKTOP/LAPTOP */
 /* ============================================= */
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1025px) {
 
   /* ==> TAMBAHKAN BLOK BARU INI <== */
   body {
