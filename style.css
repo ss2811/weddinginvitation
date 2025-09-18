@@ -391,16 +391,23 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 /* GALERI FOTO AUTO-SLIDE */
+/* PERBAIKAN FINAL UNTUK SPASI SESI GALERI */
+
 #gallery-slider-section {
-  padding: 0 0; /* Memberi sedikit ruang vertikal */
-  overflow: hidden;
-  height: auto; /* DIUBAH: Tinggi menjadi otomatis */
-  /* DITAMBAHKAN: Menggunakan flexbox untuk menata slider dan video */
+  /* Menimpa aturan dari class .session agar tidak ada spasi atas-bawah */
+  min-height: auto;           /* Biarkan tinggi sesi mengikuti konten, jangan setinggi layar */
+  justify-content: flex-start;  /* Ratakan konten ke atas, bukan ke tengah */
+  
+  /* Atur jarak atas-bawah sesi secara manual jika perlu */
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  /* Pengaturan yang sudah ada sebelumnya (tetap diperlukan) */
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 30px; /* Jarak antara slider dan video */
+  overflow: hidden;
+  gap: 15px; /* Jarak antara slider dan video, sesuaikan jika perlu */
 }
 
 .slider-container {
