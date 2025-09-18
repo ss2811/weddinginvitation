@@ -12,12 +12,35 @@ let ytPlayer;
 
 // Data lirik lagu
 const lyricsData = [
-    { time: 10, text: "Di kening kebahagiaanku dan pikiranku" },
-    { time: 15, text: "Huruf-huruf mengalir dengan rindu dan bunga-bunga" },
-    { time: 19, text: "Hal inilah yang mengantarkan pada kebahagiaan dalam pengharapan" },
-    { time: 24, text: "Menceritakan keindahan dengan melodi dan lagu" },
-    { time: 28, text: "Ah, pengantin cahaya; mahkota bulan purnama menampakkannya" },
-    { time: 34, text: "Sebagai bintang yang memancar cahaya demi cahaya" },
+    { time: 2, text: "So I sneak out to the garden to see you" },
+    { time: 8, text: "We keep quiet 'cause we're dead if they knew" },
+    { time: 12, text: "So close your eyes" },
+    { time: 16, text: "Escape this town for a little while" },
+    { time: 22, text: "'Cause you were Romeo, I was a scarlet letter" },
+    { time: 27, text: "And my daddy said, \"Stay away from Juliet\"" },
+    { time: 31, text: "But you were everything to me" },
+    { time: 34, text: "I was begging you, \"Please don't go,\" and I said" },
+    { time: 42, text: "Romeo, take me somewhere we can be alone" },
+    { time: 47, text: "I'll be waiting, all there's left to do is run" },
+    { time: 52, text: "You'll be the prince and I'll be the princess" },
+    { time: 57, text: "It's a love story, baby, just say, \"Yes\"" },
+    { time: 62, text: "Romeo, save me, they're trying to tell me how to feel" },
+    { time: 67, text: "This love is difficult, but it's real" },
+    { time: 72, text: "Don't be afraid, we'll make it out of this mess" },
+    { time: 77, text: "It's a love story, baby, just say, \"Yes\"" },
+    { time: 100, text: "But I got tired of waiting" },
+    { time: 105, text: "Wondering if you were ever coming around" },
+    { time: 110, text: "My faith in you was fading" },
+    { time: 116, text: "When I met you on the outskirts of town and I said" },
+    { time: 121, text: "\"Romeo, save me, I've been feeling so alone\"" },
+    { time: 126, text: "\"I keep waiting for you, but you never come\"" },
+    { time: 131, text: "\"Is this in my head? I don't know what to think\"" },
+    { time: 136, text: "He knelt to the ground and pulled out a ring, and said" },
+    { time: 141, text: "\"Marry me, Juliet, you'll never have to be alone\"" },
+    { time: 146, text: "\"I love you and that's all I really know\"" },
+    { time: 151, text: "\"I talked to your dad, go pick out a white dress\"" },
+    { time: 156, text: "\"It's a love story, baby, just say, 'Yes'\"" },
+    { time: 176, text: "'Cause we were both young when I first saw you" }
 ];
 let currentLyricIndex = -1; 
 
