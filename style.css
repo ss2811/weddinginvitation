@@ -111,8 +111,6 @@ body.no-scroll {
     width: 90%;
     max-width: 800px;
     padding: 10px 25px;
-    background-color: rgba(0, 0, 0, 0.4); /* Beri sedikit latar belakang agar mudah dibaca */
-    border-radius: 8px;
     color: var(--color-white); /* Ubah warna teks menjadi putih agar kontras */
     text-align: center;
     font-family: var(--font-family-special);
@@ -484,6 +482,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* ATURAN UMUM UNTUK SEMUA PARAGRAF DALAM SESI */
 /* ============================================= */
 .session p {
-  font-size: 0.9rem; /* Atur ukuran font standar untuk semua paragraf */
-  line-height: 1.5; /* Atur jarak antar baris yang konsisten */
+  font-size: 0.7rem; /* Atur ukuran font standar untuk semua paragraf */
+  line-height: 0.8; /* Atur jarak antar baris yang konsisten */
 }
