@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=1024">
     <title>Wedding Invitation - Suriansyah & Sonia Agustina Oemar</title>
     <link rel="stylesheet" href="style.css">
-    
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Vast+Shadow:wght@400;600;700&family=Amiri:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Vast+Shadow:wght@400;600;700&family=Amiri:wght@400;700&display=swap" media="print" onload="this.media='all'">
-    
-    </head>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Vast+Shadow:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
 <body>
+    <!-- Container untuk partikel bunga yang akan selalu ada -->
     <div id="particle-container"></div>
 
+    <!-- Container untuk lirik lagu -->
     <div id="lyrics-container"></div>
 
     <audio id="backgroundMusic" loop>
@@ -34,6 +33,7 @@
         </div>
     </section>
     
+    <!-- Sesi video pembuka -->
     <section id="session-video" class="session-video">
       <video id="backgroundVideo" muted playsinline>
         <source src="https://github.com/ss2811/weddinginvitation/raw/refs/heads/main/Sonia%20&%20Ancah.mp4" type="video/mp4" />
@@ -187,6 +187,19 @@
             </div>
         </section>
 
+	<section class="session" id="session7">
+            <div class="session-content">
+                <div class="corner-deco top-left"></div>
+                <div class="corner-deco top-right"></div>
+                <div class="corner-deco bottom-left"></div>
+                <div class="corner-deco bottom-right"></div>
+                <h2 class="animate-on-scroll">Ucapan & Doa</h2>
+                <div class="messages-container animate-on-scroll" id="messagesContainer">
+                    <p id="noMessages" class="no-messages">Belum ada ucapan dari tamu</p>
+                </div>
+            </div>
+        </section>
+
         <section class="session" id="session6">
             <div class="session-content">
                 <div class="corner-deco top-left"></div>
@@ -223,57 +236,43 @@
     		</div>
 	    </div>
         </section>
-
-        <section class="session" id="session7">
-            <div class="session-content">
-                <div class="corner-deco top-left"></div>
-                <div class="corner-deco top-right"></div>
-                <div class="corner-deco bottom-left"></div>
-                <div class="corner-deco bottom-right"></div>
-                <h2 class="animate-on-scroll">Ucapan & Doa</h2>
-                <div class="messages-container animate-on-scroll" id="messagesContainer">
-                    <p id="noMessages" class="no-messages">Belum ada ucapan dari tamu</p>
-                </div>
-            </div>
-        </section>
         
         <section class="session" id="gallery-slider-section">
 
             <div class="slider-container">
                 <div class="slider-track">
-                   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp" alt="Foto Prewedding 1" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp" alt="Foto Prewedding 2" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp" alt="Foto Prewedding 3" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background3.webp" alt="Foto Prewedding 4" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp" alt="Foto Prewedding 5" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp" alt="Foto Prewedding 6" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp" alt="Foto Prewedding 7" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background7.webp" alt="Foto Prewedding 8" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp" alt="Foto Prewedding 9" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background9.webp" alt="Foto Prewedding 10" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background10.webp" alt="Foto Prewedding 11" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp" alt="Foto Prewedding 1" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp" alt="Foto Prewedding 2" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp" alt="Foto Prewedding 3" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background3.webp" alt="Foto Prewedding 4" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp" alt="Foto Prewedding 5" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp" alt="Foto Prewedding 6" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp" alt="Foto Prewedding 7" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background7.webp" alt="Foto Prewedding 8" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp" alt="Foto Prewedding 9" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background9.webp" alt="Foto Prewedding 10" loading="lazy"></div>
-    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background10.webp" alt="Foto Prewedding 11" loading="lazy"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp" alt="Foto Prewedding 1"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp" alt="Foto Prewedding 2"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp" alt="Foto Prewedding 3"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background3.webp" alt="Foto Prewedding 4"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp" alt="Foto Prewedding 5"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp" alt="Foto Prewedding 6"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp" alt="Foto Prewedding 7"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background7.webp" alt="Foto Prewedding 8"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp" alt="Foto Prewedding 9"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background9.webp" alt="Foto Prewedding 10"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background10.webp" alt="Foto Prewedding 11"></div>
+
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp" alt="Foto Prewedding 1"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background1.webp" alt="Foto Prewedding 2"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp" alt="Foto Prewedding 3"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background3.webp" alt="Foto Prewedding 4"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp" alt="Foto Prewedding 5"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp" alt="Foto Prewedding 6"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background6.webp" alt="Foto Prewedding 7"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background7.webp" alt="Foto Prewedding 8"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp" alt="Foto Prewedding 9"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background9.webp" alt="Foto Prewedding 10"></div>
+    		   <div class="slide"><img src="https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background10.webp" alt="Foto Prewedding 11"></div>
 		</div>
-            </div> 
-            <div class="youtube-player-wrapper">
+            </div> <div class="youtube-player-wrapper">
                 <iframe id="weddingVideo"
-        	    src="https://www.youtube.com/embed/J19ZPWq10KU"
+        	    src="https://www.youtube.com/embed/-xhKVu8uzIo"
         	    title="Wedding Video"
         	    frameborder="0"
         	    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         	    referrerpolicy="strict-origin-when-cross-origin"
-        	    allowfullscreen
-                loading="lazy">
+        	    allowfullscreen>
 		</iframe>
             </div>
         </section>
@@ -302,9 +301,8 @@
             </div>
         </section>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script type="module" src="app.js"></script>
 </body>
 </html>
+
