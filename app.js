@@ -469,7 +469,7 @@ async function submitMessageToFirebase(name, message, attendance, visibility) {
         name: name,
         message: message,
         attendance: attendance,
-        timestamp: serverTimestamp()
+        timestamp: serverTimestamp(),
 	visibility: visibility
     });
 }
