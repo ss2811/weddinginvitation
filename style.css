@@ -420,7 +420,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 .slider-container {
   width: 100%;
-  height: 450px; /* DIUBAH: Tinggi slider diperbesar */
+  height: 675px; /* DIUBAH: Tinggi slider diperbesar */
   display: flex;
   align-items: center;
   -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
@@ -429,13 +429,13 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 .slider-track {
   display: flex;
-  width: calc(380px * 22); /* DIUBAH: Lebar total disesuaikan */
+  width: calc(570px * 22); /* DIUBAH: Lebar total disesuaikan */
   animation: scroll 60s linear infinite;
 }
 
 .slide {
-  height: 450px; /* DIUBAH: Tinggi slide diperbesar */
-  width: 380px;  /* DIUBAH: Lebar slide diperbesar */
+  height: 675px; /* DIUBAH: Tinggi slide diperbesar */
+  width: 570px;  /* DIUBAH: Lebar slide diperbesar */
   padding: 15px;
 }
 .slide img { 
@@ -591,6 +591,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 .radio-group {
-    font-size: 16px; /* Ukuran font dikecilkan */
-    gap: var(--space-16); /* Jarak antar pilihan juga dikurangi */
+    font-size: 8px; /* Ukuran font dikecilkan */
+    gap: var(--space-8); /* Jarak antar pilihan juga dikurangi */
 }
