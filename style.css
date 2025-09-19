@@ -282,6 +282,12 @@ h2 { font-size: var(--font-size-3xl); font-family: var(--font-family-special); }
 h3 { font-size: var(--font-size-2xl); color: var(--wedding-primary); }
 p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--space-16); font-weight: 600; }
 
+/* Pastikan kode ini ada untuk mengatur semua paragraf */
+.session p {
+  font-size: 18px; /* Atur ukuran standar yang Anda inginkan di sini */
+  line-height: 1.6;
+}
+
 /* Spesifik Sesi 0 */
 .invitation-title { min-height: 250px; display: flex; flex-direction: column; justify-content: center; }
 .invitation-title h1 { font-size: 3rem; }
@@ -484,16 +490,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   font-size: 28px; /* DITAMBAHKAN: Ukuran simbol '&' diperkecil */
 }
 
-#session3 p {
-  font-size: 16px; /* Ukuran paragraf diperkecil */
-}
-
-#session8 p {
-  font-size: 0.5rem;
-}
-
-#session6 p {
-  font-size: 18px;
 
 /* ============================================= */
 /* GAYA KHUSUS UNTUK TAMPILAN DESKTOP/LAPTOP */
@@ -547,7 +543,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    font-size: 18px; /* Atur ukuran font yang diinginkan */
+    font-size: 9px; /* Atur ukuran font yang diinginkan */
 }
 
 .radio-group input[type="radio"] {
