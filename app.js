@@ -559,7 +559,7 @@ window.onYouTubeIframeAPIReady = function() {
     width: '640',
     
     // PENTING: Ganti 'YOUR_YOUTUBE_VIDEO_ID' dengan ID video YouTube Anda
-    videoId: 'J19ZPWq10KU', 
+    videoId: '-xhKVu8uzIo', 
     
     playerVars: {
       'autoplay': 1,        // Mainkan otomatis
@@ -572,7 +572,7 @@ window.onYouTubeIframeAPIReady = function() {
       'rel': 0,             // Jangan tampilkan video terkait
       
       // PENTING: Agar 'loop' berfungsi, 'playlist' harus diisi dengan videoId yang sama
-      'playlist': 'J19ZPWq10KU' 
+      'playlist': '-xhKVu8uzIo' 
     },
     events: { 
       'onReady': onPlayerReady,
@@ -612,7 +612,7 @@ function showNotification(message) {
     notification.textContent = message;
     notification.style.cssText = `
         position: fixed;
-        bottom: 80px;
+        top: 20px;
         left: 50%;
         transform: translateX(-50%);
         background-color: var(--wedding-primary);
@@ -621,7 +621,7 @@ function showNotification(message) {
         border-radius: 8px;
         z-index: 9999;
         opacity: 0;
-        transition: opacity 0.3s ease, bottom 0.3s ease;
+        transition: opacity 0.3s ease, top 0.3s ease;
         font-family: var(--font-family-base);
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     `;
@@ -629,12 +629,12 @@ function showNotification(message) {
     
     setTimeout(() => {
         notification.style.opacity = '1';
-        notification.style.bottom = '90px';
+        notification.style.top = '30px';
     }, 10);
 
     setTimeout(() => {
         notification.style.opacity = '0';
-        notification.style.bottom = '80px';
+        notification.style.top = '20px';
         setTimeout(() => document.body.removeChild(notification), 300);
     }, 3000);
 }
