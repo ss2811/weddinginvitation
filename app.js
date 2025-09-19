@@ -559,7 +559,7 @@ window.onYouTubeIframeAPIReady = function() {
     width: '640',
     
     // PENTING: Ganti 'YOUR_YOUTUBE_VIDEO_ID' dengan ID video YouTube Anda
-    videoId: 'gjz_X_17YOc', 
+    videoId: 'J19ZPWq10KU', 
     
     playerVars: {
       'autoplay': 1,        // Mainkan otomatis
@@ -572,7 +572,7 @@ window.onYouTubeIframeAPIReady = function() {
       'rel': 0,             // Jangan tampilkan video terkait
       
       // PENTING: Agar 'loop' berfungsi, 'playlist' harus diisi dengan videoId yang sama
-      'playlist': 'gjz_X_17YOc' 
+      'playlist': 'J19ZPWq10KU' 
     },
     events: { 
       'onReady': onPlayerReady,
@@ -586,11 +586,19 @@ function onPlayerReady(event) {
   event.target.playVideo();
 }
 
+// app.js
 function onPlayerStateChange(event) {
+  // ===> TAMBAHKAN BLOK INI <===
+  // Jika video selesai (ENDED), putar lagi dari awal.
+  if (event.data == YT.PlayerState.ENDED) {
+    ytPlayer.playVideo(); 
+  }
+  // ============================
+
   if (event.data == YT.PlayerState.PLAYING) {
     pauseBackgroundMusic();
     isVideoPlaying = true;
-  } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+  } else if (event.data == YT.PlayerState.PAUSED) { // Dihapus: || event.data == YT.PlayerState.ENDED
     isVideoPlaying = false;
     setTimeout(() => {
         if (!isVideoPlaying) resumeBackgroundMusic();
