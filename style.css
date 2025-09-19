@@ -154,8 +154,8 @@ body.no-scroll {
 #session4 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background4.webp'); }
 #session5 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background2.webp'); }
 #session6 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background5.webp'); }
-#session7 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background10.webp'); }
-#session8 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp'); }
+#session7 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background8.webp'); }
+#session8 { background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background10.webp'); }
 #gallery-slider-section::before, #session9 { background-image: none; background-color: var(--wedding-bg);}
 
 /* --- PERUBAHAN: Desain Box Konten Baru --- */
@@ -594,3 +594,30 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* ============================================= */
+/* PENYESUAIAN TAMPILAN KOTAK UCAPAN TAMU */
+/* ============================================= */
+
+/* 1. Memperbesar area scroll untuk ucapan */
+.messages-container {
+    max-height: 700px; /* Diperbesar dari 400px */
+}
+
+/* 2. Memperbesar sedikit setiap kotak ucapan */
+.message-item {
+    padding: var(--space-24); /* Padding diperbesar */
+}
+
+/* 3. Mengubah warna tulisan di dalamnya */
+.message-name {
+    color: var(--color-white); /* Warna nama menjadi putih */
+}
+
+.message-text {
+    color: var(--color-sakura-pink); /* Warna isi pesan menjadi pink */
+}
+
+/* (Bonus) Mengubah warna status kehadiran (Hadir/Tidak Hadir) agar serasi */
+.message-name span {
+    color: rgba(255, 255, 255, 0.7); /* Putih transparan */
+}
