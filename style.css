@@ -397,7 +397,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .music-toggle-btn img { width: 100%; height: 100%; object-fit: contain; }
 
 /* Ukuran khusus untuk tombol Buka & Bagikan Undangan */
-#saveDateBtn, #shareBtn, #openMapsBtn, #submitRsvpBtn {
+#saveDateBtn, #shareBtn, #openMapsBtn, #submitRsvpBtn, #revealAccountsBtn {
   padding: 16px 32px;  /* Atur ruang di dalam tombol (atas/bawah | kiri/kanan) */
   font-size: 1.1rem;   /* Atur ukuran tulisan di dalam tombol */
 }
@@ -405,26 +405,22 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* GALERI FOTO AUTO-SLIDE */
 /* PERBAIKAN FINAL UNTUK SPASI SESI GALERI */
 
+/* GALERI FOTO AUTO-SLIDE (versi baru yang lebih besar) */
 #gallery-slider-section {
-  /* Menimpa aturan dari class .session agar tidak ada spasi atas-bawah */
-  min-height: auto;           /* Biarkan tinggi sesi mengikuti konten, jangan setinggi layar */
-  justify-content: flex-start;  /* Ratakan konten ke atas, bukan ke tengah */
-  
-  /* Atur jarak atas-bawah sesi secara manual jika perlu */
+  min-height: auto;
+  justify-content: flex-start;
   padding-top: 5px;
   padding-bottom: 5px;
-
-  /* Pengaturan yang sudah ada sebelumnya (tetap diperlukan) */
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  gap: 15px; /* Jarak antara slider dan video, sesuaikan jika perlu */
+  gap: 15px;
 }
 
 .slider-container {
   width: 100%;
-  height: 350px; /* DITAMBAHKAN: Atur tinggi eksplisit untuk slider */
+  height: 450px; /* DIUBAH: Tinggi slider diperbesar */
   display: flex;
   align-items: center;
   -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
@@ -433,22 +429,27 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 .slider-track {
   display: flex;
-  width: calc(300px * 22);
+  width: calc(380px * 22); /* DIUBAH: Lebar total disesuaikan */
   animation: scroll 60s linear infinite;
 }
 
 .slide {
-  height: 350px; /* Pastikan tinggi slide konsisten */
-  width: 300px;
+  height: 450px; /* DIUBAH: Tinggi slide diperbesar */
+  width: 380px;  /* DIUBAH: Lebar slide diperbesar */
   padding: 15px;
 }
-.slide img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.slide img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  border-radius: var(--radius-xl); 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+}
 
 @keyframes scroll {
   0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-300px * 11)); }
+  100% { transform: translateX(calc(-380px * 11)); } /* DIUBAH: Jarak scroll disesuaikan */
 }
-
 
 /* ===== GAYA BARU UNTUK PEMUTAR YOUTUBE ===== */
 .youtube-player-wrapper {
@@ -587,4 +588,9 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 @keyframes fadeInDetails {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+.radio-group {
+    font-size: 16px; /* Ukuran font dikecilkan */
+    gap: var(--space-16); /* Jarak antar pilihan juga dikurangi */
 }
