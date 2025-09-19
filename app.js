@@ -381,18 +381,50 @@ function saveTheDate() {
 }
 
 async function shareInvitation() {
+    
+    // URL gambar yang akan dilampirkan saat berbagi
+    const imageUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp';
+    
+    // Teks undangan yang sudah disesuaikan dengan permintaan Anda
+    const shareText = `
+Assalamualaikum 👋
+Dengan penuh rasa syukur, kami ingin membagikan kabar bahagia dan mengundang Anda untuk hadir di acara pernikahan kami, Ancah & Sonia.
+
+Kehadiran dan doa restu Anda sangat berarti bagi kami.
+"Barakallahu laka, wa baraka 'alaika, wa jama'a bainakuma fii khair."
+
+Silakan lihat detail acara di tautan berikut:
+    `;
+
+    // Data yang akan dibagikan
     const shareData = {
-        title: 'Undangan Pernikahan: Sonia & Ancah',
-        text: 'Kami mengundang Anda untuk menghadiri hari bahagia kami.',
+        title: 'Undangan Pernikahan: Ancah & Sonia',
+        text: shareText,
         url: window.location.href
     };
+
     try {
-        if (navigator.share) {
-            await navigator.share(shareData);
+        // Logika untuk mengambil gambar dan menyiapkannya untuk dibagikan
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const file = new File([blob], 'undangan-ancah-sonia.jpg', { type: blob.type });
+        const filesArray = [file];
+
+        // Cek apakah browser mendukung pembagian file (gambar)
+        if (navigator.canShare && navigator.canShare({ files: filesArray })) {
+            // Jika mendukung, bagikan dengan gambar
+            await navigator.share({
+                ...shareData,
+                files: filesArray
+            });
         } else {
-            throw new Error('Web Share API not supported');
+            // Jika tidak, bagikan teks saja
+            await navigator.share(shareData);
         }
+
     } catch (err) {
+        // Jika fitur 'share' gagal total, salin link ke clipboard
+        console.error("Share failed:", err);
         copyToClipboard(window.location.href, 'Link undangan berhasil disalin!');
     }
 }
@@ -401,7 +433,7 @@ async function handleRsvpSubmission() {
     const nameEl = document.getElementById('guestName');
     const messageEl = document.getElementById('guestMessage');
     const attendanceEl = document.getElementById('attendance');
-
+    const visibility = document.querySelector('input[name="messageVisibility"]:checked').value;
     const name = nameEl.value.trim();
     const message = messageEl.value.trim();
     const attendance = attendanceEl.value;
@@ -416,7 +448,7 @@ async function handleRsvpSubmission() {
     }
 
     try {
-        await submitMessageToFirebase(name, message, attendance);
+        await submitMessageToFirebase(name, message, attendance, visibility);
         showNotification("Terima kasih atas ucapan dan konfirmasinya!");
         nameEl.value = '';
         messageEl.value = '';
@@ -428,7 +460,7 @@ async function handleRsvpSubmission() {
     }
 }
 
-async function submitMessageToFirebase(name, message, attendance) {
+async function submitMessageToFirebase(name, message, attendance, visibility) {
     if (!db) {
         console.error("Firestore is not initialized.");
         return;
@@ -438,6 +470,7 @@ async function submitMessageToFirebase(name, message, attendance) {
         message: message,
         attendance: attendance,
         timestamp: serverTimestamp()
+	visibility: visibility
     });
 }
 
@@ -446,8 +479,7 @@ function copyAccount(accountNumber) {
 }
 
 function openMaps() {
-    const locationQuery = "Masjid Jabal Rahmah Mandin";
-    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationQuery)}`;
+    const url = 'https://maps.app.goo.gl/1BLjCXhxktJSdVJG6?g_st=aw';
     window.open(url, '_blank');
 }
 
@@ -470,12 +502,14 @@ async function loadGuestMessages() {
         const querySnapshot = await getDocs(q);
         
         container.innerHTML = ''; // Kosongkan kontainer
-        if (querySnapshot.empty) {
-            noMessagesEl.style.display = 'block';
-        } else {
-            noMessagesEl.style.display = 'none';
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
+        let publicMessagesCount = 0; // Untuk menghitung pesan publik
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            
+            // HANYA TAMPILKAN JIKA VISIBILITY ADALAH 'public'
+            // (atau jika data lama belum punya field visibility)
+            if (data.visibility === 'public' || data.visibility === undefined) {
                 const attendanceStatus = data.attendance === 'hadir' ? 'Hadir' : 'Tidak Hadir';
                 const messageItem = `
                     <div class="message-item">
@@ -484,8 +518,17 @@ async function loadGuestMessages() {
                     </div>
                 `;
                 container.innerHTML += messageItem;
-            });
+                publicMessagesCount++;
+            }
+        });
+
+        // Tampilkan "Belum ada ucapan" jika tidak ada pesan publik
+        if (publicMessagesCount === 0) {
+            noMessagesEl.style.display = 'block';
+        } else {
+            noMessagesEl.style.display = 'none';
         }
+
     } catch (error) {
         console.error("Error loading messages: ", error);
         container.innerHTML = '<p>Gagal memuat ucapan.</p>';
