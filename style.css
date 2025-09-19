@@ -550,7 +550,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    font-size: 13px; /* Atur ukuran font yang diinginkan */
+    font-size: 15px; /* Atur ukuran font yang diinginkan */
 }
 
 .radio-group input[type="radio"] {
