@@ -554,3 +554,37 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     width: 20px;
     height: 20px;
 }
+
+/* style.css (tambahkan di paling bawah) */
+
+/* Gaya untuk tombol utama */
+#revealAccountsBtn {
+    margin-top: var(--space-20);
+}
+
+/* Gaya untuk kontainer rekening */
+#bankAccountsWrapper {
+    display: grid;
+    grid-template-columns: 1fr; /* Default 1 kolom untuk HP */
+    gap: var(--space-16);
+    margin-top: var(--space-24);
+    width: 100%;
+    animation: fadeInDetails 0.5s ease-in-out;
+}
+
+/* Atur 2 kolom untuk layar lebih lebar */
+@media screen and (min-width: 768px) {
+    #bankAccountsWrapper {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Kelas untuk menyembunyikan/menampilkan */
+#bankAccountsWrapper.hidden {
+    display: none;
+}
+
+@keyframes fadeInDetails {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
