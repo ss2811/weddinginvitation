@@ -83,6 +83,21 @@ function handleVisibilityChange() {
     }
 }
 
+function setupGiftReveal() {
+    const revealBtn = document.getElementById('revealAccountsBtn');
+    const accountsWrapper = document.getElementById('bankAccountsWrapper');
+
+    if (revealBtn && accountsWrapper) {
+        revealBtn.addEventListener('click', () => {
+            // Tampilkan kontainer rekening
+            accountsWrapper.classList.remove('hidden');
+
+            // Sembunyikan tombol "Tampilkan" setelah diklik
+            revealBtn.style.display = 'none';
+        });
+    }
+}
+
 // Pastikan initApp selalu terdaftar dan dijalankan setelah DOM siap
 document.addEventListener('DOMContentLoaded', initApp);
 
@@ -103,6 +118,7 @@ function initApp() {
     createBackgroundParticles();
     setupGenericScrollAnimations();
     setupLyrics();
+    setupGiftReveal();
     document.addEventListener('visibilitychange', handleVisibilityChange);
 }
 
