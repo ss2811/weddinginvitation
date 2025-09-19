@@ -161,6 +161,15 @@
                         <label class="form-label">Ucapan & Doa</label>
                         <textarea class="form-control" id="guestMessage" rows="4" placeholder="Tulis ucapan dan doa untuk kami"></textarea>
                     </div>
+		    <div class="form-group">
+    			<label class="form-label">Tampilkan Ucapan Anda?</label>
+    			<div class="radio-group">
+        		    <input type="radio" id="show-message" name="messageVisibility" value="public" checked>
+        		    <label for="show-message">Ya, Tampilkan</label>
+        		    <input type="radio" id="hide-message" name="messageVisibility" value="private">
+        		    <label for="hide-message">Tidak</label>
+    			</div>
+		    </div>
                     <div class="form-group">
                         <label class="form-label">Konfirmasi Kehadiran</label>
                         <select class="form-control" id="attendance">
@@ -291,5 +300,4 @@
     <script type="module" src="app.js"></script>
 </body>
 </html>
-
 
