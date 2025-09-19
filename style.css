@@ -547,13 +547,14 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     align-items: center;
     gap: 8px;
     cursor: pointer;
+    font-size: 18px; /* Atur ukuran font yang diinginkan */
 }
 
 .radio-group input[type="radio"] {
     /* Membuat tampilan radio button lebih modern */
     accent-color: var(--wedding-primary);
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
 /* style.css (tambahkan di paling bawah) */
@@ -590,7 +591,3 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     to { opacity: 1; transform: translateY(0); }
 }
 
-.radio-group {
-    font-size: 8px; /* Ukuran font dikecilkan */
-    gap: var(--space-8); /* Jarak antar pilihan juga dikurangi */
-}
