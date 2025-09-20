@@ -396,52 +396,42 @@ function saveTheDate() {
     showNotification("Kalender telah diunduh!");
 }
 
+// GANTI FUNGSI LAMA DENGAN FUNGSI BARU INI
 async function shareInvitation() {
-    
-    // URL gambar yang akan dilampirkan saat berbagi
-    const imageUrl = 'https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/background0.webp';
-    
-    // Teks undangan yang sudah disesuaikan dengan permintaan Anda
-    const shareText = `
-Assalamualaikum 👋
-Dengan penuh rasa syukur, kami ingin membagikan kabar bahagia dan mengundang Anda untuk hadir di acara pernikahan kami, Ancah & Sonia.
+    // 1. Munculkan popup untuk menanyakan nama tamu
+    const guestName = prompt("Untuk siapa undangan ini? (Contoh: Bapak Budi & Keluarga)");
+
+    // 2. Lanjutkan hanya jika tamu mengisi nama
+    if (guestName) {
+        // 3. Buat URL dasar
+        const baseUrl = window.location.origin + window.location.pathname;
+        const personalizedUrl = `${baseUrl}?to=${encodeURIComponent(guestName)}`;
+
+        // 4. Siapkan data untuk dibagikan dengan teks baru
+        const shareData = {
+            title: 'Undangan Pernikahan: Ancah & Sonia',
+            text: `Assalamualaikum 👋
+
+Dengan penuh rasa syukur, kami ingin membagikan kabar bahagia dan mengundang ${guestName} untuk hadir di acara pernikahan kami, Ancah & Sonia.
 
 Kehadiran dan doa restu Anda sangat berarti bagi kami.
 "Barakallahu laka, wa baraka 'alaika, wa jama'a bainakuma fii khair."
 
-Silakan lihat detail acara di tautan berikut:
-    `;
+Silakan lihat detail acara di tautan berikut:`,
+            url: personalizedUrl
+        };
 
-    // Data yang akan dibagikan
-    const shareData = {
-        title: 'Undangan Pernikahan: Ancah & Sonia',
-        text: shareText,
-        url: window.location.href
-    };
-
-    try {
-        // Logika untuk mengambil gambar dan menyiapkannya untuk dibagikan
-        const response = await fetch(imageUrl);
-        const blob = await response.blob();
-        const file = new File([blob], 'undangan-ancah-sonia.jpg', { type: blob.type });
-        const filesArray = [file];
-
-        // Cek apakah browser mendukung pembagian file (gambar)
-        if (navigator.canShare && navigator.canShare({ files: filesArray })) {
-            // Jika mendukung, bagikan dengan gambar
-            await navigator.share({
-                ...shareData,
-                files: filesArray
-            });
-        } else {
-            // Jika tidak, bagikan teks saja
-            await navigator.share(shareData);
+        // 5. Coba bagikan menggunakan Web Share API
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+            } else {
+                throw new Error('Web Share API not supported');
+            }
+        } catch (err) {
+            // Fallback: Salin link ke clipboard
+            copyToClipboard(personalizedUrl, 'Link undangan personal berhasil disalin!');
         }
-
-    } catch (err) {
-        // Jika fitur 'share' gagal total, salin link ke clipboard
-        console.error("Share failed:", err);
-        copyToClipboard(window.location.href, 'Link undangan berhasil disalin!');
     }
 }
 
