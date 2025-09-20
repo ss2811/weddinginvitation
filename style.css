@@ -86,7 +86,7 @@ body.no-scroll {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1; /* Biarkan partikel bunga di belakang */
+    z-index: 2; /* Biarkan partikel bunga di belakang */
 }
 
 #lyrics-container {
@@ -96,7 +96,7 @@ body.no-scroll {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1; /* UBAH INI: Pindahkan lirik ke lapisan paling atas */
+    z-index: 2; /* UBAH INI: Pindahkan lirik ke lapisan paling atas */
 }
 
 .particle {
@@ -610,7 +610,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* 3. Mengubah warna tulisan di dalamnya */
 .message-name {
-    color: var(--color-white); /* Warna nama menjadi putih */
+    color: var(--wedding-text-main); /* Warna nama menjadi putih */
 }
 
 .message-text {
