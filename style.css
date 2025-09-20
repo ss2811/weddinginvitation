@@ -615,7 +615,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 .message-text {
     color: var(--color-sakura-pink); /* Warna isi pesan menjadi pink */
-    font-size: 0.8rem
+    font-size: 0.7rem
 }
 
 /* (Bonus) Mengubah warna status kehadiran (Hadir/Tidak Hadir) agar serasi */
@@ -699,3 +699,4 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     from { transform: scale(0.8); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
+
