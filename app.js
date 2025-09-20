@@ -565,33 +565,33 @@ function escapeHtml(unsafe) {
          .replace(/'/g, "&#039;");
 }
 
-async function loadGuestMessages() {
+// GANTI SELURUH FUNGSI LAMA DENGAN VERSI BARU YANG REAL-TIME INI
+function loadGuestMessages() {
     const container = document.getElementById('messagesContainer');
     const noMessagesEl = document.getElementById('noMessages');
     if (!container || !db) return;
 
-    try {
-        const q = query(collection(db, "guestbook"), orderBy("timestamp", "desc"));
-        const querySnapshot = await getDocs(q);
-        
-        container.innerHTML = ''; // Kosongkan kontainer
-        let publicMessagesCount = 0; // Pindahkan deklarasi ke sini
+    const q = query(collection(db, "guestbook"), orderBy("timestamp", "desc"));
+
+    // INI BAGIAN UTAMA: onSnapshot menggantikan getDocs untuk pembaruan real-time
+    onSnapshot(q, (querySnapshot) => {
+        container.innerHTML = ''; // Kosongkan kontainer setiap kali ada pembaruan
+        let publicMessagesCount = 0;
+
+        if (querySnapshot.empty) {
+            noMessagesEl.style.display = 'block';
+            return; // Hentikan jika tidak ada dokumen sama sekali
+        }
 
         querySnapshot.forEach((doc) => {
             const data = doc.data();
 
-            // PERBAIKAN: Hanya tampilkan pesan jika visibility adalah 'public'
+            // Hanya proses dan tampilkan pesan yang visibilitasnya 'public'
             if (data.visibility === 'public') {
-                publicMessagesCount++; // Hitung pesan yang ditampilkan
+                publicMessagesCount++;
 
-                let attendanceStatus, statusColor;
-                if (data.attendance === 'hadir') {
-                    attendanceStatus = 'Hadir';
-                    statusColor = 'var(--wedding-primary)'; // WARNA BIRU
-                } else {
-                    attendanceStatus = 'Tidak Hadir';
-                    statusColor = 'rgba(0, 0, 0, 0.6)'; // Warna abu-abu gelap
-                }
+                const attendanceStatus = data.attendance === 'hadir' ? 'Hadir' : 'Tidak Hadir';
+                const statusColor = data.attendance === 'hadir' ? 'var(--wedding-primary)' : 'rgba(0, 0, 0, 0.6)';
 
                 const messageItem = `
                     <div class="message-item">
@@ -607,17 +607,18 @@ async function loadGuestMessages() {
             }
         });
 
-        // Tampilkan "Belum ada ucapan" jika tidak ada pesan publik
+        // Tampilkan atau sembunyikan pesan "Belum ada ucapan" berdasarkan jumlah pesan publik
         if (publicMessagesCount === 0) {
             noMessagesEl.style.display = 'block';
         } else {
             noMessagesEl.style.display = 'none';
         }
 
-    } catch (error) {
-        console.error("Error loading messages: ", error);
-        container.innerHTML = '<p>Gagal memuat ucapan.</p>';
-    }
+    }, (error) => {
+        // Fungsi ini akan berjalan jika ada error koneksi ke Firebase
+        console.error("Error listening to messages: ", error);
+        container.innerHTML = '<p>Gagal memuat ucapan. Cek koneksi internet Anda.</p>';
+    });
 }
 
 // --- INTERAKSI VIDEO YOUTUBE ---
