@@ -104,16 +104,18 @@ function setupGiftReveal() {
 document.addEventListener('DOMContentLoaded', initApp);
 
 function initApp() {
-	const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
     const guestName = urlParams.get('to');
-    const guestNameElement = document.getElementById('guestNameDisplay');
 
-    if (guestName && guestNameElement) {
-        // Mengganti tanda '+' dengan spasi dan menampilkannya
-        guestNameElement.textContent = guestName.replace(/\+/g, ' ');
-	const guestNameFrontElement = document.getElementById('guestNameDisplayFront'); 
-    if (guestNameFrontElement) guestNameFrontElement.textContent = guestName ? guestName.replace(/\+/g, ' ') : 'Nama Tamu';
-	}
+    // Logika baru yang lebih bersih
+    if (guestName) {
+        const formattedName = guestName.replace(/\+/g, ' ');
+        const guestNameDisplay = document.getElementById('guestNameDisplay');
+        const guestNameDisplayFront = document.getElementById('guestNameDisplayFront');
+
+        if (guestNameDisplay) guestNameDisplay.textContent = formattedName;
+        if (guestNameDisplayFront) guestNameDisplayFront.textContent = formattedName;
+    }
     document.body.classList.add('no-scroll');
     backgroundMusic = document.getElementById('backgroundMusic');
     
@@ -566,7 +568,9 @@ function openMaps() {
     window.open(url, '_blank');
 }
 
+// GANTI FUNGSI LAMA DENGAN VERSI AMAN INI
 function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return '';
     return unsafe
          .replace(/&/g, "&amp;")
          .replace(/</g, "&lt;")
