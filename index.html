@@ -307,11 +307,19 @@
     </div>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script type="module" src="app.js"></script>
+    <div id="shareModalOverlay" class="hidden">
+        <div id="shareModal" class="session-content">
+            <h3 class="shimmer-text">Bagikan Undangan</h3>
+            <p>Untuk siapa undangan ini akan dibagikan?</p>
+            <div class="form-group">
+                <input type="text" id="shareGuestNameInput" class="form-control" placeholder="Contoh: Bapak Budi & Keluarga">
+            </div>
+            <div class="action-buttons">
+                <button id="cancelShareBtn" class="btn btn--outline">Batal</button>
+                <button id="confirmShareBtn" class="btn btn--primary">Bagikan</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
-
-
-
-
-
 
