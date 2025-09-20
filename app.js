@@ -102,16 +102,6 @@ function setupGiftReveal() {
 document.addEventListener('DOMContentLoaded', initApp);
 
 function initApp() {
-	const urlParams = new URLSearchParams(window.location.search);
-    const guestName = urlParams.get('to');
-    const guestNameElement = document.getElementById('guestNameDisplay');
-	const guestNameFrontElement = document.getElementById('guestNameDisplayFront'); 
-    if (guestNameFrontElement) guestNameFrontElement.textContent = guestName ? guestName.replace(/\+/g, ' ') : 'Nama Tamu';
-
-    if (guestName && guestNameElement) {
-        // Mengganti tanda '+' dengan spasi dan menampilkannya
-        guestNameElement.textContent = guestName.replace(/\+/g, ' ');
-    }
     document.body.classList.add('no-scroll');
     backgroundMusic = document.getElementById('backgroundMusic');
     
@@ -538,11 +528,11 @@ async function loadGuestMessages() {
             if (data.visibility === 'public' || data.visibility === undefined) {
                 const attendanceStatus = data.attendance === 'hadir' ? 'Hadir' : 'Tidak Hadir';
                 const messageItem = `
-                    <div class="message-item">
-                        <p class="message-name">${escapeHtml(data.name)} <span style="font-size: 0.8em; color: #aaa;">(${attendanceStatus})</span></p>
-                        <p class="message-text">${escapeHtml(data.message) || '<i>Tidak ada pesan.</i>'}</p>
-                    </div>
-                `;
+    		    <div class="message-item">
+        		<p class="message-name">${escapeHtml(data.name)} <span style="font-size: 0.8em; color: #aaa;">(${attendanceStatus})</span></p>
+        		<p class="message-text shimmer-text">${escapeHtml(data.message) || '<i>Tidak ada pesan.</i>'}</p>
+    		    </div>
+		`;
                 container.innerHTML += messageItem;
                 publicMessagesCount++;
             }
@@ -679,6 +669,4 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
-
-
 
