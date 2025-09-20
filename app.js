@@ -111,6 +111,7 @@ function initApp() {
         guestNameElement.textContent = guestName.replace(/\+/g, ' ');
 	const guestNameFrontElement = document.getElementById('guestNameDisplayFront'); 
     if (guestNameFrontElement) guestNameFrontElement.textContent = guestName ? guestName.replace(/\+/g, ' ') : 'Nama Tamu';
+	}
     document.body.classList.add('no-scroll');
     backgroundMusic = document.getElementById('backgroundMusic');
     
@@ -677,5 +678,6 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
+
 
 
