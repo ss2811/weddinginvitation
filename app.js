@@ -129,6 +129,7 @@ function initApp() {
     setupGenericScrollAnimations();
     setupLyrics();
     setupGiftReveal();
+    setupShareModal();
     document.addEventListener('visibilitychange', handleVisibilityChange);
 }
 
@@ -423,11 +424,53 @@ async function shareInvitation(guestName) {
     }
 }
 
+// TAMBAHKAN BLOK KODE BARU INI
+function setupShareModal() {
+    const shareBtn = document.getElementById('shareBtn');
+    const overlay = document.getElementById('shareModalOverlay');
+    const guestNameInput = document.getElementById('shareGuestNameInput');
+    const cancelBtn = document.getElementById('cancelShareBtn');
+    const confirmBtn = document.getElementById('confirmShareBtn');
+
+    // Saat tombol "Bagikan Undangan" utama diklik -> Buka popup
+    shareBtn?.addEventListener('click', () => {
+        overlay?.classList.remove('hidden');
+        guestNameInput.focus(); // Langsung fokus ke kolom input
+    });
+
+    // Fungsi untuk menutup popup
+    const closeModal = () => {
+        overlay?.classList.add('hidden');
+        guestNameInput.value = ''; // Kosongkan input
+    };
+
+    // Tutup popup jika klik Batal atau area gelap di belakang
+    cancelBtn?.addEventListener('click', closeModal);
+    overlay?.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            closeModal();
+        }
+    });
+
+    // Saat tombol "Bagikan" di dalam popup diklik -> jalankan fungsi share
+    confirmBtn?.addEventListener('click', () => {
+        const guestName = guestNameInput.value.trim();
+        if (guestName) {
+            shareInvitation(guestName);
+            closeModal();
+        } else {
+            showNotification('Mohon isi nama tamu terlebih dahulu.');
+        }
+    });
+}
+
+// GANTI FUNGSI LAMA DENGAN VERSI BARU INI
 async function handleRsvpSubmission() {
     const nameEl = document.getElementById('guestName');
     const messageEl = document.getElementById('guestMessage');
     const attendanceEl = document.getElementById('attendance');
     const visibility = document.querySelector('input[name="messageVisibility"]:checked').value;
+
     const name = nameEl.value.trim();
     const message = messageEl.value.trim();
     const attendance = attendanceEl.value;
@@ -442,12 +485,49 @@ async function handleRsvpSubmission() {
     }
 
     try {
+        // Kirim data ke Firebase seperti biasa
         await submitMessageToFirebase(name, message, attendance, visibility);
+        
         showNotification("Terima kasih atas ucapan dan konfirmasinya!");
+
+        // === LOGIKA BARU UNTUK TAMPIL INSTAN ===
+        if (visibility === 'public') {
+            const container = document.getElementById('messagesContainer');
+            const noMessagesEl = document.getElementById('noMessages');
+            
+            // Sembunyikan pesan "Belum ada ucapan" jika ada
+            if (noMessagesEl) noMessagesEl.style.display = 'none';
+
+            // Tentukan warna dan teks status kehadiran
+            const attendanceStatus = attendance === 'hadir' ? 'Hadir' : 'Tidak Hadir';
+            const statusColor = attendance === 'hadir' ? 'var(--wedding-primary)' : 'rgba(0, 0, 0, 0.6)';
+
+            // Buat elemen HTML untuk pesan baru
+            const newMessageElement = document.createElement('div');
+            newMessageElement.innerHTML = `
+                <div class="message-item">
+                    <p class="message-name">${escapeHtml(name)} 
+                        <span style="font-size: 0.8em; color: ${statusColor}; font-weight: bold;">
+                            (${attendanceStatus})
+                        </span>
+                    </p>
+                    <p class="message-text shimmer-text">${escapeHtml(message) || '<i>Tidak ada pesan.</i>'}</p>
+                </div>
+            `;
+            
+            // Masukkan pesan baru di paling atas daftar
+            container.prepend(newMessageElement.firstChild);
+        }
+        // ==========================================
+
+        // Kosongkan form setelah berhasil
         nameEl.value = '';
         messageEl.value = '';
         attendanceEl.value = '';
-        loadGuestMessages();
+        
+        // Hapus pemanggilan loadGuestMessages() dari sini untuk mencegah refresh ganda
+        // loadGuestMessages(); 
+
     } catch (error) {
         console.error("Error submitting RSVP:", error);
         showNotification("Maaf, terjadi kesalahan saat mengirim ucapan.");
@@ -658,6 +738,3 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
-
-
-
