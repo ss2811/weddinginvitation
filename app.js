@@ -518,34 +518,37 @@ async function loadGuestMessages() {
         const querySnapshot = await getDocs(q);
         
         container.innerHTML = ''; // Kosongkan kontainer
-        let publicMessagesCount = 0; // Untuk menghitung pesan publik
+        let publicMessagesCount = 0; // Pindahkan deklarasi ke sini
 
         querySnapshot.forEach((doc) => {
-    	    const data = doc.data();
+            const data = doc.data();
 
-    // --- LOGIKA BARU UNTUK WARNA & TEKS STATUS ---
-    	    let attendanceStatus, statusColor;
-    	    if (data.attendance === 'hadir') {
-                attendanceStatus = 'Hadir';
-                statusColor = 'var(--wedding-primary)'; // WARNA BIRU
-    	    } else {
-        	attendanceStatus = 'Tidak Hadir';
-        	statusColor = 'rgba(0, 0, 0, 0.6)'; // Warna abu-abu gelap
-    	    }
-    // --- AKHIR LOGIKA BARU ---
+            // PERBAIKAN: Hanya tampilkan pesan jika visibility adalah 'public'
+            if (data.visibility === 'public') {
+                publicMessagesCount++; // Hitung pesan yang ditampilkan
 
-    const messageItem = `
-        <div class="message-item">
-            <p class="message-name">${escapeHtml(data.name)} 
-                <span style="font-size: 0.8em; color: ${statusColor}; font-weight: bold;">
-                    (${attendanceStatus})
-                </span>
-            </p>
-            <p class="message-text shimmer-text">${escapeHtml(data.message) || '<i>Tidak ada pesan.</i>'}</p>
-        </div>
-    `;
-    container.innerHTML += messageItem;
-});
+                let attendanceStatus, statusColor;
+                if (data.attendance === 'hadir') {
+                    attendanceStatus = 'Hadir';
+                    statusColor = 'var(--wedding-primary)'; // WARNA BIRU
+                } else {
+                    attendanceStatus = 'Tidak Hadir';
+                    statusColor = 'rgba(0, 0, 0, 0.6)'; // Warna abu-abu gelap
+                }
+
+                const messageItem = `
+                    <div class="message-item">
+                        <p class="message-name">${escapeHtml(data.name)} 
+                            <span style="font-size: 0.8em; color: ${statusColor}; font-weight: bold;">
+                                (${attendanceStatus})
+                            </span>
+                        </p>
+                        <p class="message-text shimmer-text">${escapeHtml(data.message) || '<i>Tidak ada pesan.</i>'}</p>
+                    </div>
+                `;
+                container.innerHTML += messageItem;
+            }
+        });
 
         // Tampilkan "Belum ada ucapan" jika tidak ada pesan publik
         if (publicMessagesCount === 0) {
@@ -559,7 +562,6 @@ async function loadGuestMessages() {
         container.innerHTML = '<p>Gagal memuat ucapan.</p>';
     }
 }
-
 
 // --- INTERAKSI VIDEO YOUTUBE ---
 window.onYouTubeIframeAPIReady = function() {
@@ -678,6 +680,3 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
-
-
-
