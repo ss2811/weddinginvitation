@@ -521,22 +521,31 @@ async function loadGuestMessages() {
         let publicMessagesCount = 0; // Untuk menghitung pesan publik
 
         querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            
-            // HANYA TAMPILKAN JIKA VISIBILITY ADALAH 'public'
-            // (atau jika data lama belum punya field visibility)
-            if (data.visibility === 'public' || data.visibility === undefined) {
-                const attendanceStatus = data.attendance === 'hadir' ? 'Hadir' : 'Tidak Hadir';
-                const messageItem = `
-    		    <div class="message-item">
-        		<p class="message-name">${escapeHtml(data.name)} <span style="font-size: 0.8em; color: #aaa;">(${attendanceStatus})</span></p>
-        		<p class="message-text shimmer-text">${escapeHtml(data.message) || '<i>Tidak ada pesan.</i>'}</p>
-    		    </div>
-		`;
-                container.innerHTML += messageItem;
-                publicMessagesCount++;
-            }
-        });
+    	    const data = doc.data();
+
+    // --- LOGIKA BARU UNTUK WARNA & TEKS STATUS ---
+    	    let attendanceStatus, statusColor;
+    	    if (data.attendance === 'hadir') {
+                attendanceStatus = 'Hadir';
+                statusColor = 'var(--wedding-primary)'; // WARNA BIRU
+    	    } else {
+        	attendanceStatus = 'Tidak Hadir';
+        	statusColor = 'rgba(0, 0, 0, 0.6)'; // Warna abu-abu gelap
+    	    }
+    // --- AKHIR LOGIKA BARU ---
+
+    const messageItem = `
+        <div class="message-item">
+            <p class="message-name">${escapeHtml(data.name)} 
+                <span style="font-size: 0.8em; color: ${statusColor}; font-weight: bold;">
+                    (${attendanceStatus})
+                </span>
+            </p>
+            <p class="message-text shimmer-text">${escapeHtml(data.message) || '<i>Tidak ada pesan.</i>'}</p>
+        </div>
+    `;
+    container.innerHTML += messageItem;
+});
 
         // Tampilkan "Belum ada ucapan" jika tidak ada pesan publik
         if (publicMessagesCount === 0) {
