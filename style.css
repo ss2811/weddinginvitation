@@ -652,3 +652,49 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   /* Properti 'color' dihapus dari sini agar animasi shimmer-text bisa bekerja */
 }
 
+/* ============================================= */
+/* GAYA POPUP BAGIKAN UNDANGAN         */
+/* ============================================= */
+#shareModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002; /* Harus di atas tombol musik */
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+#shareModalOverlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#shareModal {
+    /* Menggunakan gaya .session-content yang sudah ada, tapi dengan beberapa penyesuaian */
+    max-width: 500px;
+    width: 90%;
+    animation: zoomIn 0.3s ease;
+}
+
+#shareModal p {
+    font-size: 1rem;
+    margin-bottom: var(--space-20);
+}
+
+#shareModal .action-buttons {
+    display: flex;
+    justify-content: space-between; /* Tombol jadi di kiri dan kanan */
+    gap: var(--space-16);
+    margin-top: var(--space-24);
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
