@@ -1,5 +1,6 @@
 /* PERPLEXITY DESIGN SYSTEM (BASE) */
 :root {
+  color-scheme: light;
   /* Primitive Color Tokens */
   --color-white: rgba(255, 255, 255, 1);
   --color-black: rgba(0, 0, 0, 1);
@@ -113,7 +114,7 @@ body.no-scroll {
     padding: 10px 25px;
     color: var(--color-white);
     font-family: var(--font-family-base);
-    font-size: 0.7rem;
+    font-size: 19px;
     font-weight: 700;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
     
@@ -283,23 +284,23 @@ h3 { font-size: var(--font-size-2xl); color: var(--wedding-primary); }
 p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--space-16); font-weight: 600; }
 
 #session3 p {
-  font-size: 0.8rem; /* Ukuran paragraf diperkecil */
+  font-size: 22px; /* Ukuran paragraf diperkecil */
 }
 
 #session8 p {
-  font-size: 0.8rem;
+  font-size: 22px;
 }
 
 #session6 p {
-  font-size: 0.8rem;
+  font-size: 22px;
 }
 
 
 /* Spesifik Sesi 0 */
 .invitation-title { min-height: 250px; display: flex; flex-direction: column; justify-content: center; }
-.invitation-title h1 { font-size: 3rem; }
-.couple-names { font-size: 2.5rem; }
-.wedding-date { font-size: 1.1rem; font-weight: 600; margin-bottom: var(--space-32); }
+.invitation-title h1 { font-size: 84px; }
+.couple-names { font-size: 70px; }
+.wedding-date { font-size: 30px; font-weight: 600; margin-bottom: var(--space-32); }
 
 /* PERUBAHAN: Spasi antar tombol */
 #session1 .action-buttons {
@@ -310,7 +311,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Ukuran khusus untuk teks ayat di Sesi 2 */
 #session2 .quran-verse {
-  font-size: 0.8rem;
+  font-size: 22px;
   line-height: 1.5;
   text-align: center; /* DITAMBAHKAN: Membuat teks rata tengah */
 }
@@ -318,11 +319,11 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* Hitung Mundur */
 .countdown-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-12); margin: var(--space-32) 0; }
 .countdown-item { background: transparent; padding: var(--space-12); border-radius: var(--radius-xl); border: 2px solid var(--wedding-border-color); }
-.countdown-item span { display: block; font-size: 2.2rem; font-weight: 700; color: var(--wedding-primary); }
-.countdown-item label { font-size: 0.7rem; text-transform: uppercase; }
+.countdown-item span { display: block; font-size: 60px; font-weight: 700; color: var(--wedding-primary); }
+.countdown-item label { font-size: 19px; text-transform: uppercase; }
 
 /* PERUBAHAN: Kotak pada ayat dihapus */
-.arabic-text { font-family: var(--font-family-arabic); font-size: 2.5rem; color: var(--wedding-primary); margin-bottom: var(--space-20); direction: rtl; }
+.arabic-text { font-family: var(--font-family-arabic); font-size: 70px; color: var(--wedding-primary); margin-bottom: var(--space-20); direction: rtl; }
 .quran-verse { 
     background: transparent; 
     padding: 0; 
@@ -330,7 +331,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     font-style: italic; 
     text-align: justify; 
 }
-.quran-verse cite { display: block; margin-top: var(--space-16); font-size: 0.4rem; font-weight: 600; text-align: right; }
+.quran-verse cite { display: block; margin-top: var(--space-16); font-size: 12px; font-weight: 600; text-align: right; }
 
 /* Foto Pasangan */
 .couple-photos { display: flex; align-items: center; justify-content: center; gap: var(--space-32); margin: var(--space-32) 0; }
@@ -339,7 +340,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     padding: 4px; margin: 0 auto var(--space-16); overflow: hidden;
 }
 .couple-photo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-.couple-divider { font-family: var(--font-family-special); font-size: 2rem; color: var(--wedding-primary); }
 
 /* Detail Acara */
 .event-item { background: transparent; padding: var(--space-24); border-radius: var(--radius-xl); border: 1px solid var(--wedding-border-color); }
@@ -374,7 +374,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .copy-btn:hover { background: var(--wedding-primary-hover); transform: scale(1.05); }
 
 /* Ucapan Tamu */
-.messages-container { max-height: 400px; overflow-y: auto; padding-right: 10px; }
+.messages-container { max-height: 700px; overflow-y: auto; padding-right: 10px; }
 .message-item { var(--wedding-primary); padding: var(--space-16); border-radius: var(--radius-xl); margin-bottom: var(--space-16); border-left: 3px solid var(--wedding-bg); text-align: left; }
 
 /* Sesi Video */
@@ -397,7 +397,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* Ukuran khusus untuk tombol buka undangan */
 #openInvitationBtn {
   padding: 16px 36px; /* Padding diperbesar */
-  font-size: 1.1rem;   /* Ukuran font diperbesar */
+  font-size: 30px;   /* Ukuran font diperbesar */
 }
 
 /* Tombol Musik (Placeholder PNG) */
@@ -412,7 +412,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* Ukuran khusus untuk tombol Buka & Bagikan Undangan */
 #saveDateBtn, #shareBtn, #openMapsBtn, #submitRsvpBtn, #revealAccountsBtn {
   padding: 16px 32px;  /* Atur ruang di dalam tombol (atas/bawah | kiri/kanan) */
-  font-size: 1.1rem;   /* Atur ukuran tulisan di dalam tombol */
+  font-size: 30px;   /* Atur ukuran tulisan di dalam tombol */
 }
 
 /* GALERI FOTO AUTO-SLIDE */
@@ -599,9 +599,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* ============================================= */
 
 /* 1. Memperbesar area scroll untuk ucapan */
-.messages-container {
-    max-height: 700px; /* Diperbesar dari 400px */
-}
 
 /* 2. Memperbesar sedikit setiap kotak ucapan */
 .message-item {
@@ -615,7 +612,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 .message-text {
     color: var(--color-sakura-pink); /* Warna isi pesan menjadi pink */
-    font-size: 0.7rem
+    font-size: 22px
 }
 
 /* (Bonus) Mengubah warna status kehadiran (Hadir/Tidak Hadir) agar serasi */
@@ -641,14 +638,14 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 .guest-greeting-front p {
   margin: 0;
-  font-size: 1rem;
+  font-size: 28px;
   font-weight: 600;
   color: var(--color-white); /* Mengubah warna "Kepada Yth." menjadi putih */
 }
 
 .guest-greeting-front h3 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 50px;
   font-family: var(--font-family-special);
   /* Properti 'color' dihapus dari sini agar animasi shimmer-text bisa bekerja */
 }
@@ -684,7 +681,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 #shareModal p {
-    font-size: 1rem;
+    font-size: 28px;
     margin-bottom: var(--space-20);
 }
 
@@ -699,4 +696,3 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     from { transform: scale(0.8); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
-
