@@ -238,7 +238,7 @@ body.no-scroll {
 
 /* Sesi 0 (Buka Undangan) */
 .session-0 {
-  position: fixed; top: 0; left: 0; opacity: 1; transition: opacity 0.6s ease-out; 
+  position: fixed; top: 0; left: 0; opacity: 1; transition: opacity 0.6s ease-out; z-index: 5;
 }
 .session-0.fade-out {
     opacity: 0; pointer-events: none;
@@ -375,7 +375,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Ucapan Tamu */
 .messages-container { max-height: 400px; overflow-y: auto; padding-right: 10px; }
-.message-item { background: rgba(0,0,0, 0.2); padding: var(--space-16); border-radius: var(--radius-xl); margin-bottom: var(--space-16); border-left: 3px solid var(--wedding-primary); text-align: left; }
+.message-item { var(--wedding-primary); padding: var(--space-16); border-radius: var(--radius-xl); margin-bottom: var(--space-16); border-left: 3px solid var(--wedding-bg); text-align: left; }
 
 /* Sesi Video */
 .main-content-wrapper { overflow-y: auto; height: 100vh; scroll-behavior: smooth; background-color: transparent; }
