@@ -185,7 +185,6 @@ function typeWriter(selector, text, onComplete) {
 function setupActionButtons() {
     document.getElementById('openInvitationBtn')?.addEventListener('click', openInvitation);
     document.getElementById('saveDateBtn')?.addEventListener('click', saveTheDate);
-    document.getElementById('shareBtn')?.addEventListener('click', shareInvitation);
     document.getElementById('openMapsBtn')?.addEventListener('click', openMaps);
     document.getElementById('submitRsvpBtn')?.addEventListener('click', handleRsvpSubmission);
     document.querySelectorAll('.copy-btn').forEach(btn => {
@@ -738,3 +737,6 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
+
+
+
