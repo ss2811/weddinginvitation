@@ -283,15 +283,15 @@ h3 { font-size: var(--font-size-2xl); color: var(--wedding-primary); }
 p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--space-16); font-weight: 600; }
 
 #session3 p {
-  font-size: 16px; /* Ukuran paragraf diperkecil */
+  font-size: 0.8rem; /* Ukuran paragraf diperkecil */
 }
 
 #session8 p {
-  font-size: 0.5rem;
+  font-size: 0.8rem;
 }
 
 #session6 p {
-  font-size: 18px;
+  font-size: 0.8rem;
 }
 
 
@@ -310,7 +310,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 /* Ukuran khusus untuk teks ayat di Sesi 2 */
 #session2 .quran-verse {
-  font-size: 0.4rem;
+  font-size: 0.8rem;
   line-height: 1.5;
   text-align: center; /* DITAMBAHKAN: Membuat teks rata tengah */
 }
@@ -615,6 +615,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 .message-text {
     color: var(--color-sakura-pink); /* Warna isi pesan menjadi pink */
+    font-size: 0.8rem
 }
 
 /* (Bonus) Mengubah warna status kehadiran (Hadir/Tidak Hadir) agar serasi */
