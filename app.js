@@ -102,6 +102,14 @@ function setupGiftReveal() {
 document.addEventListener('DOMContentLoaded', initApp);
 
 function initApp() {
+	const urlParams = new URLSearchParams(window.location.search);
+    const guestName = urlParams.get('to');
+    const guestNameElement = document.getElementById('guestNameDisplay');
+
+    if (guestName && guestNameElement) {
+        // Mengganti tanda '+' dengan spasi dan menampilkannya
+        guestNameElement.textContent = guestName.replace(/\+/g, ' ');
+    }
     document.body.classList.add('no-scroll');
     backgroundMusic = document.getElementById('backgroundMusic');
     
@@ -669,4 +677,5 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
+
 
