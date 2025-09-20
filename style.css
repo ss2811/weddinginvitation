@@ -112,8 +112,8 @@ body.no-scroll {
     position: absolute;
     padding: 10px 25px;
     color: var(--color-white);
-    font-family: var(--font-family-special);
-    font-size: 1.8rem;
+    font-family: var(--font-family-base);
+    font-size: 0.9rem;
     font-weight: 700;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
     
