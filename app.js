@@ -105,6 +105,8 @@ function initApp() {
 	const urlParams = new URLSearchParams(window.location.search);
     const guestName = urlParams.get('to');
     const guestNameElement = document.getElementById('guestNameDisplay');
+	const guestNameFrontElement = document.getElementById('guestNameDisplayFront'); 
+    if (guestNameFrontElement) guestNameFrontElement.textContent = guestName ? guestName.replace(/\+/g, ' ') : 'Nama Tamu';
 
     if (guestName && guestNameElement) {
         // Mengganti tanda '+' dengan spasi dan menampilkannya
@@ -677,5 +679,6 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
+
 
 
