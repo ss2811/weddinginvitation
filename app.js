@@ -10,6 +10,8 @@ let countdownInterval;
 let isVideoPlaying = false;
 let ytPlayer;
 
+const lyricColors = ['var(--wedding-text-main)', 'var(--wedding-primary)', 'var(--color-sakura-pink)'];
+let lyricColorIndex = 0;
 // Data lirik lagu
 const lyricsData = [
     { time: 2, text: "So I sneak out to the garden to see you" },
@@ -232,35 +234,43 @@ function updateScrollingLyrics() {
     }
 
     // Periksa setiap lirik di dalam data
+    // GANTI SELURUH ISI lyricsData.forEach DENGAN INI
     lyricsData.forEach((lyric, index) => {
-        // Cek apakah waktunya sudah pas DAN lirik ini BELUM pernah ditampilkan
+    // Cek apakah waktunya sudah pas DAN lirik ini BELUM pernah ditampilkan
         if (currentTime >= lyric.time && !displayedLyricsIndexes.includes(index)) {
 
-            // Tandai lirik ini sudah ditampilkan
+        // Tandai lirik ini sudah ditampilkan
             displayedLyricsIndexes.push(index);
 
-            // 1. Buat elemen lirik baru
-            const lyricElement = document.createElement('div');
+        // --- LOGIKA BARU UNTUK WARNA BERURUTAN ---
+        // 1. Pilih warna dari array berdasarkan urutan saat ini
+            const chosenColor = lyricColors[lyricColorIndex];
+        // 2. Siapkan index untuk warna berikutnya (akan berputar kembali ke 0 jika sudah mencapai akhir)
+            lyricColorIndex = (lyricColorIndex + 1) % lyricColors.length;
+        // --- AKHIR LOGIKA BARU ---
+
+        // Buat elemen lirik baru
+        const lyricElement = document.createElement('div');
             lyricElement.className = 'lyric-line';
             lyricElement.textContent = lyric.text;
+            lyricElement.style.color = chosenColor; // Terapkan warna yang sudah dipilih
 
-            // 2. Tentukan posisi acak di layar
+        // Tentukan posisi acak di layar
             const randomTop = Math.random() * 65 + 15;
             const randomLeft = Math.random() * 60 + 20;
             lyricElement.style.top = `${randomTop}vh`;
             lyricElement.style.left = `${randomLeft}vw`;
             lyricElement.style.transform = 'translateX(-50%)';
 
-            // 3. Tambahkan lirik ke container
+        // Tambahkan lirik ke container
             container.appendChild(lyricElement);
 
-            // 4. Animasikan: muncul, diam sejenak, lalu hilang dan hapus elemen
+        // Animasikan: muncul, diam sejenak, lalu hilang dan hapus elemen
             const tl = gsap.timeline({
                 onComplete: () => lyricElement.remove()
             });
-
             tl.to(lyricElement, { opacity: 1, duration: 1 })
-              .to(lyricElement, { opacity: 0, duration: 1 }, "+=5");
+                .to(lyricElement, { opacity: 0, duration: 1 }, "+=5");
         }
     });
 }
@@ -413,7 +423,7 @@ async function shareInvitation(guestName) {
     const personalizedUrl = `${baseUrl}?to=${encodeURIComponent(guestName)}`;
     const shareData = {
         title: 'Undangan Pernikahan: Ancah & Sonia',
-        text: `Assalamualaikum 👋\n\nDengan penuh rasa syukur, kami ingin membagikan kabar bahagia dan mengundang Anda (Yth. ${guestName}) untuk hadir di acara pernikahan kami, Ancah & Sonia.\n\nKehadiran dan doa restu Anda sangat berarti bagi kami.\n"Barakallahu laka, wa baraka 'alaika, wa jama'a bainakuma fii khair."\n\nSilakan lihat detail acara di tautan berikut:`,
+        text: `Assalamualaikum 👋\n\nDengan penuh rasa syukur, kami ingin membagikan kabar bahagia dan mengundang ${guestName} untuk hadir di acara pernikahan kami, Ancah & Sonia.\n\nKehadiran dan doa restu Anda sangat berarti bagi kami.\n"Barakallahu laka, wa baraka 'alaika, wa jama'a bainakuma fii khair."\n\nSilakan lihat detail acara di tautan berikut:`,
         url: personalizedUrl
     };
     try {
