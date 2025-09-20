@@ -406,42 +406,20 @@ function saveTheDate() {
     showNotification("Kalender telah diunduh!");
 }
 
-// GANTI FUNGSI LAMA DENGAN FUNGSI BARU INI
-async function shareInvitation() {
-    // 1. Munculkan popup untuk menanyakan nama tamu
-    const guestName = prompt("Untuk siapa undangan ini? (Contoh: Bapak Budi & Keluarga)");
-
-    // 2. Lanjutkan hanya jika tamu mengisi nama
-    if (guestName) {
-        // 3. Buat URL dasar
-        const baseUrl = window.location.origin + window.location.pathname;
-        const personalizedUrl = `${baseUrl}?to=${encodeURIComponent(guestName)}`;
-
-        // 4. Siapkan data untuk dibagikan dengan teks baru
-        const shareData = {
-            title: 'Undangan Pernikahan: Ancah & Sonia',
-            text: `Assalamualaikum 👋
-
-Dengan penuh rasa syukur, kami ingin membagikan kabar bahagia dan mengundang ${guestName} untuk hadir di acara pernikahan kami, Ancah & Sonia.
-
-Kehadiran dan doa restu Anda sangat berarti bagi kami.
-"Barakallahu laka, wa baraka 'alaika, wa jama'a bainakuma fii khair."
-
-Silakan lihat detail acara di tautan berikut:`,
-            url: personalizedUrl
-        };
-
-        // 5. Coba bagikan menggunakan Web Share API
-        try {
-            if (navigator.share) {
-                await navigator.share(shareData);
-            } else {
-                throw new Error('Web Share API not supported');
-            }
-        } catch (err) {
-            // Fallback: Salin link ke clipboard
-            copyToClipboard(personalizedUrl, 'Link undangan personal berhasil disalin!');
-        }
+// GANTI FUNGSI LAMA DENGAN INI
+async function shareInvitation(guestName) {
+    // Fungsi ini sekarang hanya fokus untuk membagikan
+    const baseUrl = window.location.origin + window.location.pathname;
+    const personalizedUrl = `${baseUrl}?to=${encodeURIComponent(guestName)}`;
+    const shareData = {
+        title: 'Undangan Pernikahan: Ancah & Sonia',
+        text: `Assalamualaikum 👋\n\nDengan penuh rasa syukur, kami ingin membagikan kabar bahagia dan mengundang Anda (Yth. ${guestName}) untuk hadir di acara pernikahan kami, Ancah & Sonia.\n\nKehadiran dan doa restu Anda sangat berarti bagi kami.\n"Barakallahu laka, wa baraka 'alaika, wa jama'a bainakuma fii khair."\n\nSilakan lihat detail acara di tautan berikut:`,
+        url: personalizedUrl
+    };
+    try {
+        await navigator.share(shareData);
+    } catch (err) {
+        copyToClipboard(personalizedUrl, 'Link undangan personal berhasil disalin!');
     }
 }
 
@@ -680,3 +658,6 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
+
+
+
