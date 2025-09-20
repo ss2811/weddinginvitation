@@ -621,3 +621,34 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .message-name span {
     color: rgba(255, 255, 255, 0.7); /* Putih transparan */
 }
+
+/* GAYA UNTUK NAMA TAMU DI HALAMAN DEPAN */
+.guest-greeting-front {
+  /* Properti untuk membuat box dengan efek kaca */
+  background: rgba(40, 55, 71, 0.1); 
+  backdrop-filter: blur(3px);
+  border: 1px solid var(--wedding-border-color);
+  border-radius: var(--radius-xl); 
+  padding: var(--space-24);
+  width: 90%;
+  max-width: 500px;
+
+  /* Properti lainnya */
+  margin-bottom: var(--space-32);
+  color: var(--wedding-text-main);
+}
+
+.guest-greeting-front p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-white); /* Mengubah warna "Kepada Yth." menjadi putih */
+}
+
+.guest-greeting-front h3 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-family: var(--font-family-special);
+  /* Properti 'color' dihapus dari sini agar animasi shimmer-text bisa bekerja */
+}
+
