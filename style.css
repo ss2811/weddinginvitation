@@ -461,7 +461,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
 @keyframes scroll {
   0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-380px * 11)); } /* DIUBAH: Jarak scroll disesuaikan */
+  100% { transform: translateX(calc(-570px * 11)); } /* DIUBAH: Jarak scroll disesuaikan */
 }
 
 /* ===== GAYA BARU UNTUK PEMUTAR YOUTUBE ===== */
