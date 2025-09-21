@@ -331,7 +331,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     font-style: italic; 
     text-align: justify; 
 }
-.quran-verse cite { display: block; margin-top: var(--space-16); font-size: 12px; font-weight: 600; text-align: right; }
+.quran-verse cite { display: block; margin-top: var(--space-16); font-size: 14px; font-weight: 600; text-align: right; }
 
 /* Foto Pasangan */
 .couple-photos { display: flex; align-items: center; justify-content: center; gap: var(--space-32); margin: var(--space-32) 0; }
@@ -412,7 +412,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* Ukuran khusus untuk tombol Buka & Bagikan Undangan */
 #saveDateBtn, #shareBtn, #openMapsBtn, #submitRsvpBtn, #revealAccountsBtn {
   padding: 16px 32px;  /* Atur ruang di dalam tombol (atas/bawah | kiri/kanan) */
-  font-size: 30px;   /* Atur ukuran tulisan di dalam tombol */
+  font-size: 28px;   /* Atur ukuran tulisan di dalam tombol */
 }
 
 /* GALERI FOTO AUTO-SLIDE */
@@ -550,7 +550,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    font-size: 15px; /* Atur ukuran font yang diinginkan */
+    font-size: 18px; /* Atur ukuran font yang diinginkan */
 }
 
 .radio-group input[type="radio"] {
@@ -611,7 +611,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 .message-text {
-    color: var(--color-sakura-pink); /* Warna isi pesan menjadi pink */
+    color: var(--wedding-text-main); /* Warna isi pesan menjadi pink */
     font-size: 22px
 }
 
@@ -653,7 +653,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 /* ============================================= */
 /* GAYA POPUP BAGIKAN UNDANGAN         */
 /* ============================================= */
-#shareModalOverlay {
+shareModalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -662,8 +662,9 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
-    align-items: center;
-    z-index: 1002; /* Harus di atas tombol musik */
+    align-items: flex-start; /* DIUBAH: Mengatur posisi ke bagian atas */
+    padding-top: 20vh;       /* DITAMBAH: Memberi jarak dari atas layar (20% dari tinggi layar) */
+    z-index: 1002;
     opacity: 1;
     transition: opacity 0.3s ease;
 }
@@ -674,8 +675,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 #shareModal {
-    /* Menggunakan gaya .session-content yang sudah ada, tapi dengan beberapa penyesuaian */
-    max-width: 500px;
+    max-width: 600px; /* DIUBAH: Diperlebar dari 500px */
     width: 90%;
     animation: zoomIn 0.3s ease;
 }
@@ -695,4 +695,15 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 @keyframes zoomIn {
     from { transform: scale(0.8); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
+}
+
+#session7 .session-content {
+    /* Atur tinggi minimal box (misal: 80% dari tinggi layar) */
+    /* Anda bisa ubah nilai ini, misal: 90vh atau 800px */
+    min-height: 80vh; 
+    max-height: 95vh;
+    
+    /* Aktifkan mode tata letak fleksibel secara vertikal */
+    display: flex;
+    flex-direction: column;
 }
