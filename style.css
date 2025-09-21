@@ -686,7 +686,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   /* ==> TAMBAHKAN BLOK BARU INI <== */
   body {
     background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/backgroundhitam.jpeg'); /* <-- GANTI DENGAN URL GAMBAR ANDA */
-    background-size: cover;
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed; /* Agar background diam saat di-scroll */
@@ -695,8 +695,8 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
   /* Membuat halaman pembuka menjadi potrait di tengah */
   #session0 {
-    width: 455px;
-    height: 999px;
+    width: 496px;
+    height: 768px;
     left: 50%;
     transform: translateX(-50%);
     border-left: 1px solid rgba(169, 204, 227, 0.2);
@@ -705,8 +705,8 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
   /* Membuat konten utama menjadi potrait di tengah */
   .main-content-wrapper {
-    width: 455px;
-    height: 999px;
+    width: 496px;
+    height: 768px;
     margin-left: auto;
     margin-right: auto;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
@@ -788,6 +788,9 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   @keyframes scroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(calc(-253px * 11)); }
+  }
+  .lyric-line {
+  font-size: 8px; /* 19px / 2.25. (Direkomendasikan 12px agar terbaca) */
   }
 
   /* Tombol-tombol lain */
