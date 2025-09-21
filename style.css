@@ -498,42 +498,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 
-/* ============================================= */
-/* GAYA KHUSUS UNTUK TAMPILAN DESKTOP/LAPTOP */
-/* ============================================= */
-/* ============================================= */
-/* GAYA KHUSUS UNTUK TAMPILAN DESKTOP/LAPTOP */
-/* ============================================= */
-@media screen and (min-width: 1025px) {
 
-  /* ==> TAMBAHKAN BLOK BARU INI <== */
-  body {
-    background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/backgroundhitam.jpeg'); /* <-- GANTI DENGAN URL GAMBAR ANDA */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed; /* Agar background diam saat di-scroll */
-  }
-  /* ================================= */
-
-  /* Membuat halaman pembuka menjadi potrait di tengah */
-  #session0 {
-    max-width: 768px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-left: 1px solid rgba(169, 204, 227, 0.2);
-    border-right: 1px solid rgba(169, 204, 227, 0.2);
-  }
-
-  /* Membuat konten utama menjadi potrait di tengah */
-  .main-content-wrapper {
-    max-width: 768px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
-  }
-
-}
 
 /* style.css (tambahkan di paling bawah) */
 
@@ -710,4 +675,33 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     /* Aktifkan mode tata letak fleksibel secara vertikal */
     display: flex;
     flex-direction: column;
+}
+
+/* ============================================= */
+/* MEMAKSA TAMPILAN PORTRAIT SAAT LANDSCAPE      */
+/* ============================================= */
+
+/* Aturan ini hanya aktif saat lebar layar lebih besar dari tingginya */
+@media (orientation: landscape) {
+    
+    /* Sembunyikan scrollbar di body utama agar tidak ada 2 scrollbar */
+    body {
+        overflow: hidden;
+    }
+
+    .portrait-wrapper {
+        max-width: 33%; /* Lebar maksimal wadah (seperti HP). Anda bisa ubah. */
+        height: 100vh;    /* Tinggi wadah adalah 100% dari tinggi layar */
+        margin: 0 auto;   /* Posisikan wadah di tengah secara horizontal */
+        
+        /* Aktifkan scroll di dalam wadah ini, bukan di body lagi */
+        overflow-y: auto; 
+        overflow-x: hidden; 
+        
+        /* (Opsional) Beri bayangan agar terlihat bagus */
+        box-shadow: 0 0 20px rgba(0,0,0,0.5); 
+
+        /* (PENTING) Atur warna latar belakang untuk area kosong di kiri dan kanan */
+        background-color: var(--wedding-bg);
+    }
 }
