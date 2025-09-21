@@ -725,7 +725,6 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
         /* INI KUNCI PERBAIKANNYA */
         background-attachment: scroll; /* Ubah dari 'fixed' menjadi 'scroll' */
   }
-  }
   :root {
     --space-12: 5px;
     --space-16: 7px;
