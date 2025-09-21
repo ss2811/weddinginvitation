@@ -498,43 +498,36 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 }
 
 
-/* ============================================= */
-/* GAYA KHUSUS UNTUK TAMPILAN DESKTOP/LAPTOP */
-/* ============================================= */
-/* ============================================= */
-/* GAYA KHUSUS UNTUK TAMPILAN DESKTOP/LAPTOP */
-/* ============================================= */
+/* GANTI SELURUH BLOK @media ANDA DENGAN YANG INI */
+
 @media (orientation: landscape) {
 
-  /* ==> TAMBAHKAN BLOK BARU INI <== */
-  body {
-    background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/backgroundhitam.jpeg'); /* <-- GANTI DENGAN URL GAMBAR ANDA */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed; /* Agar background diam saat di-scroll */
-  }
-  /* ================================= */
+    /* Atur ulang ukuran font dasar menjadi lebih kecil KHUSUS saat landscape */
+    html {
+        font-size: 16px; /* Jauh lebih kecil dari ukuran normal (28px). Ini akan mengecilkan semua teks. */
+    }
+    
+    /* Sembunyikan scrollbar di body utama agar tidak ada 2 scrollbar */
+    body {
+        overflow: hidden;
+        /* (Opsional) Latar belakang hitam untuk area kosong */
+        background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/backgroundhitam.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
 
-  /* Membuat halaman pembuka menjadi potrait di tengah */
-  #session0 {
-    width: 480px;
-    height: 1024px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-left: 1px solid rgba(169, 204, 227, 0.2);
-    border-right: 1px solid rgba(169, 204, 227, 0.2);
-  }
-
-  /* Membuat konten utama menjadi potrait di tengah */
-  .main-content-wrapper {
-    width: 480px;
-    height: 1024px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
-  }
-
+    /* Gunakan wrapper yang sudah kita buat sebelumnya untuk mengunci layout */
+    .portrait-wrapper {
+        max-width: 450px; /* Lebar maksimal wadah (seperti HP) */
+        height: 100vh;    /* Tinggi wadah 100% dari tinggi layar */
+        margin: 0 auto;   /* Posisikan wadah di tengah */
+        overflow-y: auto; 
+        overflow-x: hidden; 
+        box-shadow: 0 0 20px rgba(0,0,0,0.5); 
+        background-color: var(--wedding-bg);
+    }
 }
 
 /* style.css (tambahkan di paling bawah) */
