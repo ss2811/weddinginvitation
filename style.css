@@ -695,8 +695,8 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
   /* Membuat halaman pembuka menjadi potrait di tengah */
   #session0 {
-    width: 1025px;
-    height: 2152px;
+    width: 350px;
+    height: 768px;
     left: 50%;
     transform: translateX(-50%);
     border-left: 1px solid rgba(169, 204, 227, 0.2);
@@ -705,8 +705,8 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
   /* Membuat konten utama menjadi potrait di tengah */
   .main-content-wrapper {
-    width: 1052px;
-    height: 2152px;
+    width: 350px;
+    height: 768px;
     margin-left: auto;
     margin-right: auto;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
