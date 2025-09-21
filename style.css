@@ -711,14 +711,22 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   /* Membuat konten utama menjadi potrait di tengah */
   .portrait-wrapper {
     width: 496px;     /* Lebar bingkai sesuai keinginan Anda */
-    height: 768px;     /* Tinggi bingkai 95% dari tinggi layar */
-       
-        
+    height: 768px;     /* Tinggi bingkai 95% dari tinggi layar */      
     margin: 0 auto;
     overflow-y: auto; /* Scroll HANYA terjadi di dalam bingkai ini */
     box-shadow: 0 0 25px rgba(0,0,0,0.4);
     border-radius: 20px;
     position: relative;
+  .session {
+        /* Di sini kita TIDAK mengubah background-image.
+           Kita biarkan aturan background per sesi (misal #session1) tetap aktif.
+           Karena sesi ini sekarang berada di dalam bingkai 496px, background-nya
+           juga akan terbatas pada lebar 496px dan tidak akan ter-zoom. */
+        
+    min-height: auto; /* Hapus tinggi 100vh agar tidak bentrok di dalam bingkai */
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
   }
   :root {
     --space-12: 5px;
