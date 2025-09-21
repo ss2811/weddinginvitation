@@ -695,8 +695,8 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
   /* Membuat halaman pembuka menjadi potrait di tengah */
   #session0 {
-    width: 350px;
-    height: 768px;
+    width: 455px;
+    height: 999px;
     left: 50%;
     transform: translateX(-50%);
     border-left: 1px solid rgba(169, 204, 227, 0.2);
@@ -705,74 +705,91 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
   /* Membuat konten utama menjadi potrait di tengah */
   .main-content-wrapper {
-    width: 350px;
-    height: 768px;
+    width: 455px;
+    height: 999px;
     margin-left: auto;
     margin-right: auto;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
   }
- :root {
-    --space-12: 4px;
-    --space-16: 6px;
-    --space-20: 7px;
-    --space-24: 8px;
-    --space-32: 11px;
+  :root {
+    --space-12: 5px;
+    --space-16: 7px;
+    --space-20: 9px;
+    --space-24: 11px;
+    --space-32: 14px;
   }
   html {
-    font-size: 10px; /* Hasil dari 28px / 2.9 */
+    font-size: 12px; /* Hasil dari 28px / 2.25 */
   }
 
   /* 2. Sesuaikan ukuran spesifik per elemen */
 
+  h2 {
+    font-size: 21px; /* <-- ATURAN BARU DITAMBAHKAN (48px / 2.25) */
+  }
+  
+  .session-content { max-width: 355px; border-radius: 14px; }
+
   /* Sesi 0 - Halaman Muka */
-  .invitation-title { min-height: 86px; } /* 250px / 2.9 */
-  .invitation-title h1 { font-size: 29px; } /* 84px / 2.9 */
-  .couple-names { font-size: 24px; } /* 70px / 2.9 */
-  .wedding-date { font-size: 10px; } /* 30px / 2.9 */
-  .guest-greeting-front p { font-size: 10px; } /* 28px / 2.9 */
-  .guest-greeting-front h3 { font-size: 17px; } /* 50px / 2.9 */
-  #openInvitationBtn { font-size: 10px; padding: 6px 12px; } /* 30px / 2.9 */
-  .guest-greeting-front { max-width: 172px; } /* 500px / 2.9 */
+  .invitation-title { min-height: 111px; }
+  .invitation-title h1 { font-size: 37px; }
+  .couple-names { font-size: 31px; }
+  .wedding-date { font-size: 13px; }
+  .guest-greeting-front { max-width: 222px; }
+  .guest-greeting-front p { font-size: 12px; }
+  .guest-greeting-front h3 { font-size: 22px; }
+  #openInvitationBtn { font-size: 13px; padding: 7px 16px; }
 
   /* Sesi Umum */
-  .corner-deco { width: 21px; height: 21px; top: -7px; left: -7px; }
-  .corner-deco.top-right { right: -7px; }
-  .corner-deco.bottom-left { bottom: -7px; }
-  .corner-deco.bottom-right { bottom: -7px; right: -7px; }
-  .session-content { max-width: 275px; border-radius: 11px; } /* 800px & 32px / 2.9 */
+  .corner-deco { width: 27px; height: 27px; top: -9px; left: -9px; }
+  .corner-deco.top-right { right: -9px; }
+  .corner-deco.bottom-left { bottom: -9px; }
+  .corner-deco.bottom-right { bottom: -9px; right: -9px; }
 
-  /* Sesi 1 - Hitung Mundur */
-  .countdown-item span { font-size: 21px; } /* 60px / 2.9 */
-  .countdown-item label { font-size: 7px; } /* 19px / 2.9 */
-  #saveDateBtn, #shareBtn { font-size: 10px; padding: 6px 11px; } /* 28px / 2.9 */
+  /* Sesi 1 - Hitung Mundur & Tombol */
+  .countdown-item span { font-size: 27px; }
+  .countdown-item label { font-size: 8px; }
+  #saveDateBtn, #shareBtn { font-size: 12px; padding: 7px 14px; }
   
   /* Sesi 2 - Ayat Suci */
-  .arabic-text { font-size: 24px; } /* 70px / 2.9 */
-  #session2 .quran-verse, .quran-verse cite { font-size: 8px; }
+  .arabic-text { font-size: 31px; }
+  #session2 .quran-verse { font-size: 10px; }
+  .quran-verse cite { font-size: 7px; }
 
   /* Sesi 3 - Mempelai */
-  #session3 p { font-size: 8px; }
-  #session3 h3 { font-size: 9px; }
-  .photo-frame { width: 41px; height: 41px; } /* 120px / 2.9 */
-  
+  #session3 p { font-size: 10px; }
+  #session3 h3 { font-size: 12px; }
+  .photo-frame { width: 53px; height: 53px; }
+
   /* Sesi 4 - Detail Acara & Peta */
-  #openMapsBtn { font-size: 10px; padding: 6px 11px; }
+  #openMapsBtn { font-size: 12px; padding: 7px 14px; }
 
-  /* Sesi 5 - RSVP */
-  #session5 .form-label, #session5 .form-control { font-size: 8px; }
-  .radio-group label { font-size: 7px; }
-  #submitRsvpBtn { font-size: 10px; padding: 6px 11px; }
-
-  /* Sesi 6 - Wedding Gift */
-  #session6 p { font-size: 8px; }
-  .copy-btn { font-size: 8px; padding: 3px 7px; }
-  #revealAccountsBtn { font-size: 10px; padding: 6px 11px; }
+  /* Sesi 5 - RSVP & Ucapan */
+  #session5 .form-label, #session5 .form-control { font-size: 11px; }
+  .radio-group label { font-size: 8px; }
+  #submitRsvpBtn { font-size: 12px; padding: 7px 14px; }
 
   /* Sesi 7 - Ucapan & Doa */
-  #session7 .session-content { max-width: 310px; min-height: none; max-height: 50vh; }
-  .message-text { font-size: 8px; }
-  .message-name { font-size: 9px; }
+  #session7 .session-content { max-width: 355px; min-height: none; max-height: 70vh; }
+  .message-name { font-size: 12px; }
+  .message-text { font-size: 10px; }
+
+  /* Sesi 6 - Wedding Gift */
+  #session6 p { font-size: 10px; }
+  .copy-btn { font-size: 11px; padding: 4px 9px; }
+  #revealAccountsBtn { font-size: 12px; padding: 7px 14px; }
   
+  /* Sesi 8 - Terima Kasih */
+  #session8 p { font-size: 10px; }
+
+  /* Galeri Slider */
+  .slider-container { height: 300px; }
+  .slide { height: 300px; width: 253px; }
+  @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(-253px * 11)); }
+  }
+
   /* Tombol-tombol lain */
-  .btn { border-radius: 11px; }
+  .btn { border-radius: 14px; }
 }
