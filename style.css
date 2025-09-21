@@ -686,7 +686,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   /* ==> TAMBAHKAN BLOK BARU INI <== */
   body {
     background-image: url('https://raw.githubusercontent.com/ss2811/weddinginvitation/refs/heads/main/backgroundhitam.jpeg'); /* <-- GANTI DENGAN URL GAMBAR ANDA */
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed; /* Agar background diam saat di-scroll */
@@ -727,18 +727,20 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   h2 {
     font-size: 21px; /* <-- ATURAN BARU DITAMBAHKAN (48px / 2.25) */
   }
+  h3 {
+    font-size: 21px; /* <-- ATURAN BARU DITAMBAHKAN (48px / 2.25) */
+  }
   
-  .session-content { max-width: 355px; border-radius: 14px; }
 
   /* Sesi 0 - Halaman Muka */
   .invitation-title { min-height: 111px; }
-  .invitation-title h1 { font-size: 37px; }
-  .couple-names { font-size: 31px; }
-  .wedding-date { font-size: 13px; }
-  .guest-greeting-front { max-width: 222px; }
-  .guest-greeting-front p { font-size: 12px; }
-  .guest-greeting-front h3 { font-size: 22px; }
-  #openInvitationBtn { font-size: 13px; padding: 7px 16px; }
+  .invitation-title h1 { font-size: 36px; }
+  .couple-names { font-size: 30px; }
+  .wedding-date { font-size: 12px; }
+  .guest-greeting-front { max-width: 217px; }
+  .guest-greeting-front p { font-size: 11px; }
+  .guest-greeting-front h3 { font-size: 21px; }
+  #openInvitationBtn { font-size: 12px; padding: 6px 15px; }
 
   /* Sesi Umum */
   .corner-deco { width: 27px; height: 27px; top: -9px; left: -9px; }
