@@ -704,8 +704,8 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 #session7 .session-content {
     /* Atur tinggi minimal box (misal: 80% dari tinggi layar) */
     /* Anda bisa ubah nilai ini, misal: 90vh atau 800px */
-    min-height: 70vh; 
-    max-height: 90vh;
+    min-height: 50vh; 
+    max-height: 70vh;
     
     /* Aktifkan mode tata letak fleksibel secara vertikal */
     display: flex;
