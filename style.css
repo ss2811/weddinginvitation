@@ -702,6 +702,11 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     border-left: 1px solid rgba(169, 204, 227, 0.2);
     border-right: 1px solid rgba(169, 204, 227, 0.2);
   }
+  .session-0 .session-content {
+    justify-content: flex-start; /* Alihkan ke atas, bukan di tengah */
+    padding-top: 150px; /* Beri jarak dari atas. Anda bisa ubah angka ini */
+    height: 100%;
+  }
 
   /* Membuat konten utama menjadi potrait di tengah */
   .main-content-wrapper {
@@ -734,13 +739,13 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
   /* Sesi 0 - Halaman Muka */
   .invitation-title { min-height: 111px; }
-  .invitation-title h1 { font-size: 36px; }
-  .couple-names { font-size: 30px; }
-  .wedding-date { font-size: 12px; }
+  .invitation-title h1 { font-size: 37px; }
+  .couple-names { font-size: 31px; }
+  .wedding-date { font-size: 13px; }
   .guest-greeting-front { max-width: 217px; }
-  .guest-greeting-front p { font-size: 11px; }
-  .guest-greeting-front h3 { font-size: 21px; }
-  #openInvitationBtn { font-size: 12px; padding: 6px 15px; }
+  .guest-greeting-front p { font-size: 12px; }
+  .guest-greeting-front h3 { font-size: 22px; }
+  #openInvitationBtn { font-size: 13px; padding: 7px 16px; }
 
   /* Sesi Umum */
   .corner-deco { width: 27px; height: 27px; top: -9px; left: -9px; }
