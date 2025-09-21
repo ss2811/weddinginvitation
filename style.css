@@ -331,7 +331,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     font-style: italic; 
     text-align: justify; 
 }
-.quran-verse cite { display: block; margin-top: var(--space-16); font-size: 14px; font-weight: 600; text-align: right; }
+.quran-verse cite { display: block; margin-top: var(--space-16); font-size: 16px; font-weight: 600; text-align: right; }
 
 /* Foto Pasangan */
 .couple-photos { display: flex; align-items: center; justify-content: center; gap: var(--space-32); margin: var(--space-32) 0; }
@@ -374,7 +374,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 .copy-btn:hover { background: var(--wedding-primary-hover); transform: scale(1.05); }
 
 /* Ucapan Tamu */
-.messages-container { max-height: 700px; overflow-y: auto; padding-right: 10px; }
+.messages-container { max-height: none; overflow-y: auto; padding-right: 10px; flex-grow: 1; }
 .message-item { var(--wedding-primary); padding: var(--space-16); border-radius: var(--radius-xl); margin-bottom: var(--space-16); border-left: 3px solid var(--wedding-bg); text-align: left; }
 
 /* Sesi Video */
@@ -550,7 +550,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    font-size: 18px; /* Atur ukuran font yang diinginkan */
+    font-size: 19px; /* Atur ukuran font yang diinginkan */
 }
 
 .radio-group input[type="radio"] {
@@ -650,10 +650,12 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   /* Properti 'color' dihapus dari sini agar animasi shimmer-text bisa bekerja */
 }
 
+/* GANTI SEMUA ATURAN LAMA UNTUK POPUP DENGAN YANG INI */
+
 /* ============================================= */
-/* GAYA POPUP BAGIKAN UNDANGAN         */
+/* GAYA POPUP BAGIKAN UNDANGAN (VERSI FINAL)   */
 /* ============================================= */
-shareModalOverlay {
+#shareModalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -661,9 +663,8 @@ shareModalOverlay {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     display: flex;
-    justify-content: center;
-    align-items: flex-start; /* DIUBAH: Mengatur posisi ke bagian atas */
-    padding-top: 20vh;       /* DITAMBAH: Memberi jarak dari atas layar (20% dari tinggi layar) */
+    justify-content: center;  /* <-- Kunci untuk posisi tengah horizontal */
+    align-items: center;      /* <-- Kunci untuk posisi tengah vertikal */
     z-index: 1002;
     opacity: 1;
     transition: opacity 0.3s ease;
@@ -675,9 +676,12 @@ shareModalOverlay {
 }
 
 #shareModal {
-    max-width: 600px; /* DIUBAH: Diperlebar dari 500px */
+    max-width: 700px; /* <-- Diperlebar lagi dari 600px */
     width: 90%;
     animation: zoomIn 0.3s ease;
+    
+    /* TAMBAHKAN INI untuk menggeser sedikit ke atas dari posisi tengah */
+    transform: translateY(-50px);
 }
 
 #shareModal p {
@@ -700,8 +704,8 @@ shareModalOverlay {
 #session7 .session-content {
     /* Atur tinggi minimal box (misal: 80% dari tinggi layar) */
     /* Anda bisa ubah nilai ini, misal: 90vh atau 800px */
-    min-height: 80vh; 
-    max-height: 95vh;
+    min-height: 70vh; 
+    max-height: 90vh;
     
     /* Aktifkan mode tata letak fleksibel secara vertikal */
     display: flex;
