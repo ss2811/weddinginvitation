@@ -704,7 +704,7 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
   }
   .session-0 .session-content {
     justify-content: flex-start; /* Alihkan ke atas, bukan di tengah */
-    padding-top: 150px; /* Beri jarak dari atas. Anda bisa ubah angka ini */
+    padding-top: 50px; /* Beri jarak dari atas. Anda bisa ubah angka ini */
     height: 100%;
   }
 
@@ -718,14 +718,12 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
     border-radius: 20px;
     position: relative;
   .session {
-        /* Di sini kita TIDAK mengubah background-image.
-           Kita biarkan aturan background per sesi (misal #session1) tetap aktif.
-           Karena sesi ini sekarang berada di dalam bingkai 496px, background-nya
-           juga akan terbatas pada lebar 496px dan tidak akan ter-zoom. */
-        
-    min-height: auto; /* Hapus tinggi 100vh agar tidak bentrok di dalam bingkai */
-    padding-top: 80px;
-    padding-bottom: 80px;
+        min-height: auto;
+        padding-top: 80px;
+        padding-bottom: 80px;
+
+        /* INI KUNCI PERBAIKANNYA */
+        background-attachment: scroll; /* Ubah dari 'fixed' menjadi 'scroll' */
   }
   }
   :root {
