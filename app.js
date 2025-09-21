@@ -517,12 +517,12 @@ async function handleRsvpSubmission() {
             const newMessageElement = document.createElement('div');
             newMessageElement.innerHTML = `
                 <div class="message-item">
-                    <p class="message-name">${escapeHtml(name)} 
+                    <p class="message-name shimmer-text">${escapeHtml(name)} 
                         <span style="font-size: 0.8em; color: ${statusColor}; font-weight: bold;">
                             (${attendanceStatus})
                         </span>
                     </p>
-                    <p class="message-text shimmer-text">${escapeHtml(message) || '<i>Tidak ada pesan.</i>'}</p>
+                    <p class="message-text">${escapeHtml(message) || '<i>Tidak ada pesan.</i>'}</p>
                 </div>
             `;
             
@@ -609,12 +609,12 @@ function loadGuestMessages() {
 
                 const messageItem = `
                     <div class="message-item">
-                        <p class="message-name">${escapeHtml(data.name)} 
+                        <p class="message-name shimmer-text">${escapeHtml(data.name)} 
                             <span style="font-size: 0.8em; color: ${statusColor}; font-weight: bold;">
                                 (${attendanceStatus})
                             </span>
                         </p>
-                        <p class="message-text shimmer-text">${escapeHtml(data.message) || '<i>Tidak ada pesan.</i>'}</p>
+                        <p class="message-text">${escapeHtml(data.message) || '<i>Tidak ada pesan.</i>'}</p>
                     </div>
                 `;
                 container.innerHTML += messageItem;
@@ -752,3 +752,6 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
+
+
+
