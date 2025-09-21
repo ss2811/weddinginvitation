@@ -518,8 +518,8 @@ p { color: var(--wedding-text-accent); line-height: 1.6; margin-bottom: var(--sp
 
   /* Membuat halaman pembuka menjadi potrait di tengah */
   #session0 {
-    width: 350px;
-    height: 768px;
+    width: 480px;
+    height: 1024px;
     left: 50%;
     transform: translateX(-50%);
     border-left: 1px solid rgba(169, 204, 227, 0.2);
