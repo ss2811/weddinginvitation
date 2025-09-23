@@ -427,9 +427,9 @@ async function shareInvitation(guestName) {
 Assalamualaikum Warahmatullahi Wabarakatuh.
 
 Dengan hormat,
-Kami mengundang Bapak/Ibu ${guestName} untuk menghadiri acara pernikahan kami, Ancah & Sonia.
+Kami mengundang ${guestName} untuk menghadiri acara pernikahan kami, Ancah & Sonia.
 
-Acara Insya Allah akan diselenggarakan pada:
+Acara InsyaAllah akan diselenggarakan pada:
 
 AKAD NIKAH
 🗓️ Hari, Tanggal: Rabu, 24 September 2025
@@ -780,3 +780,6 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
+
+
+
