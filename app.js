@@ -425,34 +425,7 @@ async function shareInvitation(guestName) {
     const personalizedUrl = `${baseUrl}?to=${encodeURIComponent(guestName)}`;
     const shareData = {
         title: 'Undangan Pernikahan: Ancah & Sonia',
-        text: `Assalamualaikum Warahmatullahi Wabarakatuh.
-
-Dengan hormat,
-Kami mengundang Bapak/Ibu ${guestName} untuk menghadiri acara pernikahan kami, Ancah & Sonia.
-
-Acara Insya Allah akan diselenggarakan pada:
-
-AKAD NIKAH
-🗓️ Hari, Tanggal: Rabu, 24 September 2025
-⏰ Waktu: 07:00 WITA - Selesai
-📍 Tempat: Masjid Jabal Rahmah Mandin, Kotabaru
-
-RESEPSI
-⏰ Waktu: 09:00 WITA - Selesai
-📍 Tempat: Rumah Mempelai Wanita (Samping Masjid Jabal Rahmah Mandin)
-
-Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu berkenan hadir untuk memberikan doa restu.
-"Barakallahu laka, wa baraka 'alaika, wa jama'a bainakuma fii khair."
-
-Untuk informasi selengkapnya, silakan akses tautan berikut:
-    `;
-
-    // Logika untuk membuat URL personal dan membagikannya
-    const baseUrl = window.location.origin + window.location.pathname;
-    const personalizedUrl = `${baseUrl}?to=${encodeURIComponent(guestName)}`;
-    const shareData = {
-        title: 'Undangan Pernikahan: Ancah & Sonia',
-        text: shareText,
+        text: `Assalamualaikum 👋\n\nDengan penuh rasa syukur, kami ingin membagikan kabar bahagia dan mengundang ${guestName} untuk hadir di acara pernikahan kami, Ancah & Sonia.\n\nKehadiran dan doa restu Anda sangat berarti bagi kami.\n"Barakallahu laka, wa baraka 'alaika, wa jama'a bainakuma fii khair."\n\nSilakan lihat detail acara di tautan berikut:`,
         url: personalizedUrl
     };
     try {
@@ -779,6 +752,3 @@ function fallbackCopyTextToClipboard(text, successMessage) {
     }
     document.body.removeChild(textArea);
 }
-
-
-
